@@ -37,18 +37,17 @@ function basicheader($title)
     }
 
     $ts = time() + 1;
-    echo '<?xml version="1.0" encoding="ISO-8859-1"?>'."\n";
-    echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html>
-<head>
-<title>'.$title.'</title>
-<link rel="stylesheet" type="text/css" href="'.$STYLESHEET_BASEDIR.$stylesheet.'/style.css" />
-<script type="text/javascript">var stm=new Date(); stm.setTime('.$ts.'000); var sltm=new Date();</script>
-<script type="text/javascript" src="global.js"></script>
-<link rel="SHORTCUT ICON" href="favicon.ico" />
-'.$javascript.'
-</head>
-';
+    echo '<!DOCTYPE html>'."\n";
+    echo '<html lang="de">' . "\n";
+    echo '<head>' . "\n";
+    echo '<meta charset="utf-8">' . "\n";
+    echo '<title>' . $title . '</title>' . "\n";
+    echo '<link rel="stylesheet" href="' . $STYLESHEET_BASEDIR . $stylesheet . '/style.css">' . "\n";
+    echo '<script>var stm=new Date(); stm.setTime(' . $ts . '000); var sltm=new Date();</script>' . "\n";
+    echo '<script src="global.js" defer></script>' . "\n";
+    echo '<link rel="icon" href="favicon.ico">' . "\n";
+    echo $javascript;
+    echo '</head>' . "\n";
 }
 
 function basicfooter()
