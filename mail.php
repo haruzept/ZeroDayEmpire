@@ -103,6 +103,7 @@ function newmailform($recip = '', $subject = '', $text = '', $xnl2br = true)
     if ($text == '' && $usr['sig_mails'] != '') {
         $text = "\n\n\n\n".$usr['sig_mails'];
     }
+    $bigacc = '';
     if ($usr['bigacc'] == 'yes') {
         $bigacc = '<tr id="messages-compose-address-book">'.LF.'<td colspan="2"><input type="button" value="Adressbuch..." onclick="show_abook(\'user\');"/></td>'.LF.'</tr>'."\n";
     }
@@ -132,18 +133,18 @@ function newmailform($recip = '', $subject = '', $text = '', $xnl2br = true)
 ';
 }
 
-$action = $_REQUEST['page'];
-if ($action == '') {
-    $action = $_REQUEST['mode'];
+$action = $_REQUEST['page'] ?? '';
+if ($action === '') {
+    $action = $_REQUEST['mode'] ?? '';
 }
-if ($action == '') {
-    $action = $_REQUEST['action'];
+if ($action === '') {
+    $action = $_REQUEST['action'] ?? '';
 }
-if ($action == '') {
-    $action = $_REQUEST['a'];
+if ($action === '') {
+    $action = $_REQUEST['a'] ?? '';
 }
-if ($action == '') {
-    $action = $_REQUEST['m'];
+if ($action === '') {
+    $action = $_REQUEST['m'] ?? '';
 }
 
 switch ($action) {
@@ -188,6 +189,8 @@ switch ($action) {
             $full = '<div class="important">'.LF.'<h3>Dein Posteingang ist voll!</h3>'.LF.'<p>Bitte l&ouml;sche Mails, damit andere User dir wieder schreiben k&ouml;nnen.</p>'.LF.'</div>'."\n";
         }
         createlayout_top('HackTheNet - Messages');
+        $link_inbox = '';
+        $link_sysmsgs = '';
         if ($inbox != '') {
             $link_inbox = '<a href="#messages-inbox">Posteingang</a> | ';
         }
