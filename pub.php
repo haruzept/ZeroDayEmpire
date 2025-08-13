@@ -230,7 +230,15 @@ Nur wenn eine korrekte Email-Adresse angegeben wurde, kann der Account aktiviert
             die('FUCK OFF!');
         }
         $fn = 'data/regtmp/'.$tmpfnx.'.txt';
-        list($nick, $email, $pwd, $server) = explode('|', file_get($fn));
+        $regtmp = file_get($fn);
+        if ($regtmp === false) {
+            die('FUCK OFF!');
+        }
+        $parts = explode('|', $regtmp);
+        if (count($parts) < 4) {
+            die('FUCK OFF!');
+        }
+        list($nick, $email, $pwd, $server) = $parts;
         mysql_select_db(dbname($server));
 
         createlayout_top('HackTheNet - Account anlegen');

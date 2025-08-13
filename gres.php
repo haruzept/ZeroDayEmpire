@@ -323,6 +323,7 @@ function rem_esc_chars($s)
 function file_get($filename)
 { //----------- File Get -----------------
     global $STYLESHEET, $REMOTE_FILES_DIR, $DATADIR;
+    $fdata = '';
     $file = @fopen($filename, 'r');
     if ($file) {
         if ($fsize = @filesize($filename)) {
@@ -333,6 +334,8 @@ function file_get($filename)
             }
         }
         fclose($file);
+    } else {
+        return false;
     }
     if ($_SERVER['HTTP_HOST'] == 'localhost') {
         return str_replace("\r", '', $fdata);
