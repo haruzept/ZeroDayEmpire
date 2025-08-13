@@ -14,18 +14,18 @@ if ($usr['bigacc'] != 'yes') {
     exit;
 }
 
-$action = $_REQUEST['page'];
+$action = $_REQUEST['page'] ?? '';
 if ($action == '') {
-    $action = $_REQUEST['mode'];
+    $action = $_REQUEST['mode'] ?? '';
 }
 if ($action == '') {
-    $action = $_REQUEST['action'];
+    $action = $_REQUEST['action'] ?? '';
 }
 if ($action == '') {
-    $action = $_REQUEST['a'];
+    $action = $_REQUEST['a'] ?? '';
 }
 if ($action == '') {
-    $action = $_REQUEST['m'];
+    $action = $_REQUEST['m'] ?? '';
 }
 
 switch ($action) {
@@ -92,6 +92,9 @@ function choose(s) {
         }
 
         $b = @mysql_fetch_assoc(db_query('SELECT * FROM abooks WHERE user=\''.$usrid.'\''));
+        if (!is_array($b)) {
+            $b = ['set1' => '', 'set2' => '', 'set3' => '', 'set4' => ''];
+        }
 
         echo "\n".'<h3>Gruppe: Allgemein</h3>';
         list_items($b['set1']);
