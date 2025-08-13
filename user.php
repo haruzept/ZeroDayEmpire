@@ -4,19 +4,12 @@ define('IN_HTN', 1);
 $FILE_REQUIRES_PC = false;
 include('ingame.php');
 
-$action = $_REQUEST['page'] ?? '';
-if ($action === '') {
-    $action = $_REQUEST['mode'] ?? '';
-}
-if ($action === '') {
-    $action = $_REQUEST['action'] ?? '';
-}
-if ($action === '') {
-    $action = $_REQUEST['a'] ?? '';
-}
-if ($action === '') {
-    $action = $_REQUEST['m'] ?? '';
-}
+$action = $_REQUEST['page']
+    ?? $_REQUEST['mode']
+    ?? $_REQUEST['action']
+    ?? $_REQUEST['a']
+    ?? $_REQUEST['m']
+    ?? '';
 
 switch ($action) {
     case 'config': //------------------------- CONFIG -------------------------------
@@ -87,6 +80,7 @@ switch ($action) {
             $years .= '<option'.$xx.' value="'.$i.'">'.$i.'</option>';
         }
 
+        $statx = '';
         if ($usr['stat'] > 1) {
             $statx = '<tr>'.LF.'<th>Dein Status:</th>'.LF.'<td>privilegiert<br />F&uuml;r die Sonderfunktionen rufe die Info-Seite eines Users auf!</td>'.LF.'</tr>'."\n";
         }
