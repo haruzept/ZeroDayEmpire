@@ -554,8 +554,8 @@ function isattackallowed(&$ret, &$ret2)
     define('TO_1', 2 * 60, false);
     $x = floor((5 / 3) * (10 - $pc['lan']) + 5) * 60;
     define('TO_2', $x, false);
-    $a = $usr['la'] + TO_1;
-    $b = $pc['la'] + TO_2;
+    $a = (int)$usr['la'] + TO_1;
+    $b = (int)$pc['la'] + TO_2;
     if ($a > $b) {
         $ret = $a;
         $ret2 = $pc['la'];
