@@ -328,10 +328,9 @@ Dort findest du einen "Mitgliedsantrag stellen"-Link.</p></div>
 
             createlayout_top('HackTheNet - Cluster - Vertr&auml;ge');
             echo '<div class="content" id="cluster">
-<h2>Cluster</h2>
-'.$notif.'<div id="cluster-create-convent">
+<h2>Cluster</h2>'
+                .$notif.'<div id="cluster-create-convent">
 <h3>Vertrag erstellen</h3>
-'.$xxx.'
 <form action="cluster.php?page=saveconvents&amp;sid='.$sid.'" method="post">
 <table>
 <tr>

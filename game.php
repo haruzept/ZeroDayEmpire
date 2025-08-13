@@ -239,6 +239,7 @@ switch ($action) {
             echo '<br />'."\n";
         }
 
+        $rhinfo = '';
         if ($pc['mk'] > 0 && $pc['rh'] > 0) {
             $rhinfo = '<tr><th>Remote Hijack</th><td>';
             if ($pc['lrh'] + REMOTE_HIJACK_DELAY <= time()) {
@@ -670,6 +671,7 @@ switch ($action) {
             echo '<table>'."\n";
             echo '<tr>'.LF.'<th>Item</th>'.LF.'<th>Dauer</th>'.LF.'<th>Fertigstellung</th>'.LF.'<th>Kosten</th>'.LF.'<th>Upgrade</th>'.LF.'</tr>'."\n";
             reset($items);
+            $cnt = 0;
             foreach ($items as $dummy => $item) {
                 if (buildinfo($item)) {
                     $cnt++;
