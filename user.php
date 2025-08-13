@@ -96,7 +96,7 @@ switch ($action) {
             $account = 'normal';
         }
 
-
+        $avatar = '';
         if (preg_match('#^https?://.*/.+#i', $usr['avatar'])) {
             $avatar = '<br />'.LF.'<img src="'.$usr['avatar'].'" alt="Avatar" />';
         }
@@ -408,6 +408,7 @@ Bitte zur Best&auml;tigung eingeben.</td>
                     $style = $standard_stylesheet;
                 }
                 $usr['stylesheet'] = $style;
+                $STYLESHEET = $style;
                 $usr['noipcheck'] = $noipcheck;
                 $usr['usessl'] = $usessl;
                 if ($usr['usrimg_fmt'] != $usrimg_fmt || $usr['enable_usrimg'] != $enable_usrimg) {
