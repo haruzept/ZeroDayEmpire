@@ -371,9 +371,8 @@ switch ($action) {
             }
         }
 
-        if ($item == 'cpu' || $item == 'ram' || $item == 'mm' || $item == 'bb') {
-            $cssid = 'essential';
-        } elseif ($item == 'sdk' || $item == 'mk' || $item == 'ips') {
+        $cssid = 'essential';
+        if ($item == 'sdk' || $item == 'mk' || $item == 'ips') {
             $cssid = 'software';
         } elseif ($item == 'fw' || $item == 'av' || $item == 'ids') {
             $cssid = 'security';
@@ -394,7 +393,7 @@ switch ($action) {
 
         switch ($item) {
             case 'mm':
-                if ($_REQUEST['purchased'] == 1) {
+                if (isset($_REQUEST['purchased']) && $_REQUEST['purchased'] == 1) {
                     echo '<div id="ok"><h3>Update</h3><p>Update wurde angewendet!</p></div><br /><br />';
                 }
                 echo '<table>'."\n";
