@@ -172,7 +172,7 @@ du die genauen Gr&uuml;nde wissen willst, schick eine Email an <a href="mailto:k
                 $s = 'data/_server'.$server.'/logins_'.strftime('%x').'.txt';
                 file_put($s, ((int)@file_get($s)) + 1);
             }
-            header('Location: game.htn?m=start&sid='.$sid.$notloggedout);
+            header('Location: game.php?m=start&sid='.$sid.$notloggedout);
 
         } else {
             simple_message(
@@ -203,7 +203,7 @@ du die genauen Gr&uuml;nde wissen willst, schick eine Email an <a href="mailto:k
     if ($_GET['redir'] == 'forum') {
         header('Location: http://forum.hackthenet.org/');
     } else {
-        header('Location: pub.htn');
+        header('Location: pub.php');
     }
 }
 

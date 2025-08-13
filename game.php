@@ -163,7 +163,7 @@ switch ($action) {
             echo '<div id="overview-messages">'."\n";
             echo '<h3>Messages</h3>'."\n";
             echo '<p>Du hast <strong>'.$newtotal.' ungelesene Nachricht'.($newtotal == 1 ? '' : 'en').'</strong>.</p>', "\n";
-            echo '<p><a href="mail.htn?m=start&amp;sid='.$sid.'">Gehe zu den Nachrichten</a></p>', "\n";
+            echo '<p><a href="mail.php?m=start&amp;sid='.$sid.'">Gehe zu den Nachrichten</a></p>', "\n";
             echo '</div>';
         }
 
@@ -171,7 +171,7 @@ switch ($action) {
             echo '<div id="overview-computer">'."\n";
             echo '<h3>Computer</h3>'."\n";
             echo '<p>Auf <strong>'.$pcs_no_upgr.' Computer'.($pcs_no_upgr == 1 ? '' : 'n').'</strong> l&auml;uft im Moment <strong>kein Upgrade</strong>; hier solltest du evtl. ein neues Upgrade starten.</p>'."\n"; /* FIXME Fallunterscheidung */
-            echo '<p><a href="game.htn?m=pcs&amp;sid='.$sid.'">Gehe zu den Computern</a></p>'."\n";
+            echo '<p><a href="game.php?m=pcs&amp;sid='.$sid.'">Gehe zu den Computern</a></p>'."\n";
             echo '</div>';
         }
 
@@ -179,11 +179,11 @@ switch ($action) {
         echo '<div id="overview-ranking">
 <h3>Situation</h3>
 <p>Du besitzt im Moment <strong>'.$usr['points'].' Punkte</strong>, aufgeteilt auf <strong>'.$pccnt.' Computer</strong>. Damit bist du auf dem <strong>'.$usr['rank'].'. Platz</strong> in der Gesamtwertung.</p>
-<p><a href="ranking.htn?m=ranking&amp;sid='.$sid.'">Gehe zur Rangliste</a></p>';
+<p><a href="ranking.php?m=ranking&amp;sid='.$sid.'">Gehe zur Rangliste</a></p>';
         if ($c !== false) {
             $c['points'] = number_format($c['points'], 0, ',', '.');
             echo '<p>Dein Cluster besitzt <strong>'.$c['points'].' Punkte</strong>. Damit ist dein Cluster auf dem <strong>'.$c['rank'].'. Platz</strong> in der Gesamtwertung.</p>
-<p><a href="ranking.htn?m=ranking&amp;type=cluster&amp;sid='.$sid.'">Gehe zur Cluster-Rangliste</a></p>';
+<p><a href="ranking.php?m=ranking&amp;type=cluster&amp;sid='.$sid.'">Gehe zur Cluster-Rangliste</a></p>';
         }
 
         echo '</div>
@@ -224,7 +224,7 @@ switch ($action) {
                 if (strlen((string)$val) == 1 || $val == 10) {
                     $val = $val.'.0';
                 }
-                echo '<a href="game.htn?m=item&amp;item='.$id.'&amp;sid='.$sid.'">'.$name.'</a>';
+                echo '<a href="game.php?m=item&amp;item='.$id.'&amp;sid='.$sid.'">'.$name.'</a>';
                 if ($txt != '') {
                     echo ' ('.str_replace('%v', $val, $txt).')';
                 }
@@ -248,22 +248,22 @@ switch ($action) {
         }
 
         if ($pc['mk'] >= 1) {
-            $op = ' | <a href="battle.htn?m=opc&amp;sid='.$sid.'">Operation Center</a>';
+            $op = ' | <a href="battle.php?m=opc&amp;sid='.$sid.'">Operation Center</a>';
         }
         if ($pc['bb'] >= 2 && $pc['mm'] >= 2) {
-            $transfer = ' | <a href="game.htn?m=transferform&amp;sid='.$sid.'">Geld &uuml;berweisen</a>';
+            $transfer = ' | <a href="game.php?m=transferform&amp;sid='.$sid.'">Geld &uuml;berweisen</a>';
         }
         $pc['name'] = safeentities($pc['name']);
 
         echo '<div class="content" id="computer">
 <h2>Dein Computer</h2>
 <div class="submenu">
-<p><a href="game.htn?page=upgradelist&amp;sid='.$sid.'">Upgrade-Men&uuml;</a>'.$op.$transfer.'</p>
+<p><a href="game.php?page=upgradelist&amp;sid='.$sid.'">Upgrade-Men&uuml;</a>'.$op.$transfer.'</p>
 </div>
 
 '.$notif.'<div id="computer-properties">
 <h3>Eigenschaften</h3>
-<br /><p><a href="game.htn?a=renamepclist&amp;sid='.$sid.'">Computer umbenennen</a></p>
+<br /><p><a href="game.php?a=renamepclist&amp;sid='.$sid.'">Computer umbenennen</a></p>
 <table>
 <tr>
 <th>Name:</th>
@@ -373,7 +373,7 @@ switch ($action) {
         echo '<div class="content" id="computer">
 <h2>Deine Computer</h2>
 <div class="submenu">
-<p><a href="game.htn?page=upgradelist&amp;sid='.$sid.'">Upgrade-Men&uuml;</a></p>
+<p><a href="game.php?page=upgradelist&amp;sid='.$sid.'">Upgrade-Men&uuml;</a></p>
 </div>
 <div id="computer-item">
 ';
@@ -400,7 +400,7 @@ switch ($action) {
                         if ($pc[$id] < 5) {
                             $c = (((int)$pc[$id] + 1) * 15 * $f);
                             if ($pc['credits'] - $c >= 0) {
-                                echo '<a href="game.htn?mode=update&item='.$id.'&sid='.$sid.'">Update</a>';
+                                echo '<a href="game.php?mode=update&item='.$id.'&sid='.$sid.'">Update</a>';
                             } else {
                                 echo 'Update';
                             }
@@ -456,7 +456,7 @@ switch ($action) {
                     echo '<tr>'.LF.'<th>Remote Hijack:</th>'.LF.'<td>Versucht, den feinlichen Rechner zu klauen.</td>'.LF.'</tr>'."\n";
                 }
 
-                echo '</table>'.LF.'<p>Die Waffen werden vom <a href="battle.htn?m=opc&amp;sid='.$sid.'">Operation Center</a> aus eingesetzt.</p>';
+                echo '</table>'.LF.'<p>Die Waffen werden vom <a href="battle.php?m=opc&amp;sid='.$sid.'">Operation Center</a> aus eingesetzt.</p>';
                 break;
 
             case 'trojan':
@@ -474,7 +474,7 @@ switch ($action) {
                     echo '<dt>Deactivate</dt><dd>Deaktiviert Firewall, Antivirus oder IDS auf gegner. PC.</dd>';
                 }
 
-                echo '</dl><br /><p>Der Trojaner wird vom <a href="battle.htn?m=opc&sid='.$sid.'">Operation Center</a> aus eingesetzt.</p>';
+                echo '</dl><br /><p>Der Trojaner wird vom <a href="battle.php?m=opc&sid='.$sid.'">Operation Center</a> aus eingesetzt.</p>';
                 break;
         }
         echo '</div>'.LF.'</div>'."\n";
@@ -491,7 +491,7 @@ switch ($action) {
         function updredir($x = '')
         {
             global $STYLESHEET, $REMOTE_FILES_DIR, $DATADIR, $pcid, $usrid, $sid;
-            header('Location: game.htn?mode=item&item=mm&sid='.$sid.$x);
+            header('Location: game.php?mode=item&item=mm&sid='.$sid.$x);
         }
 
         switch ($id) {
@@ -569,7 +569,7 @@ switch ($action) {
         createlayout_top('HackTheNet - Dein Computer');
         echo '<div class="content" id="computer">'."\n";
         echo '<h2>Dein Computer</h2>'."\n";
-        echo '<div class="submenu"><p><a href="game.htn?page=pc&amp;sid='.$sid.'">Zur &Uuml;bersicht</a></p></div>'."\n";
+        echo '<div class="submenu"><p><a href="game.php?page=pc&amp;sid='.$sid.'">Zur &Uuml;bersicht</a></p></div>'."\n";
         echo '<div id="computer-upgrades">'."\n";
         echo $notif;
 
@@ -589,7 +589,7 @@ switch ($action) {
                 $s2 = formatitemlevel($item, $newlv);
                 echo '<tr><th>'.idtoname($item).'</th><td>'.$s1.' &raquo; '.$s2.'</td>';
                 echo '<td>'.nicetime($data['end']).'</td>';
-                echo '<td><a href="game.htn?page=cancelupgrade&amp;upgrade='.$data['id'].'&amp;sid='.$sid.'">Abbrechen</a></td></tr>'."\n";
+                echo '<td><a href="game.php?page=cancelupgrade&amp;upgrade='.$data['id'].'&amp;sid='.$sid.'">Abbrechen</a></td></tr>'."\n";
                 $tmppc[$item] = $newlv;
             }
             echo '</table>'."\n";
@@ -643,7 +643,7 @@ switch ($action) {
                     echo '<td>';
                     $encrid = crypt($id, $SALT);
                     if ($pc['credits'] >= $inf['c']) {
-                        echo '<a href="game.htn?m=upgrade&amp;'.$idparam.'='.$encrid.'&amp;sid='.$sid.'" class="buy">';
+                        echo '<a href="game.php?m=upgrade&amp;'.$idparam.'='.$encrid.'&amp;sid='.$sid.'" class="buy">';
                         if ($pc[$id] > 0 || $id == 'ram' || $id == 'cpu') {
                             $s = 'Upgrade kaufen';
                         } else {
@@ -753,7 +753,7 @@ switch ($action) {
                     );
 
                     header(
-                        'Location: game.htn?page=upgradelist&ok='.urlencode(
+                        'Location: game.php?page=upgradelist&ok='.urlencode(
                             'Upgrade f&uuml;r '.idtoname($id).' l&auml;uft bis '.nicetime($ftime)
                         ).'&sid='.$sid
                     );
@@ -765,20 +765,20 @@ switch ($action) {
                     echo '<h3>Upgrade l&auml;uft!</h3>';
                     echo '<p><img src="images/pbar.gif"><br /><br /><strong>Fertigstellung:</strong>&nbsp;';
                     echo nicetime($ftime);
-                    echo '</p><br /><p><a href="game.htn?page=upgradelist&sid='.$sid.'">Zur&uuml;ck zum Upgrademen&uuml;</a></p>';
+                    echo '</p><br /><p><a href="game.php?page=upgradelist&sid='.$sid.'">Zur&uuml;ck zum Upgrademen&uuml;</a></p>';
                     echo '</div></div>';
                     createlayout_bottom();*/
 
                 } else {
                     header(
-                        'Location: game.htn?page=upgradelist&error='.urlencode('Nicht gen&uuml;gend Geld').'&sid='.$sid
+                        'Location: game.php?page=upgradelist&error='.urlencode('Nicht gen&uuml;gend Geld').'&sid='.$sid
                     );
                 }
             } else {
-                header('Location: game.htn?page=upgradelist&sid='.$sid);
+                header('Location: game.php?page=upgradelist&sid='.$sid);
             }
         } else {
-            header('Location: game.htn?page=upgradelist&sid='.$sid);
+            header('Location: game.php?page=upgradelist&sid='.$sid);
         }
 
 // Die oben angelegt Lockfile wieder löschen und damit anderen Upgrade-Anfragen
@@ -803,7 +803,7 @@ switch ($action) {
                     $u
                 ).'\' LIMIT 1;'
             );
-            header('Location: game.htn?page=upgradelist&sid='.$sid);
+            header('Location: game.php?page=upgradelist&sid='.$sid);
         }
 
         break;
@@ -815,7 +815,7 @@ switch ($action) {
         if ($pc['owner'] == $usrid) {
             $pcid = $id;
             write_session_data();
-            header('Location: game.htn?m=pc&sid='.$sid);
+            header('Location: game.php?m=pc&sid='.$sid);
         }
         break;
 
@@ -839,18 +839,18 @@ switch ($action) {
         echo '<div class="content" id="computer">
 <h2>Deine Computer</h2>
 <div class="submenu">
-<p><a href="game.htn?a=renamepclist&amp;sid='.$sid.'">Computer umbenennen</a></p>
+<p><a href="game.php?a=renamepclist&amp;sid='.$sid.'">Computer umbenennen</a></p>
 </div>
 <div id="computer-list">
 <h3>Liste aller Computer</h3>
-<form action="game.htn?page=pcs&amp;sid='.$sid.'" method="post">
+<form action="game.php?page=pcs&amp;sid='.$sid.'" method="post">
 <p>Ordnen nach: <select name="sorttype" onchange="this.form.submit()"><option value="">Nicht ordnen</option>
 <option value="name ASC">Name</option>
 <option value="points ASC">Punkte</option>
 <option value="country ASC">Land</option>
 <option value="lrh ASC">Hijack (fehlerhaft)</option>
 </select>
-<a href="game.htn?page=pcs&amp;sid='.$sid.'&amp;extended='.$extv.'">'.$extt.'</a>
+<a href="game.php?page=pcs&amp;sid='.$sid.'&amp;extended='.$extv.'">'.$extt.'</a>
 </p>
 <table>
 <tr>
@@ -946,9 +946,9 @@ switch ($action) {
             }
 
             {
-                $pc =& $x;
-                $avail = isavailh('scan', &$x);
-                if (!isattackallowed(&$next, &$last) && $avail) {
+                $pc = $x;
+                $avail = isavailh('scan', $x);
+                if (!isattackallowed($next, $last) && $avail) {
                     $attack = 'nein, erst wieder '.nicetime3($next);
                 } elseif ($avail) {
                     $attack = '<span style="color:green">m&ouml;glich</span>';
@@ -960,12 +960,12 @@ switch ($action) {
 
             echo '<tr>
 <td class="number">'.$number.'</td>
-<td class="name"><a href="game.htn?m=selpc&amp;sid='.$sid.'&amp;pcid='.$x['id'].'">'.$x['name'].'</a>'.$mmstat.'</td>
+<td class="name"><a href="game.php?m=selpc&amp;sid='.$sid.'&amp;pcid='.$x['id'].'">'.$x['name'].'</a>'.$mmstat.'</td>
 <td class="ip">10.47.'.$x['ip'].' ('.$country['name'].')</td>
 <td class="points">'.$x['points'].'</td>
 <td class="credits">'.$bucks.' Credits</td>';
             if ($ext) {
-                echo '<td class="upgrade"><a href="game.htn?m=upgradelist&amp;sid='.$sid.'&amp;xpc='.$x['id'].'">'.$stat.'</a></td>
+                echo '<td class="upgrade"><a href="game.php?m=upgradelist&amp;sid='.$sid.'&amp;xpc='.$x['id'].'">'.$stat.'</a></td>
 <td class="attack">'.$attack.'</td>';
             }
             echo '<td class="hijack">'.$hijack.'<br>'.'Level '.$x['rh'].'</td></tr>';
@@ -993,7 +993,7 @@ switch ($action) {
 <h2>Deine Computer</h2>
 '.$notif.'<div id="computer-rename">
 <h3>Computer umbenennen</h3>
-<form action="game.htn?a=renamepcs&amp;sid='.$sid.'" method="post">
+<form action="game.php?a=renamepcs&amp;sid='.$sid.'" method="post">
 <table>
 <tr>
 <th>IP</th>
@@ -1037,7 +1037,7 @@ switch ($action) {
             }
         }
         header(
-            'Location: game.htn?a=renamepclist&sid='.$sid.'&ok='.urlencode('Die &Auml;nderungen wurden gespeichert.')
+            'Location: game.php?a=renamepclist&sid='.$sid.'&ok='.urlencode('Die &Auml;nderungen wurden gespeichert.')
         );
         break;
 
@@ -1068,7 +1068,7 @@ switch ($action) {
 <h3>Geld &uuml;berweisen</h3>
 '.$notif.'<br />
 <p><b>Geld: '.$bucks.' Credits</b></p>
-<form action="game.htn?a=transfer&sid='.$sid.'" method="post" name="frm">
+<form action="game.php?a=transfer&sid='.$sid.'" method="post" name="frm">
 <table>
 <tr><th colspan="3">&Uuml;berweisung</th></tr>
 <tr><th>Empf&auml;nger:</th><td>
@@ -1134,7 +1134,7 @@ switch ($action) {
 <h2>&Uuml;berweisung</h2>
 <div id="transfer-step2">
 <h3>&Uuml;berweisung best&auml;tigen</h3>
-<form action="game.htn?a=transfer2&sid='.$sid.'"  method="post">
+<form action="game.php?a=transfer2&sid='.$sid.'"  method="post">
 <input type="hidden" name="tcode" value="'.$tcode.'">
 <p>';
             $text = '';
@@ -1144,7 +1144,7 @@ switch ($action) {
                     if ($recip_user['id'] == $usrid) {
                         $ownerinfo = 'dir selber';
                     } else {
-                        $ownerinfo = '<a class=il href="user.htn?m=info&user='.$recip['owner'].'&sid='.$sid.'" target="_blank">'.$recip_usr['name'].'</a>';
+                        $ownerinfo = '<a class=il href="user.php?m=info&user='.$recip['owner'].'&sid='.$sid.'" target="_blank">'.$recip_usr['name'].'</a>';
                     }
                     $text .= '<b>Hiermit werden '.$credits.' Credits an den Rechner 10.47.'.$recip['ip'].', der '.$ownerinfo.' geh&ouml;rt, &uuml;berwiesen.</b><br /><br />';
                     if ($pc['country'] == $recip['country']) {
@@ -1199,7 +1199,7 @@ switch ($action) {
                     break;
             }
             echo '<br /><br />
-<input type="button" value="Abbrechen" onclick="location.replace(\'game.htn?sid='.$sid.'&a=transferform\');" />
+<input type="button" value="Abbrechen" onclick="location.replace(\'game.php?sid='.$sid.'&a=transferform\');" />
 <input type="submit" value=" Ausf&uuml;hren " /></p></form>';
             echo '</div>'.LF.'</div>';
             createlayout_bottom();
@@ -1211,7 +1211,7 @@ switch ($action) {
             );
 
         } else {
-            header('Location: game.htn?sid='.$sid.'&m=transferform&error='.urlencode($e));
+            header('Location: game.php?sid='.$sid.'&m=transferform&error='.urlencode($e));
         }
 
         break;
@@ -1269,7 +1269,7 @@ switch ($action) {
                 ).'\', \''.mysql_escape_string($recip['owner']).'\', \''.mysql_escape_string($dat[3]).'\', \''.time(
                 ).'\');'
             );
-            header('Location: game.htn?m=transferform&sid='.$sid.'&ok='.urlencode($msg));
+            header('Location: game.php?m=transferform&sid='.$sid.'&ok='.urlencode($msg));
         }
         break;
 
@@ -1291,7 +1291,7 @@ switch ($action) {
         $c = GetCountry('subnet', $subnet);
         $info = '<div id="subnet-properties">'."\n";
         $info .= '<h3>Aktuelles Subnet</h3>'."\n";
-        $info .= '<form action="game.htn?mode=subnet&amp;sid='.$sid.'" method="post">';
+        $info .= '<form action="game.php?mode=subnet&amp;sid='.$sid.'" method="post">';
         $info .= '<table>'."\n";
         $info .= '<tr>'."\n";
         $info .= '<th>Subnet:</th>'."\n";
@@ -1330,7 +1330,7 @@ switch ($action) {
         $plist = '';
         for ($i = 1; $i <= $pages; $i++) {
             if ($listpage != $i) {
-                $plist .= '<a href="game.htn?a=subnet&amp;sid='.$sid.'&amp;subnet='.$subnet.'&amp;listpage='.$i.'#subnet-content">'.$i.'</a> | ';
+                $plist .= '<a href="game.php?a=subnet&amp;sid='.$sid.'&amp;subnet='.$subnet.'&amp;listpage='.$i.'#subnet-content">'.$i.'</a> | ';
             } else {
                 $plist .= $i.' | ';
             }
@@ -1343,7 +1343,7 @@ var newwin;
 newwin=window.open(\'static/selcountry.php\',\'selcountry\',\'width=650,height=450,toolbar=0,menubar=0,location=0,status=1,resizable=1,scrollbars=1\');
 }
 function subnetgo(s) {
-location.href=\'../game.htn?mode=subnet&sid='.$sid.'&subnet=\'+s;
+location.href=\'../game.php?mode=subnet&sid='.$sid.'&subnet=\'+s;
 }
 </script>
 ';
@@ -1407,7 +1407,7 @@ location.href=\'../game.htn?mode=subnet&sid='.$sid.'&subnet=\'+s;
             }
 
             if ($data['users_name'] != '') {
-                $userinfo = '<a href="user.htn?a=info&amp;user='.$data['users_id'].'&amp;sid='.$sid.'">'.$data['users_name'].'</a> ('.$data['users_points'].' P)';
+                $userinfo = '<a href="user.php?a=info&amp;user='.$data['users_id'].'&amp;sid='.$sid.'">'.$data['users_name'].'</a> ('.$data['users_points'].' P)';
                 $userclass = 'owner';
             } else {
                 $userclass = 'no-owner';
@@ -1416,7 +1416,7 @@ location.href=\'../game.htn?mode=subnet&sid='.$sid.'&subnet=\'+s;
 
             if ($data['clusters_name'] != '') {
                 $clusterclass = 'cluster';
-                $clusterinfo = '<a href="cluster.htn?a=info&amp;cluster='.$data['clusters_id'].'&amp;sid='.$sid.'">'.$data['clusters_name'].'</a>';
+                $clusterinfo = '<a href="cluster.php?a=info&amp;cluster='.$data['clusters_id'].'&amp;sid='.$sid.'">'.$data['clusters_name'].'</a>';
             } else {
                 $clusterclass = 'no-cluster';
                 $clusterinfo = '';

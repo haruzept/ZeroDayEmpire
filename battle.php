@@ -51,7 +51,7 @@ function fill(s) {
         echo '<div class="content" id="attacks">';
         echo '<h2>Operation Center</h2>';
 
-        if (!isattackallowed(&$next, &$last)) {
+        if (!isattackallowed($next, $last)) {
 #echo 'next='.$next.', last='.$last.'<br />';
             $total = ($next - $last);
 #echo 'total='.$total.'<br />';
@@ -110,7 +110,7 @@ function fill(s) {
 #Eine Kombination zwischen dieser und einer anderen ist jedoch nicht m&ouml;glich.</td></tr>
 
         echo '<p><b>Geld: '.$bucks.' Credits</b></p><br />
-<form action="battle.htn?sid='.$sid.'&action=opc_submit"  method="post" name="frm">
+<form action="battle.php?sid='.$sid.'&action=opc_submit"  method="post" name="frm">
 <table>
 <tr><th>Befehle</th></tr>
 <tr><td><ul><li>Jeder Befehl steht in einer Zeile.<li>Leerzeilen zwischen den Befehlen sind erlaubt!
@@ -422,7 +422,7 @@ function fill(s) {
 <tr><td>
 <ul><li><b>Der Angriff richtet sich gegen 10.47.'.$target['ip'].' ('.$target['name'].'). Dieser Rechner geh&ouml;rt ';
             if ($owner !== false) {
-                $text .= '<a href="user.htn?a=info&amp;user='.$target['owner'].'&amp;sid='.$sid.'" target="_blank">'.$owner['name'].'</a>';
+                $text .= '<a href="user.php?a=info&amp;user='.$target['owner'].'&amp;sid='.$sid.'" target="_blank">'.$owner['name'].'</a>';
             } else {
                 $text .= 'niemandem';
             }
@@ -500,7 +500,7 @@ function fill(s) {
 
             $text .= '</ul></td></tr>
 <tr><th>
-<input type="button" value="Abbrechen" onclick="location.replace(\'battle.htn?sid='.$sid.'&a=opc#codebox\');" />
+<input type="button" value="Abbrechen" onclick="location.replace(\'battle.php?sid='.$sid.'&a=opc#codebox\');" />
 <input type="submit" value="  Angriff !!  " /></th></tr>
 </table>';
             $a = "pre_execute";
@@ -513,7 +513,7 @@ function fill(s) {
 
 #echo $emsg;
 #if($emsg!='') $emsg='<div class="error"><h3>Fehler</h3><p>'.$emsg.'</p></div>';
-        echo '<form action="battle.htn?sid='.$sid.'&a='.$a.'" method="post">
+        echo '<form action="battle.php?sid='.$sid.'&a='.$a.'" method="post">
 '.$text.'
 </form>
 </div></div>';
@@ -569,7 +569,7 @@ function anim(z) {
   }
 }
 function abortattack() {
-location.replace(\'battle.htn?m=opc&sid='.$sid.'\');
+location.replace(\'battle.php?m=opc&sid='.$sid.'\');
 }
 </script>';
 
@@ -581,7 +581,7 @@ location.replace(\'battle.htn?m=opc&sid='.$sid.'\');
         echo '<h3>Angriff l&auml;uft...</h3>';
 
 
-        echo '<form action="battle.htn?a=execute&amp;sid='.$sid.'" method="post"><input type="hidden" name="acode" value="'.$code.'"></form>
+        echo '<form action="battle.php?a=execute&amp;sid='.$sid.'" method="post"><input type="hidden" name="acode" value="'.$code.'"></form>
 <p><div style="display:block;width:300px;border:1px solid black;padding:1px;background-color:white;margin-left:100px;"><img src="images/bluepix.gif" id="pbar" border=0 style="position:relative;top:0px;left:0px;margin:0px;" height=30></div>
 </p>
 <p style="color:red;font-weight:bold;">WARNUNG: Diese Seite nicht verlassen! Sonst wird der Angriff abgebrochen!</p>
@@ -838,7 +838,7 @@ location.replace(\'battle.htn?m=opc&sid='.$sid.'\');
                         $text = htmlspecialchars($u['text']);
                         echo '<span style="color:green;"><b>Angriff erfolgreich!</b></span>
 <b>Du kannst jetzt die Beschreibung &auml;ndern:</b>
-<form action="battle.htn?sid='.$sid.'&a=chtext&code='.$code.'"  method="post">
+<form action="battle.php?sid='.$sid.'&a=chtext&code='.$code.'"  method="post">
 <textarea rows=6 cols=70 name="text">'.$text.'</textarea>
 <br /><input type=submit value="Speichern">
 </form>';
@@ -1299,7 +1299,7 @@ location.replace(\'battle.htn?m=opc&sid='.$sid.'\');
             db_query(
                 'UPDATE users SET infotext=\''.mysql_escape_string($s).'\' WHERE id='.mysql_escape_string($u['id'])
             );
-            header('Location: user.htn?a=info&user='.$i.'&sid='.$sid);
+            header('Location: user.php?a=info&user='.$i.'&sid='.$sid);
         }
         break;
 

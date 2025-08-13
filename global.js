@@ -69,7 +69,7 @@ function show_abook(type) {
     t = parseInt((screen.availHeight - 300) / 2);
 
     p = "width=500,height=300,toolbar=0,menubar=0,location=0,status=0,resizable=1,scrollbars=1,left=" + String(l) + ",top=" + String(t);
-    newwin = window.open("abook.htn?mode=selpage&sid=" + param('sid') + "&type=" + type, "AddressBook", p);
+    newwin = window.open("abook.php?mode=selpage&sid=" + param('sid') + "&type=" + type, "AddressBook", p);
     setTimeout('newwin.focus();', 200);
 }
 

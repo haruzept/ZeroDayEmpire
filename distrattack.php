@@ -55,11 +55,11 @@ switch ($action) {
 <h3>Distributed Attacks (Anzahl: '.$cnt.')</h3>';
         if ($usr['da_avail'] == 'yes') {
             if (isavailh('da', $pc) == true) {
-                echo '<p><a href="distrattack.htn?sid='.$sid.'&amp;page=create">Neue Distributed Attack erstellen</a></p>'."\n";
+                echo '<p><a href="distrattack.php?sid='.$sid.'&amp;page=create">Neue Distributed Attack erstellen</a></p>'."\n";
             } else {
                 echo '<p>Von diesem PC aus kannst du keine DA erstellen!</p>'."\n";
             }
-            echo '<p><a href="distrattack.htn?sid='.$sid.'&amp;page=joinall">An allen Distributed Attacks teilnehmen</a></p>'."\n";
+            echo '<p><a href="distrattack.php?sid='.$sid.'&amp;page=joinall">An allen Distributed Attacks teilnehmen</a></p>'."\n";
         }
 
         if ($cnt > 0) {
@@ -88,8 +88,8 @@ switch ($action) {
                     $total = mysql_num_rows($result);
 
                     echo '<tr>
-<td class="ip">10.47.'.$p['ip'].'<br />'.$targetitem.'<br /><br />Besitzer: <a href="user.htn?page=info&amp;sid='.$sid.'&amp;user='.$p['owner'].'">'.$owner['name'].'</a></td>
-<td class="author"><a href="user.htn?page=info&amp;sid='.$sid.'&amp;user='.$initusr['id'].'">'.$initusr['name'].'</a><br />
+<td class="ip">10.47.'.$p['ip'].'<br />'.$targetitem.'<br /><br />Besitzer: <a href="user.php?page=info&amp;sid='.$sid.'&amp;user='.$p['owner'].'">'.$owner['name'].'</a></td>
+<td class="author"><a href="user.php?page=info&amp;sid='.$sid.'&amp;user='.$initusr['id'].'">'.$initusr['name'].'</a><br />
 '.$total.' teilnehmende PCs</td>
 <td class="participants">';
 
@@ -98,7 +98,7 @@ switch ($action) {
                         echo 'keine weiteren';
                     } else {
                         while ($b = mysql_fetch_assoc($result)) {
-                            echo '10.47.'.$b['ip'].' (<a href="user.htn?page=info&amp;sid='.$sid.'&amp;user='.$b['owner'].'">'.$b['owner_name'].'</a>)';
+                            echo '10.47.'.$b['ip'].' (<a href="user.php?page=info&amp;sid='.$sid.'&amp;user='.$b['owner'].'">'.$b['owner_name'].'</a>)';
                             if ($i < $total - 1) {
                                 echo '<br />';
                             }
@@ -108,9 +108,9 @@ switch ($action) {
                     echo '</td>'.LF.'<td>';
                     if ($usr['da_avail'] == 'yes') {
                         if ($initusr['id'] == $usrid || $usr['clusterstat'] == CS_ADMIN) {
-                            echo '<a href="distrattack.htn?page=cancel&amp;sid='.$sid.'&amp;da='.$item['id'].'" onclick="return confirm_abort();">Abbrechen</a>,'.LF.'<a href="distrattack.htn?page=exec&amp;sid='.$sid.'&amp;da='.$item['id'].'">Angriff!</a>, '."\n";
+                            echo '<a href="distrattack.php?page=cancel&amp;sid='.$sid.'&amp;da='.$item['id'].'" onclick="return confirm_abort();">Abbrechen</a>,'.LF.'<a href="distrattack.php?page=exec&amp;sid='.$sid.'&amp;da='.$item['id'].'">Angriff!</a>, '."\n";
                         }
-                        echo '<a href="distrattack.htn?page=join&amp;sid='.$sid.'&amp;da='.$item['id'].'">Mitmachen</a>';
+                        echo '<a href="distrattack.php?page=join&amp;sid='.$sid.'&amp;da='.$item['id'].'">Mitmachen</a>';
                     } else {
                         echo 'Die DA ist noch auf keinem deiner PCs verf&uuml;gbar.';
                     }
@@ -135,7 +135,7 @@ Sobald du es bestimmst, wird der Feind mit der gesammelten Power aller Teilnehme
 
 <div id="cluster-create-distributed-attack">
 <h3>Distributed Attack erstellen</h3>
-<form action="distrattack.htn?page=create_submit&amp;sid='.$sid.'" method="post">
+<form action="distrattack.php?page=create_submit&amp;sid='.$sid.'" method="post">
 <table>
 <tr id="cluster-create-distributed-attack-ip">
 <th>Ziel-Computer:</th>
@@ -195,7 +195,7 @@ Sobald du es bestimmst, wird der Feind mit der gesammelten Power aller Teilnehme
                 $code = randomx(10);
                 echo '<div id="cluster-create-distributed-attack2">
 <h3>Distributed Attack erstellen</h3>
-<form action="distrattack.htn?page=create_final&amp;sid='.$sid.'" method="post">
+<form action="distrattack.php?page=create_final&amp;sid='.$sid.'" method="post">
 <table>
 <tr>
 <th>Ziel-PC:</th>
@@ -203,7 +203,7 @@ Sobald du es bestimmst, wird der Feind mit der gesammelten Power aller Teilnehme
 </tr>
 <tr>
 <th>Eigentümer:</th>
-<td><a href="user.htn?page=info&amp;sid='.$sid.'&amp;user='.$target['owner'].'">'.$owner['name'].'</a></td>
+<td><a href="user.php?page=info&amp;sid='.$sid.'&amp;user='.$target['owner'].'">'.$owner['name'].'</a></td>
 </tr>
 <tr>
 <th>Kosten:</th>
@@ -268,7 +268,7 @@ Diese werden schon jetzt vom Konto deines PCs 10.47.'.$pc['ip'].' ('.$pc['name']
             echo '<h3>Mitmachen</h3>'."\n";
             echo '<p><strong>W&auml;hle die PCs, mit denen du bei der DA mithelfen willst:</strong></p>'."\n";
             echo '<p>Das Mitmachen kostet 1000 Credits pro PC. Nur PCs mit mindestens 1000 Credits im BucksBunker und solche, die noch nicht an der DA teilnehmen, werden angezeigt.</p>'."\n";
-            echo '<form action="distrattack.htn?sid='.$sid.'&amp;da='.$a['id'].'&amp;page=join2" method="post">'."\n";
+            echo '<form action="distrattack.php?sid='.$sid.'&amp;da='.$a['id'].'&amp;page=join2" method="post">'."\n";
             echo '<table>';
             $gcnt = 0;
             $sql = db_query('SELECT * FROM pcs WHERE owner='.mysql_escape_string($usr['id']).' ORDER BY points DESC;');
@@ -377,7 +377,7 @@ Diese werden schon jetzt vom Konto deines PCs 10.47.'.$pc['ip'].' ('.$pc['name']
             }
 
             echo '<div class="ok"><h3>Angriff</h3>'.LF.'<p>Du bist dabei!</p>'.LF.'</div><br />
-  <p><a href="distrattack.htn?page=list&amp;sid='.$sid.'">Weiter</a></p>';
+  <p><a href="distrattack.php?page=list&amp;sid='.$sid.'">Weiter</a></p>';
         }
 
 // Die oben angelegt Lockfile wieder löschen und damit anderen Anfragen
@@ -395,7 +395,7 @@ Diese werden schon jetzt vom Konto deines PCs 10.47.'.$pc['ip'].' ('.$pc['name']
 
         echo '<p><strong>W&auml;hle die PCs, mit denen du an allen DAs teilnehmen m&ouml;chtest!</strong><br />
 Es werden nur PCs angezeigt, auf denen die DA und gen&uuml;gend Geld vorhanden ist!</p>
-<form action="distrattack.htn?page=joinall2&amp;sid='.$sid.'" method="post">
+<form action="distrattack.php?page=joinall2&amp;sid='.$sid.'" method="post">
 <table>';
 
         $gcnt = 0;
@@ -497,7 +497,7 @@ Es werden nur PCs angezeigt, auf denen die DA und gen&uuml;gend Geld vorhanden i
         }
 
         echo '<div class="ok"><h3>Angriff</h3>'.LF.'<p>Du bist dabei!</p>'.LF.'</div><br />
-  <p><a href="distrattack.htn?page=list&amp;sid='.$sid.'">Weiter</a></p>';
+  <p><a href="distrattack.php?page=list&amp;sid='.$sid.'">Weiter</a></p>';
 
 // Die oben angelegt Lockfile wieder löschen und damit anderen Anfragen
 // Platz machen

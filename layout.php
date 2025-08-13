@@ -87,7 +87,7 @@ function createlayout_top($title = 'HackTheNet', $nomenu = false, $pads = true)
             // INGAME ITEMS
 
             menu_entry(
-                'game.htn?m=start'.$sid,
+                'game.php?m=start'.$sid,
                 '&Uuml;bersicht',
                 '&Uuml;bersicht &uuml;ber alles Wichtige auf einen Blick.'
             );
@@ -97,7 +97,7 @@ function createlayout_top($title = 'HackTheNet', $nomenu = false, $pads = true)
                 $hw = 'Du hast '.$usr['newmail'].' neue Message'.$hw;
             }
             menu_entry(
-                'mail.htn?m=start'.$sid,
+                'mail.php?m=start'.$sid,
                 'Messages',
                 'Hier kannst du Nachrichten verwalten und neue verfassen.',
                 $hw,
@@ -105,7 +105,7 @@ function createlayout_top($title = 'HackTheNet', $nomenu = false, $pads = true)
             );
 
             $numberofpcs = count(explode(',', $usr['pcs']));
-            $url = ($numberofpcs > 1 ? 'game.htn?m=pcs'.$sid : 'game.htn?a=selpc&amp;pcid='.$usr['pcs'].$sid);
+            $url = ($numberofpcs > 1 ? 'game.php?m=pcs'.$sid : 'game.php?a=selpc&amp;pcid='.$usr['pcs'].$sid);
             $help = ($numberofpcs > 1 ? 'Hier kommst du zu deinen PCs.' : 'Hier kommst du direkt zu deinem PC.');
             if ($FILE_REQUIRES_PC && $pc['id'] == $pcid) {
                 $pc['name'] = safeentities($pc['name']);
@@ -115,27 +115,27 @@ function createlayout_top($title = 'HackTheNet', $nomenu = false, $pads = true)
             }
 
             $help = ((int)$usr['cluster'] > 0 ? 'Hier kannst du dich &uuml;ber den aktuellen Stand deines Clusters informieren' : 'Hier kannst du einen neuen Cluster gr&uuml;nden oder einem existierenden beitreten.');
-            menu_entry('cluster.htn?a=start'.$sid, 'Cluster', $help);
+            menu_entry('cluster.php?a=start'.$sid, 'Cluster', $help);
 
             menu_entry(
-                'game.htn?m=subnet'.$sid,
+                'game.php?m=subnet'.$sid,
                 'Subnet',
                 'Hier kannst du die Computer in deinem oder einem anderen Subnet einsehen.'
             );
-            menu_entry('user.htn?a=config'.$sid, 'Optionen');
-            menu_entry('ranking.htn?m=ranking'.$sid, 'Rangliste');
-            menu_entry('game.htn?m=kb'.$sid, 'Hilfe', 'Hier findest du die Hilfe zum Spiel.');
+            menu_entry('user.php?a=config'.$sid, 'Optionen');
+            menu_entry('ranking.php?m=ranking'.$sid, 'Rangliste');
+            menu_entry('game.php?m=kb'.$sid, 'Hilfe', 'Hier findest du die Hilfe zum Spiel.');
 
         } else {
             // PUBLIC ITEMS
-            menu_entry('pub.htn', 'Startseite', 'HackTheNet-Startseite (Log In)');
-            menu_entry('pub.htn?a=register', 'Registrieren', 'Einen HackTheNet-Account anlegen');
-            menu_entry('pub.htn?d=newpwd', 'Neues Passwort', 'Ein neues Passwort f&uuml;r deinen Account anfordern');
-            menu_entry('pub.htn?d=credits', 'HTN-Team');
-            menu_entry('pub.htn?d=impressum', 'Impressum');
-            menu_entry('pub.htn?d=rules', 'Spielregeln', 'Wer die nicht beachtet, fliegt!');
-            menu_entry('pub.htn?d=faq', 'FAQ', 'H&auml;ufig gestellte Fragen zu HTN');
-            menu_entry('pub.htn?d=stats', 'Statistik', 'Statistische Daten &uuml;ber das Spiel');
+            menu_entry('pub.php', 'Startseite', 'HackTheNet-Startseite (Log In)');
+            menu_entry('pub.php?a=register', 'Registrieren', 'Einen HackTheNet-Account anlegen');
+            menu_entry('pub.php?d=newpwd', 'Neues Passwort', 'Ein neues Passwort f&uuml;r deinen Account anfordern');
+            menu_entry('pub.php?d=credits', 'HTN-Team');
+            menu_entry('pub.php?d=impressum', 'Impressum');
+            menu_entry('pub.php?d=rules', 'Spielregeln', 'Wer die nicht beachtet, fliegt!');
+            menu_entry('pub.php?d=faq', 'FAQ', 'H&auml;ufig gestellte Fragen zu HTN');
+            menu_entry('pub.php?d=stats', 'Statistik', 'Statistische Daten &uuml;ber das Spiel');
 
 
         }
@@ -145,7 +145,7 @@ function createlayout_top($title = 'HackTheNet', $nomenu = false, $pads = true)
         if ($sid != '') {
             // INGAME ITEMS 2
             menu_entry(
-                'login.htn?a=logout'.$sid,
+                'login.php?a=logout'.$sid,
                 'Log Out',
                 'Hier kannst du dich abmelden.',
                 '<br />Angemeldet als: <em>'.$usr['name'].'</em>',

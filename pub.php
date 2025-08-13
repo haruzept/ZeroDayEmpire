@@ -1,6 +1,6 @@
 <?php
 
-#if(substr_count($_SERVER['HTTP_HOST'],'.')>1) { header('Location: http://htnsrv.org/pub.htn'); exit; }
+#if(substr_count($_SERVER['HTTP_HOST'],'.')>1) { header('Location: http://htnsrv.org/pub.php'); exit; }
 
 define('IN_HTN', 1);
 $starttime = microtime();
@@ -26,7 +26,7 @@ if ($action == '') {
     $action = $_REQUEST['d'];
 }
 
-function showdoc($te = '', $fn)
+function showdoc($fn, $te = '')
 {
     if ($te != '') {
         $x = ' - '.$te;
@@ -44,28 +44,28 @@ function showdoc($te = '', $fn)
 switch ($action) {
 
     case 'faq':
-        showdoc('FAQ', 'faq');
+        showdoc('faq', 'FAQ');
         break;
     case 'credits':
-        showdoc('Team', 'credits');
+        showdoc('credits', 'Team');
         break;
     case 'newpwd':
-        showdoc('Neues Passwort anfordern', 'newpwd');
+        showdoc('newpwd', 'Neues Passwort anfordern');
         break;
     case 'rules':
-        showdoc('Regeln', 'rules');
+        showdoc('rules', 'Regeln');
         break;
     case 'chat':
-        showdoc('Chat', 'chat');
+        showdoc('chat', 'Chat');
         break;
     case 'impressum':
-        showdoc('Impressum', 'impressum');
+        showdoc('impressum', 'Impressum');
         break;
     case 'refinfo':
-        showdoc('Werben von neuen Benutzern', 'refinfo');
+        showdoc('refinfo', 'Werben von neuen Benutzern');
         break;
     case 'regelverstoss':
-        showdoc('Regelversto&szlig; melden', 'regelverstoss');
+        showdoc('regelverstoss', 'Regelversto&szlig; melden');
         break;
         break;
 
@@ -78,12 +78,12 @@ switch ($action) {
         if ($notif == '') {
             echo '<div class="important">'."\n";
             echo '<h3>Wichtig!</h3>'."\n";
-            echo '<p>Jeder User verpflichtet sich, die <a href="pub.htn?d=rules">Regeln</a> einzuhalten.<br />'.LF.'Verst&ouml;&szlig;e gegen die Regeln f&uuml;hren zum Ausschluss vom Spiel!</p>'."\n";
+            echo '<p>Jeder User verpflichtet sich, die <a href="pub.php?d=rules">Regeln</a> einzuhalten.<br />'.LF.'Verst&ouml;&szlig;e gegen die Regeln f&uuml;hren zum Ausschluss vom Spiel!</p>'."\n";
             echo '</div>'."\n";
         }
         echo $notif.'<div id="register-step1">
 <h3>Schritt 1: Zugangsdaten und Server</h3>
-<form action="pub.htn?a=regsubmit" method="post">
+<form action="pub.php?a=regsubmit" method="post">
 <table>
 <tr>
 <th>Gew&uuml;nschter NickName:</th>
@@ -218,7 +218,7 @@ Nur wenn eine korrekte Email-Adresse angegeben wurde, kann der Account aktiviert
 <div id="register-step2">
 <h3>Schritt 2: Land auswählen</h3>
 <p>Bitte w&auml;hle jetzt, in welchem Land der Erde dein Computer stehen soll. Nat&uuml;rlich nur im Spiel und nicht in echt...</p>
-<form action="pub.htn?a=regsubmit2" method="post" name="coolform">
+<form action="pub.php?a=regsubmit2" method="post" name="coolform">
 <input type="hidden" name="code" value="'.$tmpfnx.'" />
 <input type="hidden" name="country" value="" />
 '.$selcode.'
@@ -228,7 +228,7 @@ Nur wenn eine korrekte Email-Adresse angegeben wurde, kann der Account aktiviert
 ';
             createlayout_bottom();
         } else {
-            header('Location:pub.htn?a=register&error='.urlencode($msg));
+            header('Location:pub.php?a=register&error='.urlencode($msg));
         }
         break;
 
@@ -261,7 +261,7 @@ Nur wenn eine korrekte Email-Adresse angegeben wurde, kann der Account aktiviert
             @unlink('data/regtmp/'.$tmpfnx.'.txt');
             echo '  <div class="error"><h3>Sorry</h3>
   <p>Das gew&auml;hlte Land ist schon "voll"! Bitte such dir ein anderes Land aus!</p></div>
-  <form action="pub.htn?a=regsubmit" method="post">
+  <form action="pub.php?a=regsubmit" method="post">
   <input type=hidden name="server" value="'.$server.'">
   <input type=hidden name="nick" value="'.$nick.'">
   <input type=hidden name="email" value="'.$email.'">
@@ -378,7 +378,7 @@ Nur wenn eine korrekte Email-Adresse angegeben wurde, kann der Account aktiviert
                 echo '<div class="error"><h3>Sorry</h3>
 
 <p>Das gew&auml;hlte Land ist schon "voll"! Bitte such dir ein anderes Land aus!</p></div>
-<form action="pub.htn?a=regsubmit" method="post">
+<form action="pub.php?a=regsubmit" method="post">
 <input type=hidden name="server" value="'.$server.'">
 <input type=hidden name="nick" value="'.$nick.'">
 <input type=hidden name="email" value="'.$email.'">

@@ -140,9 +140,9 @@ switch ($action) {
 <p>';
 
         if ($usr['bigacc'] == 'yes') {
-            echo '<a href="abook.htn?mode=admin&amp;sid='.$sid.'">Adressbuch verwalten</a>';
+            echo '<a href="abook.php?mode=admin&amp;sid='.$sid.'">Adressbuch verwalten</a>';
         }
-#else echo '<a href="pub.htn?d=extacc">Extended Account bestellen</a>'; # la la la
+#else echo '<a href="pub.php?d=extacc">Extended Account bestellen</a>'; # la la la
 
         if ($usr['bigacc'] == 'yes') {
             $dirname = dirname($_SERVER['PHP_SELF']);
@@ -152,7 +152,7 @@ switch ($action) {
                 strlen($dirname) - 1,
                 1
             ) != '/' ? $dirname.'/' : $dirname);
-            $url = 'http://htnsrv.org/usrimg.htn/'.$server.'-'.$usrid.'.png';
+            $url = 'http://htnsrv.org/usrimg.php/'.$server.'-'.$usrid.'.png';
             $usrimg = ($usr['enable_usrimg'] != 'yes' ? '' : 'checked="checked" ');
             $usrimg = '<input type="checkbox" value="yes" name="enable_usrimg" '.$usrimg.'/>
  URL des Bildes: <a href="'.$url.'">'.$url.'</a>';
@@ -164,7 +164,7 @@ switch ($action) {
 </div>
 '.$notif.'<div id="settings-settings">
 <h3>'.$usr['name'].'</h3>
-<form action="user.htn?a=saveconfig&amp;sid='.$sid.'" method="post">
+<form action="user.php?a=saveconfig&amp;sid='.$sid.'" method="post">
 <table>
 <tr id="settings-settings-account">
 <th>Account-Typ:</th>
@@ -272,7 +272,7 @@ Wenn dein Posteingang voll ist, erh&auml;lt ein User, der dir eine Nachricht sch
 
 <div id="settings-mail">
 <h3>Email-Adresse &auml;ndern</h3>
-<form action="user.htn?a=setmailaddy&amp;sid='.$sid.'" method="post">
+<form action="user.php?a=setmailaddy&amp;sid='.$sid.'" method="post">
 <table>
 <tr id="settings-mail-address">
 <th>Deine Email-Adresse:</th>
@@ -293,7 +293,7 @@ Bitte zur Best&auml;tigung eingeben.</td>
 
         if ($usr['stat'] > 10) {
             echo '<div id="settings-password">
-<form action="user.htn?a=newpwd&amp;sid='.$sid.'" method="post">
+<form action="user.php?a=newpwd&amp;sid='.$sid.'" method="post">
 <h3>Passwort &auml;ndern (Sonder-Funktion)</h3>
 <table>
 <tr id="settings-password-password">
@@ -327,7 +327,7 @@ Bitte zur Best&auml;tigung eingeben.</td>
             $body .= 'Wenn du dir ganz sicher bist, klicke auf den folgenden Link:'."\n";
             $body .= 'http://'.$_SERVER['HTTP_HOST'].dirname(
                     $_SERVER['PHP_SELF']
-                ).'/pub.htn?a=deleteaccount&code='.$code;
+                ).'/pub.php?a=deleteaccount&code='.$code;
 
             if (!@mail($usr['email'], 'HackTheNet-Account löschen?', $body, 'From: robot@hackthenet.org')) {
                 echo nl2br($body);
@@ -423,7 +423,7 @@ Bitte zur Best&auml;tigung eingeben.</td>
                 $usr['usrimg_fmt'] = $usrimg_fmt;
                 saveuserdata();
                 header(
-                    'Location: user.htn?a=config&sid='.$sid.'&ok='.urlencode('Die &Auml;nderungen wurden gespeichert.')
+                    'Location: user.php?a=config&sid='.$sid.'&ok='.urlencode('Die &Auml;nderungen wurden gespeichert.')
                 );
             } else {
                 site_header('Optionen');
@@ -454,7 +454,7 @@ Bitte zur Best&auml;tigung eingeben.</td>
                     ).'\''
                 );
                 echo mysql_error();
-                header('Location: user.htn?a=config&sid='.$sid.'&saved=1');
+                header('Location: user.php?a=config&sid='.$sid.'&saved=1');
             } else {
                 simple_message('Falsches Passwort!');
             }
@@ -511,7 +511,7 @@ Bitte zur Best&auml;tigung eingeben.</td>
             $c = $a['cluster'];
             if ($c != false) {
                 $c = getcluster($c);
-                $scluster = '<a href="cluster.htn?a=info&amp;cluster='.$a['cluster'].'&amp;sid='.$sid.'">'.$c['name'].'</a> '.$c['code'];
+                $scluster = '<a href="cluster.php?a=info&amp;cluster='.$a['cluster'].'&amp;sid='.$sid.'">'.$c['name'].'</a> '.$c['code'];
             } else {
                 $scluster = 'keiner';
             }
@@ -524,11 +524,11 @@ Bitte zur Best&auml;tigung eingeben.</td>
                 $country = GetCountry('id', $xpc['country']);
                 $xpc['name'] = safeentities($xpc['name']);
                 if ((int)$usr['stat'] >= 100) {
-                    $extras = ' <a href="secret.htn?sid='.$sid.'&amp;m=file&amp;type=pc&amp;id='.$xpc['id'].'">Extras</a>';
+                    $extras = ' <a href="secret.php?sid='.$sid.'&amp;m=file&amp;type=pc&amp;id='.$xpc['id'].'">Extras</a>';
                 } else {
                     $extras = '';
                 }
-                $spcs .= '<li>'.$xpc['name'].' (10.47.'.$xpc['ip'].', <a href="game.htn?m=subnet&amp;sid='.$sid.'&amp;subnet='.subnetfromip(
+                $spcs .= '<li>'.$xpc['name'].' (10.47.'.$xpc['ip'].', <a href="game.php?m=subnet&amp;sid='.$sid.'&amp;subnet='.subnetfromip(
                         $xpc['ip']
                     ).'">'.$country['name'].'</a>, '.$xpc['points'].' Punkte)'.$extras.'</li>';
                 #$xdefence=$xpc['fw'] + $xpc['av'] + $xpc['ids']/2;
@@ -541,15 +541,15 @@ Bitte zur Best&auml;tigung eingeben.</td>
             }
 
             if ($usr['stat'] >= 100) {
-                $descr .= '</td>'.LF.'</tr>'.LF.'<tr>'.LF.'<th>Sonder-Funktionen:</th>'.LF.'<td><a href="secret.htn?sid='.$sid.'&amp;m=file&amp;type=user&amp;id='.$a['id'].'">'.($usr['stat'] == 1000 ? 'Bearbeiten' : 'Daten ansehen').'</a>';
+                $descr .= '</td>'.LF.'</tr>'.LF.'<tr>'.LF.'<th>Sonder-Funktionen:</th>'.LF.'<td><a href="secret.php?sid='.$sid.'&amp;m=file&amp;type=user&amp;id='.$a['id'].'">'.($usr['stat'] == 1000 ? 'Bearbeiten' : 'Daten ansehen').'</a>';
             }
 
             if ($usr['stat'] == 1000) {
-                $descr .= '<br />'.LF.'<a href="secret.htn?a=lockacc&amp;sid='.$sid.'&amp;user='.$a['id'].'">Account sperren</a> | <a href="secret.htn?a=delacc1&amp;sid='.$sid.'&amp;user='.$a['id'].'">Account l&ouml;schen</a>';
+                $descr .= '<br />'.LF.'<a href="secret.php?a=lockacc&amp;sid='.$sid.'&amp;user='.$a['id'].'">Account sperren</a> | <a href="secret.php?a=delacc1&amp;sid='.$sid.'&amp;user='.$a['id'].'">Account l&ouml;schen</a>';
             }
 
             if ($usr['bigacc'] == 'yes') {
-                $bigacc = '| <a href="abook.htn?sid='.$sid.'&amp;action=add&amp;user='.$index.'">User zum Adressbuch hinzuf&uuml;gen</a>';
+                $bigacc = '| <a href="abook.php?sid='.$sid.'&amp;action=add&amp;user='.$index.'">User zum Adressbuch hinzuf&uuml;gen</a>';
             }
 
             /*
@@ -585,8 +585,8 @@ Bitte zur Best&auml;tigung eingeben.</td>
             echo '<div class="content" id="user-profile">
 <h2>Benutzer-Profil</h2>
 <div class="submenu">
-<p><a href="mail.htn?m=newmailform&amp;sid='.$sid.'&amp;recip='.$a['name'].'">Mail an User</a> |
-<a href="ranking.htn?m=ranking&amp;sid='.$sid.'&amp;type=user&amp;id='.$a['id'].'">User in Rangliste</a>
+<p><a href="mail.php?m=newmailform&amp;sid='.$sid.'&amp;recip='.$a['name'].'">Mail an User</a> |
+<a href="ranking.php?m=ranking&amp;sid='.$sid.'&amp;type=user&amp;id='.$a['id'].'">User in Rangliste</a>
 '.$bigacc.'</p>
 </div>
 <div id="user-profile-profile">

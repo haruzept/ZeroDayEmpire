@@ -34,7 +34,7 @@ switch ($action) {
         if ($type == 'user') {
             $javascript .= 'function fill(s) { document.forms[0].user.value=s; }';
         } else {
-            $javascript .= 'function sorttype_go(obj,id) { location.href=\'ranking.htn?a=ranking&sid='.$sid.'&type=cluster&sorttype=\'+obj.selectedIndex+\'&id=\'+id+\'#rank-table\'; }';
+            $javascript .= 'function sorttype_go(obj,id) { location.href=\'ranking.php?a=ranking&sid='.$sid.'&type=cluster&sorttype=\'+obj.selectedIndex+\'&id=\'+id+\'#rank-table\'; }';
         }
         $javascript .= "\n".'</script>';
 
@@ -44,7 +44,7 @@ switch ($action) {
         echo '<div class="content" id="ranking">
 <h2>Rangliste</h2>
 <div class="submenu">
-<p><a href="ranking.htn?m=ranking&amp;sid='.$sid.'&amp;type=user">Spieler</a> | <a href="ranking.htn?m=ranking&amp;sid='.$sid.'&amp;type=cluster">Cluster</a></p>
+<p><a href="ranking.php?m=ranking&amp;sid='.$sid.'&amp;type=user">Spieler</a> | <a href="ranking.php?m=ranking&amp;sid='.$sid.'&amp;type=cluster">Cluster</a></p>
 </div>
 <div class="important">
 <h3>Wichtig</h3>
@@ -56,7 +56,7 @@ Das n&auml;chste Mal passiert das um '.$updtime.'.</p>
         if ($type == 'user') {
             echo '<div id="ranking-user">
 <h3>User-Rangliste</h3>
-<form action="ranking.htn?m=search&amp;sid='.$sid.'&amp;type='.$type.'" method="post">
+<form action="ranking.php?m=search&amp;sid='.$sid.'&amp;type='.$type.'" method="post">
 <table id="rank-table">
 <tr>
 <th class="number">Platz</th>
@@ -119,14 +119,14 @@ Das n&auml;chste Mal passiert das um '.$updtime.'.</p>
 
                 if ($c !== false) {
                     $cclass = 'cluster';
-                    $cinfo = '<a href="cluster.htn?a=info&amp;sid='.$sid.'&amp;cluster='.$c['id'].'">'.$c['code'].'</a>';
+                    $cinfo = '<a href="cluster.php?a=info&amp;sid='.$sid.'&amp;cluster='.$c['id'].'">'.$c['code'].'</a>';
                 } else {
                     $cinfo = '&nbsp;';
                     $cclass = '';
                 }
                 echo '<tr>
 <td class="number">'.$platz.'</td>
-<td class="name"><a href="user.htn?a=info&amp;user='.$uid.'&amp;sid='.$sid.'">'.$uname.'</a></td>
+<td class="name"><a href="user.php?a=info&amp;user='.$uid.'&amp;sid='.$sid.'">'.$uname.'</a></td>
 <td class="'.$cclass.'">'.$cinfo.'</td>
 <td class="points">'.$points.'</td>
 </tr>
@@ -143,7 +143,7 @@ Das n&auml;chste Mal passiert das um '.$updtime.'.</p>
                 $x = 1;
             }
             if ($x > 0) {
-                $forwards = '<a href="ranking.htn?a=ranking&amp;start=1&amp;sid='.$sid.'#rank-table">&laquo; Platz 1</a> | <a href="ranking.htn?a=ranking&amp;start='.$x.'&amp;sid='.$sid.'#rank-table">&lsaquo; Besser</a>';
+                $forwards = '<a href="ranking.php?a=ranking&amp;start=1&amp;sid='.$sid.'#rank-table">&laquo; Platz 1</a> | <a href="ranking.php?a=ranking&amp;start='.$x.'&amp;sid='.$sid.'#rank-table">&lsaquo; Besser</a>';
             }
             if ($start + 10 <= $total) {
                 $x = $start + 10;
@@ -153,7 +153,7 @@ Das n&auml;chste Mal passiert das um '.$updtime.'.</p>
                 $start = $total;
             }
             if ($x <= $total) {
-                $backwards = '<a href="ranking.htn?a=ranking&amp;start='.$x.'&amp;sid='.$sid.'#rank-table">Schlechter &rsaquo;</a> | <a href="ranking.htn?a=ranking&amp;start='.($total - 5).'&amp;sid='.$sid.'#rank-table">Letzter Platz &raquo;</a>';
+                $backwards = '<a href="ranking.php?a=ranking&amp;start='.$x.'&amp;sid='.$sid.'#rank-table">Schlechter &rsaquo;</a> | <a href="ranking.php?a=ranking&amp;start='.($total - 5).'&amp;sid='.$sid.'#rank-table">Letzter Platz &raquo;</a>';
             }
             if ($forwards != '' AND $backwards != '') {
                 $forwards .= ' | ';
@@ -175,7 +175,7 @@ Das n&auml;chste Mal passiert das um '.$updtime.'.</p>
             echo '
 <div id="ranking-cluster">
 <h3>Cluster-Rangliste</h3>
-<form action="ranking.htn?m=search&amp;sid='.$sid.'&amp;type='.$type.'" method="post">
+<form action="ranking.php?m=search&amp;sid='.$sid.'&amp;type='.$type.'" method="post">
 <table id="rank-table">
 <tr>
 <th>Platz:</th>
@@ -242,7 +242,7 @@ Das n&auml;chste Mal passiert das um '.$updtime.'.</p>
                     }
                     echo '<tr>
 <td class="number">'.$platz.'</td>
-<td class="name"><a href="cluster.htn?a=info&amp;cluster='.$zeile[0].'&amp;sid='.$sid.'">'.$zeile[1].'</a> ('.$zeile[3].')</td>
+<td class="name"><a href="cluster.php?a=info&amp;cluster='.$zeile[0].'&amp;sid='.$sid.'">'.$zeile[1].'</a> ('.$zeile[3].')</td>
 <td class="points">'.$zeile[2].'</td>
 </tr>
 ';
@@ -261,7 +261,7 @@ Das n&auml;chste Mal passiert das um '.$updtime.'.</p>
                 $x = 1;
             }
             if ($x > 0) {
-                $forwards = '<a href="ranking.htn?a=ranking&amp;type=cluster&amp;start=1&amp;sid='.$sid.'&amp;sorttype='.$sorttype.'#rank-table">Platz 1</a> | <a href="ranking.htn?a=ranking&amp;type=cluster&amp;start='.$x.'&amp;sid='.$sid.'&amp;sorttype='.$sorttype.'&amp;id='.$cid.'#rank-table">&laquo; Besser</a>';
+                $forwards = '<a href="ranking.php?a=ranking&amp;type=cluster&amp;start=1&amp;sid='.$sid.'&amp;sorttype='.$sorttype.'#rank-table">Platz 1</a> | <a href="ranking.php?a=ranking&amp;type=cluster&amp;start='.$x.'&amp;sid='.$sid.'&amp;sorttype='.$sorttype.'&amp;id='.$cid.'#rank-table">&laquo; Besser</a>';
             }
             if ($start + 10 <= $total) {
                 $x = $start + 10;
@@ -271,7 +271,7 @@ Das n&auml;chste Mal passiert das um '.$updtime.'.</p>
                 $start = $total;
             }
             if ($x <= $total) {
-                $backwards = '<a href="ranking.htn?a=ranking&amp;type=cluster&amp;start='.$x.'&amp;sid='.$sid.'&amp;sorttype='.$sorttype.'&amp;id='.$cid.'#rank-table">Schlechter &raquo;</a> | <a href="ranking.htn?a=ranking&amp;type=cluster&amp;start='.($total - 5).'&amp;sid='.$sid.'&amp;sorttype='.$sorttype.'#rank-table">Letzter Platz</a>';
+                $backwards = '<a href="ranking.php?a=ranking&amp;type=cluster&amp;start='.$x.'&amp;sid='.$sid.'&amp;sorttype='.$sorttype.'&amp;id='.$cid.'#rank-table">Schlechter &raquo;</a> | <a href="ranking.php?a=ranking&amp;type=cluster&amp;start='.($total - 5).'&amp;sid='.$sid.'&amp;sorttype='.$sorttype.'#rank-table">Letzter Platz</a>';
             }
             if ($forwards != '' && $backwards != '') {
                 $forwards .= ' | ';
@@ -317,7 +317,7 @@ Das n&auml;chste Mal passiert das um '.$updtime.'.</p>
                 $u = getUser(trim($_REQUEST['user']), 'name');
 
                 if ($u !== false) {
-                    header('Location: ranking.htn?a=ranking&sid='.$sid.'&type=user&id='.$u['id']);
+                    header('Location: ranking.php?a=ranking&sid='.$sid.'&type=user&id='.$u['id']);
                 } else {
                     simple_message('Einen Benutzer mit diesem Name gibt es nicht!');
                 }
@@ -328,7 +328,7 @@ Das n&auml;chste Mal passiert das um '.$updtime.'.</p>
 
                 $st = (int)$_REQUEST['sorttype'];
                 if ($c !== false) {
-                    header('Location: ranking.htn?a=ranking&sid='.$sid.'&type=cluster&id='.$c['id'].'&sorttype='.$st);
+                    header('Location: ranking.php?a=ranking&sid='.$sid.'&type=cluster&id='.$c['id'].'&sorttype='.$st);
                 } else {
                     simple_message('Einen Cluster mit diesem Code gibt es nicht!');
                 }

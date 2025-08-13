@@ -216,9 +216,9 @@ function gFormatText(&$s)
 # GEILE FUNKTION!!! VOLL DYNAMISCH COOL!!
 
     $dat[0]['pattern'] = '/\\[usr\\=(.*?)\\](.*?)\\[\\/usr\\]/is';
-    $dat[0]['replace'] = '<a href="user.htn?a=info&amp;sid='.$sid.'&amp;user=\\1">\\2</a>';
+    $dat[0]['replace'] = '<a href="user.php?a=info&amp;sid='.$sid.'&amp;user=\\1">\\2</a>';
     $dat[1]['pattern'] = '/\\[cluster\\=(.*?)\\](.*?)\\[\\/cluster\\]/is';
-    $dat[1]['replace'] = '<a href="cluster.htn?a=info&amp;sid='.$sid.'&amp;cluster=\\1">\\2</a>';
+    $dat[1]['replace'] = '<a href="cluster.php?a=info&amp;sid='.$sid.'&amp;cluster=\\1">\\2</a>';
 
     foreach ($dat as $item):
         $s = preg_replace($item['pattern'], $item['replace'], $s);
@@ -833,7 +833,7 @@ function deletecluster($cid, $silent = false)
 
     if ($silent === false) {
         simple_message(
-            'Der Cluster '.$cid.' wurde gel&ouml;scht.<br /><a href="cluster.htn?mode=start&sid='.$sid.'">Weiter</a>'
+            'Der Cluster '.$cid.' wurde gel&ouml;scht.<br /><a href="cluster.php?mode=start&sid='.$sid.'">Weiter</a>'
         );
     }
 }

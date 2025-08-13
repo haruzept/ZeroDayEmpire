@@ -28,12 +28,12 @@ function showform()
 <!--
 <h4>Listen</h4>
 <p>
-<a href="search.htn?m=list&amp;sid='.$sid.'&amp;type=user">Spieler</a> |
-<a href="search.htn?m=list&amp;sid='.$sid.'&amp;type=pcs">Computer</a> |
-<a href="search.htn?m=list&amp;sid='.$sid.'&amp;type=cluster">Cluster</a>
+<a href="search.php?m=list&amp;sid='.$sid.'&amp;type=user">Spieler</a> |
+<a href="search.php?m=list&amp;sid='.$sid.'&amp;type=pcs">Computer</a> |
+<a href="search.php?m=list&amp;sid='.$sid.'&amp;type=cluster">Cluster</a>
 </p>
 //-->
-<form action="search.htn?sid='.$sid.'&amp;a=exec" method="post">
+<form action="search.php?sid='.$sid.'&amp;a=exec" method="post">
 <h4>Suche nach:</h4>
 <p>
 <input type="radio" name="for" value="user" id="search_for_user" checked="checked" onclick="showpan(this)" />
