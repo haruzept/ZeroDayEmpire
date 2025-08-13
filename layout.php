@@ -170,9 +170,10 @@ function createlayout_top($title = 'HackTheNet', $nomenu = false, $pads = true)
 function createlayout_bottom()
 {
     global $starttime;
+    $time = '';
     if ($starttime > 0) {
         $time = (float)calc_time($starttime, 0, 10);
-        if ($t < 1) {
+        if ($time < 1) {
             $time = number_format($time * 1000, 1, '.', ',').' ms';
         } else {
             $time = number_format($time, 2, ',', '.').' s';
