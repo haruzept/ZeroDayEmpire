@@ -8,18 +8,18 @@ define('IN_HTN', 1);
 $FILE_REQUIRES_PC = true;
 include('ingame.php');
 
-$action = $_REQUEST['page'];
+$action = $_REQUEST['page'] ?? '';
 if ($action == '') {
-    $action = $_REQUEST['mode'];
+    $action = $_REQUEST['mode'] ?? '';
 }
 if ($action == '') {
-    $action = $_REQUEST['action'];
+    $action = $_REQUEST['action'] ?? '';
 }
 if ($action == '') {
-    $action = $_REQUEST['a'];
+    $action = $_REQUEST['a'] ?? '';
 }
 if ($action == '') {
-    $action = $_REQUEST['m'];
+    $action = $_REQUEST['m'] ?? '';
 }
 
 if ($pc['mk'] < 1) {
@@ -130,7 +130,7 @@ function fill(s) {
 <table>
 <tr><th>Angriffs-Script erstellen</th></tr>
 <tr><td>
-<textarea name="code" cols=70 rows=6>'.$_POST['code'].'</textarea>'.$bigacc.'
+<textarea name="code" cols=70 rows=6>'.($_POST['code'] ?? '').'</textarea>'.$bigacc.'
 </td></tr>
 <tr><th><input type="hidden" name="pcid" value="'.$pcid.'" />
 <input type="reset" value="  Reset  " /> <input type=submit value=" Weiter " /></th></tr>
@@ -143,7 +143,7 @@ function fill(s) {
 
     case 'opc_submit': // --------------- OPC Submit -----------------------
 
-        $pc = getpc((int)$_POST['pcid']);
+        $pc = getpc((int)($_POST['pcid'] ?? 0));
         if ($pc === false) {
             exit;
         }
@@ -168,7 +168,7 @@ function fill(s) {
         $hijack = 0;
         $king = 0;
 
-        $code = str_replace(chr(9), '', $_POST['code']);
+        $code = str_replace(chr(9), '', $_POST['code'] ?? '');
         while (strpos($code, '  ') != false) {
             $code = str_replace('  ', ' ', $code);
         }
@@ -530,7 +530,7 @@ function fill(s) {
 
     case 'pre_execute': // ---------------------- PRE_EXECUTE -----------------------
 
-        $code = $_POST['acode'];
+        $code = $_POST['acode'] ?? '';
 
         if (file_exists($DATADIR.'/tmp/attack_'.$code.'.txt') == false || $code != $usr['acode']) {
             simple_message('Angriff ung&uuml;ltig. Bitte neu erstellen!');
@@ -594,7 +594,7 @@ location.replace(\'battle.php?m=opc&sid='.$sid.'\');
 
     case 'execute': // --------------------------------- EXECUTE ---------------------------------
 
-        $code = $_REQUEST['acode'];
+        $code = $_REQUEST['acode'] ?? '';
 
         $fn = $DATADIR.'/tmp/attack_'.$code.'.txt';
         if (!file_exists($fn) || $code != $usr['acode']) {
@@ -1287,12 +1287,12 @@ location.replace(\'battle.php?m=opc&sid='.$sid.'\');
         break;
 
     case 'chtext':
-        $fn = $DATADIR.'/tmp/defacement_'.$_REQUEST['code'].'.txt';
+        $fn = $DATADIR.'/tmp/defacement_'.($_REQUEST['code'] ?? '').'.txt';
         $i = @file_get($fn);
         $u = getuser($i);
         @unlink($fn);
         if ($u['name'] != '') {
-            $s = addslashes($_POST['text']);
+            $s = addslashes($_POST['text'] ?? '');
             if (strlen($s) > 1024) {
                 $s = substr($s, 0, 1024);
             }
