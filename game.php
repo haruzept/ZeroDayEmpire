@@ -666,7 +666,7 @@ switch ($action) {
             echo '<table>'."\n";
             echo '<tr>'.LF.'<th>Item</th>'.LF.'<th>Dauer</th>'.LF.'<th>Fertigstellung</th>'.LF.'<th>Kosten</th>'.LF.'<th>Upgrade</th>'.LF.'</tr>'."\n";
             reset($items);
-            while (list($dummy, $item) = each($items)) {
+            foreach ($items as $dummy => $item) {
                 if (buildinfo($item)) {
                     $cnt++;
                 }

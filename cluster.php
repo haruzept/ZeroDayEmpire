@@ -40,7 +40,7 @@ function savemycluster()
 { # Eigenen Cluster speichern
     global $clusterid, $cluster;
     $s = '';
-    while (list($bez, $val) = each($cluster)) {
+    foreach ($cluster as $bez => $val) {
         $s .= $bez.'=\''.mysql_escape_string($val).'\',';
     }
     $s = trim($s, ',');
@@ -178,7 +178,7 @@ Dort findest du einen "Mitgliedsantrag stellen"-Link.</p></div>
 
         $clusterstat = cscodetostring($usr['clusterstat']);
 
-        while (list($bez, $val) = each($cluster)) {
+        foreach ($cluster as $bez => $val) {
             $cluster[$bez] = safeentities($val);
         }
 
@@ -719,7 +719,7 @@ function autosel(obj) { var i = (obj.name==\'pcip\' ? 1 : 0);
     case 'config': //------------------------- CONFIG -------------------------------
         if ($usr['clusterstat'] == CS_ADMIN || $usr['clusterstat'] == CS_COADMIN) {
 
-            while (list($bez, $val) = each($cluster)) {
+            foreach ($cluster as $bez => $val) {
                 $cluster[$bez] = safeentities(html_entity_decode($val));
             }
 
@@ -869,7 +869,7 @@ Ordner 3:<br />
                     header('Location: cluster.php?page=config&error='.urlencode($msg).'&sid='.$sid);
 
                 } else {
-                    while (list($bez, $val) = each($_POST)) {
+                    foreach ($_POST as $bez => $val) {
                         $_POST[$bez] = html_entity_decode($val);
                     }
                     $cluster['box1'] = safeentities($_POST['box0']);

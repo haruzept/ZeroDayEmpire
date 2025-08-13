@@ -73,7 +73,7 @@ alert(\'Bitte Zahl eingeben!\');
 <table>
 <tr><th>ID</th><th>Wert</th><th>Erkl&auml;rung</th></tr>';
 
-        while (list($bez, $val) = each($dat)) {
+        foreach ($dat as $bez => $val) {
             echo '<tr>';
             $val = htmlspecialchars($val);
             echo '<th>'.$bez.'</th>';
@@ -392,7 +392,7 @@ alert(\'Bitte Zahl eingeben!\');
         include('data/static/country_data.inc.php');
         reset($countrys);
         $gcnt = 0;
-        while (list($bez, $item) = each($countrys)):
+        foreach ($countrys as $bez => $item):
             $r = db_query(
                 'SELECT pcs.id AS pcs_id, pcs.ip AS pcs_ip, pcs.name AS pcs_name, pcs.points AS pcs_points, users.id AS users_id, users.name AS users_name, users.points AS users_points, clusters.id AS clusters_id, clusters.name AS clusters_name FROM (clusters RIGHT JOIN users ON clusters.id = users.cluster) RIGHT JOIN pcs ON users.id = pcs.owner WHERE pcs.country LIKE \''.mysql_escape_string(
                     $item['id']
@@ -424,7 +424,7 @@ alert(\'Bitte Zahl eingeben!\');
                   echo '$i ';
                 endwhile;
             */
-        endwhile;
+        endforeach;
 
         createlayout_bottom();
 

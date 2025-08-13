@@ -114,9 +114,9 @@ function mysql_db_query($db, $sql)
 }
 
 /* ohne magic quotes brauch man das ja nicht mehr
-while(list($bez,$val)=each($_POST)) $_POST[$bez]=rem_esc_chars($val);
-while(list($bez,$val)=each($_GET)) $_GET[$bez]=rem_esc_chars($val);
-while(list($bez,$val)=each($_REQUEST)) $_REQUEST[$bez]=rem_esc_chars($val);
+foreach ($_POST as $bez => $val) $_POST[$bez] = rem_esc_chars($val);
+foreach ($_GET as $bez => $val) $_GET[$bez] = rem_esc_chars($val);
+foreach ($_REQUEST as $bez => $val) $_REQUEST[$bez] = rem_esc_chars($val);
 reset($_POST); reset($_REQUEST); reset($_GET); */
 
 if (file_exists('data/mysql-backup-prepare.txt') == true) {
@@ -571,12 +571,12 @@ function GetCountry($type, $val)
 { //---------- Get Country -----------------
     include('data/static/country_data.inc.php');
     reset($countrys);
-    while (list($bez, $item) = each($countrys)):
+    foreach ($countrys as $bez => $item):
         if ($item[$type] == $val) {
             return $item;
             break;
         }
-    endwhile;
+    endforeach;
 
     return false;
 }

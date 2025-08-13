@@ -153,7 +153,7 @@ function SaveUserData()
 function SaveUser($usrid, $usr)
 { //------------------------- Save User -------------------------------
     $s = '';
-    while (list($bez, $val) = each($usr)) {
+    foreach ($usr as $bez => $val) {
         $s .= mysql_escape_string($bez).'=\''.mysql_escape_string($val).'\',';
     }
     $s = trim($s, ',');
@@ -165,7 +165,7 @@ function SaveUser($usrid, $usr)
 function SaveCluster($id, $dat)
 { //------------------------- Save User -------------------------------
     $s = '';
-    while (list($bez, $val) = each($dat)) {
+    foreach ($dat as $bez => $val) {
         $s .= mysql_escape_string($bez).'=\''.mysql_escape_string($val).'\',';
     }
     $s = trim($s, ',');
@@ -177,7 +177,7 @@ function SaveCluster($id, $dat)
 function SavePC($pcid, $pc)
 { //------------------------- Save PC -------------------------------
     $s = '';
-    while (list($bez, $val) = each($pc)) {
+    foreach ($pc as $bez => $val) {
         $s .= mysql_escape_string($bez).'=\''.mysql_escape_string($val).'\',';
     }
     $s = trim($s, ',');
