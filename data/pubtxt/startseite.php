@@ -1,15 +1,17 @@
 <div class="content" id="public"><h2>Willkommen bei HackTheNet</h2>
 
     <?php
-    $s1 = "checked=\"checked\" ";
-    if (substr_count(($_COOKIE['htnLoginData4']), "|") == 2) {
-        list($server, $usrname, $pwd) = explode("|", $_COOKIE['htnLoginData4']);
-        eval("\$s$server='checked=\"checked\" ';");
-        $usrname = "value=\"$usrname\" ";
+    $s1 = 'checked="checked" ';
+    $usrname = $pwd = $sv = '';
+    if (isset($_COOKIE['htnLoginData4']) && substr_count($_COOKIE['htnLoginData4'], "|") == 2) {
+        list($server, $usrnameVal, $pwdVal) = explode("|", $_COOKIE['htnLoginData4']);
+        $var = "s".$server;
+        $$var = "checked=\"checked\" ";
+        $usrname = "value=\"".htmlspecialchars($usrnameVal, ENT_QUOTES)."\" ";
         $pwd = "value=\"[xpwd]\" ";
         $sv = "checked=\"checked\" ";
     }
-    echo $notif;
+    echo $notif ?? '';
     ?>
 
     <div id="public-login"><h3>Log In</h3>
