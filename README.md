@@ -20,11 +20,11 @@
 
     
     Version htn2src.2.0-RC5
-    
+
     Systemanforderungen:
-      PHP 4: mindestens PHP 4.2.0 (nicht lauffähig unter PHP 5)
-      MySQL 4.0.x
-      Apache-Webserver empfohlen
+      PHP 8 oder höher
+      MariaDB 10.x oder kompatible MySQL-Implementierung
+      Moderner Webserver (z.B. Apache oder Nginx)
       
       Unter Linux:
         chmod -R 0777 data

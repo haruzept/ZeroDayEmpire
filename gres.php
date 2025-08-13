@@ -36,13 +36,73 @@ include 'config.php';
 $STYLESHEET = $standard_stylesheet;
 
 if ($db_use_this_values) {
-    $dbcon = @mysql_connect($db_host, $db_username, $db_password);
+    $dbcon = @mysqli_connect($db_host, $db_username, $db_password);
 } else {
-    $dbcon = @mysql_connect();
+    $dbcon = @mysqli_connect();
 }
 
 if (!$dbcon) {
     die('Datenbankzugriff gescheitert! Bitte nochmal probieren.');
+}
+mysqli_set_charset($dbcon, 'utf8');
+
+function mysql_escape_string($str)
+{
+    global $dbcon;
+    return mysqli_real_escape_string($dbcon, $str);
+}
+
+function mysql_query($q)
+{
+    global $dbcon;
+    return mysqli_query($dbcon, $q);
+}
+
+function mysql_error()
+{
+    global $dbcon;
+    return mysqli_error($dbcon);
+}
+
+function mysql_num_rows($r)
+{
+    return mysqli_num_rows($r);
+}
+
+function mysql_fetch_assoc($r)
+{
+    return mysqli_fetch_assoc($r);
+}
+
+function mysql_result($r, $row, $field = 0)
+{
+    mysqli_data_seek($r, $row);
+    $d = mysqli_fetch_array($r);
+    return $d[$field];
+}
+
+function mysql_insert_id()
+{
+    global $dbcon;
+    return mysqli_insert_id($dbcon);
+}
+
+function mysql_data_seek($r, $offset)
+{
+    return mysqli_data_seek($r, $offset);
+}
+
+function mysql_select_db($dbname)
+{
+    global $dbcon;
+    return mysqli_select_db($dbcon, $dbname);
+}
+
+function mysql_db_query($db, $sql)
+{
+    global $dbcon;
+    mysqli_select_db($dbcon, $db);
+    return mysqli_query($dbcon, $sql);
 }
 
 /* ohne magic quotes brauch man das ja nicht mehr
@@ -92,9 +152,10 @@ function dbname($srvid = -1)
 
 function db_query($q)
 {
-    $r = mysql_query($q);
-    if (mysql_error() != '') {
-        die('<tt>'.$q.'</tt><br />caused an error:<br />'.mysql_error());
+    global $dbcon;
+    $r = mysqli_query($dbcon, $q);
+    if (mysqli_error($dbcon) != '') {
+        die('<tt>' . $q . '</tt><br />caused an error:<br />' . mysqli_error($dbcon));
     }
 
     return $r;

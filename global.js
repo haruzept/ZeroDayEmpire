@@ -1,5 +1,5 @@
-window.onload = startsynchr;
-window.onerror = catcherr;
+window.addEventListener('load', startsynchr);
+window.addEventListener('error', catcherr);
 
 if (document.all) {
     document.onmouseover = linkover;
@@ -33,7 +33,7 @@ function synchrclock() {
     getLay("server-time").innerHTML = fmtint(c.getHours()) + ":" + fmtint(c.getMinutes()) + ":" + fmtint(c.getSeconds()) + " Uhr";
 }
 function startsynchr() {
-    setInterval("synchrclock()", 1000);
+    setInterval(synchrclock, 1000);
 }
 
 
@@ -62,7 +62,7 @@ function param(name) {
 }
 
 
-var newwin;
+let newwin;
 function show_abook(type) {
 
     l = parseInt((screen.availWidth - 500) / 2);
