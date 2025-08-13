@@ -31,7 +31,8 @@ define('CV_WING', 6, false);
 $clusterid = $usr['cluster'];
 $good_actions = 'start join found info listmembers request1 request2';
 $cluster = getcluster($clusterid);
-if ($cluster == false && eregi($action, $good_actions) === false) {
+// eregi() was removed in PHP 7.0; use stripos() for a case-insensitive check instead
+if ($cluster == false && stripos($good_actions, $action) === false) {
     no_();
     exit;
 }

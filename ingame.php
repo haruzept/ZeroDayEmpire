@@ -9,6 +9,20 @@ if (!defined('IN_HTN')) {
 include 'gres.php';
 include 'layout.php';
 
+// Compatibility wrappers for deprecated eregi functions removed in PHP 7+
+if (!function_exists('eregi')) {
+    function eregi($pattern, $string)
+    {
+        return preg_match('#' . str_replace('#', '\\#', $pattern) . '#i', $string);
+    }
+}
+if (!function_exists('eregi_replace')) {
+    function eregi_replace($pattern, $replacement, $string)
+    {
+        return preg_replace('#' . str_replace('#', '\\#', $pattern) . '#i', $replacement, $string);
+    }
+}
+
 header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
 header('Last-Modified: '.gmdate('D, d M Y H:i:s', time() - 300).' GMT');
 header('Cache-Control: no-store, no-cache, must-revalidate');
