@@ -552,10 +552,10 @@ function isattackallowed(&$ret, &$ret2)
     global $STYLESHEET, $REMOTE_FILES_DIR, $DATADIR, $usr, $pc, $usrid, $localhost;
 #if($localhost || is_noranKINGuser($usrid)) return true;
     define('TO_1', 2 * 60, false);
-    $x = floor((5 / 3) * (10 - $pc['lan']) + 5) * 60;
+    $x = floor((5 / 3) * (10 - ($pc['lan'] ?? 0)) + 5) * 60;
     define('TO_2', $x, false);
-    $a = (int)$usr['la'] + TO_1;
-    $b = (int)$pc['la'] + TO_2;
+    $a = (int)($usr['la'] ?? 0) + TO_1;
+    $b = (int)($pc['la'] ?? 0) + TO_2;
     if ($a > $b) {
         $ret = $a;
         $ret2 = $pc['la'];

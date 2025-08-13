@@ -1193,17 +1193,17 @@ function isavailh($id, $pc)
             break;
 
         case 'scan':
-            $b = ($pc['mk'] >= 2);
+            $b = (($pc['mk'] ?? 0) >= 2);
             break;
         case 'smash':
-            $b = ($pc['mk'] >= 6);
+            $b = (($pc['mk'] ?? 0) >= 6);
             break;
         case 'block':
-            $b = ($pc['mk'] >= 8 && $pc['ram'] >= 9);
+            $b = (($pc['mk'] ?? 0) >= 8 && ($pc['ram'] ?? 0) >= 9);
             break;
 
         case 'da':
-            $b = ($pc['lan'] >= 2 && $pc['sdk'] >= 4 && $pc['mk'] >= 7 && $pc['ram'] >= 8);
+            $b = (($pc['lan'] ?? 0) >= 2 && ($pc['sdk'] ?? 0) >= 4 && ($pc['mk'] ?? 0) >= 7 && ($pc['ram'] ?? 0) >= 8);
             break;
         default:
             $b = 2;

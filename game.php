@@ -947,6 +947,7 @@ switch ($action) {
                 $hijack = '<span style="color:black">nicht ausgebaut</span>';
             }
 
+            $mmstat = '';
             if ($ext) {
                 if (($x['mm'] >= 1 && $x['ads'] < 5) ||
                     ($x['mm'] >= 4 && $x['dialer'] < 5) ||
@@ -954,8 +955,6 @@ switch ($action) {
                     ($x['mm'] >= 10 && $x['bankhack'] < 5)
                 ) {
                     $mmstat = '<br /><span style="color:red">MoneyMarket-Update verf&uuml;gbar!</span>';
-                } else {
-                    $mmstat = '';
                 }
             }
 
