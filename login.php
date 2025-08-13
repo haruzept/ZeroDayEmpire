@@ -78,7 +78,11 @@ if ($action == 'login') {
 
     $cookie = false;
 
-    if (substr_count(($_COOKIE['htnLoginData4']), '|') == 2 && $_POST['save'] == 'yes') {
+    if (
+        isset($_COOKIE['htnLoginData4']) &&
+        substr_count($_COOKIE['htnLoginData4'], '|') == 2 &&
+        $_POST['save'] == 'yes'
+    ) {
         list($serverdummy, $usrnamedummy, $pwd) = explode('|', $_COOKIE['htnLoginData4']);
         $cookie = true;
     }
