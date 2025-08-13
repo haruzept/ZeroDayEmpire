@@ -351,11 +351,16 @@ switch ($action) {
         }
 
         $item = $_REQUEST['item'];
-        if (isavailh($item, $pc) != true && $pc[$item] < 1) {
-            exit;
+        $pcItemValue = $pc[$item] ?? null;
+        if ($pcItemValue === null || (isavailh($item, $pc) != true && $pcItemValue < 1)) {
+            http_response_code(404);
+            createlayout_top('HackTheNet - Deine Computer');
+            echo '<div class="content" id="computer">'.LF.'<h2>Deine Computer</h2>'.LF.'<div class="error">'.LF.'<h3>Fehler</h3>'.LF.'<p>Dieses Item wurde nicht gefunden.</p>'.LF.'</div>'.LF.'</div>'."\n";
+            createlayout_bottom();
+            break;
         }
         createlayout_top('HackTheNet - Deine Computer');
-        $val = $pc[$item];
+        $val = $pcItemValue;
         if ($item == 'ram') {
             $val = $ram_levels[$val];
         } elseif ($item == 'cpu') {
