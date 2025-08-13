@@ -56,7 +56,7 @@ switch ($action) {
 
 
         $c = getcluster($usr['cluster']);
-        if ($c['notice'] != '') {
+        if ($c !== false && !empty($c['notice'])) {
             $info .= infobox('Cluster-Info', 'overview-cluster', nl2br($c['notice']), 'id');
         }
 #$info.=infobox('<b>ACHTUNG:</b> Multis keine Chance! Wer mehrere Accounts besitzt, wird gnadenlos gel&ouml;scht.');
