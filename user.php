@@ -577,6 +577,7 @@ Bitte zur Best&auml;tigung eingeben.</td>
             $attack = '(keine Info)';
             $attack = 'Letztes Login: <i>'.nicetime3($a['login_time']).'</i><br />Angriff: <i>'.$attack.'</i>';
 
+            $avatar = '';
             if (preg_match('#^https?://.*/.+#i', $a['avatar'])) {
                 if ($usr['sid_ip'] != 'noip') {
                     $avatar = $a['avatar'];
