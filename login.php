@@ -25,8 +25,18 @@ if ($action == '') {
 }
 
 if ($action == 'login') {
+    $calcRunFile = 'data/calc-running.dat';
+    $calcRunning = @file_get($calcRunFile);
+    if ($calcRunning == 'yes') {
+        $mtime = @filemtime($calcRunFile);
+        if ($mtime !== false && $mtime + 900 < time()) {
+            @unlink($calcRunFile);
+            @unlink('data/calc-stat.dat');
+            $calcRunning = '';
+        }
+    }
 
-    if ((int)@file_get('data/calc-time.dat') <= time() || @file_get('data/calc-running.dat') == 'yes') {
+    if ((int)@file_get('data/calc-time.dat') <= time() || $calcRunning == 'yes') {
         $pwd = urlencode($_REQUEST['pwd']);
         $nick = urlencode($_REQUEST['nick']);
         $stat = @file_get('data/calc-stat.dat');
@@ -37,7 +47,7 @@ if ($action == 'login') {
 <b>Der Server ist im Moment mit der Kalkulation der Punktest&auml;nde besch&auml;ftigt!</b>
 <br /><br />Aktueller Status: <tt>'.$stat.'</tt>
 </body></html>';
-        if (@file_get('data/calc-running.dat') == '') {
+        if ($calcRunning == '') {
             include('calc_points.php');
         }
         exit;
