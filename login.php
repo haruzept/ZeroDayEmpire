@@ -10,19 +10,12 @@ if ($ref != '' && $refd['host'] != $_SERVER['HTTP_HOST'] && $refd['host'] != 'ss
     die('Rejected! Please don\'t use your own log in pages.');
 }
 
-$action = $_REQUEST['page'];
-if ($action == '') {
-    $action = $_REQUEST['mode'];
-}
-if ($action == '') {
-    $action = $_REQUEST['action'];
-}
-if ($action == '') {
-    $action = $_REQUEST['a'];
-}
-if ($action == '') {
-    $action = $_REQUEST['m'];
-}
+$action = $_REQUEST['page']
+    ?? $_REQUEST['mode']
+    ?? $_REQUEST['action']
+    ?? $_REQUEST['a']
+    ?? $_REQUEST['m']
+    ?? '';
 
 if ($action == 'login') {
     $calcRunFile = 'data/calc-running.dat';
@@ -55,15 +48,17 @@ if ($action == 'login') {
         $ts = time();
         if ($ts % 2 != 0) {
             $verz = 'data/login';
-            $h = opendir($verz);
-            while ($fn = readdir($h)) {
-                if (is_file($verz.'/'.$fn)) {
-                    if (fileatime($verz.'/'.$fn) + 30 * 60 <= $ts) {
-                        @unlink($verz.'/'.$fn);
+            $h = @opendir($verz);
+            if ($h) {
+                while (($fn = readdir($h)) !== false) {
+                    if (is_file($verz.'/'.$fn)) {
+                        if (fileatime($verz.'/'.$fn) + 30 * 60 <= $ts) {
+                            @unlink($verz.'/'.$fn);
+                        }
                     }
                 }
+                closedir($h);
             }
-            closedir($h);
         }
     }
 
@@ -78,7 +73,11 @@ if ($action == 'login') {
 
     $cookie = false;
 
-    if (substr_count(($_COOKIE['htnLoginData4']), '|') == 2 && $_POST['save'] == 'yes') {
+    if (
+        isset($_COOKIE['htnLoginData4']) &&
+        substr_count($_COOKIE['htnLoginData4'], '|') == 2 &&
+        $_POST['save'] == 'yes'
+    ) {
         list($serverdummy, $usrnamedummy, $pwd) = explode('|', $_COOKIE['htnLoginData4']);
         $cookie = true;
     }

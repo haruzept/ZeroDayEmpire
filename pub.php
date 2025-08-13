@@ -9,22 +9,13 @@ include('layout.php');
 
 define('REG_CODE_LEN', 24, false);
 
-$action = $_REQUEST['page'];
-if ($action == '') {
-    $action = $_REQUEST['mode'];
-}
-if ($action == '') {
-    $action = $_REQUEST['action'];
-}
-if ($action == '') {
-    $action = $_REQUEST['a'];
-}
-if ($action == '') {
-    $action = $_REQUEST['m'];
-}
-if ($action == '') {
-    $action = $_REQUEST['d'];
-}
+$action = $_REQUEST['page']
+    ?? $_REQUEST['mode']
+    ?? $_REQUEST['action']
+    ?? $_REQUEST['a']
+    ?? $_REQUEST['m']
+    ?? $_REQUEST['d']
+    ?? '';
 
 function showdoc($fn, $te = '')
 {

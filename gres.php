@@ -75,11 +75,18 @@ function mysql_fetch_assoc($r)
     return mysqli_fetch_assoc($r);
 }
 
-function mysql_result($r, $row, $field = 0)
+function mysql_result($r, $row = 0, $field = 0)
 {
+    if (!($r instanceof mysqli_result)) {
+        return null;
+    }
+    if (is_string($row) && $field === 0) {
+        $field = $row;
+        $row = 0;
+    }
     mysqli_data_seek($r, $row);
     $d = mysqli_fetch_array($r);
-    return $d[$field];
+    return $d[$field] ?? null;
 }
 
 function mysql_insert_id()
