@@ -97,7 +97,7 @@ switch ($action) {
         }
 
 
-        if (eregi('http://.*/.*', $usr['avatar']) !== false) {
+        if (preg_match('#^https?://.*/.+#i', $usr['avatar'])) {
             $avatar = '<br />'.LF.'<img src="'.$usr['avatar'].'" alt="Avatar" />';
         }
 
@@ -363,10 +363,10 @@ Bitte zur Best&auml;tigung eingeben.</td>
             $e = false;
             $error = '';
 
-            if (eregi('http://.*', $hp) == false) {
+            if (!preg_match('#^https?://#i', $hp)) {
                 $hp = '';
             }
-            if (eregi('http://.*/.*', $avatar) == false) {
+            if (!preg_match('#^https?://.*/.+#i', $avatar)) {
                 $avatar = '';
             }
             if (strlen($ort) < 3) {
@@ -502,7 +502,7 @@ Bitte zur Best&auml;tigung eingeben.</td>
                     $gb = '<tr>'.LF.'<th>Alter</th>'.LF.'<td>'.$alter.'</td>'.LF.'</tr>'."\n";
                 }
             }
-            if (eregi('http://.*', $a['homepage']) != false) {
+            if (preg_match('#^https?://#i', $a['homepage'])) {
                 $hp = dereferurl($a['homepage']);
                 $hp = safeentities($hp);
                 $hp = '<tr>'.LF.'<th>Homepage:</th><td><a href="'.$hp.'">'.safeentities(
@@ -577,7 +577,7 @@ Bitte zur Best&auml;tigung eingeben.</td>
             $attack = '(keine Info)';
             $attack = 'Letztes Login: <i>'.nicetime3($a['login_time']).'</i><br />Angriff: <i>'.$attack.'</i>';
 
-            if (eregi('http://.*/.*', $a['avatar']) !== false) {
+            if (preg_match('#^https?://.*/.+#i', $a['avatar'])) {
                 if ($usr['sid_ip'] != 'noip') {
                     $avatar = $a['avatar'];
                     $avatar = '<tr><td colspan="2"><img src="'.$avatar.'" alt="'.$a['name'].'" /></td></tr>';
