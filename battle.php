@@ -167,6 +167,7 @@ function fill(s) {
         $block = 0;
         $hijack = 0;
         $king = 0;
+        $msg = '';
 
         $code = str_replace(chr(9), '', $_POST['code'] ?? '');
         while (strpos($code, '  ') != false) {
@@ -229,7 +230,7 @@ function fill(s) {
                                     $msg .= $aa;
                                 }
                             }
-                            if (msg != '') {
+                            if ($msg != '') {
                                 $msg = substr($msg, 3);
                                 $msg = substr($msg, 0, strpos($msg, '}'));
                             }
@@ -259,14 +260,17 @@ function fill(s) {
             }
         } else {
             $e .= 'Ung&uuml;ltige Ziel-Adresse: IP-Adresse muss in der Form 10.47.x.x vorliegen!<br />';
+            $target = false;
         }
 
-        if (is_noranKINGuser($target['owner']) && $localhost == false) {
-            $e .= 'Du kannst keinen Administrator des Spiels angreifen!<br />';
-        }
-        if ($localhost == false) {
-            if ($target['owner'] == $usrid) {
-                $e .= 'Du kannst dich nicht selber angreifen!<br />';
+        if ($target !== false && is_array($target)) {
+            if (is_noranKINGuser($target['owner']) && $localhost == false) {
+                $e .= 'Du kannst keinen Administrator des Spiels angreifen!<br />';
+            }
+            if ($localhost == false) {
+                if ($target['owner'] == $usrid) {
+                    $e .= 'Du kannst dich nicht selber angreifen!<br />';
+                }
             }
         }
 
