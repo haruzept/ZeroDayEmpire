@@ -34,6 +34,7 @@ Du kannst auch so lange dem <a href="http://forum.hackthenet.org/">Forum</a> ode
 
 include 'config.php';
 $STYLESHEET = $standard_stylesheet;
+mysqli_report(MYSQLI_REPORT_OFF);
 
 if ($db_use_this_values) {
     $dbcon = @mysqli_connect($db_host, $db_username, $db_password);
@@ -387,6 +388,13 @@ function RandomX($chars = 6, $cs = true)
     $s = substr($s, mt_rand(0, $chars), $chars);
 
     return $s;
+}
+
+if (!function_exists('randomx')) {
+    function randomx($chars = 6, $cs = true)
+    {
+        return RandomX($chars, $cs);
+    }
 }
 
 function randomchar()
