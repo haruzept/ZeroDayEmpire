@@ -93,6 +93,7 @@ function createlayout_top($title = 'HackTheNet', $nomenu = false, $pads = true)
                 '&Uuml;bersicht &uuml;ber alles Wichtige auf einen Blick.'
             );
 
+            $hw = '';
             if ($usr['newmail'] > 0) {
                 $hw = ($usr['newmail'] == 1 ? '' : 's');
                 $hw = 'Du hast '.$usr['newmail'].' neue Message'.$hw;

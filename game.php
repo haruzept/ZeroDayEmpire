@@ -40,7 +40,7 @@ switch ($action) {
 
         $info = "\n";
 
-        if ($_GET['nlo'] == 1) {
+        if (($_GET['nlo'] ?? 0) == 1) {
             $info .= infobox(
                 'ACHTUNG!!',
                 'error',
@@ -99,6 +99,7 @@ switch ($action) {
         }
 
 # Anzahl neuer Mails festellen + updaten
+        $newtotal = 0;
         if ($usr['newmail'] > 0) {
             $newmail = @mysql_num_rows(
                 db_query(
@@ -248,6 +249,8 @@ switch ($action) {
             $rhinfo .= '</td></tr>';
         }
 
+        $op = '';
+        $transfer = '';
         if ($pc['mk'] >= 1) {
             $op = ' | <a href="battle.php?m=opc&amp;sid='.$sid.'">Operation Center</a>';
         }
@@ -868,7 +871,7 @@ switch ($action) {
         echo '<th class="hijack">Hijack?</th>'.LF.'</tr>'."\n";
 
 
-        $st = $_POST['sorttype'];
+         $st = $_POST['sorttype'] ?? '';
         switch ($st) {
             case 'name ASC':
                 break;
@@ -896,9 +899,10 @@ switch ($action) {
                 ).$ord.';'
             );
         }
-        while ($x = mysql_fetch_assoc($sql)) {
-            #$list.=$x['id'].',';
-            $number++;
+         $number = 0;
+         while ($x = mysql_fetch_assoc($sql)) {
+             #$list.=$x['id'].',';
+             $number++;
             $country = GetCountry('id', $x['country']);
             $x['points'] = (int)$x['points'];
             if ($x['points'] < 1024 && $ext) {
