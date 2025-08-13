@@ -351,11 +351,12 @@ switch ($action) {
         }
 
         $item = $_REQUEST['item'];
-        if (isavailh($item, $pc) != true && $pc[$item] < 1) {
+        $pcItemValue = $pc[$item] ?? null;
+        if ($pcItemValue === null || (isavailh($item, $pc) != true && $pcItemValue < 1)) {
             exit;
         }
         createlayout_top('HackTheNet - Deine Computer');
-        $val = $pc[$item];
+        $val = $pcItemValue;
         if ($item == 'ram') {
             $val = $ram_levels[$val];
         } elseif ($item == 'cpu') {
