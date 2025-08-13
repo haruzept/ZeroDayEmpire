@@ -408,6 +408,7 @@ Bitte zur Best&auml;tigung eingeben.</td>
                     $style = $standard_stylesheet;
                 }
                 $usr['stylesheet'] = $style;
+                $STYLESHEET = $style;
                 $usr['noipcheck'] = $noipcheck;
                 $usr['usessl'] = $usessl;
                 if ($usr['usrimg_fmt'] != $usrimg_fmt || $usr['enable_usrimg'] != $enable_usrimg) {
