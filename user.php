@@ -4,18 +4,18 @@ define('IN_HTN', 1);
 $FILE_REQUIRES_PC = false;
 include('ingame.php');
 
-$action = $_REQUEST['page'];
-if ($action == '') {
-    $action = $_REQUEST['mode'];
+$action = $_REQUEST['page'] ?? '';
+if ($action === '') {
+    $action = $_REQUEST['mode'] ?? '';
 }
-if ($action == '') {
-    $action = $_REQUEST['action'];
+if ($action === '') {
+    $action = $_REQUEST['action'] ?? '';
 }
-if ($action == '') {
-    $action = $_REQUEST['a'];
+if ($action === '') {
+    $action = $_REQUEST['a'] ?? '';
 }
-if ($action == '') {
-    $action = $_REQUEST['m'];
+if ($action === '') {
+    $action = $_REQUEST['m'] ?? '';
 }
 
 switch ($action) {
@@ -465,6 +465,14 @@ Bitte zur Best&auml;tigung eingeben.</td>
         $index = $_REQUEST['user'];
         $a = getuser($index);
         if ($a != false) {
+
+            $geschl = '';
+            $gb = '';
+            $ort = '';
+            $hp = '';
+            $locked = '';
+            $bigacc = '';
+            $pchw = '';
 
             $u_points = $a['points'];
             createlayout_top('HackTheNet - Benutzerprofil');
