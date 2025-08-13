@@ -167,6 +167,7 @@ function fill(s) {
         $block = 0;
         $hijack = 0;
         $king = 0;
+        $msg = '';
 
         $code = str_replace(chr(9), '', $_POST['code'] ?? '');
         while (strpos($code, '  ') != false) {
@@ -229,7 +230,7 @@ function fill(s) {
                                     $msg .= $aa;
                                 }
                             }
-                            if (msg != '') {
+                            if ($msg != '') {
                                 $msg = substr($msg, 3);
                                 $msg = substr($msg, 0, strpos($msg, '}'));
                             }
@@ -259,14 +260,17 @@ function fill(s) {
             }
         } else {
             $e .= 'Ung&uuml;ltige Ziel-Adresse: IP-Adresse muss in der Form 10.47.x.x vorliegen!<br />';
+            $target = false;
         }
 
-        if (is_noranKINGuser($target['owner']) && $localhost == false) {
-            $e .= 'Du kannst keinen Administrator des Spiels angreifen!<br />';
-        }
-        if ($localhost == false) {
-            if ($target['owner'] == $usrid) {
-                $e .= 'Du kannst dich nicht selber angreifen!<br />';
+        if ($target !== false && is_array($target)) {
+            if (is_noranKINGuser($target['owner']) && $localhost == false) {
+                $e .= 'Du kannst keinen Administrator des Spiels angreifen!<br />';
+            }
+            if ($localhost == false) {
+                if ($target['owner'] == $usrid) {
+                    $e .= 'Du kannst dich nicht selber angreifen!<br />';
+                }
             }
         }
 
@@ -357,61 +361,64 @@ function fill(s) {
             }
         }
 
+        $owner = false;
+        if ($target !== false && is_array($target)) {
 # Durch Trojaner deaktivierte Items beachten!!
-        if ($target['di'] != '' && $target['dt'] > time() && $trojan == 1 && substr($opt, 0, 10) == 'DEACTIVATE') {
-            $e .= 'Auf dem Zielrechner ist bereits ein Item deaktiviert! Es k&ouml;nnen nicht gleichzeitig mehrere Items auf einem PC deaktiviert sein!<br />';
-        }
+            if ($target['di'] != '' && $target['dt'] > time() && $trojan == 1 && substr($opt, 0, 10) == 'DEACTIVATE') {
+                $e .= 'Auf dem Zielrechner ist bereits ein Item deaktiviert! Es k&ouml;nnen nicht gleichzeitig mehrere Items auf einem PC deaktiviert sein!<br />';
+            }
 
-        $owner = @getuser($target['owner']);
-        if ($owner['cluster'] == $no_ranking_clusters) {
-            $e .= 'Mitglieder dieses Clusters können nicht angegriffen werden!';
-        }
+            $owner = @getuser($target['owner']);
+            if ($owner !== false && $owner['cluster'] == $no_ranking_clusters) {
+                $e .= 'Mitglieder dieses Clusters können nicht angegriffen werden!';
+            }
 
-        if ($owner != false && $owner['login_time'] + MIN_INACTIVE_TIME > time() && substr_count(
-                $owner['pcs'],
-                ','
-            ) < 2
-        ) {
+            if ($owner !== false && $owner['login_time'] + MIN_INACTIVE_TIME > time() && substr_count(
+                    $owner['pcs'],
+                    ','
+                ) < 2
+            ) {
 
-            if ($hijack == 1) {
-                $my_points = $pc['points'];
-                $enemy_points = $target['points'];
-                #echo 'my_points=$usr['points'], enemy_points=$owner['points'], pc_points=$target['points']';
+                if ($hijack == 1) {
+                    $my_points = $pc['points'];
+                    $enemy_points = $target['points'];
+                    #echo 'my_points=$usr['points'], enemy_points=$owner['points'], pc_points=$target['points']';
 
-                if ($enemy_points <= ($my_points * (15 / 100))) {
-                    $r = db_query(
-                        'SELECT * FROM `attacks` WHERE `from_usr`=\''.mysql_escape_string(
-                            $owner['id']
-                        ).'\' AND `to_usr`=\''.mysql_escape_string($usrid).'\' AND `type`<>\'scan\';'
-                    );
+                    if ($enemy_points <= ($my_points * (15 / 100))) {
+                        $r = db_query(
+                            'SELECT * FROM `attacks` WHERE `from_usr`=\''.mysql_escape_string(
+                                $owner['id']
+                            ).'\' AND `to_usr`=\''.mysql_escape_string($usrid).'\' AND `type`<>\'scan\';'
+                        );
 
-                    if (mysql_num_rows($r) == 0) {
-                        $e .= 'Von diesem PC aus ('.$my_points.' Punkte) kannst du diesen PC ('.$enemy_points.' Punkte) nicht hijacken!<br />';
+                        if (mysql_num_rows($r) == 0) {
+                            $e .= 'Von diesem PC aus ('.$my_points.' Punkte) kannst du diesen PC ('.$enemy_points.' Punkte) nicht hijacken!<br />';
+                        }
+                    }
+                }
+
+                if ($scan == 0) {
+                    if (!is_pc_attackable($target)) {
+                        $e .= 'Du kannst diesen armen, schwachen PC nicht angreifen!<br />';
                     }
                 }
             }
 
-            if ($scan == 0) {
-                if (!is_pc_attackable($target)) {
-                    $e .= 'Du kannst diesen armen, schwachen PC nicht angreifen!<br />';
-                }
+
+            $c = GetCountry('id', $pc['country']);
+            $country = $c['name'];
+            $out = $c['out'] * 9;
+            $c = GetCountry('id', $target['country']);
+            $country2 = $c['name'];
+            $in = $c['in'] * 9;
+            $cost = $in + $out;
+            if ($country == $country2) {
+                $cost = 0;
             }
-        }
 
-
-        $c = GetCountry('id', $pc['country']);
-        $country = $c['name'];
-        $out = $c['out'] * 9;
-        $c = GetCountry('id', $target['country']);
-        $country2 = $c['name'];
-        $in = $c['in'] * 9;
-        $cost = $in + $out;
-        if ($country == $country2) {
-            $cost = 0;
-        }
-
-        if ($pc['credits'] - $cost < 0 && $country != $country2) {
-            $e .= 'Nicht gen&uuml;gend Credits! Dieser Angriff w&uuml;rde '.$cost.' Credits kosten, du hast aber nur '.$pc['credits'].' Credits!<br />';
+            if ($pc['credits'] - $cost < 0 && $country != $country2) {
+                $e .= 'Nicht gen&uuml;gend Credits! Dieser Angriff w&uuml;rde '.$cost.' Credits kosten, du hast aber nur '.$pc['credits'].' Credits!<br />';
+            }
         }
 
 #if(($e=='' && $scan==0) & ($owner['points']<MIN_ATTACK_POINTS && $owner['login_time']+MIN_INACTIVE_TIME>time())) $e.='Du kannst keinen User mit weniger als 100 Punkten angreifen, der sich in den letzten 3 Tagen eingeloggt hat!<br />';
