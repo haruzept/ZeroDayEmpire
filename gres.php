@@ -119,6 +119,9 @@ foreach ($_GET as $bez => $val) $_GET[$bez] = rem_esc_chars($val);
 foreach ($_REQUEST as $bez => $val) $_REQUEST[$bez] = rem_esc_chars($val);
 reset($_POST); reset($_REQUEST); reset($_GET); */
 
+// initialise notification placeholder
+$notif = '';
+
 if (file_exists('data/mysql-backup-prepare.txt') == true) {
     $notif = '<div class="work">
 <h3>Server-Arbeiten</h3>
@@ -659,6 +662,7 @@ function getPCPoints($pc, $mode = 'byid')
 
 function GetIP()
 { //------------------------- Get IP -------------------------------
+    $proxy = null;
     if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
         if (isset($_SERVER['HTTP_CLIENT_IP'])) {
             $proxy = $_SERVER['HTTP_CLIENT_IP'];
