@@ -920,9 +920,9 @@ Ordner 3:<br />
         }
 
 
-        if (!(strlen($code) <= 12 and strlen($name) <= 48 and strlen($pwd) <= 16)) {
+        if (!(strlen($code) <= 12 and strlen($name) <= 48)) {
             $e = true;
-            $msg .= 'Bitte alle drei Felder ausf&uuml;llen!<br />';
+            $msg .= 'Bitte beide Felder ausf&uuml;llen!<br />';
         }
 
         if ($e == false) {
