@@ -5,19 +5,19 @@ $FILE_REQUIRES_PC = false;
 include('ingame.php');
 
 
-$action = $_REQUEST['page'];
+$action = $_REQUEST['page'] ?? '';
 # Die folgenden Variablen sollten nicht mehr verwendet werden
 if ($action == '') {
-    $action = $_REQUEST['mode'];
+    $action = $_REQUEST['mode'] ?? '';
 }
 if ($action == '') {
-    $action = $_REQUEST['action'];
+    $action = $_REQUEST['action'] ?? '';
 }
 if ($action == '') {
-    $action = $_REQUEST['a'];
+    $action = $_REQUEST['a'] ?? '';
 }
 if ($action == '') {
-    $action = $_REQUEST['m'];
+    $action = $_REQUEST['m'] ?? '';
 }
 
 # Konstanten für Cluster-Verträge:
@@ -105,6 +105,7 @@ Dort findest du einen "Mitgliedsantrag stellen"-Link.</p></div>
         }
 
         $a = explode("\n", $cluster['events']);
+        $mod = false;
         if (count($a) > 21) {
             $cluster['events'] = joinex(array_slice($a, 0, 20), "\n");
             $mod = true;
