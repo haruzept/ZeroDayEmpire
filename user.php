@@ -96,7 +96,7 @@ switch ($action) {
             $account = 'normal';
         }
 
-
+        $avatar = '';
         if (preg_match('#^https?://.*/.+#i', $usr['avatar'])) {
             $avatar = '<br />'.LF.'<img src="'.$usr['avatar'].'" alt="Avatar" />';
         }
