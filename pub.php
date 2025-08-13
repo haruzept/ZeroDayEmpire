@@ -200,8 +200,14 @@ Nur wenn eine korrekte Email-Adresse angegeben wurde, kann der Account aktiviert
 
             $pwd = generateMnemonicPassword();
             $tmpfnx = randomx(REG_CODE_LEN);
-            $tmpfn = 'data/regtmp/'.$tmpfnx.'.txt';
-            file_put($tmpfn, $nick.'|'.$email.'|'.$pwd.'|'.$server);
+            $tmpdir = 'data/regtmp';
+            if (!is_dir($tmpdir) && !mkdir($tmpdir, 0777, true)) {
+                die('FUCK OFF!');
+            }
+            $tmpfn = $tmpdir.'/'.$tmpfnx.'.txt';
+            if (!file_put($tmpfn, $nick.'|'.$email.'|'.$pwd.'|'.$server)) {
+                die('FUCK OFF!');
+            }
 
             $selcode = str_replace('%path%', 'images/maps', file_get('data/pubtxt/selcountry_body.txt'));
             echo '<div class="content" id="register">
@@ -226,7 +232,7 @@ Nur wenn eine korrekte Email-Adresse angegeben wurde, kann der Account aktiviert
     case 'regsubmit2':  // ----------------------- RegSubmit 2 --------------------------
 
         $tmpfnx = $_POST['code'];
-        if (preg_match("/^[a-z0-9]+$/i", $tmpfnx) === false) {
+        if (preg_match('/^[a-z0-9]+$/i', $tmpfnx) !== 1) {
             die('FUCK OFF!');
         }
         $fn = 'data/regtmp/'.$tmpfnx.'.txt';
