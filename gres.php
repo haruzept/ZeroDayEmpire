@@ -240,7 +240,11 @@ function gFormatText(&$s)
 function write_session_data()
 {
     global $usrid, $pcid, $sid, $server;
-    file_put('data/login/'.$sid.'.txt', $server."\x0b".$usrid."\x0b".$pcid);
+    $dir = 'data/login';
+    if (!is_dir($dir)) {
+        @mkdir($dir, 0777, true);
+    }
+    file_put($dir.'/'.$sid.'.txt', $server."\x0b".$usrid."\x0b".$pcid);
 }
 
 function is_noranKINGuser($ix)
