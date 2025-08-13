@@ -4,18 +4,19 @@ define('IN_HTN', 1);
 $FILE_REQUIRES_PC = true;
 include('ingame.php');
 
-$action = $_REQUEST['page'];
-if ($action == '') {
-    $action = $_REQUEST['mode'];
+// Determine requested action while avoiding undefined index warnings
+$action = $_REQUEST['page'] ?? '';
+if ($action === '') {
+    $action = $_REQUEST['mode'] ?? '';
 }
-if ($action == '') {
-    $action = $_REQUEST['action'];
+if ($action === '') {
+    $action = $_REQUEST['action'] ?? '';
 }
-if ($action == '') {
-    $action = $_REQUEST['a'];
+if ($action === '') {
+    $action = $_REQUEST['a'] ?? '';
 }
-if ($action == '') {
-    $action = $_REQUEST['m'];
+if ($action === '') {
+    $action = $_REQUEST['m'] ?? '';
 }
 
 $bucks = number_format($pc['credits'], 0, ',', '.');
@@ -948,6 +949,9 @@ switch ($action) {
             {
                 $pc = $x;
                 $avail = isavailh('scan', $x);
+                // initialise variables before passing by reference
+                $next = 0;
+                $last = 0;
                 if (!isattackallowed($next, $last) && $avail) {
                     $attack = 'nein, erst wieder '.nicetime3($next);
                 } elseif ($avail) {
@@ -1032,7 +1036,7 @@ switch ($action) {
                 if (strlen($n) > 1 && strlen($n) <= 30) {
                     $xpc = GetPC($a[$i]);
                     $xpc['name'] = $n;
-                    savepc($a[$i], $xpc);
+                    SavePC($a[$i], $xpc);
                 }
             }
         }

@@ -60,6 +60,7 @@ function basicfooter()
 function createlayout_top($title = 'HackTheNet', $nomenu = false, $pads = true)
 {
     global $usr, $javascript, $STYLESHEET, $bodytag, $localhost, $FILE_REQUIRES_PC, $pc, $pcid;
+    $ads = '';
     if ($usr['sid'] != '') {
         $sid = '&amp;sid='.$usr['sid'];
     }
