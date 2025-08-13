@@ -239,6 +239,7 @@ switch ($action) {
             echo '<br />'."\n";
         }
 
+        $rhinfo = '';
         if ($pc['mk'] > 0 && $pc['rh'] > 0) {
             $rhinfo = '<tr><th>Remote Hijack</th><td>';
             if ($pc['lrh'] + REMOTE_HIJACK_DELAY <= time()) {
