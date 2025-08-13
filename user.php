@@ -308,7 +308,7 @@ Bitte zur Best&auml;tigung eingeben.</td>
 
     case 'saveconfig': //------------------------- SAVE CONFIG -------------------------------
 
-        if ($_POST['delete_account'] == 'yes') {
+        if (isset($_POST['delete_account']) && $_POST['delete_account'] == 'yes') {
             echo '<html><head><title>Account l&ouml;schen</title></head><body style="font-family:arial;">
 <br /><br /><br /><br /><hr>
 <b>Dir wurde eine Email zugeschickt ('.$usr['email'].'), in der du die L&ouml;schung des Accounts noch einmal best&auml;tigen musst!
@@ -346,17 +346,17 @@ Bitte zur Best&auml;tigung eingeben.</td>
             $style = $_POST['style'];
             $noipcheck = ($_POST['ipcheck'] != 'yes' ? 'yes' : 'no');
 
-            $usessl = ($_POST['usessl'] == 'yes' ? 'yes' : 'no');
+            $usessl = (isset($_POST['usessl']) && $_POST['usessl'] == 'yes' ? 'yes' : 'no');
             if ($usr['bigacc'] != 'yes') {
                 $usessl = 'no';
             }
 
-            $enable_usrimg = ($_POST['enable_usrimg'] == 'yes' ? 'yes' : 'no');
+            $enable_usrimg = (isset($_POST['enable_usrimg']) && $_POST['enable_usrimg'] == 'yes' ? 'yes' : 'no');
             if ($usr['bigacc'] != 'yes') {
                 $enable_usrimg = 'no';
             }
 
-            $usrimg_fmt = $_POST['usrimg_fmt'];
+            $usrimg_fmt = $_POST['usrimg_fmt'] ?? $usr['usrimg_fmt'];
 
             $pcs = explode(',', $usr['pcs']);
 
