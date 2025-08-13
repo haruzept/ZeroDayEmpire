@@ -65,7 +65,7 @@ switch ($action) {
             global $STYLESHEET, $REMOTE_FILES_DIR, $DATADIR, $sid, $usrid, $pcid;
             echo '<div id="cluster-found">
 <h3>Cluster gr&uuml;nden</h3>
-<form action="cluster.htn?page=found&amp;sid='.$sid.'" method="post">
+<form action="cluster.php?page=found&amp;sid='.$sid.'" method="post">
 <table>
 <tr>
 <th>Name:</th>
@@ -121,12 +121,12 @@ Dort findest du einen "Mitgliedsantrag stellen"-Link.</p></div>
         );
         $funcs = '';
         $stat = (int)$usr['clusterstat'];
-        $settings = '<a href="cluster.htn?page=config&amp;sid='.$sid.'">Einstellungen</a><br />';
-        $members = '<a href="cluster.htn?page=members&amp;sid='.$sid.'">Mitglieder-Verwaltung</a><br />';
-        $finances = '<a href="cluster.htn?page=finances&amp;sid='.$sid.'">Cluster-Kasse</a><br />';
-        $battles = '<a href="cluster.htn?page=battles&amp;sid='.$sid.'">Angriffs&uuml;bersicht</a><br />';
-        $konvents = '<a href="cluster.htn?page=convents&amp;sid='.$sid.'">Vertr&auml;ge</a><br />';
-        $req_verw = '<a href="cluster.htn?page=req_verw&amp;sid='.$sid.'">Mitgliedsantr&auml;ge</a> ('.$reqs.')<br />';
+        $settings = '<a href="cluster.php?page=config&amp;sid='.$sid.'">Einstellungen</a><br />';
+        $members = '<a href="cluster.php?page=members&amp;sid='.$sid.'">Mitglieder-Verwaltung</a><br />';
+        $finances = '<a href="cluster.php?page=finances&amp;sid='.$sid.'">Cluster-Kasse</a><br />';
+        $battles = '<a href="cluster.php?page=battles&amp;sid='.$sid.'">Angriffs&uuml;bersicht</a><br />';
+        $konvents = '<a href="cluster.php?page=convents&amp;sid='.$sid.'">Vertr&auml;ge</a><br />';
+        $req_verw = '<a href="cluster.php?page=req_verw&amp;sid='.$sid.'">Mitgliedsantr&auml;ge</a> ('.$reqs.')<br />';
         if ($stat == CS_ADMIN) {
             $funcs = $settings.$members.$finances.$battles.$konvents.$req_verw;
             $jobs = 'Den Cluster verwalten. Du kannst alles machen!';
@@ -186,7 +186,7 @@ Dort findest du einen "Mitgliedsantrag stellen"-Link.</p></div>
 <h3>'.$cluster['name'].'</h3>
 <table width="90%">
 '.$img.'<tr id="cluster-overview-board1">
-<td colspan="2"><a href="cboard.htn?page=board&amp;sid='.$sid.'">Zum Cluster-Board</a></td>
+<td colspan="2"><a href="cboard.php?page=board&amp;sid='.$sid.'">Zum Cluster-Board</a></td>
 </tr>
 <tr>
 <th>Name:</th>
@@ -197,9 +197,9 @@ Dort findest du einen "Mitgliedsantrag stellen"-Link.</p></div>
 <td>'.$cluster['code'].'</td>
 </tr>
 <tr>
-<th>Mitglieder (<a href="cluster.htn?page=listmembers&amp;cluster='.$usr['cluster'].'&amp;sid='.$sid.'">anzeigen</a>):</th>
+<th>Mitglieder (<a href="cluster.php?page=listmembers&amp;cluster='.$usr['cluster'].'&amp;sid='.$sid.'">anzeigen</a>):</th>
 <td>'.$members.'
-(<a href="cluster.htn?page=leave&amp;sid='.$sid.'">Austreten</a>)</td>
+(<a href="cluster.php?page=leave&amp;sid='.$sid.'">Austreten</a>)</td>
 </tr>
 <tr>
 <th>Punkte</th>
@@ -226,7 +226,7 @@ Dort findest du einen "Mitgliedsantrag stellen"-Link.</p></div>
 <td><div>'.$list.'</div></td>
 </tr>
 <tr id="cluster-overview-board2">
-<td colspan="2"><a href="cboard.htn?page=board&amp;sid='.$sid.'">Zum Cluster-Board</a></td>
+<td colspan="2"><a href="cboard.php?page=board&amp;sid='.$sid.'">Zum Cluster-Board</a></td>
 </tr>
 </table>
 </div>';
@@ -235,7 +235,7 @@ Dort findest du einen "Mitgliedsantrag stellen"-Link.</p></div>
             $cluster['notice'] = html_entity_decode($cluster['notice']);
             echo '<div id="cluster-notice-create">
 <h3>Aktuelle Notiz</h3>
-<form action="cluster.htn?sid='.$sid.'&amp;page=savenotice" method="post">
+<form action="cluster.php?sid='.$sid.'&amp;page=savenotice" method="post">
 <table>
 <tr><th>Text:</th><td><textarea name="notice" rows="4" cols="30">'.$cluster['notice'].'</textarea></td></tr>
 <tr><th>Aktionen:</th><td><input type="submit" value="Speichern" />
@@ -254,12 +254,12 @@ Dort findest du einen "Mitgliedsantrag stellen"-Link.</p></div>
         if ($usr['da_avail'] == 'yes') {
             $pc = getpc($pcid);
             if (isavailh('da', $pc) == true) {
-                echo '<p><a href="distrattack.htn?sid='.$sid.'&amp;page=create">Neue Distributed Attack erstellen</a></p>'."\n";
+                echo '<p><a href="distrattack.php?sid='.$sid.'&amp;page=create">Neue Distributed Attack erstellen</a></p>'."\n";
             } else {
                 echo '<p>Von diesem PC aus kannst du keine DA erstellen!</p>'."\n";
             }
         }
-        echo '<p><a href="distrattack.htn?sid='.$sid.'&amp;page=list">Vorhandene Distributed Attacks anzeigen</a></p>';
+        echo '<p><a href="distrattack.php?sid='.$sid.'&amp;page=list">Vorhandene Distributed Attacks anzeigen</a></p>';
 
         echo '</div>'."\n";
 
@@ -308,7 +308,7 @@ Dort findest du einen "Mitgliedsantrag stellen"-Link.</p></div>
                 );
             }
 
-            header('Location: cluster.htn?sid='.$sid.'&page=convents&ok='.urlencode('Der Vertrag wurde annulliert.'));
+            header('Location: cluster.php?sid='.$sid.'&page=convents&ok='.urlencode('Der Vertrag wurde annulliert.'));
 
         } else {
             no_();
@@ -330,7 +330,7 @@ Dort findest du einen "Mitgliedsantrag stellen"-Link.</p></div>
 '.$notif.'<div id="cluster-create-convent">
 <h3>Vertrag erstellen</h3>
 '.$xxx.'
-<form action="cluster.htn?page=saveconvents&amp;sid='.$sid.'" method="post">
+<form action="cluster.php?page=saveconvents&amp;sid='.$sid.'" method="post">
 <table>
 <tr>
 <th>Vertrags-Partner (Code):</th>
@@ -371,9 +371,9 @@ Dort findest du einen "Mitgliedsantrag stellen"-Link.</p></div>
                 while ($pact = mysql_fetch_assoc($r)):
                     $temp = cvcodetostring($pact['convent']);
                     echo '<tr>
-<td><a href="cluster.htn?page=info&amp;sid='.$sid.'&amp;cluster='.$pact['id'].'">'.$pact['code'].'</a></td>
+<td><a href="cluster.php?page=info&amp;sid='.$sid.'&amp;cluster='.$pact['id'].'">'.$pact['code'].'</a></td>
 <td>'.$temp.'</td>
-<td><a href="cluster.htn?page=delconvent&amp;sid='.$sid.'&amp;convent='.$pact['convent'].'-'.$pact['partner'].'">L&ouml;schen</a></td>
+<td><a href="cluster.php?page=delconvent&amp;sid='.$sid.'&amp;convent='.$pact['convent'].'-'.$pact['partner'].'">L&ouml;schen</a></td>
 </tr>
 ';
                 endwhile;
@@ -399,7 +399,7 @@ Dort findest du einen "Mitgliedsantrag stellen"-Link.</p></div>
                 while ($pact = mysql_fetch_assoc($r)):
                     $temp = cvcodetostring($pact['convent']);
                     echo '<tr>
-<td><a href="cluster.htn?page=info&amp;sid='.$sid.'&amp;cluster='.$pact['id'].'">'.$pact['code'].'</a></td>
+<td><a href="cluster.php?page=info&amp;sid='.$sid.'&amp;cluster='.$pact['id'].'">'.$pact['code'].'</a></td>
 <td>'.$temp.'</td>
 </tr>
 ';
@@ -457,7 +457,7 @@ Dort findest du einen "Mitgliedsantrag stellen"-Link.</p></div>
                 $ok = 'Der Vertrag wurde abgeschlossen.';
             }
             header(
-                'Location: cluster.htn?page=convents&sid='.$sid.'&'.($ok != '' ? 'ok='.urlencode(
+                'Location: cluster.php?page=convents&sid='.$sid.'&'.($ok != '' ? 'ok='.urlencode(
                         $ok
                     ) : 'error='.urlencode($error))
             );
@@ -479,13 +479,13 @@ Dort findest du einen "Mitgliedsantrag stellen"-Link.</p></div>
                     ).'\',tax='.mysql_escape_string($tax).' WHERE id='.mysql_escape_string($clusterid)
                 );
                 header(
-                    'Location: cluster.htn?page=finances&sid='.$sid.'&ok='.urlencode(
+                    'Location: cluster.php?page=finances&sid='.$sid.'&ok='.urlencode(
                         'Die &Auml;nderungen wurden &uuml;bernommen.'
                     )
                 );
             } else {
                 header(
-                    'Location: cluster.htn?page=finances&sid='.$sid.'&error='.urlencode('Bitte eine Zahl eingeben.')
+                    'Location: cluster.php?page=finances&sid='.$sid.'&error='.urlencode('Bitte eine Zahl eingeben.')
                 );
             }
         } else {
@@ -523,7 +523,7 @@ function autosel(obj) { var i = (obj.name==\'pcip\' ? 1 : 0);
 <div id="cluster-tax">
 <h3>Mitgliedsbeitrag</h3>
 <p>Mitgliedsbeitrag in Credits pro User pro Tag festlegen:</p>
-<form action="cluster.htn?page=savefincances&amp;sid='.$sid.'" method="post">
+<form action="cluster.php?page=savefincances&amp;sid='.$sid.'" method="post">
 <table>
 <tr>
 <th>Cluster-Mitgliedsbeitrag:</th>
@@ -544,7 +544,7 @@ function autosel(obj) { var i = (obj.name==\'pcip\' ? 1 : 0);
             echo '
 <div id="cluster-transfers">
 <h3>Überweisungen</h3>
-<form action="cluster.htn?page=transfer&amp;sid='.$sid.'" method="post" name="frm">
+<form action="cluster.php?page=transfer&amp;sid='.$sid.'" method="post" name="frm">
 <table>
 <tr>
 <th>Empf&auml;nger:</th>
@@ -581,7 +581,7 @@ function autosel(obj) { var i = (obj.name==\'pcip\' ? 1 : 0);
                 } elseif ($user['cm'] == strftime('%d.%m.', time() - 86400)) {
                     $user['cm'] = 'gestern';
                 }
-                echo '<tr>'.LF.'<td><a href="user.htn?page=info&amp;user='.$user['id'].'&amp;sid='.$sid.'">'.$user['name'].'</a></td><td>'.$user['cm'].'</td></tr>';
+                echo '<tr>'.LF.'<td><a href="user.php?page=info&amp;user='.$user['id'].'&amp;sid='.$sid.'">'.$user['name'].'</a></td><td>'.$user['cm'].'</td></tr>';
             }
             echo '</table>'.LF.'</div>'.LF.'</div>'.LF;
 
@@ -600,7 +600,7 @@ function autosel(obj) { var i = (obj.name==\'pcip\' ? 1 : 0);
 <h2>Cluster</h2>
 '.$notif.'<div id="cluster-member-administration">
 <h3>Mitglieder-Verwaltung</h3>
-<form action="cluster.htn?page=savemembers&amp;sid='.$sid.'" method="post">
+<form action="cluster.php?page=savemembers&amp;sid='.$sid.'" method="post">
 <table>
 <tr>
 <th>Name</th>
@@ -627,7 +627,7 @@ function autosel(obj) { var i = (obj.name==\'pcip\' ? 1 : 0);
                 if ($uix == $usrid) {
                     continue;
                 }
-                echo '<tr>'.LF.'<td><a href="user.htn?page=info&amp;user='.$uix.'&amp;sid='.$sid.'">'.$udat['name'].'</a></td>'.LF.'<td>'.$udat['points'].'</td>'.LF.'<td>';
+                echo '<tr>'.LF.'<td><a href="user.php?page=info&amp;user='.$uix.'&amp;sid='.$sid.'">'.$udat['name'].'</a></td>'.LF.'<td>'.$udat['points'].'</td>'.LF.'<td>';
                 echo '<select name="stat'.$uix.'">';
                 stat_list_item(CS_MEMBER, $udat['clusterstat']);
                 stat_list_item(CS_ADMIN, $udat['clusterstat']);
@@ -707,7 +707,7 @@ function autosel(obj) { var i = (obj.name==\'pcip\' ? 1 : 0);
             );
 
             header(
-                'Location: cluster.htn?page=members&sid='.$sid.'&ok='.urlencode(
+                'Location: cluster.php?page=members&sid='.$sid.'&ok='.urlencode(
                     'Die &Auml;nderungen wurden &uuml;bernommen!'
                 )
             );
@@ -730,7 +730,7 @@ function autosel(obj) { var i = (obj.name==\'pcip\' ? 1 : 0);
 <h2>Cluster</h2>
 '.$notif.'<div id="cluster-settings">
 <h3>Cluster-Einstellungen</h3>
-<form action="cluster.htn?page=savecfg&amp;sid='.$sid.'" method="post">
+<form action="cluster.php?page=savecfg&amp;sid='.$sid.'" method="post">
 <table>
 <tr>
 <th>Cluster-Name:</th>
@@ -815,7 +815,7 @@ Ordner 3:<br />
                 echo '<div class="content" id="cluster">
 <h2>Cluster l&ouml;schen</h2>
 <h3>Bitte best&auml;tigen!</h3>
-<form action="cluster.htn?page=delcluster&amp;sid='.$sid.'" method="post">
+<form action="cluster.php?page=delcluster&amp;sid='.$sid.'" method="post">
 <p><strong>Setz den Haken und klick auf "Weiter" um den Cluster endg&uuml;ltig zu l&ouml;schen!</strong></p>
 <p><input type="checkbox" value="yes" name="delete" /></p>
 <p><input type="submit" value=" Weiter " /></p>
@@ -866,7 +866,7 @@ Ordner 3:<br />
 
                 if ($e == true) {
 
-                    header('Location: cluster.htn?page=config&error='.urlencode($msg).'&sid='.$sid);
+                    header('Location: cluster.php?page=config&error='.urlencode($msg).'&sid='.$sid);
 
                 } else {
                     while (list($bez, $val) = each($_POST)) {
@@ -883,7 +883,7 @@ Ordner 3:<br />
                     $cluster['homepage'] = safeentities($hp);
                     savemycluster();
                     header(
-                        'Location: cluster.htn?page=config&ok='.urlencode(
+                        'Location: cluster.php?page=config&ok='.urlencode(
                             'Die ge&auml;nderten Einstellungen wurden &uuml;bernommen!'
                         ).'&sid='.$sid
                     );
@@ -949,7 +949,7 @@ Ordner 3:<br />
                     ).',0)'
                 );
 
-                header('Location: cluster.htn?page=start&sid='.$sid);
+                header('Location: cluster.php?page=start&sid='.$sid);
             } else {
                 simple_message('Ein Cluster mit diesem K&uuml;rzel existiert bereits!');
             }
@@ -1006,7 +1006,7 @@ Ordner 3:<br />
                 setuserval('cluster', $x['id']);
                 setuserval('clusterstat', CS_MEMBER);
 
-                header('Location: cluster.htn?page=start&sid='.$sid);
+                header('Location: cluster.php?page=start&sid='.$sid);
 
             } else {
                 simple_message(
@@ -1034,7 +1034,7 @@ Ordner 3:<br />
 '.$notif.'<div id="cluster-leave">
 <h3>Cluster verlassen</h3>
 <p><strong>Wenn du wirklich den Cluster verlassen willst, dann klick auf den Button!</strong></p>
-<form action="cluster.htn?page=do_leave&amp;sid='.$sid.'" method="post">
+<form action="cluster.php?page=do_leave&amp;sid='.$sid.'" method="post">
 <p><input type="submit" value="Austreten" name="subm" /></p>
 </form>
 ';
@@ -1064,7 +1064,7 @@ Ordner 3:<br />
             )
         );
 
-        header('Location: cluster.htn?page=start&sid='.$sid);
+        header('Location: cluster.php?page=start&sid='.$sid);
 
         break;
 
@@ -1116,7 +1116,7 @@ Ordner 3:<br />
                     } else {
                         $online = '<span style="color:red;">Offline</span>';
                     }
-                    $members .= '<tr>'.LF.'<td><a href="user.htn?page=info&amp;user='.$member['id'].'&amp;sid='.$sid.'">'.$member['name'].'</a></td>'.LF.'<td>'.cscodetostring(
+                    $members .= '<tr>'.LF.'<td><a href="user.php?page=info&amp;user='.$member['id'].'&amp;sid='.$sid.'">'.$member['name'].'</a></td>'.LF.'<td>'.cscodetostring(
                             $member['clusterstat']
                         ).'</td>'.LF.'<td>'.$member['points'].'</td>'.LF.'<td>'.$online.'</td>'.LF.'<td>'.$lli.'</td>'.LF.'</tr>'."\n";
                 }
@@ -1128,7 +1128,7 @@ Ordner 3:<br />
 <h2>Cluster</h2>
 <div id="cluster-members">
 <h3>Mitglieder von '.$short.'</h3>
-<form action="cluster.htn?sid='.$sid.'&amp;page=listmembers&amp;cluster='.$c['id'].'" method="post">
+<form action="cluster.php?sid='.$sid.'&amp;page=listmembers&amp;cluster='.$c['id'].'" method="post">
 <p><strong>Ordnen nach:</strong>&nbsp;<select name="sortby" onchange="this.form.submit()">
   <option value="name"'.$ch1.'>Name</option>
   <option value="points"'.$ch2.'>Punkte</option>
@@ -1184,7 +1184,7 @@ Ordner 3:<br />
                 }
 
                 if ($u !== false) {
-                    echo ' von <a href="user.htn?page=info&amp;sid='.$sid.'&amp;user='.$u['id'].'">'.$u['name'].'</a>';
+                    echo ' von <a href="user.php?page=info&amp;sid='.$sid.'&amp;user='.$u['id'].'">'.$u['name'].'</a>';
                     if ($u['cluster'] != $clusterid) {
 
                         $tmp = (int)$u['cluster'];
@@ -1196,7 +1196,7 @@ Ordner 3:<br />
                         }
 
                         if ($c !== false) {
-                            echo ' (<a href="cluster.htn?page=info&amp;sid='.$sid.'&amp;cluster='.$u['cluster'].'">'.$c['code'].'</a>)</td>'."\n";
+                            echo ' (<a href="cluster.php?page=info&amp;sid='.$sid.'&amp;cluster='.$u['cluster'].'">'.$c['code'].'</a>)</td>'."\n";
                         } else {
                             echo '</td>'."\n";
                         }
@@ -1341,14 +1341,14 @@ Ordner 3:<br />
             $text = nl2br($cluster['infotext']);
 
             if ($usr['stat'] > 10) {
-                $text .= '</td></tr><tr class="greytr2"><td>SONDER-FUNKTIONEN</td><td><a href="secret.htn?sid='.$sid.'&page=file&type=cluster&id='.$c.'">EXTRAS</a> | <a href="secret.htn?sid='.$sid.'&page=cboard&id='.$c.'">Cluster-Board</a>';
+                $text .= '</td></tr><tr class="greytr2"><td>SONDER-FUNKTIONEN</td><td><a href="secret.php?sid='.$sid.'&page=file&type=cluster&id='.$c.'">EXTRAS</a> | <a href="secret.php?sid='.$sid.'&page=cboard&id='.$c.'">Cluster-Board</a>';
             }
 
             if ($cluster['id'] != $usr['cluster']) {
                 if ($cluster['acceptnew'] == 'yes') {
                     if ($members < MAX_CLUSTER_MEMBERS) {
                         $col = 'green';
-                        $aufnahme = 'M&ouml;glich (<a href="cluster.htn?page=request1&amp;sid='.$sid.'&amp;cluster='.$cluster['id'].'">Aufnahmeantrag stellen</a>)';
+                        $aufnahme = 'M&ouml;glich (<a href="cluster.php?page=request1&amp;sid='.$sid.'&amp;cluster='.$cluster['id'].'">Aufnahmeantrag stellen</a>)';
                     } else {
                         $col = 'red';
                         $aufnahme = 'Der Cluster hat die max. Mitgliederzahl von '.MAX_CLUSTER_MEMBERS.' schon erreicht!';
@@ -1378,7 +1378,7 @@ Ordner 3:<br />
 </tr>
 '.$hp.'
 <tr>
-<th>Mitglieder (<a href="cluster.htn?page=listmembers&amp;cluster='.$c.'&amp;sid='.$sid.'">anzeigen</a>):</th>
+<th>Mitglieder (<a href="cluster.php?page=listmembers&amp;cluster='.$c.'&amp;sid='.$sid.'">anzeigen</a>):</th>
 <td>'.$members.'</td>
 </tr>
 <tr>
@@ -1386,7 +1386,7 @@ Ordner 3:<br />
 <td>'.$text.'</td>
 </tr>
 '.$aufnahme.'<tr>
-<td colspan="2"><a href="ranking.htn?page=ranking&amp;sid='.$sid.'&amp;type=cluster&amp;id='.$c.'">Cluster in Rangliste</a></td>
+<td colspan="2"><a href="ranking.php?page=ranking&amp;sid='.$sid.'&amp;type=cluster&amp;id='.$c.'">Cluster in Rangliste</a></td>
 </tr>
 </table>
 </div>
@@ -1452,12 +1452,12 @@ Ordner 3:<br />
 <div id="cluster-transfer1">
 <h3>&Uuml;berweisung</h3>
 
-<form action="cluster.htn?page=transfer2&amp;sid='.$sid.'"  method="post">
+<form action="cluster.php?page=transfer2&amp;sid='.$sid.'"  method="post">
 <input type="hidden" name="tcode" value="'.$tcode.'">';
                 switch ($type) {
                     case 'user':
                         $recip_usr = getuser($recip['owner']);
-                        $text = '<p><strong>Hiermit werden '.$credits.' Credits an den Rechner 10.47.'.$recip['ip'].', der <a href="user.htn?page=info&user='.$recip['owner'].'&sid='.$sid.'">'.$recip_usr['name'].'</a> geh&ouml;rt, &uuml;berwiesen.</strong></p><br />';
+                        $text = '<p><strong>Hiermit werden '.$credits.' Credits an den Rechner 10.47.'.$recip['ip'].', der <a href="user.php?page=info&user='.$recip['owner'].'&sid='.$sid.'">'.$recip_usr['name'].'</a> geh&ouml;rt, &uuml;berwiesen.</strong></p><br />';
 
                         $c = GetCountry('id', $recip['country']);
                         $country2 = $c['name'];
@@ -1504,7 +1504,7 @@ Ordner 3:<br />
                 );
 
             } else {
-                header('Location: cluster.htn?sid='.$sid.'&page=finances&error='.urlencode($e));
+                header('Location: cluster.php?sid='.$sid.'&page=finances&error='.urlencode($e));
             }
         } else {
             no_();
@@ -1581,7 +1581,7 @@ Ordner 3:<br />
                     ).'\', \''.mysql_escape_string($recip['owner']).'\', \''.mysql_escape_string($dat[3]).'\', \''.time(
                     ).'\');'
                 );
-                header('Location: cluster.htn?page=finances&sid='.$sid.'&ok='.urlencode($msg));
+                header('Location: cluster.php?page=finances&sid='.$sid.'&ok='.urlencode($msg));
             }
         } else {
             no_();
@@ -1599,8 +1599,8 @@ Ordner 3:<br />
 <h2>Cluster</h2>
 <div id="cluster-request-new1">
 <h3>Aufnahmeantrag stellen</h3>
-<p><b>Antrag auf Aufnahme in den Cluster <a href="cluster.htn?sid='.$sid.'&cluster='.$c['id'].'&page=info">'.$c['code'].'</a> stellen:</b></p>
-<form action="cluster.htn?page=request2&sid='.$sid.'" method="post">
+<p><b>Antrag auf Aufnahme in den Cluster <a href="cluster.php?sid='.$sid.'&cluster='.$c['id'].'&page=info">'.$c['code'].'</a> stellen:</b></p>
+<form action="cluster.php?page=request2&sid='.$sid.'" method="post">
 <input type="hidden" name="cluster" value="'.$c['id'].'">
 <p>
 <textarea name="comment" rows=8 cols=50>Hallo!
@@ -1637,7 +1637,7 @@ Du wirst dann per System-Nachricht informiert, ob du aufgenommen wurdest oder ni
 <h2>Cluster</h2>
 <div id="cluster-request-new2">
 <h3>Aufnahmeantrag stellen</h3>
-<p><b>Der Antrag auf Aufnahme in den Cluster <a href="cluster.htn?sid='.$sid.'&cluster='.$c['id'].'&page=info">'.$c['code'].'</a> wurde abgesandt.
+<p><b>Der Antrag auf Aufnahme in den Cluster <a href="cluster.php?sid='.$sid.'&cluster='.$c['id'].'&page=info">'.$c['code'].'</a> wurde abgesandt.
 Wenn ein Admin oder ein Mitgliederminister des Clusters &uuml;ber deine Aufnahme entschieden
 hat, wirst du per System-Nachricht informiert.</b></p>
 </div></div>';
@@ -1653,7 +1653,7 @@ hat, wirst du per System-Nachricht informiert.</b></p>
 <div id="cluster-request-administration">
 <h3>Aufnahmeantr&auml;ge</h3>
 '.$notif.'
-<form action="cluster.htn?page=savereqverw&sid='.$sid.'" method="post">
+<form action="cluster.php?page=savereqverw&sid='.$sid.'" method="post">
 <table cellpadding="3" cellspacing="2">
 <tr><th>Spieler</th><th>Punkte</th><th>Kommentar</th><th>Aufnehmen</th><th>Ablehnen</th><th>Nicht &auml;ndern</th></tr>';
 
@@ -1664,7 +1664,7 @@ hat, wirst du per System-Nachricht informiert.</b></p>
                     db_query('DELETE FROM cl_reqs WHERE user='.mysql_escape_string($data['user']).';');
                     continue;
                 }
-                echo '<tr><th><a href="user.htn?page=info&sid='.$sid.'&user='.$u['id'].'" class="il">'.$u['name'].'</a></th>';
+                echo '<tr><th><a href="user.php?page=info&sid='.$sid.'&user='.$u['id'].'" class="il">'.$u['name'].'</a></th>';
                 echo '<td>'.$u['points'].'</td><td><tt>'.$data['comment'].'</tt></td>';
                 echo '<td><input type="radio" name="u'.$u['id'].'" value="yes"></td>';
                 echo '<td><input type="radio" name="u'.$u['id'].'" value="no"></td>';
@@ -1696,7 +1696,7 @@ hat, wirst du per System-Nachricht informiert.</b></p>
                 if ($chs == 'yes') {
                     addsysmsg(
                         $u['id'],
-                        'Dein Aufnahmeantrag in den Cluster [cluster='.$clusterid.']'.$cluster['code'].'[/cluster] wurde angenommen!<br />Klicke <a href="cluster.htn?sid=%sid%&page=join&cluster='.$clusterid.'">hier</a> um deinen jetzigen Cluster zu verlassen und '.$cluster['code'].' beizutreten.'
+                        'Dein Aufnahmeantrag in den Cluster [cluster='.$clusterid.']'.$cluster['code'].'[/cluster] wurde angenommen!<br />Klicke <a href="cluster.php?sid=%sid%&page=join&cluster='.$clusterid.'">hier</a> um deinen jetzigen Cluster zu verlassen und '.$cluster['code'].' beizutreten.'
                     );
                     $acstr .= 'user='.mysql_escape_string($u['id']).' OR ';
                 } elseif ($chs == 'no') {
@@ -1720,7 +1720,7 @@ hat, wirst du per System-Nachricht informiert.</b></p>
             }
 
             header(
-                'Location: cluster.htn?sid='.$sid.'&page=req_verw&ok='.urlencode(
+                'Location: cluster.php?sid='.$sid.'&page=req_verw&ok='.urlencode(
                     'Die Aufnahmeantr&auml;ge wurden bearbeitet!'
                 )
             );
@@ -1788,7 +1788,7 @@ while($pact=mysql_fetch_assoc($r)):
   $partner=getcluster($pact['partner']);
   if($partner!==false) {
     $temp=cvcodetostring($pact['convent']);
-    $s.="<tr>\n<td><a href=\"cluster.htn?page=info&amp;sid=$sid&amp;cluster=$partner['id']\">$partner['code']</a></td>\n<td>$temp</td>\n</tr>\n";
+    $s.="<tr>\n<td><a href=\"cluster.php?page=info&amp;sid=$sid&amp;cluster=$partner['id']\">$partner['code']</a></td>\n<td>$temp</td>\n</tr>\n";
   }
 endwhile;
 $s.="</table>";
@@ -1814,7 +1814,7 @@ function conventlist($cid)
         while ($pact = mysql_fetch_assoc($r)) {
             #$partner=getcluster($pact['partner']);
             $temp = cvcodetostring($pact['convent']);
-            $s .= '<tr>'.LF.'<td><a href="cluster.htn?page=info&amp;sid='.$sid.'&amp;cluster='.$pact['id'].'">'.$pact['code'].'</a></td>'.LF.'<td>'.$temp.'</td>'.LF.'</tr>'."\n";
+            $s .= '<tr>'.LF.'<td><a href="cluster.php?page=info&amp;sid='.$sid.'&amp;cluster='.$pact['id'].'">'.$pact['code'].'</a></td>'.LF.'<td>'.$temp.'</td>'.LF.'</tr>'."\n";
         }
         $s .= '</table>';
     }

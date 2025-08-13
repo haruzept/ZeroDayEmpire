@@ -13,7 +13,7 @@
     ?>
 
     <div id="public-login"><h3>Log In</h3>
-        <form action="login.htn?a=login" method="post">
+        <form action="login.php?a=login" method="post">
             <table>
                 <tr>
                     <th>Nickname:</th>
@@ -48,7 +48,7 @@
             $gcnt = GetOnlineUserCnt(1);
             echo "Spieler online: $gcnt<br />\n";
             ?></p>
-        <p><a href="pub.htn?d=stats">Ausführliche Statistik</a></p></div>
+        <p><a href="pub.php?d=stats">Ausführliche Statistik</a></p></div>
 
     <div class="info"><h3>Aktuelle News</h3>
         <p>Besuchen Sie auch das Original dieses Spiels auf <a href="http://www.hackthenet.org/">www.hackthenet.org</a>.

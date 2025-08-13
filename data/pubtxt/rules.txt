@@ -1,7 +1,7 @@
 <div class="content" id="rules">
 <h2>Regeln</h2>
 <div class="submenu">
-<p><a href="pub.htn?d=regelverstoss">Regelversto&szlig; melden</a></p>
+<p><a href="pub.php?d=regelverstoss">Regelversto&szlig; melden</a></p>
 </div>
 
 <div class="important">

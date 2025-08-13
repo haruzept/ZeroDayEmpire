@@ -36,15 +36,15 @@
       htn2src.2.0-RC2 (3.9.04) - Zweiter RC, einige Änderungen im Detail gegenüber dem ersten.
       htn2src.2.0-RC3 (3.9.04) - Dritter RC, weitere Bugfixes.
       htn2src.2.0-RC4 (4.9.04) - Einige Bugfixes:
-            cboard.htn - "s"-User gefixt
-            cluster.htn - diverse \n's entfernt
-            game.htn - Anzeige des Hijack-Levels in der PC-Übersicht hinzugefügt (danke an Eraser)
-            mail.htn - Bug mit \s gefixt
-            user.htn - Passwort ändern-Funktion für Admins gefixt
+            cboard.php - "s"-User gefixt
+            cluster.php - diverse \n's entfernt
+            game.php - Anzeige des Hijack-Levels in der PC-Übersicht hinzugefügt (danke an Eraser)
+            mail.php - Bug mit \s gefixt
+            user.php - Passwort ändern-Funktion für Admins gefixt
             Mini-"Doku" hinzugefügt
       htn2src.2.0-RC5 (9.9.04) - Einige Bugfixes:
             .htaccess
-            login.htn - kritischer Bug gefixt!
+            login.php - kritischer Bug gefixt!
             weitere Dateien - kleinere Darstellungsfehler entfernt
             
     

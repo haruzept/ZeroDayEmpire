@@ -69,7 +69,7 @@ alert(\'Bitte Zahl eingeben!\');
 '.$notif.'
 <h3>'.$title.'</h3>
 <p>'.$hw.'</p><br />
-<form action="secret.htn?a=save&amp;sid='.$sid.'&amp;type='.$_REQUEST['type'].'&amp;id='.$_REQUEST['id'].'" method="post">
+<form action="secret.php?a=save&amp;sid='.$sid.'&amp;type='.$_REQUEST['type'].'&amp;id='.$_REQUEST['id'].'" method="post">
 <table>
 <tr><th>ID</th><th>Wert</th><th>Erkl&auml;rung</th></tr>';
 
@@ -146,7 +146,7 @@ alert(\'Bitte Zahl eingeben!\');
                 break;
         }
         header(
-            'Location: secret.htn?sid='.$sid.'&mode=file&type='.$_REQUEST['type'].'&id='.$_REQUEST['id'].'&ok=GESPEICHERT'
+            'Location: secret.php?sid='.$sid.'&mode=file&type='.$_REQUEST['type'].'&id='.$_REQUEST['id'].'&ok=GESPEICHERT'
         );
         break;
 
@@ -182,7 +182,7 @@ alert(\'Bitte Zahl eingeben!\');
                     $time = nicetime($data['time']);
                     echo '<table>
 <tr class=board2><td><span class=boardtitle>'.$data['subject'].'</span>&nbsp;
-<span style="font-size:9pt;">von <a href="user.htn?a=info&user='.$data['user'].'&sid='.$sid.'">'.$data['user_name'].'</a>
+<span style="font-size:9pt;">von <a href="user.php?a=info&user='.$data['user'].'&sid='.$sid.'">'.$data['user_name'].'</a>
 ('.$cstat.') am '.$time.'</span></td></tr>
 <tr valign=top><td class=board1>'.$data['content'].'</td></tr>
 </table><br />';
@@ -250,8 +250,8 @@ alert(\'Bitte Zahl eingeben!\');
                         $tmp .= '<tr class=greytr style="font-size:8pt;">';
                         #$sender=getuser($data['user'],'id');
 
-                        $tmp .= '<td style="font-size:10pt;"><a href="secret.htn?sid='.$sid.'&mode=cboard&board=showthread&threadid='.$data['thread'].'&id='.$cix.'">'.$data['subject'].'</a></td>';
-                        $tmp .= '<td><a href="user.htn?a=info&sid='.$sid.'&user='.$data['user'].'" class=il>'.$data['user_name'].'</a></td><td>'.nicetime2(
+                        $tmp .= '<td style="font-size:10pt;"><a href="secret.php?sid='.$sid.'&mode=cboard&board=showthread&threadid='.$data['thread'].'&id='.$cix.'">'.$data['subject'].'</a></td>';
+                        $tmp .= '<td><a href="user.php?a=info&sid='.$sid.'&user='.$data['user'].'" class=il>'.$data['user_name'].'</a></td><td>'.nicetime2(
                                 $data['time'],
                                 true
                             ).'</td>';
@@ -261,7 +261,7 @@ alert(\'Bitte Zahl eingeben!\');
                             $slm = nicetime2(
                                     $lastm_time,
                                     true
-                                ).' von <a href="user.htn?a=info&sid='.$sid.'&user='.$lastm_usr['id'].'" class=il>'.$lastm_usr['name'].'</a>';
+                                ).' von <a href="user.php?a=info&sid='.$sid.'&user='.$lastm_usr['id'].'" class=il>'.$lastm_usr['name'].'</a>';
                         }
                         $tmp .= '<td>'.$slm.'</td>';
                         if ($aws < 1) {
@@ -297,7 +297,7 @@ alert(\'Bitte Zahl eingeben!\');
 <h2>Admin</h2>
 <h3>User l&ouml;schen</h3>
 <b>Wenn du wirklich den Account l&ouml;schen willst, dann klick auf den Button!</b>
-<br /><form action="secret.htn?a=delacc2&amp;sid='.$sid.'"  method="post">
+<br /><form action="secret.php?a=delacc2&amp;sid='.$sid.'"  method="post">
 <input type=hidden name="user" value="'.$_REQUEST['user'].'">
 <input type=submit value=" ACCOUNT L&Ouml;SCHEN ">
 </form>

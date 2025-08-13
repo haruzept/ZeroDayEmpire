@@ -78,9 +78,9 @@ function maillist($boxid)
         }
         $output .= '<tr'.$new.'>'."\n";
         $output .= '<td class="number">'.$mcnt.'</td>'."\n";
-        $output .= '<td class="from"><a href="user.htn?a=info&amp;user='.$data['user2'].'&amp;sid='.$sid.'">'.$data['user2_name'].'</a></td>'."\n";
+        $output .= '<td class="from"><a href="user.php?a=info&amp;user='.$data['user2'].'&amp;sid='.$sid.'">'.$data['user2_name'].'</a></td>'."\n";
         $output .= '<td class="time">'.$time.'</td>'."\n";
-        $output .= '<td class="title"><a href="mail.htn?a=read&amp;msg='.$data['mail'].'&amp;sid='.$sid.'">'.$data['subject'].'</a></td>'."\n";
+        $output .= '<td class="title"><a href="mail.php?a=read&amp;msg='.$data['mail'].'&amp;sid='.$sid.'">'.$data['subject'].'</a></td>'."\n";
         $output .= '<td class="checkbox"><input name="c'.$data['mail'].'" type="checkbox" value="1"></input></td>'."\n";
         $output .= '</tr>';
     }
@@ -108,7 +108,7 @@ function newmailform($recip = '', $subject = '', $text = '', $xnl2br = true)
     }
     echo '<div id="messages-compose">
 <h3>Mail verfassen</h3>
-<form action="mail.htn?a=sendmail&amp;sid='.$sid.'" method="post" name="newmail">
+<form action="mail.php?a=sendmail&amp;sid='.$sid.'" method="post" name="newmail">
 <table>
 <tr id="messages-compose-recipient">
 <th>Empf&auml;nger:</th>
@@ -198,14 +198,14 @@ switch ($action) {
 <h2>Messages</h2>
 <div class="submenu">
 <p>'.$link_inbox.$link_sysmsgs.'<a href="#messages-compose">Mail verfassen</a></p>
-<p><a href="mail.htn?m=archiv&amp;sid='.$sid.'">Nachrichten-Archiv</a> ('.$arcstate.') | <a href="mail.htn?m=outbox&amp;sid='.$sid.'">Zuletzt gesendete Mails</a> | <a href="mail.htn?m=transmit1&amp;sid='.$sid.'">Mails &uuml;bertragen</a></p>
+<p><a href="mail.php?m=archiv&amp;sid='.$sid.'">Nachrichten-Archiv</a> ('.$arcstate.') | <a href="mail.php?m=outbox&amp;sid='.$sid.'">Zuletzt gesendete Mails</a> | <a href="mail.php?m=transmit1&amp;sid='.$sid.'">Mails &uuml;bertragen</a></p>
 </div>
 '.$notif.$full;
         if ($inbox != '') {
             echo '<div id="messages-inbox">
 <h3>Posteingang</h3>
 '.$inboxstate.'
-<form action="mail.htn?type=in&amp;sid='.$sid.'&amp;redir=start" method="post">
+<form action="mail.php?type=in&amp;sid='.$sid.'&amp;redir=start" method="post">
 <table>
 <tr>
 <th class="number">Nummer</th>
@@ -231,7 +231,7 @@ switch ($action) {
         if ($sysmsgs != '') {
             echo '<div id="messages-system">
 <h3>System-Nachrichten</h3>
-<form action="mail.htn?sid='.$sid.'&amp;a=sysmsg_exec" method="post">
+<form action="mail.php?sid='.$sid.'&amp;a=sysmsg_exec" method="post">
 <table>
 <tr>
 <th class="number">Nummer</th>
@@ -281,7 +281,7 @@ switch ($action) {
             $xtxt = 'als gelesen markiert';
         }
         header(
-            'Location: mail.htn?a=start&sid='.$sid.'&'.($cnt != 0 ? 'ok='.urlencode(
+            'Location: mail.php?a=start&sid='.$sid.'&'.($cnt != 0 ? 'ok='.urlencode(
                     'Es wurden '.$cnt.' System-Nachrichten '.$xtxt.'!'
                 ) : 'error='.urlencode('Es muss mindestens eine Nachricht markiert werden.'))
         );
@@ -305,7 +305,7 @@ switch ($action) {
 <h3>Nachrichtenarchiv</h3>
 ';
         if ($x != '') {
-            echo '<form action="mail.htn?type=arc&amp;sid='.$sid.'&amp;redir=archiv&amp;action=delete"  method="post">
+            echo '<form action="mail.php?type=arc&amp;sid='.$sid.'&amp;redir=archiv&amp;action=delete"  method="post">
 <table>
 <tr>
 <th class="number">Nummer</th>
@@ -336,7 +336,7 @@ switch ($action) {
 <h2>Messages</h2>
 '.$notif.'<div id="messages-outbox">
 <h3>Postausgang</h3>
-<form action="mail.htn?type=out&amp;sid='.$sid.'&amp;redir=outbox" method="post">
+<form action="mail.php?type=out&amp;sid='.$sid.'&amp;redir=outbox" method="post">
 <table>
 <tr>
 <th class="number">Nummer</th>
@@ -367,7 +367,7 @@ switch ($action) {
         db_query('DELETE FROM mails WHERE '.$s.';');
         newmailcount(true);
         header(
-            'Location: mail.htn?m='.$_REQUEST['redir'].'&sid='.$sid.'&ok='.urlencode(
+            'Location: mail.php?m='.$_REQUEST['redir'].'&sid='.$sid.'&ok='.urlencode(
                 'Die gew&auml;hlten Mails wurden gel&ouml;scht.'
             )
         );
@@ -387,7 +387,7 @@ switch ($action) {
             $error = 'Das Archiv ist voll. Es k&ouml;nnen maximal '.getmaxmails('arc').' Mails gelagert werden.';
         }
         header(
-            'Location: mail.htn?m='.$_REQUEST['redir'].'&sid='.$sid.'&'.($ok != '' ? 'ok='.urlencode(
+            'Location: mail.php?m='.$_REQUEST['redir'].'&sid='.$sid.'&'.($ok != '' ? 'ok='.urlencode(
                     $ok
                 ) : 'error='.urlencode($error))
         );
@@ -399,7 +399,7 @@ switch ($action) {
         db_query('UPDATE mails SET xread=\'yes\' WHERE '.$s.';');
         newmailcount(true);
         header(
-            'Location: mail.htn?m='.$_REQUEST['redir'].'&sid='.$sid.'&ok='.urlencode(
+            'Location: mail.php?m='.$_REQUEST['redir'].'&sid='.$sid.'&ok='.urlencode(
                 'Die gew&auml;hlten Mails wurden als gelesen markiert.'
             )
         );
@@ -411,7 +411,7 @@ switch ($action) {
         db_query('UPDATE mails SET xread=\'no\' WHERE '.$s.';');
         newmailcount(true);
         header(
-            'Location: mail.htn?m='.$_REQUEST['redir'].'&sid='.$sid.'&ok='.urlencode(
+            'Location: mail.php?m='.$_REQUEST['redir'].'&sid='.$sid.'&ok='.urlencode(
                 'Die gew&auml;hlten Mails wurden als ungelesen markiert.'
             )
         );
@@ -518,7 +518,7 @@ switch ($action) {
         }
 
         if ($e == false) {
-            header('Location: mail.htn?m=newmailform&sid='.$sid.'&ok='.urlencode($ok));
+            header('Location: mail.php?m=newmailform&sid='.$sid.'&ok='.urlencode($ok));
         } else {
             $err = '<div class="error"><h3>Fehler</h3><p>'.$error.'</p></div>';
             createlayout_top('HackTheNet - Messages');
@@ -574,12 +574,12 @@ switch ($action) {
                 $xcap = 'Empf&auml;nger';
                 break;
         }
-        $links = '<a href="mail.htn?m='.$redir.'&amp;sid='.$sid.'">Zur&uuml;ck</a> | <a href="mail.htn?sid='.$sid.'&amp;action=delete&amp;c'.$msg.'=1&amp;redir='.$redir.'&amp;type='.$data['box'].'">L&ouml;schen</a>';
+        $links = '<a href="mail.php?m='.$redir.'&amp;sid='.$sid.'">Zur&uuml;ck</a> | <a href="mail.php?sid='.$sid.'&amp;action=delete&amp;c'.$msg.'=1&amp;redir='.$redir.'&amp;type='.$data['box'].'">L&ouml;schen</a>';
         if ($data['box'] != 'out') {
-            $links .= ' | <a href="mail.htn?a=reply&amp;msg='.$msg.'&amp;sid='.$sid.'">Antworten</a>';
+            $links .= ' | <a href="mail.php?a=reply&amp;msg='.$msg.'&amp;sid='.$sid.'">Antworten</a>';
         }
         if ($data['box'] == 'in') {
-            $links .= ' | <a href="mail.htn?a=markunread&amp;c'.$msg.'=1&amp;sid='.$sid.'&amp;redir='.$redir.'&amp;type=in">Als neu markieren</a>';
+            $links .= ' | <a href="mail.php?a=markunread&amp;c'.$msg.'=1&amp;sid='.$sid.'&amp;redir='.$redir.'&amp;type=in">Als neu markieren</a>';
         }
 
         createlayout_top('HackTheNet - Messages');
@@ -590,7 +590,7 @@ switch ($action) {
 <table>
 <tr>
 <th>'.$xcap.':</th>
-<td><a href="user.htn?a=info&amp;user='.$sender['id'].'&amp;sid='.$sid.'">'.$sender['name'].'</a></td>
+<td><a href="user.php?a=info&amp;user='.$sender['id'].'&amp;sid='.$sid.'">'.$sender['name'].'</a></td>
 </tr>
 <tr>
 <th>Zeit:</th>
@@ -670,7 +670,7 @@ switch ($action) {
 um Platz im Postfach zu schaffen,
 an deine Email-Adresse schicken.<br />
 Du erh&auml;ltst dann eine Email, in deren Anhang du alle gew&auml;hlten Ingame-Messages als Textdateien findest.</p>
-<form action="mail.htn?a=transmit2&amp;sid='.$sid.'" method="post">
+<form action="mail.php?a=transmit2&amp;sid='.$sid.'" method="post">
 <table>
 <tr id="messages-transmit1-mail-address">
 <th>Email-Adresse:</th>
@@ -726,7 +726,7 @@ Du erh&auml;ltst dann eine Email, in deren Anhang du alle gew&auml;hlten Ingame-
             $email."\x0b".$subject."\x0b".$_REQUEST['in']."\x0b".$_REQUEST['out']."\x0b".$_REQUEST['arc']
         );
         echo '<p>W&auml;hle jetzt die Mails, die du &uuml;bertragen m&ouml;chtest!</p>
-<form action="mail.htn?a=transmit3&amp;sid='.$sid.'&amp;code='.$code.'" method="post">
+<form action="mail.php?a=transmit3&amp;sid='.$sid.'&amp;code='.$code.'" method="post">
 <table>
 <tr>
 <th class="number">Nummer</th>
@@ -765,9 +765,9 @@ Du erh&auml;ltst dann eine Email, in deren Anhang du alle gew&auml;hlten Ingame-
                 $subject = htmlentities($subject);
                 echo '<tr>
 <td class="number">'.$mcnt.'</td>
-<td><a href="user.htn?a=info&amp;user='.$data['user2'].'&amp;sid='.$sid.'">'.$sender['name'].'</td>
+<td><a href="user.php?a=info&amp;user='.$data['user2'].'&amp;sid='.$sid.'">'.$sender['name'].'</td>
 <td>'.$time.'</td>
-<td><a href="mail.htn?a=read&amp;msg='.$data['mail'].'&amp;sid='.$sid.'">$subject</a></td>
+<td><a href="mail.php?a=read&amp;msg='.$data['mail'].'&amp;sid='.$sid.'">$subject</a></td>
 <td class="checkbox"><input name="'.$box.$data['mail'].'" type="checkbox" value="1" /></td>
 </tr>
 ';

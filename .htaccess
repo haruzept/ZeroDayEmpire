@@ -1,6 +1,5 @@
 DirectoryIndex index.php
 
-AddType application/x-httpd-php .htn
 
 <Files *res.php>
 order deny,allow

@@ -67,7 +67,7 @@ function choose(s) {
                     if ($name == '') {
                         continue;
                     }
-                    echo '<tr><td><a href="user.htn?a=info&sid='.$sid.'&user='.$item.'">'.$name.'</a></td>';
+                    echo '<tr><td><a href="user.php?a=info&sid='.$sid.'&user='.$item.'">'.$name.'</a></td>';
                     echo '<td><input type="button" value="W&auml;hlen" onclick="choose(\''.$name.'\')"></td></tr>';
                 endforeach;
             } else {
@@ -77,7 +77,7 @@ function choose(s) {
                     if ($user === false) {
                         continue;
                     }
-                    echo '<tr><td><a href="user.htn?a=info&sid='.$sid.'&user='.$item.'">'.$user['name'].'</a></td>';
+                    echo '<tr><td><a href="user.php?a=info&sid='.$sid.'&user='.$item.'">'.$user['name'].'</a></td>';
                     echo '<td><table class="nomargin">';
                     $pcs = explode(',', $user['pcs']);
                     foreach ($pcs as $xpc) {
@@ -147,7 +147,7 @@ function choose(s) {
                 ).'\' WHERE user='.mysql_escape_string($usrid)
             );
 
-            header('Location: abook.htn?sid='.mysql_escape_string($sid).'&m=admin&saved=1');
+            header('Location: abook.php?sid='.mysql_escape_string($sid).'&m=admin&saved=1');
         } else {
             simple_message('Benutzer inexistent!');
         }
@@ -162,7 +162,7 @@ function choose(s) {
         echo '<div id="abook-administration" class="content">
 <h2>Adressbuch</h2>
 <h3>Adressbuch verwalten</h3>'.$xxx.'
-<form action="abook.htn?action=add&amp;sid='.$sid.'" method="post">
+<form action="abook.php?action=add&amp;sid='.$sid.'" method="post">
 <table>
 <tr><th colspan="2">Benutzer hinzuf&uuml;gen</th></tr>
 <tr><th>Benutzername:</th><td><input name="user" size="20" maxlength="20" /></td></tr>
@@ -183,14 +183,14 @@ function choose(s) {
             if ($s != '') {
                 $a = explode(',', $s);
                 if (!(count($a) <= 1 && $a[0] == '')) {
-                    echo '<form action="abook.htn?sid='.$sid.'&amp;m=saveadmin&amp;group='.$ix.'" method="post">
+                    echo '<form action="abook.php?sid='.$sid.'&amp;m=saveadmin&amp;group='.$ix.'" method="post">
 <table>
 <tr><th>User</th><th>Gruppe</th><th>L&ouml;schen?</th></tr>';
                     foreach ($a as $item) {
                         $u = getuser($item);
                         if ($u !== false) {
                             $name = $u['name'];
-                            echo '<tr><td width="100"><a href="user.htn?a=info&sid='.$sid.'&user='.$item.'">'.$name.'</a></td>';
+                            echo '<tr><td width="100"><a href="user.php?a=info&sid='.$sid.'&user='.$item.'">'.$name.'</a></td>';
                             echo '<td><select name="group'.$item.'"><option value=1'.$ch1.'>Allgemein</option><option value=2'.$ch2.'>Cluster</option><option value=3'.$ch3.'>Freunde</option><option value=4'.$ch4.'>Andere</option></select></td>';
                             echo '<td><input type="checkbox" value="yes" name="u'.$item.'" /></td>';
                             echo '</tr>';
@@ -251,7 +251,7 @@ function choose(s) {
             ).'\' WHERE user='.mysql_escape_string($usrid)
         );
 
-        header('Location: abook.htn?sid='.$sid.'&m=admin&saved=1');
+        header('Location: abook.php?sid='.$sid.'&m=admin&saved=1');
         break;
 
 }

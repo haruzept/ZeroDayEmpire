@@ -31,7 +31,7 @@ switch ($action) {
         createlayout_top('HackTheNet - Cluster-Board');
         echo '<div class="content" id="cluster-board">'.LF;
         echo '<h2>Cluster-Board</h2>'.LF;
-        echo '<p><a href="cboard.htn?sid='.$sid.'&amp;a=newthreadform">Neuen Beitrag erstellen</a></p>'."\n";
+        echo '<p><a href="cboard.php?sid='.$sid.'&amp;a=newthreadform">Neuen Beitrag erstellen</a></p>'."\n";
 
         function listboard($boxid)
         {
@@ -49,7 +49,7 @@ switch ($action) {
                 echo '<p>Es gibt keine Eintr&auml;ge in diesem Ordner.</p>'."\n";
             } else {
                 if ($admin) {
-                    echo '<form action="cboard.htn?a=admin&amp;box='.$boxid.'&amp;sid='.$sid.'" method="post">'."\n";
+                    echo '<form action="cboard.php?a=admin&amp;box='.$boxid.'&amp;sid='.$sid.'" method="post">'."\n";
                 }
                 echo '<table>'."\n";
                 echo '<tr>'.LF.'<th>Titel</th>'.LF.'<th>Autor</th>'.LF.'<th>Datum</th>'.LF.'<th>Ge&auml;ndert</th>'.LF.'<th>Antworten</th>'."\n";
@@ -82,8 +82,8 @@ switch ($action) {
                     $tmp .= '<tr>'."\n";
                     #$sender=getuser($data['user'],'id');
 
-                    $tmp .= '<td><a href="cboard.htn?sid='.$sid.'&amp;a=showthread&amp;threadid='.$data['thread'].'">'.$data['subject'].'</a></td>'."\n";
-                    $tmp .= '<td><a href="user.htn?a=info&amp;sid='.$sid.'&amp;user='.$data['user'].'">'.$data['user_name'].'</a></td>'.LF.'<td>'.nicetime(
+                    $tmp .= '<td><a href="cboard.php?sid='.$sid.'&amp;a=showthread&amp;threadid='.$data['thread'].'">'.$data['subject'].'</a></td>'."\n";
+                    $tmp .= '<td><a href="user.php?a=info&amp;sid='.$sid.'&amp;user='.$data['user'].'">'.$data['user_name'].'</a></td>'.LF.'<td>'.nicetime(
                             $data['time']
                         ).'</td>'."\n";
                     if ($lastm_time == $data['time']) {
@@ -92,7 +92,7 @@ switch ($action) {
                         $slm = nicetime(
                                 $lastm_time,
                                 true
-                            ).' von <a href="user.htn?a=info&amp;sid='.$sid.'&amp;user='.$lastm_usr['id'].'">'.$lastm_usr['name'].'</a>';
+                            ).' von <a href="user.php?a=info&amp;sid='.$sid.'&amp;user='.$lastm_usr['id'].'">'.$lastm_usr['name'].'</a>';
                     }
                     $tmp .= '<td>'.$slm.'</td>';
                     if ($aws < 1) {
@@ -203,7 +203,7 @@ switch ($action) {
             }
         }
 
-        header('Location: cboard.htn?sid='.$sid.'&mode=board&rnd='.randomx());
+        header('Location: cboard.php?sid='.$sid.'&mode=board&rnd='.randomx());
 
         break;
 
@@ -235,7 +235,7 @@ switch ($action) {
                 ).'\', \''.mysql_escape_string($text).'\', \''.mysql_escape_string($boxid).'\')';
             db_query($sql);
 
-            header('Location: cboard.htn?sid='.$sid.'&mode=board&rnd='.randomx());
+            header('Location: cboard.php?sid='.$sid.'&mode=board&rnd='.randomx());
 
         } else {
             simple_message('Bitte einen Text für den Beitrag eingeben!');
@@ -279,7 +279,7 @@ switch ($action) {
                 ).'\', \''.mysql_escape_string($title).'\', \''.mysql_escape_string($text).'\', \'-1\')';
             db_query($sql);
 
-            header('Location: cboard.htn?sid='.$sid.'&mode=board&rnd='.randomx());
+            header('Location: cboard.php?sid='.$sid.'&mode=board&rnd='.randomx());
 
         } else {
             simple_message('Bitte einen Text für den Beitrag eingeben!');
@@ -305,7 +305,7 @@ switch ($action) {
             $cstat = cscodetostring($data['user_cstat']);
             $time = nicetime($data['time']);
             echo '<table>
-<tr><th>'.$data['subject'].' von <a href="user.htn?a=info&user='.$data['user'].'&sid='.$sid.'">'.$data['user_name'].'</a>
+<tr><th>'.$data['subject'].' von <a href="user.php?a=info&user='.$data['user'].'&sid='.$sid.'">'.$data['user_name'].'</a>
 ('.$cstat.'), '.$time.'</th></tr>
 <tr valign="top"><td>'.$data['content'].'</td></tr>
 </table><br />';
@@ -337,7 +337,7 @@ switch ($action) {
         echo '<br /><br />'.LF.'<div id="cluster-board-post-reply">'.LF.'<h3>Antwort schreiben</h3>'."\n";
         showform('addreply');
         echo '</div>';
-        echo '<p><a href="cboard.htn?sid='.$sid.'&m=board">Zurück</a></p>'."\n";
+        echo '<p><a href="cboard.php?sid='.$sid.'&m=board">Zurück</a></p>'."\n";
 
         echo '</div>'."\n";
         createlayout_bottom();
@@ -407,7 +407,7 @@ function showform($action = 'addthread')
     } else {
         $xval = '';
     }
-    echo '<form method="post" name="formular" action="cboard.htn?sid='.$sid.'&amp;a='.$action.'">
+    echo '<form method="post" name="formular" action="cboard.php?sid='.$sid.'&amp;a='.$action.'">
 <table>
 <tr>
 <th>Titel:</th>
