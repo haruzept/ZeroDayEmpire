@@ -242,10 +242,11 @@ switch ($action) {
         $rhinfo = '';
         if ($pc['mk'] > 0 && $pc['rh'] > 0) {
             $rhinfo = '<tr><th>Remote Hijack</th><td>';
-            if ($pc['lrh'] + REMOTE_HIJACK_DELAY <= time()) {
+            $lastRemote = (int)$pc['lrh'] + REMOTE_HIJACK_DELAY;
+            if ($lastRemote <= time()) {
                 $rhinfo .= '<span style="color:green;">sofort verf&uuml;gbar</span>';
             } else {
-                $rhinfo .= nicetime($pc['lrh'] + REMOTE_HIJACK_DELAY);
+                $rhinfo .= nicetime($lastRemote);
             }
             $rhinfo .= '</td></tr>';
         }

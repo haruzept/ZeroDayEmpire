@@ -884,10 +884,10 @@ function rem_e_callback($s)
 
 function check_email($email)
 { // ------------------ CHECK EMAIL ---------------
-    return (eregi(
-        '^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-.]?[0-9a-zA-Z])*\\.[a-zA-Z]{2,4}$',
+    return preg_match(
+        '/^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-.]?[0-9a-zA-Z])*\\.[a-zA-Z]{2,4}$/i',
         $email
-    ) === false ? false : true);
+    ) === 1;
 }
 
 function GetTableInfo($table, $db = '')
