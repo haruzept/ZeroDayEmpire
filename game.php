@@ -887,6 +887,7 @@ switch ($action) {
             default:
                 $st = '';
         }
+        $ord = '';
         if ($st != '') {
             $ord = ' ORDER BY '.$st;
         }
