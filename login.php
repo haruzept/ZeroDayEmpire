@@ -3,7 +3,7 @@
 define('IN_HTN', 1);
 include('gres.php');
 
-$ref = $_SERVER['HTTP_REFERER'];
+$ref = $_SERVER['HTTP_REFERER'] ?? '';
 $refd = parse_url($ref);
 #echo $refd['host'].' '.$_SERVER['HTTP_HOST'];
 if ($ref != '' && $refd['host'] != $_SERVER['HTTP_HOST'] && $refd['host'] != 'ssl-id1.de' && count($_GET) < 2) {
@@ -29,9 +29,9 @@ if ($action == 'login') {
         }
     }
 
-    if ((int)@file_get('data/calc-time.dat') <= time() || $calcRunning == 'yes') {
-        $pwd = urlencode($_REQUEST['pwd']);
-        $nick = urlencode($_REQUEST['nick']);
+    if ($calcRunning == 'yes') {
+        $pwd = urlencode($_REQUEST['pwd'] ?? '');
+        $nick = urlencode($_REQUEST['nick'] ?? '');
         $stat = @file_get('data/calc-stat.dat');
         echo '<html>
 <head>
@@ -40,32 +40,33 @@ if ($action == 'login') {
 <b>Der Server ist im Moment mit der Kalkulation der Punktest&auml;nde besch&auml;ftigt!</b>
 <br /><br />Aktueller Status: <tt>'.$stat.'</tt>
 </body></html>';
-        if ($calcRunning == '') {
-            include('calc_points.php');
-        }
         exit;
-    } else {
-        $ts = time();
-        if ($ts % 2 != 0) {
-            $verz = 'data/login';
-            $h = @opendir($verz);
-            if ($h) {
-                while (($fn = readdir($h)) !== false) {
-                    if (is_file($verz.'/'.$fn)) {
-                        if (fileatime($verz.'/'.$fn) + 30 * 60 <= $ts) {
-                            @unlink($verz.'/'.$fn);
-                        }
+    }
+
+    if ((int)@file_get('data/calc-time.dat') <= time()) {
+        exec('php run_calc_points.php > /dev/null 2>&1 &');
+    }
+
+    $ts = time();
+    if ($ts % 2 != 0) {
+        $verz = 'data/login';
+        $h = @opendir($verz);
+        if ($h) {
+            while (($fn = readdir($h)) !== false) {
+                if (is_file($verz.'/'.$fn)) {
+                    if (fileatime($verz.'/'.$fn) + 30 * 60 <= $ts) {
+                        @unlink($verz.'/'.$fn);
                     }
                 }
-                closedir($h);
             }
+            closedir($h);
         }
     }
 
-    $pwd = trim($_REQUEST['pwd']);
+    $pwd = trim($_REQUEST['pwd'] ?? '');
     $postpwd = $pwd;
-    $usrname = trim($_REQUEST['nick']);
-    $server = (int)$_REQUEST['server'];
+    $usrname = trim($_REQUEST['nick'] ?? '');
+    $server = (int)($_REQUEST['server'] ?? 0);
     if ($server != 1 && $server != 2) {
         exit;
     }
@@ -76,12 +77,12 @@ if ($action == 'login') {
     if (
         isset($_COOKIE['htnLoginData4']) &&
         substr_count($_COOKIE['htnLoginData4'], '|') == 2 &&
-        $_POST['save'] == 'yes'
+        (($_POST['save'] ?? '') == 'yes')
     ) {
         list($serverdummy, $usrnamedummy, $pwd) = explode('|', $_COOKIE['htnLoginData4']);
         $cookie = true;
     }
-    if ($_POST['save'] == 'yes') {
+    if (($_POST['save'] ?? '') == 'yes') {
         if ($cookie == false) {
             setcookie('htnLoginData4', $server.'|'.$usrname.'|'.md5($pwd), time() + 10 * 365 * 24 * 60 * 60);
         } else {
@@ -159,7 +160,7 @@ du die genauen Gr&uuml;nde wissen willst, schick eine Email an <a href="mailto:k
             $ip = GetIP();
             $ip2 = $ip['ip'];
             $ip = ($ip['proxy'] == '' ? $ip['ip'] : $ip['ip'].' over '.$ip['proxy']);
-            if ($_REQUEST['noipcheck'] != 'yes') {
+            if (($_REQUEST['noipcheck'] ?? '') != 'yes') {
                 $noipcheck = $usr['noipcheck'];
             } else {
                 $ip = 'noip';
@@ -194,13 +195,13 @@ du die genauen Gr&uuml;nde wissen willst, schick eine Email an <a href="mailto:k
         simple_message('Benutzername unbekannt oder Passwort falsch!');
         db_query(
             'INSERT INTO logs SET type=\'badlogin\', payload=\'nick='.mysql_escape_string(
-                $_REQUEST['nick']
-            ).', pwd='.mysql_escape_string($_REQUEST['pwd']).'\';'
+                ($_REQUEST['nick'] ?? '')
+            ).', pwd='.mysql_escape_string(($_REQUEST['pwd'] ?? '')).'\';'
         );
     }
 
 } elseif ($action == 'logout') { # ------------------------- LOG OUT ------------------------
-    $sid = $_REQUEST['sid'];
+    $sid = ($_REQUEST['sid'] ?? '');
     $fstr = @file_get('data/login/'.$sid.'.txt');
     if ($fstr != '') {
         $fstr = explode("\x0b", $fstr);
@@ -209,7 +210,7 @@ du die genauen Gr&uuml;nde wissen willst, schick eine Email an <a href="mailto:k
         db_query('UPDATE users SET sid=\'\' WHERE id=\''.mysql_escape_string($fstr[1]).'\'');
         unlink('data/login/'.$sid.'.txt');
     }
-    if ($_GET['redir'] == 'forum') {
+    if (($_GET['redir'] ?? '') == 'forum') {
         header('Location: http://forum.hackthenet.org/');
     } else {
         header('Location: pub.php');
