@@ -1312,6 +1312,9 @@ Ordner 3:<br />
         $c = $_REQUEST['cluster'];
         $cluster = getcluster($c, 'id');
         if ($cluster !== false) {
+            $img = '';
+            $hp = '';
+            $aufnahme = '';
             createlayout_top('HackTheNet - Cluster-Profil');
             echo '<div class="content" id="cluster-profile">
 <h2>Cluster-Profil</h2>
@@ -1804,6 +1807,7 @@ function conventlist($cid)
 
 #$r=db_query('SELECT pcs.ip AS pcs_ip, pcs.name AS pcs_name, pcs.points AS pcs_points, users.id AS users_id, users.name AS users_name, users.points AS users_points, clusters.id AS clusters_id, clusters.name AS clusters_name
 #FROM (clusters RIGHT JOIN users ON clusters.id = users.cluster) RIGHT JOIN pcs ON users.id = pcs.owner WHERE country LIKE \''.mysql_escape_string($c['id']).'\' ORDER BY pcs.id ASC;');
+    $s = '';
     $r = db_query(
         'SELECT cl_pacts.convent,clusters.code,clusters.id FROM (cl_pacts RIGHT JOIN clusters ON cl_pacts.partner=clusters.id) WHERE cl_pacts.cluster='.mysql_escape_string(
             $cid
