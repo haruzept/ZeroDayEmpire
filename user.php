@@ -28,7 +28,7 @@ switch ($action) {
 
         echo '<br /><br />';
 
-        while (list($bez, $val) = each($usr)) {
+        foreach ($usr as $bez => $val) {
             $usr[$bez] = safeentities(html_entity_decode($val));
         }
 
@@ -397,7 +397,7 @@ Bitte zur Best&auml;tigung eingeben.</td>
 
             if ($e == false) {
 
-                while (list($bez, $val) = each($_POST)) {
+                foreach ($_POST as $bez => $val) {
                     $_POST[$bez] = html_entity_decode($val);
                 }
 
