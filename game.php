@@ -1285,7 +1285,7 @@ switch ($action) {
 
     case 'subnet': // ------------------------- SUBNET ------------------------
 
-        $subnet = $_REQUEST['subnet'];
+        $subnet = $_REQUEST['subnet'] ?? '';
         if ($subnet == '') {
             $subnet = subnetfromip($pc['ip']);
         }
@@ -1326,12 +1326,12 @@ switch ($action) {
             $options .= '<option value="'.$ctry['subnet'].'">10.47.'.$ctry['subnet'].'.x - '.$ctry['name'].'</option>';
         }
 
-        $listpage = $_REQUEST['listpage'];
+        $listpage = isset($_REQUEST['listpage']) ? (int)$_REQUEST['listpage'] : 1;
         if ($listpage < 1 || $listpage > 4) {
             $listpage = 1;
         }
         $r = db_query(
-            'SELECT pcs.ip AS pcs_ip, pcs.name AS pcs_name, pcs.points AS pcs_points, users.id AS users_id, users.name AS users_name, users.points AS users_points, clusters.id AS clusters_id, clusters.name AS clusters_name FROM (clusters RIGHT JOIN users ON clusters.id = users.cluster) RIGHT JOIN pcs ON users.id = pcs.owner WHERE country LIKE \''.mysql_escape_string(
+            'SELECT pcs.id AS pcs_id, pcs.ip AS pcs_ip, pcs.name AS pcs_name, pcs.points AS pcs_points, users.id AS users_id, users.name AS users_name, users.points AS users_points, clusters.id AS clusters_id, clusters.name AS clusters_name FROM (clusters RIGHT JOIN users ON clusters.id = users.cluster) RIGHT JOIN pcs ON users.id = pcs.owner WHERE country LIKE \''.mysql_escape_string(
                 $c['id']
             ).'\' ORDER BY pcs.id ASC;'
         );
@@ -1387,7 +1387,7 @@ location.href=\'../game.php?mode=subnet&sid='.$sid.'&subnet=\'+s;
 <th class="cluster">Cluster</th>
 </tr>';
 
-        switch ($_REQUEST['listpage']) {
+        switch ($listpage) {
             case 2:
                 $start = 65;
                 break;
