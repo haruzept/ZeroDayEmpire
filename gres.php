@@ -389,6 +389,13 @@ function RandomX($chars = 6, $cs = true)
     return $s;
 }
 
+if (!function_exists('randomx')) {
+    function randomx($chars = 6, $cs = true)
+    {
+        return RandomX($chars, $cs);
+    }
+}
+
 function randomchar()
 {
     $s = randomx(16);

@@ -13,6 +13,11 @@ file_put('data/calc-running.dat', 'yes');
 file_put('data/calc-time.dat', time() + UPDATE_INTERVAL);
 file_put('data/calc-stat.dat', 'gerade angefangen');
 
+register_shutdown_function(function () {
+    @unlink('data/calc-running.dat');
+    @unlink('data/calc-stat.dat');
+});
+
 file_put('data/upgr_SALT.dat', randomx(6));
 chmod('data/upgr_SALT.dat', 0777);
 
