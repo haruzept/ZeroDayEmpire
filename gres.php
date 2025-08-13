@@ -884,9 +884,13 @@ function GetTableInfo($table, $db = '')
 function GetOnlineUserCnt($server)
 {
     $cnt = 0;
-    $h = opendir('data/login');
-    while ($fn = readdir($h)) {
-        if (is_file('data/login/'.$fn) && substr($fn, 0, 1) == $server && substr_count($fn, 'lock') == 0) {
+    $dir = 'data/login';
+    if (!is_dir($dir) || ($h = opendir($dir)) === false) {
+        return 0;
+    }
+
+    while (($fn = readdir($h)) !== false) {
+        if (is_file($dir.'/'.$fn) && substr($fn, 0, 1) == $server && substr_count($fn, 'lock') == 0) {
             $cnt++;
         }
     }

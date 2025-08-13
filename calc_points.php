@@ -99,7 +99,7 @@ function server_update_points($server)
     arsort($rank);
     db_query('TRUNCATE TABLE rank_users'); # Tabelle leeren
 #$platz=0;
-    while (list($dat, $points) = each($rank)) {
+    foreach ($rank as $dat => $points) {
         #$platz++;
         $dat = explode(';', $dat);
         $dat[2] = (int)$dat[2];
@@ -118,22 +118,20 @@ function server_update_points($server)
 
     db_query('TRUNCATE TABLE rank_clusters'); # Tabelle leeren
 
-    unset($b);
-    settype($b, 'array');
-    while (list($bez, $val) = each($clusters)) {
-        $b[$bez] = $clusters[$bez]['points'];
+    $b = array();
+    foreach ($clusters as $bez => $val) {
+        $b[$bez] = $val['points'];
     }
 
     arsort($b);
-    unset($c);
-    settype($c, 'array');
-    while (list($bez, $val) = each($b)) {
+    $c = array();
+    foreach ($b as $bez => $val) {
         $c[$bez]['points'] = $val;
         $c[$bez]['pcs'] = $clusters[$bez]['pcs'];
         $c[$bez]['members'] = $clusters[$bez]['members'];
     }
 
-    while (list($bez, $dat) = each($c)) {
+    foreach ($c as $bez => $dat) {
         $bez = substr($bez, 1);
         $av_p = round($dat['points'] / $dat['members'], 2);
         $av_pcs = round($dat['pcs'] / $dat['members'], 2);
