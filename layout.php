@@ -61,7 +61,8 @@ function createlayout_top($title = 'HackTheNet', $nomenu = false, $pads = true)
 {
     global $usr, $javascript, $STYLESHEET, $bodytag, $localhost, $FILE_REQUIRES_PC, $pc, $pcid;
     $ads = '';
-    if ($usr['sid'] != '') {
+    $sid = '';
+    if (isset($usr['sid']) && $usr['sid'] !== '') {
         $sid = '&amp;sid='.$usr['sid'];
     }
     $stylesheet = $STYLESHEET;
@@ -71,7 +72,7 @@ function createlayout_top($title = 'HackTheNet', $nomenu = false, $pads = true)
 
     basicheader($title);
 
-    if ($sid != '' && $usr['ads'] != 'no' && !$localhost && $pads == true) {
+    if ($sid !== '' && isset($usr['ads']) && $usr['ads'] != 'no' && !$localhost && $pads == true) {
         // werbung hier ausgeben
     }
 

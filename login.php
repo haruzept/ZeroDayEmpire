@@ -145,6 +145,7 @@ du die genauen Gr&uuml;nde wissen willst, schick eine Email an <a href="mailto:k
             }
             $sid = $server.create_sid();
             $sidfile = 'data/login/'.$usr['sid'].'.txt';
+            $notloggedout = '';
             if (file_exists($sidfile)) {
                 @unlink($sidfile);
             } elseif ($usr['sid'] != '') {

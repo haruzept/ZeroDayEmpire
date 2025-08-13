@@ -345,7 +345,7 @@ function file_put($filename, $strContent)
 { //----------- File Put -----------------
     global $STYLESHEET, $REMOTE_FILES_DIR, $DATADIR;
     $fpms = (int)@fileperms($filename);
-    if ($fpms < 666 && $fmps != 0) {
+    if ($fpms < 666 && $fpms != 0) {
         @chmod($filename, 0666);
     }
     if (strlen($strContent) < 1) {
@@ -362,7 +362,7 @@ function file_put($filename, $strContent)
         $r = false;
     }
     $fpms = (int)@fileperms($filename);
-    if ($fpms < 666 && $fmps != 0) {
+    if ($fpms < 666 && $fpms != 0) {
         @chmod($filename, 0666);
     }
 
