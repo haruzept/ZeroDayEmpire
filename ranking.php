@@ -4,19 +4,7 @@ define('IN_HTN', 1);
 $FILE_REQUIRES_PC = false;
 include('ingame.php');
 
-$action = $_REQUEST['page'];
-if ($action == '') {
-    $action = $_REQUEST['mode'];
-}
-if ($action == '') {
-    $action = $_REQUEST['action'];
-}
-if ($action == '') {
-    $action = $_REQUEST['a'];
-}
-if ($action == '') {
-    $action = $_REQUEST['m'];
-}
+$action = $_REQUEST['page'] ?? $_REQUEST['mode'] ?? $_REQUEST['action'] ?? $_REQUEST['a'] ?? $_REQUEST['m'] ?? '';
 
 #simple_message('Leider ist die Rangliste ATM kaputt ... Wir arbeiten aber dran!', 'error');
 #exit;
@@ -25,10 +13,13 @@ switch ($action) {
 
     case 'ranking': // ----------------------------------- Ranking --------------------------------
 
-        $type = $_REQUEST['type'];
-        if ($type != 'user' & $type != 'cluster') {
+        $type = $_REQUEST['type'] ?? 'user';
+        if ($type != 'user' && $type != 'cluster') {
             $type = 'user';
         }
+
+        $forwards = $backwards = $xxx = $hf = '';
+        $ch0 = $ch1 = $ch2 = $ch3 = $ch4 = $ch5 = '';
 
         $javascript = '<script type="text/javascript">'."\n";
         if ($type == 'user') {
@@ -66,9 +57,9 @@ Das n&auml;chste Mal passiert das um '.$updtime.'.</p>
 </tr>
 ';
 
-            $start = (int)$_REQUEST['start'];
+            $start = (int)($_REQUEST['start'] ?? 0);
 
-            $uid = (int)$_REQUEST['id'];
+            $uid = (int)($_REQUEST['id'] ?? 0);
             if ($uid == 0) {
                 $uid = $usrid;
                 $udat = $usr;
@@ -93,28 +84,20 @@ Das n&auml;chste Mal passiert das um '.$updtime.'.</p>
                 ).'+10;'
             );
 
-            $cluster_cache;
+            $cluster_cache = [];
             while ($data = mysql_fetch_assoc($r)) {
                 $platz = $data['platz'];
                 $uid = $data['id'];
                 $uname = $data['name'];
                 $c = $data['cluster'];
                 $points = $data['points'];
-                if (isset($cluster_cache[$c]) == false) {
-                    $c = getcluster($c);
-                    $cluster_cache[$c['id']] = $c;
-                } elseif ($c != '') {
+                if ($c !== '') {
+                    if (!isset($cluster_cache[$c])) {
+                        $cluster_cache[$c] = getcluster($c);
+                    }
                     $c = $cluster_cache[$c];
                 } else {
                     $c = false;
-                }
-                $ccode = $c['code'];
-
-                if ($uid == $udat['id']) {
-                    $platz = '<strong>'.$platz.'</strong>';
-                    $uname = '<strong>'.$uname.'</strong>';
-                    $points = '<strong>'.$points.'</strong>';
-                    $cinfo = '<strong>'.$cinfo.'</strong>';
                 }
 
                 if ($c !== false) {
@@ -123,6 +106,13 @@ Das n&auml;chste Mal passiert das um '.$updtime.'.</p>
                 } else {
                     $cinfo = '&nbsp;';
                     $cclass = '';
+                }
+
+                if ($uid == $udat['id']) {
+                    $platz = '<strong>'.$platz.'</strong>';
+                    $uname = '<strong>'.$uname.'</strong>';
+                    $points = '<strong>'.$points.'</strong>';
+                    $cinfo = '<strong>'.$cinfo.'</strong>';
                 }
                 echo '<tr>
 <td class="number">'.$platz.'</td>
@@ -163,7 +153,7 @@ Das n&auml;chste Mal passiert das um '.$updtime.'.</p>
 
         } else {
 
-            $sorttype = (int)$_REQUEST['sorttype'];
+            $sorttype = (int)($_REQUEST['sorttype'] ?? 0);
             $sts = array(
                 'Punkte',
                 'Punkte pro Mitglied',
@@ -184,8 +174,8 @@ Das n&auml;chste Mal passiert das um '.$updtime.'.</p>
 </tr>
 ';
 
-            $start = (int)$_REQUEST['start'];
-            $cid = (int)$_REQUEST['id'];
+            $start = (int)($_REQUEST['start'] ?? 0);
+            $cid = (int)($_REQUEST['id'] ?? 0);
             if ($cid == 0) {
                 $cid = (int)$usr['cluster'];
             }
@@ -295,7 +285,7 @@ Das n&auml;chste Mal passiert das um '.$updtime.'.</p>
         }
 
         echo '<tr>
-<td colspan="4" id="ranking-'.$type.'-search">'.$st.' suchen: '.$hf.'<input name="'.$type.'" value="'.$_REQUEST[$type].'" maxlength="50" /> <input type="submit" value="OK" /></td>
+<td colspan="4" id="ranking-'.$type.'-search">'.$st.' suchen: '.$hf.'<input name="'.$type.'" value="'.($_REQUEST[$type] ?? '').'" maxlength="50" /> <input type="submit" value="OK" /></td>
 </tr>
 <tr>
 <td colspan="4">'.$xxx.'</td>
@@ -311,10 +301,10 @@ Das n&auml;chste Mal passiert das um '.$updtime.'.</p>
         break;
 
     case 'search':
-        switch ($_REQUEST['type']) {
+        switch ($_REQUEST['type'] ?? '') {
 
             case 'user':
-                $u = getUser(trim($_REQUEST['user']), 'name');
+                $u = getUser(trim($_REQUEST['user'] ?? ''), 'name');
 
                 if ($u !== false) {
                     header('Location: ranking.php?a=ranking&sid='.$sid.'&type=user&id='.$u['id']);
@@ -324,9 +314,9 @@ Das n&auml;chste Mal passiert das um '.$updtime.'.</p>
                 break;
 
             case 'cluster':
-                $c = getcluster(trim($_REQUEST['cluster']), 'code');
+                $c = getcluster(trim($_REQUEST['cluster'] ?? ''), 'code');
 
-                $st = (int)$_REQUEST['sorttype'];
+                $st = (int)($_REQUEST['sorttype'] ?? 0);
                 if ($c !== false) {
                     header('Location: ranking.php?a=ranking&sid='.$sid.'&type=cluster&id='.$c['id'].'&sorttype='.$st);
                 } else {
