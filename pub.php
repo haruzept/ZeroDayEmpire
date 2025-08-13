@@ -153,7 +153,7 @@ Nur wenn eine korrekte Email-Adresse angegeben wurde, kann der Account aktiviert
                     break;
                 }
             }
-            $x = eregi_replace('[-_:@.!=?$%&/0-9]', '', $nick);
+            $x = preg_replace('#[-_:@.!=?\$%&/0-9]#i', '', $nick);
             if (trim($x) == '') {
                 $b = false;
             }
@@ -178,8 +178,8 @@ Nur wenn eine korrekte Email-Adresse angegeben wurde, kann der Account aktiviert
                 $e = true;
                 $msg .= 'Der Nickname muss zwischen 3 und 20 Zeichen lang sein.<br />';
             }
-            $x = eregi_replace('[-_:@.!=?$%&/0-9]', '', $nick);
-            if (eregi('('.$badwords.')', $x) != false) {
+            $x = preg_replace('#[-_:@.!=?\$%&/0-9]#i', '', $nick);
+            if (preg_match('#(' . $badwords . ')#i', $x) != false) {
                 $e = true;
                 $msg .= 'Der Nickname darf bestimmte W&ouml;rter nicht enthalten.<br />';
             }
@@ -230,7 +230,15 @@ Nur wenn eine korrekte Email-Adresse angegeben wurde, kann der Account aktiviert
             die('FUCK OFF!');
         }
         $fn = 'data/regtmp/'.$tmpfnx.'.txt';
-        list($nick, $email, $pwd, $server) = explode('|', file_get($fn));
+        $regtmp = file_get($fn);
+        if ($regtmp === false) {
+            die('FUCK OFF!');
+        }
+        $parts = explode('|', $regtmp);
+        if (count($parts) < 4) {
+            die('FUCK OFF!');
+        }
+        list($nick, $email, $pwd, $server) = $parts;
         mysql_select_db(dbname($server));
 
         createlayout_top('HackTheNet - Account anlegen');
