@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Anmelden – ZeroDayEmpire</title>
+  <meta name="description" content="ZeroDayEmpire – Login" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath fill='%2300ffc3' d='M50 5L95 50 50 95 5 50z'/%3E%3C/svg%3E"/>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container nav" id="nav">
+      <a class="brand" href="index.html" aria-label="ZeroDayEmpire Startseite">
+        <svg viewBox="0 0 100 100" aria-hidden="true" role="img">
+          <path d="M50 5L95 50 50 95 5 50z" fill="rgb(var(--accent))"/>
+          <path d="M50 20 80 50 50 80 20 50z" fill="#0b0f14"/>
+        </svg>
+        <div class="title">ZeroDayEmpire</div>
+        <span class="badge">Cyber-Strategie</span>
+      </a>
+      <button class="btn ghost menu-toggle" id="menuBtn" aria-expanded="false" aria-controls="navList">Menü</button>
+      <nav class="nav-links" id="navList" aria-label="Hauptnavigation">
+        <a href="register.html" id="registerLink">Registrieren</a>
+        <a href="login.html" id="loginLink" aria-current="page">Anmelden</a>
+        <a class="btn play-link" href="login.html">Jetzt spielen</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="auth">
+    <div class="auth-card">
+      <h1>Anmelden</h1>
+      <form action="login.php?a=login" method="post">
+        <div class="field">
+          <label for="nick">Nickname</label>
+          <input id="nick" name="nick" required />
+        </div>
+        <div class="field">
+          <label for="pwd">Passwort</label>
+          <input id="pwd" type="password" name="pwd" required />
+        </div>
+        <div class="field">
+          <label for="server">Server</label>
+          <select id="server" name="server">
+            <option value="1">1</option>
+            <option value="2">2</option>
+          </select>
+        </div>
+        <div class="field row">
+          <label class="checkbox"><input type="checkbox" name="save" value="yes" /> Eingeloggt bleiben</label>
+          <button class="btn" type="submit">Anmelden</button>
+        </div>
+      </form>
+      <p class="center muted">Noch keinen Account? <a href="register.html">Registrieren</a></p>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container foot">
+      <div>© <span id="year"></span> ZeroDayEmpire</div>
+      <div class="links">
+        <a href="#">Status</a>
+        <a href="#">Roadmap</a>
+        <a href="impressum.html">Impressum</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (function(){
+      const nav = document.getElementById('nav');
+      const btn = document.getElementById('menuBtn');
+      if(btn){btn.addEventListener('click', ()=>{
+        const open = nav.classList.toggle('open');
+        btn.setAttribute('aria-expanded', String(open));
+      });}
+    })();
+    window.addEventListener('pointermove', (e) => {
+      const x = e.clientX / window.innerWidth * 100;
+      const y = e.clientY / window.innerHeight * 100;
+      document.documentElement.style.setProperty('--mx', x + '%');
+      document.documentElement.style.setProperty('--my', y + '%');
+    }, {passive:true});
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
+
