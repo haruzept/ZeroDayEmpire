@@ -55,7 +55,7 @@ switch ($action) {
             $pc = getpc($pcid);
         }
 
-        createlayout_top('HackTheNet - Cluster');
+        createlayout_top('ZeroDayEmpire - Cluster');
         echo '<div class="content" id="cluster">'."\n";
         echo '<h2>Cluster</h2>'."\n";
 
@@ -326,7 +326,7 @@ Dort findest du einen "Mitgliedsantrag stellen"-Link.</p></div>
 #simple_message('Die Vertr&auml;ge-Verwaltung ist heute morgen nicht verf&uuml;gbar. Probier es heute nachmittag nochmal.');
 #exit;
 
-            createlayout_top('HackTheNet - Cluster - Vertr&auml;ge');
+            createlayout_top('ZeroDayEmpire - Cluster - Vertr&auml;ge');
             echo '<div class="content" id="cluster">
 <h2>Cluster</h2>'
                 .$notif.'<div id="cluster-create-convent">
@@ -511,7 +511,7 @@ function autosel(obj) { var i = (obj.name==\'pcip\' ? 1 : 0);
   document.frm.reciptype[i].checked=true; }
 </script>';
 
-            createlayout_top('HackTheNet - Cluster - Finanzen');
+            createlayout_top('ZeroDayEmpire - Cluster - Finanzen');
             echo '<div class="content" id="cluster">
 <h2>Cluster</h2>
 '.$notif;
@@ -596,7 +596,7 @@ function autosel(obj) { var i = (obj.name==\'pcip\' ? 1 : 0);
     case 'members': //------------------------- MEMBERS -------------------------------
         if ($usr['clusterstat'] == CS_ADMIN) {
 
-            createlayout_top('HackTheNet - Cluster');
+            createlayout_top('ZeroDayEmpire - Cluster');
             echo '<div class="content" id="cluster">
 <h2>Cluster</h2>
 '.$notif.'<div id="cluster-member-administration">
@@ -726,7 +726,7 @@ function autosel(obj) { var i = (obj.name==\'pcip\' ? 1 : 0);
 
             $anch = ($cluster['acceptnew'] == 'yes' ? ' checked="checked"' : '');
 
-            createlayout_top('HackTheNet - Cluster');
+            createlayout_top('ZeroDayEmpire - Cluster');
             echo '<div class="content" id="cluster">
 <h2>Cluster</h2>
 '.$notif.'<div id="cluster-settings">
@@ -1019,7 +1019,7 @@ Ordner 3:<br />
         break;
 
     case 'leave': //------------------------- LEAVE -------------------------------
-        createlayout_top('HackTheNet - Cluster');
+        createlayout_top('ZeroDayEmpire - Cluster');
 #$r=db_query('SELECT id FROM users WHERE cluster='.mysql_escape_string($clusterid).';');
 #$members=mysql_num_rows($r);
         $r = db_query(
@@ -1093,7 +1093,7 @@ Ordner 3:<br />
         $c = getcluster($c);
         if ($c !== false) {
 
-            createlayout_top('HackTheNet - Cluster - Mitglieder');
+            createlayout_top('ZeroDayEmpire - Cluster - Mitglieder');
 
             $members = '';
             $r = db_query(
@@ -1290,7 +1290,7 @@ Ordner 3:<br />
                 echo '</table>';
             }
 
-            createlayout_top('HackTheNet - Cluster');
+            createlayout_top('ZeroDayEmpire - Cluster');
             echo '<div class="content" id="cluster">'."\n";
             echo '<h2>Cluster</h2>'."\n";
             echo '<div id="cluster-battles">'."\n";
@@ -1315,7 +1315,7 @@ Ordner 3:<br />
             $img = '';
             $hp = '';
             $aufnahme = '';
-            createlayout_top('HackTheNet - Cluster-Profil');
+            createlayout_top('ZeroDayEmpire - Cluster-Profil');
             echo '<div class="content" id="cluster-profile">
 <h2>Cluster-Profil</h2>
 <div id="cluster-profile-profile">
@@ -1450,7 +1450,7 @@ Ordner 3:<br />
             if ($e == '') {
                 $tcode = randomx(16);
                 $fin = 0;
-                createlayout_top('HackTheNet - Cluster - &Uuml;berweisen');
+                createlayout_top('ZeroDayEmpire - Cluster - &Uuml;berweisen');
                 echo '<div class="content" id="cluster">
 <h2>Cluster</h2>
 <div id="cluster-transfer1">
@@ -1598,7 +1598,7 @@ Ordner 3:<br />
         if ($c === false || $c['acceptnew'] != 'yes' || $members >= MAX_CLUSTER_MEMBERS) {
             exit;
         }
-        createlayout_top('HackTheNet - Cluster - Mitgliedsantrag');
+        createlayout_top('ZeroDayEmpire - Cluster - Mitgliedsantrag');
         echo '<div class="content" id="cluster">
 <h2>Cluster</h2>
 <div id="cluster-request-new1">
@@ -1636,7 +1636,7 @@ Du wirst dann per System-Nachricht informiert, ob du aufgenommen wurdest oder ni
             ).'\', \''.nl2br(safeentities($_POST['comment'])).'\', \'no\');'
         );
 
-        createlayout_top('HackTheNet - Cluster - Mitgliedsantrag');
+        createlayout_top('ZeroDayEmpire - Cluster - Mitgliedsantrag');
         echo '<div class="content" id="cluster">
 <h2>Cluster</h2>
 <div id="cluster-request-new2">
@@ -1651,7 +1651,7 @@ hat, wirst du per System-Nachricht informiert.</b></p>
     case 'req_verw': // ------------------------- REQUEST VERWALTUNG -----------------------
         if ($usr['clusterstat'] == CS_ADMIN || $usr['clusterstat'] == CS_MITGLIEDERMINISTER || $usr['clusterstat'] == CS_COADMIN):
 
-            createlayout_top('HackTheNet - Cluster - Mitgliedsantr&auml;ge verwalten');
+            createlayout_top('ZeroDayEmpire - Cluster - Mitgliedsantr&auml;ge verwalten');
             echo '<div class="content" id="cluster">
 <h2>Cluster</h2>
 <div id="cluster-request-administration">
@@ -1740,7 +1740,7 @@ hat, wirst du per System-Nachricht informiert.</b></p>
             'UPDATE clusters SET notice=\''.mysql_escape_string($n).'\' WHERE id='.mysql_escape_string($clusterid).';'
         );
 
-        createlayout_top('HackTheNet - Cluster-Notiz');
+        createlayout_top('ZeroDayEmpire - Cluster-Notiz');
         echo '<div class="content" id="cluster-notice-saved">'."\n";
         echo '<h2>Cluster-Notiz</h2>'."\n";
         echo '<div class="ok">'.LF.'<h3>Aktion ausgeführt</h3>'.LF.'<p>Notiz gespeichert!</p></div>';

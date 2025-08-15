@@ -14,7 +14,7 @@ $action = $_REQUEST['page']
 switch ($action) {
     case 'config': //------------------------- CONFIG -------------------------------
 
-        createlayout_top('HackTheNet - Optionen');
+        createlayout_top('ZeroDayEmpire - Optionen');
 
         echo '<div class="content" id="settings">
 <h2>Optionen</h2>';
@@ -173,7 +173,7 @@ switch ($action) {
 <td><select name="bday">'.$days.'</select>. <select name="bmonth">'.$months.'</select> <select name="byear">'.$years.'</select></td>
 </tr>
 <tr id="settings-settings-style">
-<th>HackTheNet-Style:</th>
+<th>ZeroDayEmpire-Style:</th>
 <td><select name="style">'.$styles.'</select>'.$xsinfo.'</td>
 </tr>
 <tr id="settings-settings-homepage">
@@ -323,7 +323,7 @@ Bitte zur Best&auml;tigung eingeben.</td>
                     $_SERVER['PHP_SELF']
                 ).'/pub.php?a=deleteaccount&code='.$code;
 
-            if (!@mail($usr['email'], 'HackTheNet-Account löschen?', $body, 'From: robot@hackthenet.org')) {
+            if (!@mail($usr['email'], 'ZeroDayEmpire-Account löschen?', $body, 'From: robot@hackthenet.org')) {
                 echo nl2br($body);
             }
 
@@ -470,7 +470,7 @@ Bitte zur Best&auml;tigung eingeben.</td>
             $pchw = '';
 
             $u_points = $a['points'];
-            createlayout_top('HackTheNet - Benutzerprofil');
+            createlayout_top('ZeroDayEmpire - Benutzerprofil');
             if ($a['gender'] == 'x') {
                 $geschl = '';
             } elseif ($a['gender'] == 'm') {

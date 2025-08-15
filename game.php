@@ -61,7 +61,7 @@ switch ($action) {
         }
 #$info.=infobox('<b>ACHTUNG:</b> Multis keine Chance! Wer mehrere Accounts besitzt, wird gnadenlos gel&ouml;scht.');
 
-        createlayout_top('HackTheNet - &Uuml;bersicht');
+        createlayout_top('ZeroDayEmpire - &Uuml;bersicht');
 
 # Cluster-Mitgliedsbeitrag bezahlen:
         $cluster = getcluster($usr['cluster']);
@@ -199,7 +199,7 @@ switch ($action) {
 
         processupgrades($pc);
 
-        createlayout_top('HackTheNet - Deine Computer');
+        createlayout_top('ZeroDayEmpire - Deine Computer');
 
         if ($pc['blocked'] > time()) {
             echo '<div class="content" id="computer">'.LF.'<h2>Deine Computer</h2>'.LF.'<div class="error">'.LF.'<h3>Fehler</h3>'.LF.'<p>Dieser PC ist blockiert bis '.nicetime2(
@@ -354,12 +354,12 @@ switch ($action) {
         $pcItemValue = $pc[$item] ?? null;
         if ($pcItemValue === null || (isavailh($item, $pc) != true && $pcItemValue < 1)) {
             http_response_code(404);
-            createlayout_top('HackTheNet - Deine Computer');
+            createlayout_top('ZeroDayEmpire - Deine Computer');
             echo '<div class="content" id="computer">'.LF.'<h2>Deine Computer</h2>'.LF.'<div class="error">'.LF.'<h3>Fehler</h3>'.LF.'<p>Dieses Item wurde nicht gefunden.</p>'.LF.'</div>'.LF.'</div>'."\n";
             createlayout_bottom();
             break;
         }
-        createlayout_top('HackTheNet - Deine Computer');
+        createlayout_top('ZeroDayEmpire - Deine Computer');
         $val = $pcItemValue;
         if ($item == 'ram') {
             $val = $ram_levels[$val];
@@ -576,7 +576,7 @@ switch ($action) {
             exit;
         }
 
-        createlayout_top('HackTheNet - Dein Computer');
+        createlayout_top('ZeroDayEmpire - Dein Computer');
         echo '<div class="content" id="computer">'."\n";
         echo '<h2>Dein Computer</h2>'."\n";
         echo '<div class="submenu"><p><a href="game.php?page=pc&amp;sid='.$sid.'">Zur &Uuml;bersicht</a></p></div>'."\n";
@@ -769,7 +769,7 @@ switch ($action) {
                         ).'&sid='.$sid
                     );
 
-                    /*createlayout_top('HackTheNet - Dein Computer - Upgrade');
+                    /*createlayout_top('ZeroDayEmpire - Dein Computer - Upgrade');
                     echo '<div id="computer" class="content">'."\n";
                     echo '<h2>Dein Computer</h2>'."\n";
                     echo '<div id="computer-upgrade-done">';
@@ -1003,7 +1003,7 @@ switch ($action) {
         break;
 
     case 'renamepclist': // ------------------------- Rename PC List ------------------------
-        createlayout_top('HackTheNet - Deine Computer');
+        createlayout_top('ZeroDayEmpire - Deine Computer');
         echo '<div class="content" id="computer">
 <h2>Deine Computer</h2>
 '.$notif.'<div id="computer-rename">
@@ -1073,7 +1073,7 @@ switch ($action) {
         $javascript .= 'function autosel(obj) { var i = (obj.name==\'pcip\' ? 1 : 0);
   document.frm.reciptype[i].checked=true; }
 </script>';
-        createlayout_top('HackTheNet - Geld &uuml;berweisen');
+        createlayout_top('ZeroDayEmpire - Geld &uuml;berweisen');
         if ($usr['bigacc'] == 'yes') {
             $bigacc = '&nbsp;<a href="javascript:show_abook(\'pc\')">Adressbuch</a>';
         }
@@ -1144,7 +1144,7 @@ switch ($action) {
         if ($e == '') {
             $tcode = randomx(10);
             $fin = 0;
-            createlayout_top('HackTheNet - Geld &uuml;berweisen');
+            createlayout_top('ZeroDayEmpire - Geld &uuml;berweisen');
             echo '<div class="content">
 <h2>&Uuml;berweisung</h2>
 <div id="transfer-step2">
@@ -1363,7 +1363,7 @@ location.href=\'../game.php?mode=subnet&sid='.$sid.'&subnet=\'+s;
 </script>
 ';
 
-        createlayout_top('HackTheNet - Subnet');
+        createlayout_top('ZeroDayEmpire - Subnet');
         echo '<div class="content" id="subnet">
 <h2>Subnet</h2>
 '.$info.'
@@ -1454,7 +1454,7 @@ location.href=\'../game.php?mode=subnet&sid='.$sid.'&subnet=\'+s;
         break;
 
     case 'kb':
-        createlayout_top('HackTheNet - Hilfe');
+        createlayout_top('ZeroDayEmpire - Hilfe');
         readfile('data/static/kb.html');
         createlayout_bottom();
         break;

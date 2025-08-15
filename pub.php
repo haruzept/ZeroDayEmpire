@@ -22,7 +22,7 @@ function showdoc($fn, $te = '')
     if ($te != '') {
         $x = ' - '.$te;
     }
-    createlayout_top('HackTheNet'.$x);
+    createlayout_top('ZeroDayEmpire'.$x);
     $x = 'data/pubtxt/'.$fn;
     if (file_exists($x.'.txt')) {
         readfile($x.'.txt');
@@ -62,7 +62,7 @@ switch ($action) {
 
     case 'register':
 
-        createlayout_top('HackTheNet - Account anlegen');
+        createlayout_top('ZeroDayEmpire - Account anlegen');
         echo '<div class="content" id="register">
 <h2>Registrieren</h2>
 ';
@@ -102,7 +102,7 @@ Nur wenn eine korrekte Email-Adresse angegeben wurde, kann der Account aktiviert
         $nick1 = $_POST['nick1'];
         $nick2 = trim($_POST['nick2']);
         $text = trim($_POST['text']);
-        createlayout_top('HackTheNet - Regelversto&szlig;');
+        createlayout_top('ZeroDayEmpire - Regelversto&szlig;');
         echo '<div class="content" id="rules">
 <h2>Regelversto&szlig; gemeldet</h2>
 ';
@@ -196,7 +196,7 @@ Nur wenn eine korrekte Email-Adresse angegeben wurde, kann der Account aktiviert
 
         if ($e == false) {
 
-            createlayout_top('HackTheNet - Account anlegen');
+            createlayout_top('ZeroDayEmpire - Account anlegen');
 
             $pwd = generateMnemonicPassword();
             $tmpfnx = randomx(REG_CODE_LEN);
@@ -247,7 +247,7 @@ Nur wenn eine korrekte Email-Adresse angegeben wurde, kann der Account aktiviert
         list($nick, $email, $pwd, $server) = $parts;
         mysql_select_db(dbname($server));
 
-        createlayout_top('HackTheNet - Account anlegen');
+        createlayout_top('ZeroDayEmpire - Account anlegen');
         echo '<div class="content" id="register">
 <h2>Registrieren</h2>
 <div id="register-step3">
@@ -366,7 +366,7 @@ Nur wenn eine korrekte Email-Adresse angegeben wurde, kann der Account aktiviert
                 setcookie('regc1','yes',time()+24*60*60);
                 $dummy=reloadsperre_CheckIP(true); # IP speichern
                 */
-                createlayout_top('HackTheNet - Account aktivieren');
+                createlayout_top('ZeroDayEmpire - Account aktivieren');
                 echo '<div class="content" id="register">
 <h2>Account aktivieren</h2>
 <div id="register-activate">
@@ -452,7 +452,7 @@ Nur wenn eine korrekte Email-Adresse angegeben wurde, kann der Account aktiviert
         break;
 
     case 'stats': // ----------------------- STATS --------------------------
-        createlayout_top('HackTheNet - Statistik');
+        createlayout_top('ZeroDayEmpire - Statistik');
 
         function stats($server)
         {
@@ -537,7 +537,7 @@ Nur wenn eine korrekte Email-Adresse angegeben wurde, kann der Account aktiviert
 
     default: // ----------------------- STARTSEITE --------------------------
 
-        createlayout_top('HackTheNet - browserbasiertes Online-Spiel');
+        createlayout_top('ZeroDayEmpire - browserbasiertes Online-Spiel');
         include('data/pubtxt/startseite.php');
         createlayout_bottom();
 }
