@@ -1,107 +1,171 @@
+# HackTheNet 2 — Quellcode (modernisiert)
 
+> **Version:** htn2src.2.0‑RC6 (15.08.2025)
+>
+> **Kompatibilität:** PHP 8.3+, MariaDB 10.x (oder kompatible MySQL‑Server), moderner Webserver (Apache/Nginx)
 
-    +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    ++                                                                     ++
-    ++     HH     HH  TTTTTTTTTTTTT  NNN      NN                           ++
-    ++     HH     HH       TT        NNNNN    NN                           ++
-    ++     HH     HH       TT        NN  NN   NN               2222222     ++
-    ++     HH HHH HH       TT        NN   NN  NN   vv      vv       22     ++
-    ++     HH     HH       TT        NN    NN NN    vv    vv    222222     ++
-    ++     HH     HH       TT        NN     NNNN     vv  vv     22         ++
-    ++     HH     HH       TT        NN      NNN      vvvv      222222     ++
-    ++                                                                     ++
-    ++     H A C K T H E N E T  V E R S I O N  2  [ Q U E L L C O D E ]    ++
-    ++                                                                     ++
-    +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+---
 
+## 🔐 Lizenz
 
-    >>> Bei Fragen besuchen Sie das Quelltext-Forum auf www.hackthenet.org <<<
-    >>>        Anfragen per Email oder PM werden nicht beantwortet!        <<<
+Creative Commons **BY‑NC‑SA 2.0 DE** (Namensnennung – nicht kommerziell – Weitergabe unter gleichen Bedingungen). Details in `license_by-nc-sa_2.0_de.txt`. Crystal‑Icons unter LGPL (siehe `static/lizenz.txt` und `static/lgpl.txt`).
 
-    
-    Version htn2src.2.0-RC6 (15.8.25)
+> Nutzung auf eigene Gefahr; kein Anspruch auf Support.
 
-    Systemanforderungen:
-      PHP 8.3 oder höher
-      MariaDB 10.x oder kompatible MySQL-Implementierung
-      Moderner Webserver (z.B. Apache oder Nginx)
-      
-      Unter Linux:
-        chmod -R 0777 data
-       oder
-        chown -R <apache-user> data
-      
-    History:
-      htn2src.2.0-RC1 (2.9.04) - Erster Release Candidate
-      htn2src.2.0-RC2 (3.9.04) - Zweiter RC, einige Änderungen im Detail gegenüber dem ersten.
-      htn2src.2.0-RC3 (3.9.04) - Dritter RC, weitere Bugfixes.
-      htn2src.2.0-RC4 (4.9.04) - Einige Bugfixes:
-            cboard.php - "s"-User gefixt
-            cluster.php - diverse \n's entfernt
-            game.php - Anzeige des Hijack-Levels in der PC-Übersicht hinzugefügt (danke an Eraser)
-            mail.php - Bug mit \s gefixt
-            user.php - Passwort ändern-Funktion für Admins gefixt
-            Mini-"Doku" hinzugefügt
-      htn2src.2.0-RC5 (9.9.04) - Einige Bugfixes:
-            .htaccess
-            login.php - kritischer Bug gefixt!
-            weitere Dateien - kleinere Darstellungsfehler entfernt
-      htn2src.2.0-RC6 (15.8.25) - Aktualisiert für PHP 8.3 und MariaDB 10.x
-            login.php - Sessionbehandlung überarbeitet
-            user.php - SQL-Injection-Möglichkeit geschlossen
-            global.js - Warnungen für PHP 8.3 entfernt
-            
-    
-1. Lizenz
-   Dieser Quellcode steht unter einer Creative Commons License:
-   http://creativecommons.org/licenses/by-nc-sa/2.0/de/
-   (Namensnennung-NichtKommerziell-Weitergabe unter gleichen Bedingungen 2.0 Deutschland)
-   zusammengefasst auch in der Datei license_by-nc-sa_2.0_de.txt ...
-   Der vollständige Text kann hier abgerufen werden: http://creativecommons.org/licenses/by-nc-sa/2.0/de/legalcode
-   
-   Außerdem sind Sie nicht berechtigt, den Hinweis unter "Team" oder den Link auf diese Seite zu entfernen.
-   
-   Die Icons im Crystal-Stylesheet stehen unter LGPL. Details siehe lizenz.txt und
-   lgpl.txt im static-Verzeichnis.
+---
 
-2. Haftungsausschluss
-   Die Autoren dieses Quelltexts können nichts garantieren und keinerlei Verantwortung
-   für jegliche Fehler oder Schäden die durch diesen Quelltext verursacht werden, übernehmen.
-   Wir können für nichts, was Ihnen, Ihrem Computer, Ihrer Katze, Ihrem Sexleben oder irgendetwas
-   anderem durch die Benutzung oder Nicht-Benutzung des Quelltextes passieren kann, Verantwortung
-   übernehmen. Sie benutzen den Quelltext zu 100% zu ihrem eigenen Risiko!
-   Es besteht ebenfalls kein Anspruch auf Support.
-   
-3. Installation
-   Führen Sie die SQL-Befehle in der Datei DATABASE.DUMP.SQL aus (z.B. mit phpMyAdmin).
-   Dadurch wird eine Datenbank htn_server1 angelegt.
-   Jetzt können sie sich schon mit folgenden Benutzern einloggen:
-    Administrator
-    Administrator2
-    TestUser
-   Die Passwörter für die Accounts sind jeweils ein leeres Passwortfeld. Die ersten beiden
-   Accounts sind im "god-mode". Sie können also nicht angegriffen werden. Außerdem stehen
-   von diesen Accounts aus Administrator-Funktionen zur Verfügung, man kann also die Daten
-   von Spielern, PCs und Clustern einsehen und ändern.
-   Weitere Accounts können sie über die Registrieren-Funktion hinzufügen!
+## ✅ Systemvoraussetzungen
 
-4. Modifikationen des Quellcodes
-   Wenn Sie den Code umgeschrieben oder erweitert haben, können sie ihn an
-   htn2code@hackthenet.org schicken (als komprimiertes Archiv, z.B. ZIP, RAR oder GZip)
-   wenn sie möchten, dass ihre modifizierte Version auf www.hackthenet.org allen
-   interessierten zum Download bereitgestellt wird.
+- PHP 8.3 oder höher (üblich: ext‑mysqli, ext‑json, ext‑mbstring)
+- MariaDB 10.x
+- Apache 2.4+ (empfohlen) oder Nginx
+- Shell‑Zugriff für CLI‑Import (alternativ: phpMyAdmin)
 
-5. Wie man sich am besten zurechtfindet.
-   Man nehme eine installiertes HackTheNet und klicke ein bisschen auf den Links rum.
-   In der URL in der Adresszeile findet man einen Parameter, der page, a, action, m oder
-   mode heißt.
-   Dann öffne man die entspr. Datei und suche dort nach Wert dieses Parameters. Dann dürfte
-   man relativ schnell fündig werden!
-   
-X. Enjoy
-   Trotz des schlechten Programmierstils wünschen wir allen viel Spaß mit diesem Code!
-   Das HackTheNet-Team
-   
-   
-   
-   
+---
+
+## 🚀 Schnellstart (Kurzfassung)
+
+1) **Quellcode** ins Webroot deployen (z. B. `/var/www/htn2`).  
+2) **Dump importieren**: `DATABASE.DUMP.mariadb10.sql` importiert **Datenbank & Tabellen**.  
+3) **DB‑Benutzer anlegen & berechtigen** (falls noch nicht vorhanden).  
+4) **`config.php` setzen**: Host, Benutzername, Kennwort und DB‑Name (bzw. Prefix/Suffix).  
+5) **Dateirechte** sicher setzen (kein `777`).  
+6) Login mit Start‑Accounts, anschließend Passwörter ändern.
+
+---
+
+## 🧭 Schritt‑für‑Schritt‑Anleitung (empfohlen)
+
+### 1. Dateien bereitstellen
+
+Kopiere das Projekt in dein Webserver‑Verzeichnis, z. B.:
+
+```bash
+sudo mkdir -p /var/www/htn2
+sudo rsync -a . /var/www/htn2/
+```
+
+Richte ggf. eine virtuelle Host‑Konfiguration ein (Apache/Nginx), sodass die Domain auf den Ordner zeigt.
+
+### 2. Datenbank & Benutzer einrichten
+
+> Der bereitgestellte Dump **erstellt die Datenbank automatisch** (`CREATE DATABASE IF NOT EXISTS …`). Du kannst ihn direkt als `root`/Admin importieren **oder** zuerst einen dedizierten DB‑Benutzer anlegen und dann mit diesem arbeiten.
+
+**Variante A: Erst Benutzer anlegen, dann importieren**
+
+```sql
+-- in der MariaDB‑Shell (z. B. via: sudo mariadb)
+CREATE USER IF NOT EXISTS 'htn_user'@'localhost' IDENTIFIED BY 'EinStarkesPasswort!';
+CREATE DATABASE IF NOT EXISTS `htn_server1` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+GRANT ALL PRIVILEGES ON `htn_server1`.* TO 'htn_user'@'localhost';
+FLUSH PRIVILEGES;
+```
+
+Danach Import über CLI:
+
+```bash
+mysql -u htn_user -p htn_server1 < DATABASE.DUMP.mariadb10.sql
+```
+
+**Variante B: Dump als Admin importieren (erzeugt DB), dann Benutzer berechtigen**
+
+```bash
+# Import als root/Admin:
+sudo mysql < DATABASE.DUMP.mariadb10.sql
+
+# Danach Benutzer anlegen und berechtigen (in der MariaDB‑Shell):
+CREATE USER IF NOT EXISTS 'htn_user'@'localhost' IDENTIFIED BY 'EinStarkesPasswort!';
+GRANT ALL PRIVILEGES ON `htn_server1`.* TO 'htn_user'@'localhost';
+FLUSH PRIVILEGES;
+```
+
+**Alternative: phpMyAdmin**
+
+- Melde dich als Admin an, öffne **Import** und wähle `DATABASE.DUMP.mariadb10.sql` aus.  
+- Falls noch kein Benutzer existiert, unter **Benutzerkonten** → **Benutzerkonto hinzufügen** → Berechtigungen für Datenbank `htn_server1` vergeben.
+
+### 3. Anwendung konfigurieren (`config.php`)
+
+Öffne `config.php` und setze mindestens die DB‑Parameter. Beispielkonfiguration:
+
+```php
+// Datenbankparameter aktiv nutzen
+$db_use_this_values = true;
+
+// Datenbank‑Zugangsdaten
+$db_host = 'localhost';
+$db_username = 'htn_user';
+$db_password = 'EinStarkesPasswort!';
+
+// Datenbankname wird i. d. R. aus Prefix + Suffix gebildet:
+$database_prefix = 'htn_server';
+$database_suffix = '1'; // ergibt 'htn_server1'
+```
+
+> Hinweis: Wenn du einen anderen DB‑Namen verwendest, passe `suffix` entsprechend an **oder** stelle sicher, dass die Anwendung auf die korrekte Datenbank zeigt.
+
+### 4. Sichere Dateirechte setzen (kein 777)
+
+Nur schreibpflichtige Verzeichnisse (z. B. `data/`) erhalten Schreibrechte für den Webserver‑User. Beispiel (Debian/Ubuntu mit `www-data`):
+
+```bash
+sudo chown -R www-data:www-data /var/www/htn2/data
+# Verzeichnisse: 750 (rwx für Owner, rx für Gruppe)
+find /var/www/htn2/data -type d -exec chmod 750 {} \;
+# Dateien: 640 (rw für Owner, r für Gruppe)
+find /var/www/htn2/data -type f -exec chmod 640 {} \;
+```
+
+Wenn mehrere Systemnutzer deployen, kannst du eine gemeinsame Gruppe verwenden und `770/660` wählen.
+
+### 5. Erster Start & Login
+
+Rufe die Site im Browser auf. Initial stehen Test‑Accounts zur Verfügung (z. B. *Administrator*, *Administrator2*, *TestUser*). **Passwörter sind leer** – bitte sofort ändern bzw. Testnutzer deaktivieren.
+
+---
+
+## 🔒 Sicherheitsempfehlungen
+
+- **Starke Passwörter** verwenden und sofortige Änderung der Standard‑Accounts.
+- Webserver so konfigurieren, dass Verzeichnis‑Listings deaktiviert sind.
+- Schreibrechte auf das **Minimum** begrenzen (nur dort, wo nötig).
+- Regelmäßige Backups der Datenbank.
+
+---
+
+## 🧩 Fehlerbehebung (kurz)
+
+- *„Access denied for user …“*: Berechtigungen prüfen (`GRANT`), Host (`localhost` vs. `%`), Passwort korrekt?  
+- *„Unknown database …“*: Dump erneut importieren oder DB‑Name (Prefix/Suffix) in `config.php` anpassen.  
+- *Umlaute/Encoding*: sicherstellen, dass `utf8mb4` als Standard gesetzt ist.
+
+---
+
+## 🗒️ Changelog
+
+- **2.0‑RC6 (15.08.2025)**
+  - PHP 8.3 / MariaDB 10.x Kompatibilität
+  - Session‑Behandlung überarbeitet
+  - SQL‑Injection‑Fixes
+  - Entfernung veralteter Warnungen
+- **2.0‑RC5 (09.09.2004)**
+  - Bugfixes in .htaccess und login.php (kritischer Fehler behoben)
+  - kleinere Darstellungsfehler in mehreren Dateien entfernt
+- **2.0‑RC4 (04.09.2004)**
+  - Diverse Bugfixes: cboard.php („s“-User gefixt), cluster.php (\\n entfernt)
+  - game.php: Anzeige des Hijack‑Levels in PC‑Übersicht hinzugefügt
+  - mail.php: Bug mit \\s gefixt
+  - user.php: Passwort ändern für Admins gefixt
+  - Mini-\"Doku\" hinzugefügt
+- **2.0‑RC3 (03.09.2004)**
+  - Weitere Bugfixes
+- **2.0‑RC2 (03.09.2004)**
+  - Änderungen im Detail gegenüber RC1
+- **2.0‑RC1 (02.09.2004)**
+  - Erster Release Candidate
+
+---
+
+## 💡 Beiträge
+
+Verbesserungen oder Fixes willkommen! Reiche Änderungen als Archiv (ZIP/TAR.GZ) an htn2code@hackthenet.org ein, damit sie ggf. auf der offiziellen Seite veröffentlicht werden.
