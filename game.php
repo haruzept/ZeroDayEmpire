@@ -55,11 +55,21 @@ switch ($action) {
         }
 
 
-        $c = getcluster($usr['cluster']);
-        if ($c !== false && !empty($c['notice'])) {
-            $info .= infobox('Cluster-Info', 'overview-cluster', nl2br($c['notice']), 'id');
-        }
 #$info.=infobox('<b>ACHTUNG:</b> Multis keine Chance! Wer mehrere Accounts besitzt, wird gnadenlos gel&ouml;scht.');
+
+        $SALT = file_get('data/upgr_SALT.dat');
+        $idparam = preg_replace('([./])', '', crypt('HtNiTeM', $SALT));
+        function overview_upgrade_link($id)
+        {
+            global $pc, $sid, $SALT, $idparam;
+            if (isavailb($id, $pc)) {
+                $inf = getiteminfo($id, $pc[$id]);
+                $encrid = crypt($id, $SALT);
+                return ' <a href="game.php?m=upgrade&amp;'.$idparam.'='.$encrid.'&amp;sid='.$sid.'" title="'.$inf['c'].' Credits">(Upgrade kaufen)</a>';
+            }
+
+            return '';
+        }
 
         createlayout_top('ZeroDayEmpire - &Uuml;bersicht');
 ?>
@@ -167,25 +177,30 @@ switch ($action) {
   <article class="card span-6">
     <h3>&Uuml;bersicht</h3>
     <div class="strip" style="margin-top:10px; grid-template-columns:repeat(auto-fit,minmax(140px,1fr))">
-      <div class="kpi"><div class="label"><strong>Guthaben:</strong></div><div class="value"><span><?php echo $bucks; ?></span> <span class="unit">CR</span></div></div>
-      <div class="kpi"><div class="label"><strong>Punkte:</strong></div><div class="value"><span><?php echo $usr['points']; ?></span> <span class="unit">Punkte</span></div></div>
+      <div class="kpi"><div class="label"><strong>Guthaben:</strong></div><div><span><?php echo $bucks; ?></span> <span class="unit">CR</span></div></div>
+      <div class="kpi"><div class="label"><strong>Punkte:</strong></div><div><span><?php echo $usr['points']; ?></span> <span class="unit">Punkte</span></div></div>
     </div>
   </article>
 
   <article class="card span-6" id="computers">
-    <h3>Computer</h3>
-    <ul class="muted" style="list-style:none; padding-left:0; margin:10px 0 0 0">
-      <li><a href="game.php?m=pc&amp;sid=<?php echo $sid; ?>"><strong><?php echo safeentities($pc['name']); ?></strong> (10.47.<?php echo $pc['ip']; ?>)</a></li>
-      <li data-item="cpu"><?php echo idtoname('cpu'); ?>: <?php echo $cpu_levels[$pc['cpu']]; ?> Mhz<div class="tip"></div></li>
-      <li data-item="ram"><?php echo idtoname('ram'); ?>: <?php echo $ram_levels[$pc['ram']]; ?> MB<div class="tip"></div></li>
-      <li data-item="lan"><?php echo idtoname('lan'); ?>: Level <?php echo $pc['lan']; ?><div class="tip"></div></li>
-      <li data-item="mm"><?php echo idtoname('mm'); ?>: Version <?php echo $pc['mm']; ?><div class="tip"></div></li>
-      <li data-item="bb"><?php echo idtoname('bb'); ?>: Version <?php echo $pc['bb']; ?><div class="tip"></div></li>
-      <li data-item="fw"><?php echo idtoname('fw'); ?>: Version <?php echo $pc['fw']; ?><div class="tip"></div></li>
-      <li data-item="av"><?php echo idtoname('av'); ?>: Version <?php echo $pc['av']; ?><div class="tip"></div></li>
-      <li data-item="ids"><?php echo idtoname('ids'); ?>: Level <?php echo $pc['ids']; ?><div class="tip"></div></li>
-    </ul>
-  </article>
+      <h3>Computer</h3>
+      <ul class="muted" style="list-style:none; padding-left:0; margin:10px 0 0 0">
+        <li><a href="game.php?m=pc&amp;sid=<?php echo $sid; ?>"><strong><?php echo safeentities($pc['name']); ?></strong> (10.47.<?php echo $pc['ip']; ?>)</a></li>
+        <li data-item="cpu"><?php echo idtoname('cpu'); ?>: <?php echo $cpu_levels[$pc['cpu']]; ?> Mhz<?php echo overview_upgrade_link('cpu'); ?><div class="tip"></div></li>
+        <li data-item="ram"><?php echo idtoname('ram'); ?>: <?php echo $ram_levels[$pc['ram']]; ?> MB<?php echo overview_upgrade_link('ram'); ?><div class="tip"></div></li>
+        <li data-item="lan"><?php echo idtoname('lan'); ?>: Level <?php echo $pc['lan']; ?><?php echo overview_upgrade_link('lan'); ?><div class="tip"></div></li>
+      </ul>
+      <div class="software">
+        <h4>Software</h4>
+        <ul class="muted" style="list-style:none; padding-left:0; margin:10px 0 0 0">
+          <li data-item="mm"><?php echo idtoname('mm'); ?>: Version <?php echo $pc['mm']; ?><?php echo overview_upgrade_link('mm'); ?><div class="tip"></div></li>
+          <li data-item="bb"><?php echo idtoname('bb'); ?>: Version <?php echo $pc['bb']; ?><?php echo overview_upgrade_link('bb'); ?><div class="tip"></div></li>
+          <li><?php echo idtoname('fw'); ?>: Version <?php echo $pc['fw']; ?></li>
+          <li><?php echo idtoname('av'); ?>: Version <?php echo $pc['av']; ?></li>
+          <li><?php echo idtoname('ids'); ?>: Level <?php echo $pc['ids']; ?></li>
+        </ul>
+      </div>
+    </article>
 
   <article class="card span-6" id="cluster">
     <h3>Cluster</h3>
