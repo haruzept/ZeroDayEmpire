@@ -142,3 +142,103 @@ input:focus{ border-color: rgba(var(--accent)/.6); box-shadow: 0 0 0 4px rgba(va
 .skills .skill:hover .skill-info,
 .skills .skill:focus-within .skill-info{ display:block }
 
+
+
+/* === Legacy pages theme bridge ===
+   Bring older PHP pages (pub.php, game.php, user.php, ranking.php, mail.php, cluster.php)
+   visually in line with the new index.php design without changing their logic/markup.
+   We style their generic wrappers (.content, .submenu, .menu, tables, .important/.ok/.error alerts).
+*/
+
+/* Page backdrop & text already handled by body in this file. */
+
+/* Generic content container -> card look */
+.content{
+  width: min(1000px, 92%);
+  margin: 18px auto;
+  background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+  border:1px solid var(--border);
+  border-radius: var(--radius);
+  padding: clamp(14px, 2.6vw, 22px);
+  box-shadow: 0 12px 40px rgba(0,0,0,.3);
+}
+
+/* Headings inside content */
+.content h1, .content h2, .content h3{
+  margin-top: .2em;
+  letter-spacing: .2px;
+  line-height: 1.2;
+  background: linear-gradient(180deg, #fff, rgba(255,255,255,.75));
+  -webkit-background-clip: text; background-clip:text; color: transparent;
+  text-shadow: 0 0 30px rgba(var(--accent)/.25);
+}
+
+/* Submenu/top tabs as pill nav */
+.submenu, #submenu{
+  display:flex; gap:8px; flex-wrap:wrap;
+  align-items:center; justify-content:flex-start;
+  margin: 8px auto 14px; width:min(1000px, 92%);
+}
+.submenu a, #submenu a{
+  display:inline-flex; align-items:center; gap:8px;
+  padding:10px 14px; border-radius:12px;
+  border:1px solid color-mix(in oklab, rgba(var(--accent)/.35), transparent 40%);
+  background:linear-gradient(180deg, rgba(var(--accent)/.14), rgba(var(--accent)/.045));
+  box-shadow: 0 0 0 1px rgba(255,255,255,.03) inset, 0 8px 30px rgba(var(--accent)/.08);
+  color:white;
+}
+.submenu a:hover, #submenu a:hover{ box-shadow: 0 12px 40px rgba(var(--accent)/.20); transform: translateY(-1px); }
+
+/* Tables -> sleek */
+.content table{
+  width:100%; border-collapse: collapse; margin:8px 0 6px;
+  border:1px solid var(--border); border-radius:14px; overflow:hidden; display:block;
+}
+.content thead th{
+  background:rgba(255,255,255,.03); font-weight:700; text-align:left; padding:10px 12px; border-bottom:1px solid var(--border);
+}
+.content tbody td{
+  padding:10px 12px; border-bottom:1px dashed var(--border);
+}
+.content tbody tr:hover{ background:rgba(255,255,255,.03) }
+.content tbody tr:last-child td{ border-bottom:none }
+
+/* Status labels often used in ranking/mail etc. */
+.number{ text-align:right; font-variant-numeric: tabular-nums }
+.name, .from, .title, .cluster{ font-weight:600 }
+.points{ font-weight:800 }
+.not-read{ font-weight:700 }
+
+/* Alerts */
+.important, .ok, .error{
+  width: min(1000px, 92%); margin:12px auto;
+  padding:12px 14px; border-radius:12px; border:1px solid var(--border);
+}
+.important{ background: rgba(255, 183, 0, .06); border-color: color-mix(in oklab, rgba(255,183,0,.5), var(--border)) }
+.ok{ background: rgba(0, 210, 120, .07); border-color: color-mix(in oklab, rgba(0,210,120,.5), var(--border)) }
+.error{ background: rgba(255, 71, 87, .08); border-color: color-mix(in oklab, rgba(255,71,87,.55), var(--border)) }
+
+/* Forms */
+.content input[type="text"], .content input[type="password"], .content input[type="email"], .content select, .content textarea{
+  width:100%; background: var(--bg-2); color:var(--text); border:1px solid var(--border); border-radius:12px; padding:10px 12px; outline:none;
+}
+.content input:focus, .content select:focus, .content textarea:focus{ border-color: rgba(var(--accent)/.6); box-shadow: 0 0 0 4px rgba(var(--accent)/.15) }
+.content .checkbox{ display:inline-flex; align-items:center; gap:8px }
+.content button, .content input[type="submit"], .content .button{
+  display:inline-flex; align-items:center; gap:10px; padding:10px 14px; border-radius:12px; border:1px solid color-mix(in oklab, rgba(var(--accent)/.35), transparent 40%); background:linear-gradient(180deg, rgba(var(--accent)/.14), rgba(var(--accent)/.045)); box-shadow: 0 0 0 1px rgba(255,255,255,.03) inset, 0 8px 30px rgba(var(--accent)/.08); color:white; cursor:pointer; text-decoration:none
+}
+.content button:hover, .content input[type="submit"]:hover, .content .button:hover{ box-shadow: 0 12px 40px rgba(var(--accent)/.20); transform: translateY(-1px) }
+
+/* Pagination / small nav bars */
+.pager, #pager{ display:flex; gap:8px; justify-content:flex-end; margin-top:8px }
+.pager a, #pager a{ padding:8px 12px; border:1px solid var(--border); border-radius:10px; color:var(--text) }
+.pager a:hover{ border-color:rgba(var(--accent)/.35); background:rgba(255,255,255,.03) }
+
+/* Code blocks & mono */
+pre, code{ background: var(--bg-2); border:1px solid var(--border); border-radius:10px; padding:8px 10px }
+
+/* Make legacy tables readable on small screens */
+@media(max-width: 900px){
+  .content{ padding: 12px }
+  .content table{ display:block; overflow:auto }
+}
