@@ -214,7 +214,7 @@ du die genauen Gr&uuml;nde wissen willst, schick eine Email an <a href="mailto:k
     if (($_GET['redir'] ?? '') == 'forum') {
         header('Location: http://forum.hackthenet.org/');
     } else {
-        header('Location: index.html');
+        header('Location: index.php');
     }
 }
 
