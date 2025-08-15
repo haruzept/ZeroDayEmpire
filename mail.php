@@ -188,7 +188,7 @@ switch ($action) {
         if ($full == true) {
             $full = '<div class="important">'.LF.'<h3>Dein Posteingang ist voll!</h3>'.LF.'<p>Bitte l&ouml;sche Mails, damit andere User dir wieder schreiben k&ouml;nnen.</p>'.LF.'</div>'."\n";
         }
-        createlayout_top('HackTheNet - Messages');
+        createlayout_top('ZeroDayEmpire - Messages');
         $link_inbox = '';
         $link_sysmsgs = '';
         if ($inbox != '') {
@@ -291,7 +291,7 @@ switch ($action) {
         break;
 
     case 'newmailform':  //------------------------- NewMailForm -------------------------------
-        createlayout_top('HackTheNet - Messages');
+        createlayout_top('ZeroDayEmpire - Messages');
         echo '<div class="content" id="messages">'.LF.'<h2>Messages</h2>'.LF.$notif;
         newmailform($_REQUEST['recip'], $_REQUEST['subject'], $_REQUEST['text']);
         echo '</div>'."\n";
@@ -300,7 +300,7 @@ switch ($action) {
 
 
     case 'archiv':  //------------------------- ARCHIV -------------------------------
-        createlayout_top('HackTheNet - Messages');
+        createlayout_top('ZeroDayEmpire - Messages');
         $x = maillist('arc');
         echo '<div class="content" id="messages">
 <h2>Messages</h2>
@@ -333,7 +333,7 @@ switch ($action) {
         break;
 
     case 'outbox':  //------------------------- OUTBOX -------------------------------
-        createlayout_top('HackTheNet - Messages');
+        createlayout_top('ZeroDayEmpire - Messages');
         $x = maillist('out');
         echo '<div class="content" id="messages">
 <h2>Messages</h2>
@@ -524,7 +524,7 @@ switch ($action) {
             header('Location: mail.php?m=newmailform&sid='.$sid.'&ok='.urlencode($ok));
         } else {
             $err = '<div class="error"><h3>Fehler</h3><p>'.$error.'</p></div>';
-            createlayout_top('HackTheNet - Messages');
+            createlayout_top('ZeroDayEmpire - Messages');
             echo '<div class="content" id="messages">'.LF.'<h2>Messages</h2>'.LF.$err."\n";
             newmailform($_REQUEST['recip'], $_REQUEST['subject'], $_REQUEST['text'], false);
             echo '</div>'."\n";
@@ -585,7 +585,7 @@ switch ($action) {
             $links .= ' | <a href="mail.php?a=markunread&amp;c'.$msg.'=1&amp;sid='.$sid.'&amp;redir='.$redir.'&amp;type=in">Als neu markieren</a>';
         }
 
-        createlayout_top('HackTheNet - Messages');
+        createlayout_top('ZeroDayEmpire - Messages');
         echo '<div class="content" id="messages">
 <h2>Messages</h2>
 <div id="messages-message-read">
