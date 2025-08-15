@@ -15,6 +15,12 @@ switch ($action) {
     case 'config': //------------------------- CONFIG -------------------------------
 
         createlayout_top('ZeroDayEmpire - Optionen');
+?>
+<!-- ZDE theme inject -->
+<style>@import url("style.css");</style>
+<div class="container">
+<?php // /ZDE theme inject start ?>
+
 
         echo '<div class="content" id="settings">
 <h2>Optionen</h2>';
@@ -303,7 +309,11 @@ Bitte zur Best&auml;tigung eingeben.</td>
 ';
         }
         echo '</div>'."\n";
-        createlayout_bottom();
+        ?>
+</div>
+<!-- /ZDE theme inject -->
+<?php
+createlayout_bottom();
         break;
 
     case 'saveconfig': //------------------------- SAVE CONFIG -------------------------------
@@ -471,6 +481,12 @@ Bitte zur Best&auml;tigung eingeben.</td>
 
             $u_points = $a['points'];
             createlayout_top('ZeroDayEmpire - Benutzerprofil');
+?>
+<!-- ZDE theme inject -->
+<style>@import url("style.css");</style>
+<div class="container">
+<?php // /ZDE theme inject start ?>
+
             if ($a['gender'] == 'x') {
                 $geschl = '';
             } elseif ($a['gender'] == 'm') {
@@ -628,7 +644,11 @@ Bitte zur Best&auml;tigung eingeben.</td>
 </div>
 </div>
 ';
-            createlayout_bottom();
+            ?>
+</div>
+<!-- /ZDE theme inject -->
+<?php
+createlayout_bottom();
         } else {
             simple_message('Diesen Benutzer gibt es nicht!');
         }
