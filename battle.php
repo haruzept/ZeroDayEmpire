@@ -759,7 +759,7 @@ location.replace(\'battle.php?m=opc&sid='.$sid.'\');
                 addsysmsg(
                     $usrid,
                     '<b>Spionage-Bericht von 10.47.'.$remote['ip'].'</b> Besitzer: [usr='.$owner['id'].']'.$owner['name'].'[/usr]<br />
-    Prozessor = '.$cpu_levels[$remote['cpu']].' Mhz,<br />Arbeitsspeicher = '.$ram_levels[$remote['ram']].' MB RAM,<br /> MoneyMarket = v'.$remote['mm'].',<br /> BucksBunker = v'.$remote['bb'].',<br />
+    Prozessor = '.$cpu_names[$remote['cpu']].',<br />Arbeitsspeicher = '.$ram_levels[$remote['ram']].' MB RAM,<br /> MoneyMarket = v'.$remote['mm'].',<br /> BucksBunker = v'.$remote['bb'].',<br />
     Firewall = v'.$remote['fw'].',<br /> Anti-Virus-Programm = v'.$remote['av'].',<br /> IDS = v'.$remote['ids'].',<br />
     IPS = v'.$remote['ips'].',<br /> Malware Kit = v'.$remote['mk'].',<br /> Trojaner = v'.$remote['trojan'].',<br /> SDK = v'.$remote['sdk'].',<br />
     Remote Hijack = v'.$remote['rh'].',<br /> Distributed Attack = '.(int)isavailh('da', $remote)
@@ -981,7 +981,7 @@ location.replace(\'battle.php?m=opc&sid='.$sid.'\');
             function smash($key)
             {
                 global $STYLESHEET, $REMOTE_FILES_DIR, $DATADIR, $remote, $local, $target, $local2, $remote2;
-                global $cpu_levels, $ram_levels, $msg, $success, $noticed, $usr, $usrid;
+                global $cpu_levels, $ram_levels, $cpu_names, $msg, $success, $noticed, $usr, $usrid;
                 $defend = getDefend('($remote[\'av\']+$remote[\'fw\'])*25');
                 $attack = getAttack('($local[\'sdk\']+$local[\'mk\'])*30');
                 $tmp = getsuccess($attack, $defend, 45);
@@ -1028,7 +1028,7 @@ location.replace(\'battle.php?m=opc&sid='.$sid.'\');
                         $remote2[$key] = $newval;
                         savepc($target, $remote2);
                         if ($key == 'cpu') {
-                            $newval = $cpu_levels[$newval];
+                            $newval = $cpu_names[$newval];
                         }
                         $s .= idtoname($key).' wurde zerst&ouml;rt auf '.$newval.'!<br />';
                         echo idtoname($key).' zerst&ouml;rt auf '.$newval.'!</span><br />';

@@ -202,7 +202,7 @@ switch ($action) {
       <h3>Computer</h3>
       <ul class="muted" style="list-style:none; padding-left:0; margin:10px 0 0 0">
         <li><a href="game.php?m=pc&amp;sid=<?php echo $sid; ?>"><strong><?php echo safeentities($pc['name']); ?></strong> (10.47.<?php echo $pc['ip']; ?>)</a></li>
-        <li data-item="cpu"><?php echo idtoname('cpu'); ?>: <?php echo $cpu_levels[$pc['cpu']]; ?> Mhz<?php echo overview_upgrade_link('cpu'); ?><div class="tip"></div></li>
+        <li data-item="cpu"><?php echo idtoname('cpu'); ?>: <?php echo $cpu_names[$pc['cpu']]; ?><?php echo overview_upgrade_link('cpu'); ?><div class="tip"></div></li>
         <li data-item="ram"><?php echo idtoname('ram'); ?>: <?php echo $ram_levels[$pc['ram']]; ?> MB<?php echo overview_upgrade_link('ram'); ?><div class="tip"></div></li>
         <li data-item="lan"><?php echo idtoname('lan'); ?>: Level <?php echo $pc['lan']; ?><?php echo overview_upgrade_link('lan'); ?><div class="tip"></div></li>
       </ul>
@@ -298,14 +298,14 @@ createlayout_bottom();
 
         function showinfo($id, $txt, $val = -1)
         {
-            global $pc, $sid, $pcid, $usrid, $ram_levels, $cpu_levels;
+            global $pc, $sid, $pcid, $usrid, $ram_levels, $cpu_levels, $cpu_names;
             if ($val == -1) {
                 $val = $pc[$id];
             }
             if ($id == 'ram') {
                 $val = $ram_levels[$val];
             } elseif ($id == 'cpu') {
-                $val = $cpu_levels[$val];
+                $val = $cpu_names[$val];
             }
             $name = idtoname($id);
             if ($val && $val != '0.0') {
@@ -383,7 +383,7 @@ createlayout_bottom();
 <div id="computer-essentials">
 <h3>Essentials</h3>
 <p>';
-        showinfo('cpu', '%v Mhz');
+        showinfo('cpu', '%v');
         br();
         showinfo('ram', '%v MB RAM');
         br();
@@ -472,7 +472,7 @@ createlayout_bottom();
         if ($item == 'ram') {
             $val = $ram_levels[$val];
         } elseif ($item == 'cpu') {
-            $val = $cpu_levels[$val];
+            $val = $cpu_names[$val];
         } else {
             if (strlen((string)$val) == 1) {
                 $val = $val.'.0';

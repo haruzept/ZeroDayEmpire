@@ -179,41 +179,66 @@ if ($localhost) {
 }
 
 $cpu_levels = array(
-    0 => 120,
-    1 => 266,
-    2 => 300,
-    3 => 450,
-    4 => 600,
-    5 => 800,
-    6 => 1000,
-    7 => 1200,
-    8 => 1500,
-    9 => 1800,
-    10 => 2000,
-    11 => 2200,
-    12 => 2400,
-    13 => 2600,
-    14 => 2800,
-    15 => 3000,
-    16 => 3200,
-    17 => 3400,
-    18 => 3600,
-    19 => 3800,
-    20 => 4000,
-    21 => 4400,
+    0 => 1200,
+    1 => 1400,
+    2 => 1600,
+    3 => 1800,
+    4 => 2000,
+    5 => 2200,
+    6 => 2400,
+    7 => 2600,
+    8 => 2800,
+    9 => 3000,
+    10 => 3200,
+    11 => 3400,
+    12 => 3600,
+    13 => 3800,
+    14 => 4000,
+    15 => 4200,
+    16 => 4400,
+    17 => 4600,
+    18 => 4800,
+    19 => 5000,
+    20 => 5200,
+    21 => 5400,
+);
+
+$cpu_names = array(
+    0 => 'Single-Core 1200',
+    1 => 'Single-Core 1400',
+    2 => 'Single-Core 1600',
+    3 => 'Single-Core 1800',
+    4 => 'Dual-Core 2000',
+    5 => 'Dual-Core 2200',
+    6 => 'Dual-Core 2400',
+    7 => 'Dual-Core 2600',
+    8 => 'Dual-Core 2800',
+    9 => 'Dual-Core 3000',
+    10 => 'Dual-Core 3200',
+    11 => 'Quad-Core 3400',
+    12 => 'Quad-Core 3600',
+    13 => 'Quad-Core 3800',
+    14 => 'Quad-Core 4000',
+    15 => 'Quad-Core 4200',
+    16 => 'Quad-Core 4400',
+    17 => 'Quad-Core 4600',
+    18 => 'Quad-Core 4800',
+    19 => 'Quad-Core 5000',
+    20 => 'Quad-Core 5200',
+    21 => 'Quad-Core 5400',
 );
 
 $ram_levels = array(
-    0 => 16,
-    1 => 32,
-    2 => 64,
-    3 => 128,
-    4 => 256,
-    5 => 512,
-    6 => 1024,
-    7 => 2048,
-    8 => 3072,
-    9 => 4096,
+    0 => 1024,
+    1 => 2048,
+    2 => 3072,
+    3 => 4096,
+    4 => 5120,
+    5 => 6144,
+    6 => 7168,
+    7 => 8192,
+    8 => 9216,
+    9 => 10240,
 );
 
 define('DPH_ADS', 22, false);
@@ -1036,18 +1061,18 @@ function itemnextlevel($id, $curlevel)
 
 function formatitemlevel($id, $val)
 { //--------------------- FORMAT ITEM LEVEL ----------------------
-    global $cpu_levels, $ram_levels;
+    global $cpu_levels, $ram_levels, $cpu_names;
     if ($id == 'ram') {
         $val = $ram_levels[$val];
     } elseif ($id == 'cpu') {
-        $val = $cpu_levels[$val];
+        $val = $cpu_names[$val];
     } elseif ((float)$val == 0) {
         $val = '0.0';
     } elseif (strlen((string)$val) == 1 || $val == 10) {
         $val = $val.'.0';
     }
     if ($id == 'cpu') {
-        $sval = $val.' Mhz';
+        $sval = $val;
     } elseif ($id == 'ram') {
         $sval = $val.' MB RAM';
     } else {
