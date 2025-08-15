@@ -161,18 +161,59 @@ switch ($action) {
             }
         }
         setuserval('da_avail', ($da == true ? 'yes' : 'no'));
+        echo $notif.$info;
+        ?>
 
-        echo '<div class="content" id="overview">
-<h2>&Uuml;bersicht</h2>
-'.$notif.'
-'.$info;
+<section class="features" aria-label="Dashboard">
+  <article class="card span-6">
+    <h3 class="tight">Willkommen, <?php echo safeentities($usr['name']); ?></h3>
+    <p class="muted">Dein Syndikat wartet auf Befehle.</p>
+  </article>
 
+  <article class="card span-6">
+    <h3>&Uuml;bersicht</h3>
+    <div class="strip" style="margin-top:10px">
+      <div class="kpi"><div class="label">Guthaben</div><div class="value"><?php echo $bucks; ?> CR</div></div>
+      <div class="kpi"><div class="label">Punkte</div><div class="value"><?php echo $usr['points']; ?></div></div>
+    </div>
+  </article>
 
+  <article class="card span-6" id="computers">
+    <h3>Computer</h3>
+    <ul class="muted" style="list-style:none; padding-left:0; margin:10px 0 0 0">
+      <li><strong><?php echo safeentities($pc['name']); ?></strong> (10.47.<?php echo $pc['ip']; ?>)</li>
+      <li>CPU: <?php echo $cpu_levels[$pc['cpu']]; ?> Mhz</li>
+      <li>RAM: <?php echo $ram_levels[$pc['ram']]; ?> MB</li>
+      <li>LAN: Level <?php echo $pc['lan']; ?></li>
+      <li>MM: Version <?php echo $pc['mm']; ?></li>
+      <li>BB: Version <?php echo $pc['bb']; ?></li>
+      <li>FW: Version <?php echo $pc['fw']; ?></li>
+      <li>AV: Version <?php echo $pc['av']; ?></li>
+      <li>IDS: Level <?php echo $pc['ids']; ?></li>
+    </ul>
+  </article>
+
+  <article class="card span-6" id="cluster">
+    <h3>Cluster</h3>
+    <?php if ($c !== false) { ?>
+      <ul class="muted" style="list-style:none; padding-left:0; margin:10px 0 0 0">
+        <li><strong><?php echo safeentities($c['name']); ?></strong></li>
+        <li>Punkte: <?php echo number_format($c['points'],0,',','.'); ?></li>
+        <li>Mitglieder: <?php echo $c['members']; ?></li>
+        <li>Geld: <?php echo number_format($c['money'],0,',','.'); ?> CR</li>
+      </ul>
+    <?php } else { ?>
+      <p class="muted">Du bist in keinem Cluster.</p>
+    <?php } ?>
+  </article>
+</section>
+
+<?php
         if ($newtotal > 0) {
             echo '<div id="overview-messages">'."\n";
             echo '<h3>Messages</h3>'."\n";
-            echo '<p>Du hast <strong>'.$newtotal.' ungelesene Nachricht'.($newtotal == 1 ? '' : 'en').'</strong>.</p>', "\n";
-            echo '<p><a href="mail.php?m=start&amp;sid='.$sid.'">Gehe zu den Nachrichten</a></p>', "\n";
+            echo '<p>Du hast <strong>'.$newtotal.' ungelesene Nachricht'.($newtotal == 1 ? '' : 'en').'</strong>.</p>'."\n";
+            echo '<p><a href="mail.php?m=start&amp;sid='.$sid.'">Gehe zu den Nachrichten</a></p>'."\n";
             echo '</div>';
         }
 
@@ -185,19 +226,16 @@ switch ($action) {
         }
 
         $usr['points'] = number_format($usr['points'], 0, ',', '.');
-        echo '<div id="overview-ranking">
-<h3>Situation</h3>
-<p>Du besitzt im Moment <strong>'.$usr['points'].' Punkte</strong>, aufgeteilt auf <strong>'.$pccnt.' Computer</strong>. Damit bist du auf dem <strong>'.$usr['rank'].'. Platz</strong> in der Gesamtwertung.</p>
-<p><a href="ranking.php?m=ranking&amp;sid='.$sid.'">Gehe zur Rangliste</a></p>';
+        echo '<div id="overview-ranking">'.LF;
+        echo '<h3>Situation</h3>'.LF;
+        echo '<p>Du besitzt im Moment <strong>'.$usr['points'].' Punkte</strong>, aufgeteilt auf <strong>'.$pccnt.' Computer</strong>. Damit bist du auf dem <strong>'.$usr['rank'].'. Platz</strong> in der Gesamtwertung.</p>'.LF;
+        echo '<p><a href="ranking.php?m=ranking&amp;sid='.$sid.'">Gehe zur Rangliste</a></p>'.LF;
         if ($c !== false) {
             $c['points'] = number_format($c['points'], 0, ',', '.');
-            echo '<p>Dein Cluster besitzt <strong>'.$c['points'].' Punkte</strong>. Damit ist dein Cluster auf dem <strong>'.$c['rank'].'. Platz</strong> in der Gesamtwertung.</p>
-<p><a href="ranking.php?m=ranking&amp;type=cluster&amp;sid='.$sid.'">Gehe zur Cluster-Rangliste</a></p>';
+            echo '<p>Dein Cluster besitzt <strong>'.$c['points'].' Punkte</strong>. Damit ist dein Cluster auf dem <strong>'.$c['rank'].'. Platz</strong> in der Gesamtwertung.</p>'.LF;
+            echo '<p><a href="ranking.php?m=ranking&amp;type=cluster&amp;sid='.$sid.'">Gehe zur Cluster-Rangliste</a></p>'.LF;
         }
-
-        echo '</div>
-</div>';
-
+        echo '</div>';
         ?>
 </div>
 <!-- /ZDE theme inject -->
