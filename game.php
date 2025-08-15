@@ -141,21 +141,11 @@ switch ($action) {
             );
         }
 
-        $pcs_no_upgr = 0;
-        $a = explode(',', $usr['pcs']);
-        $pccnt = count($a); # Anzahl PCs
-
         $da = false;
         $sql = db_query('SELECT * FROM pcs WHERE owner='.mysql_escape_string($usr['id']).';');
         while ($x = mysql_fetch_assoc($sql)) {
             if ($x['points'] < 1024) {
                 processupgrades($x);
-                if ((int)@mysql_num_rows(
-                        @db_query('SELECT `id` FROM `upgrades` WHERE pc=\''.mysql_escape_string($x['id']).'\';')
-                    ) == 0
-                ) {
-                    $pcs_no_upgr++;
-                }
             }
             if ($da !== true) {
                 $tmp = isavailh('da', $x);
@@ -176,9 +166,9 @@ switch ($action) {
 
   <article class="card span-6">
     <h3>&Uuml;bersicht</h3>
-    <div class="strip" style="margin-top:10px">
-      <div class="kpi"><div class="label">Guthaben</div><div class="value"><?php echo $bucks; ?> CR</div></div>
-      <div class="kpi"><div class="label">Punkte</div><div class="value"><?php echo $usr['points']; ?></div></div>
+    <div class="strip" style="margin-top:10px; grid-template-columns:repeat(auto-fit,minmax(140px,1fr))">
+      <div class="kpi"><div class="label"><strong>Guthaben:</strong></div><div class="value"><span><?php echo $bucks; ?></span> <span class="unit">CR</span></div></div>
+      <div class="kpi"><div class="label"><strong>Punkte:</strong></div><div class="value"><span><?php echo $usr['points']; ?></span> <span class="unit">Punkte</span></div></div>
     </div>
   </article>
 
@@ -239,14 +229,6 @@ document.querySelectorAll('#computers li[data-item]').forEach(li => {
             echo '<h3>Messages</h3>'."\n";
             echo '<p>Du hast <strong>'.$newtotal.' ungelesene Nachricht'.($newtotal == 1 ? '' : 'en').'</strong>.</p>'."\n";
             echo '<p><a href="mail.php?m=start&amp;sid='.$sid.'">Gehe zu den Nachrichten</a></p>'."\n";
-            echo '</div>';
-        }
-
-        if ($pcs_no_upgr > 0) {
-            echo '<div id="overview-computer">'."\n";
-            echo '<h3>Computer</h3>'."\n";
-            echo '<p>Auf <strong>'.$pcs_no_upgr.' Computer'.($pcs_no_upgr == 1 ? '' : 'n').'</strong> l&auml;uft im Moment <strong>kein Upgrade</strong>; hier solltest du evtl. ein neues Upgrade starten.</p>'."\n"; /* FIXME Fallunterscheidung */
-            echo '<p><a href="game.php?m=pcs&amp;sid='.$sid.'">Gehe zu den Computern</a></p>'."\n";
             echo '</div>';
         }
         ?>
