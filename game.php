@@ -64,8 +64,23 @@ switch ($action) {
             global $pc, $sid, $SALT, $idparam;
             if (isavailb($id, $pc)) {
                 $inf = getiteminfo($id, $pc[$id]);
+
+                $m = intval($inf['d']);
+                $xm = $m;
+                if ($m >= 60) {
+                    $m = floor($m / 60).' h';
+                    if (floor($xm % 60) > 0) {
+                        $m .= ' : '.floor($xm % 60).' min';
+                    }
+                } else {
+                    $m .= ' min';
+                }
+
+                $finish = nicetime2(time() + ($xm * 60), false, ' um ', ' Uhr');
+
                 $encrid = crypt($id, $SALT);
-                return ' <a href="game.php?m=upgrade&amp;'.$idparam.'='.$encrid.'&amp;sid='.$sid.'" title="'.$inf['c'].' Credits">(Upgrade kaufen)</a>';
+                $title = 'Kosten: '.$inf['c'].' Credits | Dauer: '.$m.' | Fertig: '.$finish;
+                return ' <a href="game.php?m=upgrade&amp;'.$idparam.'='.$encrid.'&amp;sid='.$sid.'" title="'.htmlspecialchars($title).'">(Upgrade kaufen)</a>';
             }
 
             return '';
@@ -78,6 +93,7 @@ switch ($action) {
 #computers li{position:relative}
 #computers li .tip{display:none;position:absolute;top:100%;left:0;background:#222;color:#fff;padding:4px;border-radius:3px;max-width:240px;font-size:12px;z-index:10}
 #computers li:hover .tip{display:block}
+#computers li a:hover + .tip{display:none}
 </style>
 <div class="container">
 <?php // /ZDE theme inject start
