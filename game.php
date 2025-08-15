@@ -62,6 +62,12 @@ switch ($action) {
 #$info.=infobox('<b>ACHTUNG:</b> Multis keine Chance! Wer mehrere Accounts besitzt, wird gnadenlos gel&ouml;scht.');
 
         createlayout_top('ZeroDayEmpire - &Uuml;bersicht');
+?>
+<!-- ZDE theme inject -->
+<style>@import url("style.css");</style>
+<div class="container">
+<?php // /ZDE theme inject start ?>
+
 
 # Cluster-Mitgliedsbeitrag bezahlen:
         $cluster = getcluster($usr['cluster']);
@@ -191,7 +197,11 @@ switch ($action) {
         echo '</div>
 </div>';
 
-        createlayout_bottom();
+        ?>
+</div>
+<!-- /ZDE theme inject -->
+<?php
+createlayout_bottom();
 
         break;
 
@@ -200,13 +210,23 @@ switch ($action) {
         processupgrades($pc);
 
         createlayout_top('ZeroDayEmpire - Deine Computer');
+?>
+<!-- ZDE theme inject -->
+<style>@import url("style.css");</style>
+<div class="container">
+<?php // /ZDE theme inject start ?>
+
 
         if ($pc['blocked'] > time()) {
             echo '<div class="content" id="computer">'.LF.'<h2>Deine Computer</h2>'.LF.'<div class="error">'.LF.'<h3>Fehler</h3>'.LF.'<p>Dieser PC ist blockiert bis '.nicetime2(
                     $pc['blocked'],
                     true
                 ).'!</p>'.LF.'</div>'.LF.'</div>'."\n";
-            createlayout_bottom();
+            ?>
+</div>
+<!-- /ZDE theme inject -->
+<?php
+createlayout_bottom();
             exit;
         }
 
@@ -342,7 +362,11 @@ switch ($action) {
 </div>
 </div>
 ';
-        createlayout_bottom();
+        ?>
+</div>
+<!-- /ZDE theme inject -->
+<?php
+createlayout_bottom();
         break;
 
     case 'item': // ----------------------------------- ITEM --------------------------------
@@ -355,11 +379,27 @@ switch ($action) {
         if ($pcItemValue === null || (isavailh($item, $pc) != true && $pcItemValue < 1)) {
             http_response_code(404);
             createlayout_top('ZeroDayEmpire - Deine Computer');
+?>
+<!-- ZDE theme inject -->
+<style>@import url("style.css");</style>
+<div class="container">
+<?php // /ZDE theme inject start ?>
+
             echo '<div class="content" id="computer">'.LF.'<h2>Deine Computer</h2>'.LF.'<div class="error">'.LF.'<h3>Fehler</h3>'.LF.'<p>Dieses Item wurde nicht gefunden.</p>'.LF.'</div>'.LF.'</div>'."\n";
-            createlayout_bottom();
+            ?>
+</div>
+<!-- /ZDE theme inject -->
+<?php
+createlayout_bottom();
             break;
         }
         createlayout_top('ZeroDayEmpire - Deine Computer');
+?>
+<!-- ZDE theme inject -->
+<style>@import url("style.css");</style>
+<div class="container">
+<?php // /ZDE theme inject start ?>
+
         $val = $pcItemValue;
         if ($item == 'ram') {
             $val = $ram_levels[$val];
@@ -488,7 +528,11 @@ switch ($action) {
                 break;
         }
         echo '</div>'.LF.'</div>'."\n";
-        createlayout_bottom();
+        ?>
+</div>
+<!-- /ZDE theme inject -->
+<?php
+createlayout_bottom();
         break;
 
     case 'update': // -------------------------------- UPDATE --------------------------------
@@ -577,6 +621,12 @@ switch ($action) {
         }
 
         createlayout_top('ZeroDayEmpire - Dein Computer');
+?>
+<!-- ZDE theme inject -->
+<style>@import url("style.css");</style>
+<div class="container">
+<?php // /ZDE theme inject start ?>
+
         echo '<div class="content" id="computer">'."\n";
         echo '<h2>Dein Computer</h2>'."\n";
         echo '<div class="submenu"><p><a href="game.php?page=pc&amp;sid='.$sid.'">Zur &Uuml;bersicht</a></p></div>'."\n";
@@ -688,7 +738,11 @@ switch ($action) {
 
 
         echo "\n".'</div>'.LF.'</div>'."\n";
-        createlayout_bottom();
+        ?>
+</div>
+<!-- /ZDE theme inject -->
+<?php
+createlayout_bottom();
 
         break;
 
@@ -770,6 +824,12 @@ switch ($action) {
                     );
 
                     /*createlayout_top('ZeroDayEmpire - Dein Computer - Upgrade');
+?>
+<!-- ZDE theme inject -->
+<style>@import url("style.css");</style>
+<div class="container">
+<?php // /ZDE theme inject start ?>
+
                     echo '<div id="computer" class="content">'."\n";
                     echo '<h2>Dein Computer</h2>'."\n";
                     echo '<div id="computer-upgrade-done">';
@@ -778,7 +838,11 @@ switch ($action) {
                     echo nicetime($ftime);
                     echo '</p><br /><p><a href="game.php?page=upgradelist&sid='.$sid.'">Zur&uuml;ck zum Upgrademen&uuml;</a></p>';
                     echo '</div></div>';
-                    createlayout_bottom();*/
+                    ?>
+</div>
+<!-- /ZDE theme inject -->
+<?php
+createlayout_bottom();*/
 
                 } else {
                     header(
@@ -846,6 +910,12 @@ switch ($action) {
         $extt = ($ext ? 'kompakte Ansicht' : 'erweiterte Ansicht');
 
         createlayout_top('Deine Computer');
+?>
+<!-- ZDE theme inject -->
+<style>@import url("style.css");</style>
+<div class="container">
+<?php // /ZDE theme inject start ?>
+
 
         echo '<div class="content" id="computer">
 <h2>Deine Computer</h2>
@@ -999,11 +1069,21 @@ switch ($action) {
 </div>
 </div>
 ';
-        createlayout_bottom();
+        ?>
+</div>
+<!-- /ZDE theme inject -->
+<?php
+createlayout_bottom();
         break;
 
     case 'renamepclist': // ------------------------- Rename PC List ------------------------
         createlayout_top('ZeroDayEmpire - Deine Computer');
+?>
+<!-- ZDE theme inject -->
+<style>@import url("style.css");</style>
+<div class="container">
+<?php // /ZDE theme inject start ?>
+
         echo '<div class="content" id="computer">
 <h2>Deine Computer</h2>
 '.$notif.'<div id="computer-rename">
@@ -1036,7 +1116,11 @@ switch ($action) {
 </div>
 </div>
 ';
-        createlayout_bottom();
+        ?>
+</div>
+<!-- /ZDE theme inject -->
+<?php
+createlayout_bottom();
         break;
 
     case 'renamepcs': // ------------------------- Rename PCs ------------------------
@@ -1074,6 +1158,12 @@ switch ($action) {
   document.frm.reciptype[i].checked=true; }
 </script>';
         createlayout_top('ZeroDayEmpire - Geld &uuml;berweisen');
+?>
+<!-- ZDE theme inject -->
+<style>@import url("style.css");</style>
+<div class="container">
+<?php // /ZDE theme inject start ?>
+
         if ($usr['bigacc'] == 'yes') {
             $bigacc = '&nbsp;<a href="javascript:show_abook(\'pc\')">Adressbuch</a>';
         }
@@ -1100,7 +1190,11 @@ switch ($action) {
 </div>
 </div>';
 
-        createlayout_bottom();
+        ?>
+</div>
+<!-- /ZDE theme inject -->
+<?php
+createlayout_bottom();
         break;
 
     case 'transfer': // ------------------------- TRANSFER ------------------------
@@ -1145,6 +1239,12 @@ switch ($action) {
             $tcode = randomx(10);
             $fin = 0;
             createlayout_top('ZeroDayEmpire - Geld &uuml;berweisen');
+?>
+<!-- ZDE theme inject -->
+<style>@import url("style.css");</style>
+<div class="container">
+<?php // /ZDE theme inject start ?>
+
             echo '<div class="content">
 <h2>&Uuml;berweisung</h2>
 <div id="transfer-step2">
@@ -1191,7 +1291,11 @@ switch ($action) {
                         $text .= '<br /><br />Da '.$recip_usr['name'].' seinen BucksBunker nicht weit genug ausgebaut hat, um das Geld zu Empfangen, werden nur <b>'.$rest.' Credits</b> (inklusive Geb&uuml;hren) &uuml;berwiesen!';
                         if ($rest < 1) {
                             echo '<div class="error"><h3>BucksBunker voll</h3><p>Der BucksBunker von '.$recip_usr['name'].' ist voll! &Uuml;berweisung wird abgebrochen!</p></div>';
-                            createlayout_bottom();
+                            ?>
+</div>
+<!-- /ZDE theme inject -->
+<?php
+createlayout_bottom();
                             exit;
                         }
                     }
@@ -1217,7 +1321,11 @@ switch ($action) {
 <input type="button" value="Abbrechen" onclick="location.replace(\'game.php?sid='.$sid.'&a=transferform\');" />
 <input type="submit" value=" Ausf&uuml;hren " /></p></form>';
             echo '</div>'.LF.'</div>';
-            createlayout_bottom();
+            ?>
+</div>
+<!-- /ZDE theme inject -->
+<?php
+createlayout_bottom();
             file_put($DATADIR.'/tmp/transfer_'.$tcode.'.txt', $type.'|'.$recip['id'].'|'.$credits.'|'.$fin);
             db_query(
                 'UPDATE users SET tcode=\''.mysql_escape_string($tcode).'\' WHERE id=\''.mysql_escape_string(
@@ -1364,6 +1472,12 @@ location.href=\'../game.php?mode=subnet&sid='.$sid.'&subnet=\'+s;
 ';
 
         createlayout_top('ZeroDayEmpire - Subnet');
+?>
+<!-- ZDE theme inject -->
+<style>@import url("style.css");</style>
+<div class="container">
+<?php // /ZDE theme inject start ?>
+
         echo '<div class="content" id="subnet">
 <h2>Subnet</h2>
 '.$info.'
@@ -1449,14 +1563,28 @@ location.href=\'../game.php?mode=subnet&sid='.$sid.'&subnet=\'+s;
         }
 
         echo $plist."\n".'</table>'.LF.'</div>'.LF.'</div>'."\n";
-        createlayout_bottom();
+        ?>
+</div>
+<!-- /ZDE theme inject -->
+<?php
+createlayout_bottom();
 
         break;
 
     case 'kb':
         createlayout_top('ZeroDayEmpire - Hilfe');
+?>
+<!-- ZDE theme inject -->
+<style>@import url("style.css");</style>
+<div class="container">
+<?php // /ZDE theme inject start ?>
+
         readfile('data/static/kb.html');
-        createlayout_bottom();
+        ?>
+</div>
+<!-- /ZDE theme inject -->
+<?php
+createlayout_bottom();
         break;
 
 }
