@@ -27,7 +27,8 @@ function showdoc($fn, $te = '')
 <!-- ZDE theme inject -->
 <style>@import url("style.css");</style>
 <div class="container">
-<?php // /ZDE theme inject start ?>
+<?php // /ZDE theme inject start
+
 
     $x = 'data/pubtxt/'.$fn;
     if (file_exists($x.'.txt')) {
@@ -77,7 +78,8 @@ switch ($action) {
 <!-- ZDE theme inject -->
 <style>@import url("style.css");</style>
 <div class="container">
-<?php // /ZDE theme inject start ?>
+<?php // /ZDE theme inject start
+
 
         echo '<div class="content" id="register">
 <h2>Registrieren</h2>
@@ -127,7 +129,8 @@ createlayout_bottom();
 <!-- ZDE theme inject -->
 <style>@import url("style.css");</style>
 <div class="container">
-<?php // /ZDE theme inject start ?>
+<?php // /ZDE theme inject start
+
 
         echo '<div class="content" id="rules">
 <h2>Regelversto&szlig; gemeldet</h2>
@@ -231,7 +234,8 @@ createlayout_bottom();
 <!-- ZDE theme inject -->
 <style>@import url("style.css");</style>
 <div class="container">
-<?php // /ZDE theme inject start ?>
+<?php // /ZDE theme inject start
+
 
 
             $pwd = generateMnemonicPassword();
@@ -292,7 +296,8 @@ createlayout_bottom();
 <!-- ZDE theme inject -->
 <style>@import url("style.css");</style>
 <div class="container">
-<?php // /ZDE theme inject start ?>
+<?php // /ZDE theme inject start
+
 
         echo '<div class="content" id="register">
 <h2>Registrieren</h2>
@@ -425,7 +430,8 @@ createlayout_bottom();
 <!-- ZDE theme inject -->
 <style>@import url("style.css");</style>
 <div class="container">
-<?php // /ZDE theme inject start ?>
+<?php // /ZDE theme inject start
+
 
                 echo '<div class="content" id="register">
 <h2>Account aktivieren</h2>
@@ -440,7 +446,8 @@ createlayout_bottom();
 <!-- ZDE theme inject -->
 <style>@import url("style.css");</style>
 <div class="container">
-<?php // /ZDE theme inject start ?>
+<?php // /ZDE theme inject start
+
 
                 echo '<div class="content" id="register">
 <h2>Account aktivieren</h2>
@@ -527,7 +534,8 @@ createlayout_bottom();
 <!-- ZDE theme inject -->
 <style>@import url("style.css");</style>
 <div class="container">
-<?php // /ZDE theme inject start ?>
+<?php // /ZDE theme inject start
+
 
 
         function stats($server)
@@ -622,7 +630,8 @@ createlayout_bottom();
 <!-- ZDE theme inject -->
 <style>@import url("style.css");</style>
 <div class="container">
-<?php // /ZDE theme inject start ?>
+<?php // /ZDE theme inject start
+
 
         include('data/pubtxt/startseite.php');
         ?>

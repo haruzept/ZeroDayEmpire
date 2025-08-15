@@ -34,7 +34,8 @@ switch ($action) {
 <!-- ZDE theme inject -->
 <style>@import url("style.css");</style>
 <div class="container">
-<?php // /ZDE theme inject start ?>
+<?php // /ZDE theme inject start
+
 
 
         $updtime = nicetime((int)@file_get('data/calc-time.dat'));

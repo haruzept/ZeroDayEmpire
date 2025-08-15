@@ -19,7 +19,8 @@ switch ($action) {
 <!-- ZDE theme inject -->
 <style>@import url("style.css");</style>
 <div class="container">
-<?php // /ZDE theme inject start ?>
+<?php // /ZDE theme inject start
+
 
 
         echo '<div class="content" id="settings">
@@ -485,7 +486,8 @@ createlayout_bottom();
 <!-- ZDE theme inject -->
 <style>@import url("style.css");</style>
 <div class="container">
-<?php // /ZDE theme inject start ?>
+<?php // /ZDE theme inject start
+
 
             if ($a['gender'] == 'x') {
                 $geschl = '';

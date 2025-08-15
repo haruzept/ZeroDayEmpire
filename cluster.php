@@ -60,7 +60,8 @@ switch ($action) {
 <!-- ZDE theme inject -->
 <style>@import url("style.css");</style>
 <div class="container">
-<?php // /ZDE theme inject start ?>
+<?php // /ZDE theme inject start
+
 
         echo '<div class="content" id="cluster">'."\n";
         echo '<h2>Cluster</h2>'."\n";
@@ -345,7 +346,8 @@ createlayout_bottom();
 <!-- ZDE theme inject -->
 <style>@import url("style.css");</style>
 <div class="container">
-<?php // /ZDE theme inject start ?>
+<?php // /ZDE theme inject start
+
 
             echo '<div class="content" id="cluster">
 <h2>Cluster</h2>'
@@ -540,7 +542,8 @@ function autosel(obj) { var i = (obj.name==\'pcip\' ? 1 : 0);
 <!-- ZDE theme inject -->
 <style>@import url("style.css");</style>
 <div class="container">
-<?php // /ZDE theme inject start ?>
+<?php // /ZDE theme inject start
+
 
             echo '<div class="content" id="cluster">
 <h2>Cluster</h2>
@@ -635,7 +638,8 @@ createlayout_bottom();
 <!-- ZDE theme inject -->
 <style>@import url("style.css");</style>
 <div class="container">
-<?php // /ZDE theme inject start ?>
+<?php // /ZDE theme inject start
+
 
             echo '<div class="content" id="cluster">
 <h2>Cluster</h2>
@@ -775,7 +779,8 @@ createlayout_bottom();
 <!-- ZDE theme inject -->
 <style>@import url("style.css");</style>
 <div class="container">
-<?php // /ZDE theme inject start ?>
+<?php // /ZDE theme inject start
+
 
             echo '<div class="content" id="cluster">
 <h2>Cluster</h2>
@@ -871,7 +876,8 @@ createlayout_bottom();
 <!-- ZDE theme inject -->
 <style>@import url("style.css");</style>
 <div class="container">
-<?php // /ZDE theme inject start ?>
+<?php // /ZDE theme inject start
+
 
                 echo '<div class="content" id="cluster">
 <h2>Cluster l&ouml;schen</h2>
@@ -1025,7 +1031,8 @@ createlayout_bottom();
 <!-- ZDE theme inject -->
 <style>@import url("style.css");</style>
 <div class="container">
-<?php // /ZDE theme inject start ?>
+<?php // /ZDE theme inject start
+
 
             echo '<div class="error"><h3>Fehler</h3><p>'.$msg.'</p></div>';
             ?>
@@ -1098,7 +1105,8 @@ createlayout_bottom();
 <!-- ZDE theme inject -->
 <style>@import url("style.css");</style>
 <div class="container">
-<?php // /ZDE theme inject start ?>
+<?php // /ZDE theme inject start
+
 
 #$r=db_query('SELECT id FROM users WHERE cluster='.mysql_escape_string($clusterid).';');
 #$members=mysql_num_rows($r);
@@ -1182,7 +1190,8 @@ createlayout_bottom();
 <!-- ZDE theme inject -->
 <style>@import url("style.css");</style>
 <div class="container">
-<?php // /ZDE theme inject start ?>
+<?php // /ZDE theme inject start
+
 
 
             $members = '';
@@ -1389,7 +1398,8 @@ createlayout_bottom();
 <!-- ZDE theme inject -->
 <style>@import url("style.css");</style>
 <div class="container">
-<?php // /ZDE theme inject start ?>
+<?php // /ZDE theme inject start
+
 
             echo '<div class="content" id="cluster">'."\n";
             echo '<h2>Cluster</h2>'."\n";
@@ -1424,7 +1434,8 @@ createlayout_bottom();
 <!-- ZDE theme inject -->
 <style>@import url("style.css");</style>
 <div class="container">
-<?php // /ZDE theme inject start ?>
+<?php // /ZDE theme inject start
+
 
             echo '<div class="content" id="cluster-profile">
 <h2>Cluster-Profil</h2>
@@ -1569,7 +1580,8 @@ createlayout_bottom();
 <!-- ZDE theme inject -->
 <style>@import url("style.css");</style>
 <div class="container">
-<?php // /ZDE theme inject start ?>
+<?php // /ZDE theme inject start
+
 
                 echo '<div class="content" id="cluster">
 <h2>Cluster</h2>
@@ -1731,7 +1743,8 @@ createlayout_bottom();
 <!-- ZDE theme inject -->
 <style>@import url("style.css");</style>
 <div class="container">
-<?php // /ZDE theme inject start ?>
+<?php // /ZDE theme inject start
+
 
         echo '<div class="content" id="cluster">
 <h2>Cluster</h2>
@@ -1779,7 +1792,8 @@ createlayout_bottom();
 <!-- ZDE theme inject -->
 <style>@import url("style.css");</style>
 <div class="container">
-<?php // /ZDE theme inject start ?>
+<?php // /ZDE theme inject start
+
 
         echo '<div class="content" id="cluster">
 <h2>Cluster</h2>
@@ -1804,7 +1818,8 @@ createlayout_bottom();
 <!-- ZDE theme inject -->
 <style>@import url("style.css");</style>
 <div class="container">
-<?php // /ZDE theme inject start ?>
+<?php // /ZDE theme inject start
+
 
             echo '<div class="content" id="cluster">
 <h2>Cluster</h2>
@@ -1903,7 +1918,8 @@ createlayout_bottom();
 <!-- ZDE theme inject -->
 <style>@import url("style.css");</style>
 <div class="container">
-<?php // /ZDE theme inject start ?>
+<?php // /ZDE theme inject start
+
 
         echo '<div class="content" id="cluster-notice-saved">'."\n";
         echo '<h2>Cluster-Notiz</h2>'."\n";
