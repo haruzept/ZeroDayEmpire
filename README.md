@@ -19,10 +19,10 @@
     >>>        Anfragen per Email oder PM werden nicht beantwortet!        <<<
 
     
-    Version htn2src.2.0-RC5
+    Version htn2src.2.0-RC6 (15.8.25)
 
     Systemanforderungen:
-      PHP 8 oder höher
+      PHP 8.3 oder höher
       MariaDB 10.x oder kompatible MySQL-Implementierung
       Moderner Webserver (z.B. Apache oder Nginx)
       
@@ -46,6 +46,10 @@
             .htaccess
             login.php - kritischer Bug gefixt!
             weitere Dateien - kleinere Darstellungsfehler entfernt
+      htn2src.2.0-RC6 (15.8.25) - Aktualisiert für PHP 8.3 und MariaDB 10.x
+            login.php - Sessionbehandlung überarbeitet
+            user.php - SQL-Injection-Möglichkeit geschlossen
+            global.js - Warnungen für PHP 8.3 entfernt
             
     
 1. Lizenz
