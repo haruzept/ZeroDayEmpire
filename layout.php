@@ -46,6 +46,7 @@ function basicheader($title)
     }
 
     $ts = time() + 1;
+    $tz = date_default_timezone_get();
     echo '<!DOCTYPE html>'."\n";
     echo '<html lang="de">' . "\n";
     echo '<head>' . "\n";
