@@ -1,10 +1,10 @@
-<div class="content" id="public"><h2>Willkommen bei HackTheNet</h2>
+<div class="content" id="public"><h2>Willkommen bei ZeroDayEmpire</h2>
 
     <?php
     $s1 = 'checked="checked" ';
     $usrname = $pwd = $sv = '';
-    if (isset($_COOKIE['htnLoginData4']) && substr_count($_COOKIE['htnLoginData4'], "|") == 2) {
-        list($server, $usrnameVal, $pwdVal) = explode("|", $_COOKIE['htnLoginData4']);
+    if (isset($_COOKIE['zdeLoginData4']) && substr_count($_COOKIE['zdeLoginData4'], "|") == 2) {
+        list($server, $usrnameVal, $pwdVal) = explode("|", $_COOKIE['zdeLoginData4']);
         $var = "s".$server;
         $$var = "checked=\"checked\" ";
         $usrname = "value=\"".htmlspecialchars($usrnameVal, ENT_QUOTES)."\" ";
@@ -53,10 +53,10 @@
         <p><a href="pub.php?d=stats">Ausführliche Statistik</a></p></div>
 
     <div class="info"><h3>Aktuelle News</h3>
-        <p>Besuchen Sie auch das Original dieses Spiels auf <a href="http://www.hackthenet.org/">www.hackthenet.org</a>.
+        <p>Besuchen Sie auch das Original dieses Spiels auf <a href="http://www.ZeroDayEmpire.org/">www.ZeroDayEmpire.org</a>.
         </p>
         <p>Auf unseren Seiten sehen wir den Internet Explorer nicht so gerne, wir empfehlen statt dessen den <a
                 href="http://www.mozilla.org/products/firefox/">Firefox</a>.</p>
-        <p>Der offizielle HTN-IRC-Channel ist im Freakarea-Netzwerk zu finden! Server ist <em>irc.freakarea.net</em>,
-            Channel <em>#hackthenet</em>.
+        <p>Der offizielle ZDE-IRC-Channel ist im Freakarea-Netzwerk zu finden! Server ist <em>irc.freakarea.net</em>,
+            Channel <em>#ZeroDayEmpire</em>.
     </div>

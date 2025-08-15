@@ -2,7 +2,7 @@
 
 $starttime = microtime();
 
-if (!defined('IN_HTN')) {
+if (!defined('IN_ZDE')) {
     die('Hacking attempt');
 }
 
@@ -75,7 +75,7 @@ if ($usr['sid'] != $sid) {
     badsession('Das ist nicht deine Session-ID');
 } elseif ($usr['sid_ip'] != $ip && $usr['sid_ip'] != 'noip') {
     /* falsche IP-Adresse */
-    setcookie('htnLoginData');
+    setcookie('zdeLoginData');
     badsession(
         'Deine IP ist nicht dieser Session-ID zugeordnet!<br />Benutz die \'erweitertes LogIn\'-Funktion auf der Startseite.'
     );

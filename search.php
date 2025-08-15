@@ -2,7 +2,7 @@
 
 // nie fertig geworden!
 
-define('IN_HTN', 1);
+define('IN_ZDE', 1);
 $FILE_REQUIRES_PC = false;
 include('ingame.php');
 
@@ -24,7 +24,7 @@ function showform()
 {
     global $sid;
     echo '<div id="search-form">
-<h3>HackTheNet-Suche</h3>
+<h3>ZeroDayEmpire-Suche</h3>
 <!--
 <h4>Listen</h4>
 <p>
@@ -178,7 +178,7 @@ pan.style.display=\'block\';
 }
 </script>
 ';
-        createlayout_top('HackTheNet - Suche');
+        createlayout_top('ZeroDayEmpire - Suche');
         echo '<div class="content" id="search">'."\n";
         echo '<h2>Suche</h2>'."\n";
         showform();

@@ -5,7 +5,7 @@
  **/
 
 
-define('IN_HTN', 1);
+define('IN_ZDE', 1);
 $FILE_REQUIRES_PC = false;
 include('ingame.php');
 

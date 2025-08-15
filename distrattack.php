@@ -1,6 +1,6 @@
 <?php
 
-define('IN_HTN', 1);
+define('IN_ZDE', 1);
 $FILE_REQUIRES_PC = false;
 include('ingame.php');
 
@@ -40,7 +40,7 @@ return window.confirm(\'Die Distributed Attack wirklich abbrechen?\');
 }
 </script>';
 
-createlayout_top('HackTheNet - Cluster - Distributed Attacks');
+createlayout_top('ZeroDayEmpire - Cluster - Distributed Attacks');
 echo '<div class="content" id="cluster">'."\n";
 echo '<h2>Cluster</h2>'."\n";
 

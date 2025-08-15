@@ -1,7 +1,7 @@
 <?php
 
 # DATENBANKEN:
-$database_prefix = 'htn_server';
+$database_prefix = 'zde_server';
 $database_suffix = '';
 
 $db_use_this_values = false;
@@ -13,14 +13,14 @@ $db_password = '';
 $standard_stylesheet = 'crystal';
 $stylesheets['standard'] = array(
     'id' => 'standard',
-    'name' => 'HackTheNet Standard',
-    'author' => 'HackTheNet-Team',
+    'name' => 'ZeroDayEmpire Standard',
+    'author' => 'ZeroDayEmpire-Team',
     'bigacc' => 'no',
 );
 $stylesheets['crystal'] = array(
     'id' => 'crystal',
-    'name' => 'HackTheNet Crystal',
-    'author' => 'HackTheNet-Team',
+    'name' => 'ZeroDayEmpire Crystal',
+    'author' => 'ZeroDayEmpire-Team',
     'bigacc' => 'no',
 );
 $stylesheets['konsole'] = array('id' => 'konsole', 'name' => 'Konsole', 'author' => 'Volkmar', 'bigacc' => 'yes');

@@ -1,6 +1,6 @@
 <?php
 
-define('IN_HTN', 1);
+define('IN_ZDE', 1);
 define('EDIT_TIME_OUT', 12 * 60 * 60, false);
 
 $FILE_REQUIRES_PC = false;
@@ -28,7 +28,7 @@ switch ($action) {
 
     case 'board': // ------------------------ BOARD ---------------------------------
 
-        createlayout_top('HackTheNet - Cluster-Board');
+        createlayout_top('ZeroDayEmpire - Cluster-Board');
         echo '<div class="content" id="cluster-board">'.LF;
         echo '<h2>Cluster-Board</h2>'.LF;
         echo '<p><a href="cboard.php?sid='.$sid.'&amp;a=newthreadform">Neuen Beitrag erstellen</a></p>'."\n";
@@ -244,7 +244,7 @@ switch ($action) {
 
     case 'newthreadform': // ------------------------ NEW THREAD FORM ---------------------------------
 
-        createlayout_top('HackTheNet - Cluster-Board - Beitrag erstellen');
+        createlayout_top('ZeroDayEmpire - Cluster-Board - Beitrag erstellen');
         echo '<div class="content" id="cluster-board">'.LF.'<h2>Cluster-Board</h2>'.LF.'<div id="cluster-board-newthread">'.LF.'<h3>Beitrag erstellen</h3>'."\n";
         showform();
         echo '</div>'.LF.'</div>'."\n";
@@ -289,7 +289,7 @@ switch ($action) {
 
     case 'showthread': // ------------------------ SHOW THREAD ---------------------------------
 
-        createlayout_top('HackTheNet - Cluster-Board - Beitrag');
+        createlayout_top('ZeroDayEmpire - Cluster-Board - Beitrag');
         echo '<div class="content" id="cluster-board-post">'."\n";
         echo '<h2>Cluster-Board</h2>'."\n";
 

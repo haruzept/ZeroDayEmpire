@@ -1,8 +1,8 @@
 <?php
 
-#if(substr_count($_SERVER['HTTP_HOST'],'.')>1) { header('Location: http://htnsrv.org/pub.php'); exit; }
+#if(substr_count($_SERVER['HTTP_HOST'],'.')>1) { header('Location: http://zdesrv.org/pub.php'); exit; }
 
-define('IN_HTN', 1);
+define('IN_ZDE', 1);
 $starttime = microtime();
 include('gres.php');
 include('layout.php');
@@ -140,7 +140,7 @@ createlayout_bottom();
                 'regelverstoss@local.host',
                 'Regelversto&szlig; gemeldet von '.$nick1,
                 $nick2.' hat angeblich folgendes getan:'.LF."\n".$text,
-                'From: HackTheNet <robot@hackthenet.org>'
+                'From: ZeroDayEmpire <robot@ZeroDayEmpire.org>'
             );
             echo '<div class="ok"><h3>Gemeldet.</h3><p>Danke f&uuml;r deine Hilfe!</p></div>';
         } else {
@@ -340,7 +340,7 @@ createlayout_bottom();
             exit;
         }
 
-        $body = 'Hallo '.$nick.'!'.LF."\n".'Du hast dich bei HackTheNet (http://www.hackthenet.org) angemeldet!';
+        $body = 'Hallo '.$nick.'!'.LF."\n".'Du hast dich bei ZeroDayEmpire (http://www.ZeroDayEmpire.org) angemeldet!';
         $body .= ' Hier sind deine Zugangsdaten!'.LF."\n".'Server: Server '.$server."\n".'Nickname: '.$nick."\n".'Passwort: '.$pwd."\n"."\n".'Bevor du deinen';
         $body .= ' neuen Account nutzen kannst, musst du ihn aktivieren! Rufe dazu die folgende URL in deinem Browser auf:'.LF."\n";
         /*if($localhost)*/
@@ -351,7 +351,7 @@ createlayout_bottom();
         $body .= "\n";
 
         /*
-        if(@mail($email,'Dein HackTheNet Account',$body,'From: HackTheNet <robot@hackthenet.org>')) {
+        if(@mail($email,'Dein ZeroDayEmpire Account',$body,'From: ZeroDayEmpire <robot@ZeroDayEmpire.org>')) {
           readfile('data/pubtxt/regok.txt');
         } else {
         if($localhost)*/
@@ -499,9 +499,9 @@ createlayout_bottom();
 
                     if (@mail(
                         $email,
-                        'Zugangsdaten für HackTheNet',
-                        "\n".'http://www.hackthenet.org/'.LF."\n".'Server: Server '.$server."\n".'Benutzername: '.$usr['name'].LF.'Passwort: '.$pwd."\n",
-                        'From: HackTheNet <robot@hackthenet.org>'
+                        'Zugangsdaten für ZeroDayEmpire',
+                        "\n".'http://www.ZeroDayEmpire.org/'.LF."\n".'Server: Server '.$server."\n".'Benutzername: '.$usr['name'].LF.'Passwort: '.$pwd."\n",
+                        'From: ZeroDayEmpire <robot@ZeroDayEmpire.org>'
                     )
                     ) {
                         db_query('UPDATE users SET sid=\'\' WHERE id=\''.mysql_escape_string($usr['id']).'\' LIMIT 1;');
