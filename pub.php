@@ -23,13 +23,23 @@ function showdoc($fn, $te = '')
         $x = ' - '.$te;
     }
     createlayout_top('ZeroDayEmpire'.$x);
+?>
+<!-- ZDE theme inject -->
+<style>@import url("style.css");</style>
+<div class="container">
+<?php // /ZDE theme inject start ?>
+
     $x = 'data/pubtxt/'.$fn;
     if (file_exists($x.'.txt')) {
         readfile($x.'.txt');
     } else {
         @include($x.'.php');
     }
-    createlayout_bottom();
+    ?>
+</div>
+<!-- /ZDE theme inject -->
+<?php
+createlayout_bottom();
 }
 
 switch ($action) {
@@ -63,6 +73,12 @@ switch ($action) {
     case 'register':
 
         createlayout_top('ZeroDayEmpire - Account anlegen');
+?>
+<!-- ZDE theme inject -->
+<style>@import url("style.css");</style>
+<div class="container">
+<?php // /ZDE theme inject start ?>
+
         echo '<div class="content" id="register">
 <h2>Registrieren</h2>
 ';
@@ -94,7 +110,11 @@ Nur wenn eine korrekte Email-Adresse angegeben wurde, kann der Account aktiviert
 </div>
 </div>
 ';
-        createlayout_bottom();
+        ?>
+</div>
+<!-- /ZDE theme inject -->
+<?php
+createlayout_bottom();
 
         break;
 
@@ -103,6 +123,12 @@ Nur wenn eine korrekte Email-Adresse angegeben wurde, kann der Account aktiviert
         $nick2 = trim($_POST['nick2']);
         $text = trim($_POST['text']);
         createlayout_top('ZeroDayEmpire - Regelversto&szlig;');
+?>
+<!-- ZDE theme inject -->
+<style>@import url("style.css");</style>
+<div class="container">
+<?php // /ZDE theme inject start ?>
+
         echo '<div class="content" id="rules">
 <h2>Regelversto&szlig; gemeldet</h2>
 ';
@@ -118,7 +144,11 @@ Nur wenn eine korrekte Email-Adresse angegeben wurde, kann der Account aktiviert
             echo '<div class="error"><h3>Fehler</h3><p>Du musst schon den User angeben, der gegen die Regeln versto&szlig;en hat!<br />Auch was er getan hat, ist wichtig!</p></div>';
         }
         echo '</div>';
-        createlayout_bottom();
+        ?>
+</div>
+<!-- /ZDE theme inject -->
+<?php
+createlayout_bottom();
 
         break;
 
@@ -197,6 +227,12 @@ Nur wenn eine korrekte Email-Adresse angegeben wurde, kann der Account aktiviert
         if ($e == false) {
 
             createlayout_top('ZeroDayEmpire - Account anlegen');
+?>
+<!-- ZDE theme inject -->
+<style>@import url("style.css");</style>
+<div class="container">
+<?php // /ZDE theme inject start ?>
+
 
             $pwd = generateMnemonicPassword();
             $tmpfnx = randomx(REG_CODE_LEN);
@@ -223,7 +259,11 @@ Nur wenn eine korrekte Email-Adresse angegeben wurde, kann der Account aktiviert
 </div>
 </div>
 ';
-            createlayout_bottom();
+            ?>
+</div>
+<!-- /ZDE theme inject -->
+<?php
+createlayout_bottom();
         } else {
             header('Location:pub.php?a=register&error='.urlencode($msg));
         }
@@ -248,6 +288,12 @@ Nur wenn eine korrekte Email-Adresse angegeben wurde, kann der Account aktiviert
         mysql_select_db(dbname($server));
 
         createlayout_top('ZeroDayEmpire - Account anlegen');
+?>
+<!-- ZDE theme inject -->
+<style>@import url("style.css");</style>
+<div class="container">
+<?php // /ZDE theme inject start ?>
+
         echo '<div class="content" id="register">
 <h2>Registrieren</h2>
 <div id="register-step3">
@@ -273,7 +319,11 @@ Nur wenn eine korrekte Email-Adresse angegeben wurde, kann der Account aktiviert
   <p><input type=submit value=" Zur&uuml;ck "></p>
   </form>';
             echo '</div>'.LF.'</div>';
-            createlayout_bottom();
+            ?>
+</div>
+<!-- /ZDE theme inject -->
+<?php
+createlayout_bottom();
             exit;
         }
 
@@ -305,7 +355,11 @@ Nur wenn eine korrekte Email-Adresse angegeben wurde, kann der Account aktiviert
 }*/
 
         echo '</div>'.LF.'</div>';
-        createlayout_bottom();
+        ?>
+</div>
+<!-- /ZDE theme inject -->
+<?php
+createlayout_bottom();
         break;
 
     case 'regactivate': // ----------------------- RegActivate --------------------------
@@ -367,6 +421,12 @@ Nur wenn eine korrekte Email-Adresse angegeben wurde, kann der Account aktiviert
                 $dummy=reloadsperre_CheckIP(true); # IP speichern
                 */
                 createlayout_top('ZeroDayEmpire - Account aktivieren');
+?>
+<!-- ZDE theme inject -->
+<style>@import url("style.css");</style>
+<div class="container">
+<?php // /ZDE theme inject start ?>
+
                 echo '<div class="content" id="register">
 <h2>Account aktivieren</h2>
 <div id="register-activate">
@@ -376,6 +436,12 @@ Nur wenn eine korrekte Email-Adresse angegeben wurde, kann der Account aktiviert
 
             } else {
                 createlayout_top();
+?>
+<!-- ZDE theme inject -->
+<style>@import url("style.css");</style>
+<div class="container">
+<?php // /ZDE theme inject start ?>
+
                 echo '<div class="content" id="register">
 <h2>Account aktivieren</h2>
 <div id="register-activate">
@@ -392,7 +458,11 @@ Nur wenn eine korrekte Email-Adresse angegeben wurde, kann der Account aktiviert
             }
 
             echo '</div>'.LF.'</div>';
-            createlayout_bottom();
+            ?>
+</div>
+<!-- /ZDE theme inject -->
+<?php
+createlayout_bottom();
 
         }
         break;
@@ -453,6 +523,12 @@ Nur wenn eine korrekte Email-Adresse angegeben wurde, kann der Account aktiviert
 
     case 'stats': // ----------------------- STATS --------------------------
         createlayout_top('ZeroDayEmpire - Statistik');
+?>
+<!-- ZDE theme inject -->
+<style>@import url("style.css");</style>
+<div class="container">
+<?php // /ZDE theme inject start ?>
+
 
         function stats($server)
         {
@@ -503,7 +579,11 @@ Nur wenn eine korrekte Email-Adresse angegeben wurde, kann der Account aktiviert
 
 
         echo "\n".'</div>';
-        createlayout_bottom();
+        ?>
+</div>
+<!-- /ZDE theme inject -->
+<?php
+createlayout_bottom();
         break;
 
     case 'deleteaccount':  // ----------------------- DELETE ACCOUNT --------------------------
@@ -538,8 +618,18 @@ Nur wenn eine korrekte Email-Adresse angegeben wurde, kann der Account aktiviert
     default: // ----------------------- STARTSEITE --------------------------
 
         createlayout_top('ZeroDayEmpire - browserbasiertes Online-Spiel');
+?>
+<!-- ZDE theme inject -->
+<style>@import url("style.css");</style>
+<div class="container">
+<?php // /ZDE theme inject start ?>
+
         include('data/pubtxt/startseite.php');
-        createlayout_bottom();
+        ?>
+</div>
+<!-- /ZDE theme inject -->
+<?php
+createlayout_bottom();
 }
 
 /*
