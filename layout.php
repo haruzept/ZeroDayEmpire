@@ -18,185 +18,80 @@ if ($server_tz === '' || $server_tz === false) {
 }
 date_default_timezone_set($server_tz);
 
-function menu_entry($url, $text, $help = '', $em = '', $emclass = '', $selftags = false, $inatag = '')
-{
-    // refaktorisierte Funktion *muaahaahhaahaaa*
-    echo "\n".'<li><a href="'.$url.'"'.$inatag.'><strong>'.$text.'</strong>';
-    if ($em != '') {
-        if (!$selftags) {
-            echo "\n".'<br /><em class="'.$emclass.'">'.$em.'</em>';
-        } else {
-            echo $em;
-        }
-    }
-    echo '</a>';
-    if ($help != '') {
-        echo "\n".'<div class="help">'.$help.'</div>'."\n";
-    }
-    echo '</li>'."\n";
-}
-
 function basicheader($title)
 {
-    global $usr, $javascript, $STYLESHEET, $bodytag, $stylesheets, $server_tz;
-    global $STYLESHEET_BASEDIR, $standard_stylesheet;
-    $stylesheet = $STYLESHEET;
-    if ($stylesheets[$stylesheet]['id'] == '' || $stylesheet == '') {
-        $stylesheet = $standard_stylesheet;
-    }
-
-    $ts = time() + 1;
-    $tz = date_default_timezone_get();
-    echo '<!DOCTYPE html>'."\n";
-    echo '<html lang="de">' . "\n";
-    echo '<head>' . "\n";
-    echo '<meta charset="utf-8">' . "\n";
-    echo '<title>' . $title . '</title>' . "\n";
-    echo '<link rel="stylesheet" href="' . $STYLESHEET_BASEDIR . $stylesheet . '/style.css">' . "\n";
-    echo '<script>var stm=' . $ts . '; var stz="' . $server_tz . '"; var sltm=new Date().getTime();</script>' . "\n";
+    global $javascript;
+    echo "<!DOCTYPE html>\n";
+    echo "<html lang=\"de\">\n";
+    echo "<head>\n";
+    echo "<meta charset=\"utf-8\">\n";
+    echo "<title>$title</title>\n";
+    echo '<link rel="stylesheet" href="style.css">' . "\n";
     echo '<script src="global.js" defer></script>' . "\n";
     echo '<link rel="icon" href="favicon.ico">' . "\n";
     echo $javascript;
-    echo '</head>' . "\n";
+    echo "</head>\n";
 }
 
 function basicfooter()
 {
-    echo '</body>
-</html>
-';
+    echo "</body>\n</html>";
 }
 
-function createlayout_top($title = 'HackTheNet', $nomenu = false, $pads = true)
+function createlayout_top($title = 'ZeroDayEmpire', $nomenu = false)
 {
-    global $usr, $javascript, $STYLESHEET, $bodytag, $localhost, $FILE_REQUIRES_PC, $pc, $pcid;
-    $ads = '';
+    global $usr, $bodytag;
     $sid = '';
     if (isset($usr['sid']) && $usr['sid'] !== '') {
-        $sid = '&amp;sid='.$usr['sid'];
-    }
-    $stylesheet = $STYLESHEET;
-    if (@is_dir('styles/'.$stylesheet) == false || $stylesheet == '') {
-        $stylesheet = 'crystal';
+        $sid = '&amp;sid=' . $usr['sid'];
     }
 
     basicheader($title);
 
-    if ($sid !== '' && isset($usr['ads']) && $usr['ads'] != 'no' && !$localhost && $pads == true) {
-        // werbung hier ausgeben
-    }
+    echo "<body$bodytag>\n";
+    echo '<header class="site-header">';
+    echo '<div class="container nav" id="nav">';
+    echo '<a class="brand" href="index.php" aria-label="ZeroDayEmpire Startseite">';
+    echo '<svg viewBox="0 0 100 100" aria-hidden="true" role="img">';
+    echo '<path d="M50 5L95 50 50 95 5 50z" fill="rgb(var(--accent))"/>';
+    echo '<path d="M50 20 80 50 50 80 20 50z" fill="#0b0f14"/>';
+    echo '</svg>';
+    echo '<div class="title">ZeroDayEmpire</div>';
+    echo '<span class="badge">Cyber-Strategie</span>';
+    echo '</a>';
+    echo '<button class="btn ghost menu-toggle" id="menuBtn" aria-expanded="false" aria-controls="navList">Menü</button>';
 
-    echo '
-<body'.$bodytag.'>
-<div class="header">
-<h1>HTN v2 PublicSource</h1>
-'.$ads;
     if ($nomenu == false) {
-        echo '<ul class="navigation">
-';
-
-        if ($sid != '') {
-            // INGAME ITEMS
-
-            menu_entry(
-                'game.php?m=start'.$sid,
-                '&Uuml;bersicht',
-                '&Uuml;bersicht &uuml;ber alles Wichtige auf einen Blick.'
-            );
-
-            $hw = '';
-            if ($usr['newmail'] > 0) {
-                $hw = ($usr['newmail'] == 1 ? '' : 's');
-                $hw = 'Du hast '.$usr['newmail'].' neue Message'.$hw;
-            }
-            menu_entry(
-                'mail.php?m=start'.$sid,
-                'Messages',
-                'Hier kannst du Nachrichten verwalten und neue verfassen.',
-                $hw,
-                'new-messages'
-            );
-
-            $numberofpcs = count(explode(',', $usr['pcs']));
-            $url = ($numberofpcs > 1 ? 'game.php?m=pcs'.$sid : 'game.php?a=selpc&amp;pcid='.$usr['pcs'].$sid);
-            $help = ($numberofpcs > 1 ? 'Hier kommst du zu deinen PCs.' : 'Hier kommst du direkt zu deinem PC.');
-            if ($FILE_REQUIRES_PC && $pc['id'] == $pcid) {
-                $pc['name'] = safeentities($pc['name']);
-                menu_entry($url, 'Computer', $help, '<br />10.47.'.$pc['ip'].' (<em>'.$pc['name'].'</em>)', '', true);
-            } else {
-                menu_entry($url, 'Computer', $help);
-            }
-
-            $help = ((int)$usr['cluster'] > 0 ? 'Hier kannst du dich &uuml;ber den aktuellen Stand deines Clusters informieren' : 'Hier kannst du einen neuen Cluster gr&uuml;nden oder einem existierenden beitreten.');
-            menu_entry('cluster.php?a=start'.$sid, 'Cluster', $help);
-
-            menu_entry(
-                'game.php?m=subnet'.$sid,
-                'Subnet',
-                'Hier kannst du die Computer in deinem oder einem anderen Subnet einsehen.'
-            );
-            menu_entry('user.php?a=config'.$sid, 'Optionen');
-            menu_entry('ranking.php?m=ranking'.$sid, 'Rangliste');
-            menu_entry('game.php?m=kb'.$sid, 'Hilfe', 'Hier findest du die Hilfe zum Spiel.');
-
+        echo '<nav class="nav-links" id="navList" aria-label="Hauptnavigation">';
+        if ($sid !== '') {
+            echo '<a href="game.php?m=start' . $sid . '">Übersicht</a>';
+            echo '<a href="mail.php?m=start' . $sid . '">Messages</a>';
+            echo '<a href="cluster.php?a=start' . $sid . '">Cluster</a>';
+            echo '<a href="user.php?a=config' . $sid . '">Optionen</a>';
+            echo '<a href="ranking.php?m=ranking' . $sid . '">Rangliste</a>';
+            echo '<a href="abook.php?a=abook' . $sid . '">Adressbuch</a>';
+            echo '<a href="login.php?a=logout' . $sid . '">Abmelden</a>';
         } else {
-            // PUBLIC ITEMS
-            menu_entry('pub.php', 'Startseite', 'HackTheNet-Startseite (Log In)');
-            menu_entry('pub.php?a=register', 'Registrieren', 'Einen HackTheNet-Account anlegen');
-            menu_entry('pub.php?d=newpwd', 'Neues Passwort', 'Ein neues Passwort f&uuml;r deinen Account anfordern');
-            menu_entry('pub.php?d=credits', 'HTN-Team');
-            menu_entry('pub.php?d=impressum', 'Impressum');
-            menu_entry('pub.php?d=rules', 'Spielregeln', 'Wer die nicht beachtet, fliegt!');
-            menu_entry('pub.php?d=faq', 'FAQ', 'H&auml;ufig gestellte Fragen zu HTN');
-            menu_entry('pub.php?d=stats', 'Statistik', 'Statistische Daten &uuml;ber das Spiel');
-
-
+            echo '<a href="pub.php?a=register" id="registerLink">Registrieren</a>';
+            echo '<a href="pub.php" id="loginLink">Anmelden</a>';
         }
-        // COMMON ITEMS
-#menu_entry('http://forum.hackthenet.org/', 'Forum');
-
-        if ($sid != '') {
-            // INGAME ITEMS 2
-            menu_entry(
-                'login.php?a=logout'.$sid,
-                'Log Out',
-                'Hier kannst du dich abmelden.',
-                '<br />Angemeldet als: <em>'.$usr['name'].'</em>',
-                '',
-                true
-            );
-        } else {
-            // PUBLIC ITEMS 2
-
-        }
+        echo '</nav>';
     }
 
-    echo '</ul>
-</div>
-
-<!-- NAVI ENDE -->
-';
+    echo '</div></header>';
+    echo '<main class="container">';
 }
 
 function createlayout_bottom()
 {
-    global $starttime;
-    $time = '';
-    if ($starttime > 0) {
-        $time = (float)calc_time($starttime, 0, 10);
-        if ($time < 1) {
-            $time = number_format($time * 1000, 1, '.', ',').' ms';
-        } else {
-            $time = number_format($time, 2, ',', '.').' s';
-        }
-    }
-    $time2 = nicetime3(0, '');
-    echo '
-<div id="generation-time">'.$time.'</div>
-<div id="server-time">'.$time2.'</div>
-';
-
+    echo "</main>\n";
+    echo '<footer><div class="container foot">';
+    echo '<div>© <span id="year"></span> ZeroDayEmpire</div>';
+    echo '<div class="links"><a href="#">Status</a><a href="#">Roadmap</a><a href="impressum.html">Impressum</a></div>';
+    echo '</div></footer>';
+    echo '<script>(function(){const nav=document.getElementById("nav");const btn=document.getElementById("menuBtn");if(btn){btn.addEventListener("click",()=>{const open=nav.classList.toggle("open");btn.setAttribute("aria-expanded",String(open));});}})();';
+    echo 'window.addEventListener("pointermove",e=>{const x=e.clientX/window.innerWidth*100;const y=e.clientY/window.innerHeight*100;document.documentElement.style.setProperty("--mx",x+"%");document.documentElement.style.setProperty("--my",y+"%");},{passive:true});';
+    echo 'document.getElementById("year").textContent=new Date().getFullYear();</script>';
     basicfooter();
 }
 
-?>

@@ -47,7 +47,7 @@ function choose(s) {
   self.close();
 }
 </script>';
-        basicheader('HackTheNet - Adressbuch', true, false);
+        basicheader('ZeroDayEmpire - Adressbuch', true, false);
 
         echo '<body>
 <div id="abook-selpage">
@@ -157,7 +157,7 @@ function choose(s) {
         break;
 
     case 'admin': //------------------------- ADMIN -------------------------------
-        createlayout_top('HackTheNet - Adressbuch');
+        createlayout_top('ZeroDayEmpire - Adressbuch');
 
         if ($_REQUEST['saved'] == 1) {
             $xxx = '<div class="ok"><h3>OK</h3><p>Die &Auml;nderungen wurden &uuml;bernommen!</p></div><br />'."\n";

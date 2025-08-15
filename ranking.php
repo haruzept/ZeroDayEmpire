@@ -29,7 +29,7 @@ switch ($action) {
         }
         $javascript .= "\n".'</script>';
 
-        createlayout_top('HackTheNet - Rangliste');
+        createlayout_top('ZeroDayEmpire - Rangliste');
 
         $updtime = nicetime((int)@file_get('data/calc-time.dat'));
         echo '<div class="content" id="ranking">
