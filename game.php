@@ -703,7 +703,7 @@ createlayout_bottom();
 
         echo '<div class="content" id="computer">'."\n";
         echo '<h2>Dein Computer</h2>'."\n";
-        echo '<div class="submenu"><p><a href="game.php?page=pc&amp;sid='.$sid.'">Zur &Uuml;bersicht</a></p></div>'."\n";
+        echo '<div class="submenu"><p><a href="game.php?m=start&amp;sid='.$sid.'">Zur &Uuml;bersicht</a></p></div>'."\n";
         echo '<div id="computer-upgrades">'."\n";
         echo $notif;
 
