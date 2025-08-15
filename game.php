@@ -1,6 +1,6 @@
 <?php
 
-define('IN_HTN', 1);
+define('IN_ZDE', 1);
 $FILE_REQUIRES_PC = true;
 include('ingame.php');
 
@@ -58,7 +58,7 @@ switch ($action) {
 #$info.=infobox('<b>ACHTUNG:</b> Multis keine Chance! Wer mehrere Accounts besitzt, wird gnadenlos gel&ouml;scht.');
 
         $SALT = file_get('data/upgr_SALT.dat');
-        $idparam = preg_replace('([./])', '', crypt('HtNiTeM', $SALT));
+        $idparam = preg_replace('([./])', '', crypt('ZDEiTeM', $SALT));
         function overview_upgrade_link($id)
         {
             global $pc, $sid, $SALT, $idparam;
@@ -763,7 +763,7 @@ createlayout_bottom();
 
 #file_put('data/upgr_SALT.dat', randomx(6));
             $SALT = file_get('data/upgr_SALT.dat');
-            $idparam = preg_replace('([./])', '', crypt('HtNiTeM', $SALT));
+            $idparam = preg_replace('([./])', '', crypt('ZDEiTeM', $SALT));
 
             function buildinfo($id)
             {
@@ -851,7 +851,7 @@ createlayout_bottom();
         }
 
         $SALT = file_get('data/upgr_SALT.dat');
-        $idparam = preg_replace('([./])', '', crypt('HtNiTeM', $SALT));
+        $idparam = preg_replace('([./])', '', crypt('ZDEiTeM', $SALT));
 
         $id = $_REQUEST[$idparam];
         foreach ($items as $xx) {

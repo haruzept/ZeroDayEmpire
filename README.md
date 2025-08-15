@@ -1,6 +1,6 @@
-# HackTheNet 2 — Quellcode (modernisiert)
+# ZeroDayEmpire 2 — Quellcode (modernisiert)
 
-> **Version:** htn2src.2.0‑RC6 (15.08.2025)
+> **Version:** zde2src.2.0‑RC6 (15.08.2025)
 >
 > **Kompatibilität:** PHP 8.3+, MariaDB 10.x (oder kompatible MySQL‑Server), moderner Webserver (Apache/Nginx)
 
@@ -25,7 +25,7 @@ Creative Commons **BY‑NC‑SA 2.0 DE** (Namensnennung – nicht kommerziell
 
 ## 🚀 Schnellstart (Kurzfassung)
 
-1) **Quellcode** ins Webroot deployen (z. B. `/var/www/htn2`).  
+1) **Quellcode** ins Webroot deployen (z. B. `/var/www/zde2`).  
 2) **Dump importieren**: `DATABASE.DUMP.mariadb10.sql` importiert **Datenbank & Tabellen**.  
 3) **DB‑Benutzer anlegen & berechtigen** (falls noch nicht vorhanden).  
 4) **`config.php` setzen**: Host, Benutzername, Kennwort und DB‑Name (bzw. Prefix/Suffix).  
@@ -41,8 +41,8 @@ Creative Commons **BY‑NC‑SA 2.0 DE** (Namensnennung – nicht kommerziell
 Kopiere das Projekt in dein Webserver‑Verzeichnis, z. B.:
 
 ```bash
-sudo mkdir -p /var/www/htn2
-sudo rsync -a . /var/www/htn2/
+sudo mkdir -p /var/www/zde2
+sudo rsync -a . /var/www/zde2/
 ```
 
 Richte ggf. eine virtuelle Host‑Konfiguration ein (Apache/Nginx), sodass die Domain auf den Ordner zeigt.
@@ -55,16 +55,16 @@ Richte ggf. eine virtuelle Host‑Konfiguration ein (Apache/Nginx), sodass die D
 
 ```sql
 -- in der MariaDB‑Shell (z. B. via: sudo mariadb)
-CREATE USER IF NOT EXISTS 'htn_user'@'localhost' IDENTIFIED BY 'EinStarkesPasswort!';
-CREATE DATABASE IF NOT EXISTS `htn_server1` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-GRANT ALL PRIVILEGES ON `htn_server1`.* TO 'htn_user'@'localhost';
+CREATE USER IF NOT EXISTS 'zde_user'@'localhost' IDENTIFIED BY 'EinStarkesPasswort!';
+CREATE DATABASE IF NOT EXISTS `zde_server1` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+GRANT ALL PRIVILEGES ON `zde_server1`.* TO 'zde_user'@'localhost';
 FLUSH PRIVILEGES;
 ```
 
 Danach Import über CLI:
 
 ```bash
-mysql -u htn_user -p htn_server1 < DATABASE.DUMP.mariadb10.sql
+mysql -u zde_user -p zde_server1 < DATABASE.DUMP.mariadb10.sql
 ```
 
 **Variante B: Dump als Admin importieren (erzeugt DB), dann Benutzer berechtigen**
@@ -74,15 +74,15 @@ mysql -u htn_user -p htn_server1 < DATABASE.DUMP.mariadb10.sql
 sudo mysql < DATABASE.DUMP.mariadb10.sql
 
 # Danach Benutzer anlegen und berechtigen (in der MariaDB‑Shell):
-CREATE USER IF NOT EXISTS 'htn_user'@'localhost' IDENTIFIED BY 'EinStarkesPasswort!';
-GRANT ALL PRIVILEGES ON `htn_server1`.* TO 'htn_user'@'localhost';
+CREATE USER IF NOT EXISTS 'zde_user'@'localhost' IDENTIFIED BY 'EinStarkesPasswort!';
+GRANT ALL PRIVILEGES ON `zde_server1`.* TO 'zde_user'@'localhost';
 FLUSH PRIVILEGES;
 ```
 
 **Alternative: phpMyAdmin**
 
 - Melde dich als Admin an, öffne **Import** und wähle `DATABASE.DUMP.mariadb10.sql` aus.  
-- Falls noch kein Benutzer existiert, unter **Benutzerkonten** → **Benutzerkonto hinzufügen** → Berechtigungen für Datenbank `htn_server1` vergeben.
+- Falls noch kein Benutzer existiert, unter **Benutzerkonten** → **Benutzerkonto hinzufügen** → Berechtigungen für Datenbank `zde_server1` vergeben.
 
 ### 3. Anwendung konfigurieren (`config.php`)
 
@@ -94,12 +94,12 @@ $db_use_this_values = true;
 
 // Datenbank‑Zugangsdaten
 $db_host = 'localhost';
-$db_username = 'htn_user';
+$db_username = 'zde_user';
 $db_password = 'EinStarkesPasswort!';
 
 // Datenbankname wird i. d. R. aus Prefix + Suffix gebildet:
-$database_prefix = 'htn_server';
-$database_suffix = '1'; // ergibt 'htn_server1'
+$database_prefix = 'zde_server';
+$database_suffix = '1'; // ergibt 'zde_server1'
 ```
 
 > Hinweis: Wenn du einen anderen DB‑Namen verwendest, passe `suffix` entsprechend an **oder** stelle sicher, dass die Anwendung auf die korrekte Datenbank zeigt.
@@ -109,11 +109,11 @@ $database_suffix = '1'; // ergibt 'htn_server1'
 Nur schreibpflichtige Verzeichnisse (z. B. `data/`) erhalten Schreibrechte für den Webserver‑User. Beispiel (Debian/Ubuntu mit `www-data`):
 
 ```bash
-sudo chown -R www-data:www-data /var/www/htn2/data
+sudo chown -R www-data:www-data /var/www/zde2/data
 # Verzeichnisse: 750 (rwx für Owner, rx für Gruppe)
-find /var/www/htn2/data -type d -exec chmod 750 {} \;
+find /var/www/zde2/data -type d -exec chmod 750 {} \;
 # Dateien: 640 (rw für Owner, r für Gruppe)
-find /var/www/htn2/data -type f -exec chmod 640 {} \;
+find /var/www/zde2/data -type f -exec chmod 640 {} \;
 ```
 
 Wenn mehrere Systemnutzer deployen, kannst du eine gemeinsame Gruppe verwenden und `770/660` wählen.
@@ -168,4 +168,4 @@ Rufe die Site im Browser auf. Initial stehen Test‑Accounts zur Verfügung (z.�
 
 ## 💡 Beiträge
 
-Verbesserungen oder Fixes willkommen! Reiche Änderungen als Archiv (ZIP/TAR.GZ) an htn2code@hackthenet.org ein, damit sie ggf. auf der offiziellen Seite veröffentlicht werden.
+Verbesserungen oder Fixes willkommen! Reiche Änderungen als Archiv (ZIP/TAR.GZ) an zde2code@ZeroDayEmpire.org ein, damit sie ggf. auf der offiziellen Seite veröffentlicht werden.

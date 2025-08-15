@@ -4,7 +4,7 @@
  * Alle Angriffe werden hier drin abgehandelt
  **/
 
-define('IN_HTN', 1);
+define('IN_ZDE', 1);
 $FILE_REQUIRES_PC = true;
 include('ingame.php');
 
@@ -47,7 +47,7 @@ function fill(s) {
 
             $bigacc = '<br /><a href="#codebox" onclick="show_abook(\'pc\')">Adressbuch</a>';
         }
-        createlayout_top('HackTheNet - Operation Center');
+        createlayout_top('ZeroDayEmpire - Operation Center');
         echo '<div class="content" id="attacks">';
         echo '<h2>Operation Center</h2>';
 
@@ -152,7 +152,7 @@ function fill(s) {
             exit;
         }
 
-        createlayout_top('HackTheNet - Operation Center');
+        createlayout_top('ZeroDayEmpire - Operation Center');
         echo '<div class="content" id="attacks">';
         echo '<h2>Operation Center</h2>';
         echo '<div id="attacks-attack2">';
@@ -581,7 +581,7 @@ location.replace(\'battle.php?m=opc&sid='.$sid.'\');
 </script>';
 
         $bodytag = ' onload="anim(1)"';
-        createlayout_top('HackTheNet - Operation Center', false, false);
+        createlayout_top('ZeroDayEmpire - Operation Center', false, false);
         echo '<div class="content" id="attacks">';
         echo '<h2>Operation Center</h2>';
         echo '<div id="attacks-attack3">';
@@ -719,7 +719,7 @@ location.replace(\'battle.php?m=opc&sid='.$sid.'\');
             if ($success != 0) {
                 $usr['newmail'] += 1;
             }
-            createlayout_top('HackTheNet - Operation Center');
+            createlayout_top('ZeroDayEmpire - Operation Center');
             if ($success != 0) {
                 $usr['newmail'] -= 1;
             }
@@ -784,7 +784,7 @@ location.replace(\'battle.php?m=opc&sid='.$sid.'\');
                     $t = 45;
                 }
 
-                createlayout_top('HackTheNet - Operation Center');
+                createlayout_top('ZeroDayEmpire - Operation Center');
                 echo '<div class="content" id="attacks">';
                 echo '<h2>Operation Center</h2>';
                 echo '<div id="attacks-attack4">';
@@ -832,7 +832,7 @@ location.replace(\'battle.php?m=opc&sid='.$sid.'\');
                     $success = $tmp['success'];
                     $noticed = $tmp['noticed'];
 
-                    createlayout_top('HackTheNet - Operation Center');
+                    createlayout_top('ZeroDayEmpire - Operation Center');
                     echo '<div class="content" id="attacks">';
                     echo '<h2>Operation Center</h2>';
                     echo '<div id="attacks-attack4">';
@@ -909,7 +909,7 @@ location.replace(\'battle.php?m=opc&sid='.$sid.'\');
                         $remote['credits'] = $remote2['credits'];
                     }
 
-                    createlayout_top('HackTheNet - Operation Center');
+                    createlayout_top('ZeroDayEmpire - Operation Center');
                     echo '<div class="content" id="attacks">';
                     echo '<h2>Operation Center</h2>';
                     echo '<div id="attacks-attack4">';
@@ -988,7 +988,7 @@ location.replace(\'battle.php?m=opc&sid='.$sid.'\');
                 $success = $tmp['success'];
                 $noticed = $tmp['noticed'];
 
-                createlayout_top('HackTheNet - Operation Center');
+                createlayout_top('ZeroDayEmpire - Operation Center');
                 echo '<div class="content" id="attacks">';
                 echo '<h2>Operation Center</h2>';
                 echo '<div id="attacks-attack4">';
@@ -1080,7 +1080,7 @@ location.replace(\'battle.php?m=opc&sid='.$sid.'\');
                 $t = 60;
             }
 
-            createlayout_top('HackTheNet - Operation Center');
+            createlayout_top('ZeroDayEmpire - Operation Center');
             echo '<div class="content" id="attacks">';
             echo '<h2>Operation Center</h2>';
             echo '<div id="attacks-attack4">';
@@ -1140,7 +1140,7 @@ location.replace(\'battle.php?m=opc&sid='.$sid.'\');
             }
             #echo 'defend = '.$defend.'<br>attack = '.$attack;
             #exit;
-            createlayout_top('HackTheNet - Operation Center');
+            createlayout_top('ZeroDayEmpire - Operation Center');
             echo '<div class="content" id="attacks">';
             echo '<h2>Operation Center</h2>';
             echo '<div id="attacks-attack4">';

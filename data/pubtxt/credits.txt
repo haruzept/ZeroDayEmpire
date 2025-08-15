@@ -1,9 +1,9 @@
 <div id="public-team" class="content">
-<h2>HackTheNet-Team</h2>
+<h2>ZeroDayEmpire-Team</h2>
 
 <div id="team-kings">
 <h3>Wichtig!</h3>
-<p>Der Quellcode dieses Spiels stammt im Original von <a href="http://www.hackthenet.org/">www.hackthenet.org</a>.
+<p>Der Quellcode dieses Spiels stammt im Original von <a href="http://www.ZeroDayEmpire.org/">www.ZeroDayEmpire.org</a>.
 Dieser Hinweis darft nicht entfernt werden!</p>
 
 </div>

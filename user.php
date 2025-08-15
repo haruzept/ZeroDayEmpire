@@ -1,6 +1,6 @@
 <?php
 
-define('IN_HTN', 1);
+define('IN_ZDE', 1);
 $FILE_REQUIRES_PC = false;
 include('ingame.php');
 
@@ -153,7 +153,7 @@ switch ($action) {
                 strlen($dirname) - 1,
                 1
             ) != '/' ? $dirname.'/' : $dirname);
-            $url = 'http://htnsrv.org/usrimg.php/'.$server.'-'.$usrid.'.png';
+            $url = 'http://zdesrv.org/usrimg.php/'.$server.'-'.$usrid.'.png';
             $usrimg = ($usr['enable_usrimg'] != 'yes' ? '' : 'checked="checked" ');
             $usrimg = '<input type="checkbox" value="yes" name="enable_usrimg" '.$usrimg.'/>
  URL des Bildes: <a href="'.$url.'">'.$url.'</a>';
@@ -328,13 +328,13 @@ createlayout_bottom();
 </body></html>';
             $code = randomx(16);
 
-            $body = 'Hallo '.$usr['name'].'!'.LF."\n".'Schade, dass du deinen Account bei www.hackthenet.org löschen möchtest!'.LF."\n";
+            $body = 'Hallo '.$usr['name'].'!'.LF."\n".'Schade, dass du deinen Account bei www.ZeroDayEmpire.org löschen möchtest!'.LF."\n";
             $body .= 'Wenn du dir ganz sicher bist, klicke auf den folgenden Link:'."\n";
             $body .= 'http://'.$_SERVER['HTTP_HOST'].dirname(
                     $_SERVER['PHP_SELF']
                 ).'/pub.php?a=deleteaccount&code='.$code;
 
-            if (!@mail($usr['email'], 'ZeroDayEmpire-Account löschen?', $body, 'From: robot@hackthenet.org')) {
+            if (!@mail($usr['email'], 'ZeroDayEmpire-Account löschen?', $body, 'From: robot@ZeroDayEmpire.org')) {
                 echo nl2br($body);
             }
 

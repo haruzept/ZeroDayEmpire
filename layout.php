@@ -1,6 +1,6 @@
 <?php
 
-if (!defined('IN_HTN')) {
+if (!defined('IN_ZDE')) {
     die('Hacking attempt');
 }
 

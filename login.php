@@ -1,6 +1,6 @@
 <?php
 
-define('IN_HTN', 1);
+define('IN_ZDE', 1);
 include('gres.php');
 
 $ref = $_SERVER['HTTP_REFERER'] ?? '';
@@ -75,28 +75,28 @@ if ($action == 'login') {
     $cookie = false;
 
     if (
-        isset($_COOKIE['htnLoginData4']) &&
-        substr_count($_COOKIE['htnLoginData4'], '|') == 2 &&
+        isset($_COOKIE['zdeLoginData4']) &&
+        substr_count($_COOKIE['zdeLoginData4'], '|') == 2 &&
         (($_POST['save'] ?? '') == 'yes')
     ) {
-        list($serverdummy, $usrnamedummy, $pwd) = explode('|', $_COOKIE['htnLoginData4']);
+        list($serverdummy, $usrnamedummy, $pwd) = explode('|', $_COOKIE['zdeLoginData4']);
         $cookie = true;
     }
     if (($_POST['save'] ?? '') == 'yes') {
         if ($cookie == false) {
-            setcookie('htnLoginData4', $server.'|'.$usrname.'|'.md5($pwd), time() + 10 * 365 * 24 * 60 * 60);
+            setcookie('zdeLoginData4', $server.'|'.$usrname.'|'.md5($pwd), time() + 10 * 365 * 24 * 60 * 60);
         } else {
             #if()
             if ($usrnamedummy != $usrname || $postpwd != '[xpwd]') {
                 $pwd = md5($postpwd);
             }
             #echo $postpwd;
-            setcookie('htnLoginData4', $server.'|'.$usrname.'|'.$pwd, time() + 10 * 365 * 24 * 60 * 60);
+            setcookie('zdeLoginData4', $server.'|'.$usrname.'|'.$pwd, time() + 10 * 365 * 24 * 60 * 60);
             #echo $server.'|'.$usrname.'|'.$pwd;
             $cookie = true;
         }
     } else {
-        setcookie('htnLoginData4');
+        setcookie('zdeLoginData4');
     }
 
     mysql_select_db(dbname($server));
@@ -139,7 +139,7 @@ if ($action == 'login') {
 <h1>Account gesperrt!</h1>
 <b>Dieser Account wurde durch den Administrator des Spiels gesperrt!!</b>
 <br /><br />Das kann z.B. geschehen sein, weil du ein Multi bist.<br />Bei Fragen, Beschwerden und wenn
-du die genauen Gr&uuml;nde wissen willst, schick eine Email an <a href="mailto:king@hackthenet.org">king@hackthenet.org</a>!
+du die genauen Gr&uuml;nde wissen willst, schick eine Email an <a href="mailto:king@ZeroDayEmpire.org">king@ZeroDayEmpire.org</a>!
 </body></html>';
                 exit;
             }
@@ -212,7 +212,7 @@ du die genauen Gr&uuml;nde wissen willst, schick eine Email an <a href="mailto:k
         unlink('data/login/'.$sid.'.txt');
     }
     if (($_GET['redir'] ?? '') == 'forum') {
-        header('Location: http://forum.hackthenet.org/');
+        header('Location: http://forum.ZeroDayEmpire.org/');
     } else {
         header('Location: index.php');
     }

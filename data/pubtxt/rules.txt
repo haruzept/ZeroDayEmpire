@@ -28,15 +28,15 @@ Es ist dagegen erwünscht, dass Fehler bei den Admins oder im Forum gemeldet wer
 In diesem Fall bestehen allerdings keinerlei Entlohnungs-Ansprüche!</p>
 
 <h3>&sect;4 - Bots</h3>
-<p>Es ist strengstens verboten, jegliche Seiten von HackTheNet mit anderen Programmen außer dem Browser abzurufen,
+<p>Es ist strengstens verboten, jegliche Seiten von ZeroDayEmpire mit anderen Programmen außer dem Browser abzurufen,
 dies bezieht sich besonders auf sogenannte Bots oder auch andere Tools, die das Webinterface ersetzen sollen.<br />
 
 a) Erlaubt sind jegliche öffentlich zugänglichen Browser wie Mozilla, Opera, Netscape, Internet Explorer, Konqueror oder Lynx.
 <br />
-b) Jegliche Aufrufe von Fremdquellen (Seiten oder Programme), die nicht auf dem HTN-Server liegen, sind verboten,
+b) Jegliche Aufrufe von Fremdquellen (Seiten oder Programme), die nicht auf dem ZDE-Server liegen, sind verboten,
 Hierzu zählen insbesondere Seiten/Tools die vereinfachtes einloggen oder Verwalten von Accounts ermöglichen.
 <br />
-c) Auch das programmtechnische oder manuelle Verändern von Links, die vom HTN-Server stammen, ist illegal.
+c) Auch das programmtechnische oder manuelle Verändern von Links, die vom ZDE-Server stammen, ist illegal.
 </p>
 
 <h3>&sect;5 - Eingriffe in die Spieltechnik</h3>
@@ -65,7 +65,7 @@ Eine Entscheidung eines Admins bei einem Anderen zu hinterfragen um ein anderes 
 
 <h3>&sect;9 - Eigentumsverhältnisse</h3>
 <p>Jeder Account, sowie die Credits und Computer sind virtuelle Gegenstände im Spiel
-und bleiben Eigentum der HTN-Admins. Sie werden den Spielern nur leihweise zur Verfügung gestellt.
+und bleiben Eigentum der ZDE-Admins. Sie werden den Spielern nur leihweise zur Verfügung gestellt.
 Das Verkaufen von Accounts oder Credits ist allerdings erlaubt.</p>
 
 <h3>&sect; 10 - Haftungsausschluss</h3>

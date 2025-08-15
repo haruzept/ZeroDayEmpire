@@ -1,6 +1,6 @@
 <?php
 
-define('IN_HTN', 1);
+define('IN_ZDE', 1);
 include 'gres.php';
 include 'layout.php';
 
@@ -54,7 +54,7 @@ if (file_exists($imgfile) != true) {
     $black = imagecolorallocate($hImg, 0, 0, 0);
     imagerectangle($hImg, 0, 0, $w - 1, $h - 1, $black);
     $darkred = imagecolorallocate($hImg, 128, 0, 0);
-    imagestringup($hImg, 5, 1, $h - 6, 'HTN', $darkred);
+    imagestringup($hImg, 5, 1, $h - 6, 'ZDE', $darkred);
     imagestring($hImg, 3, 20, 2, $usr['name'], $black);
     imagestring($hImg, 1, 20, 15, 'Server '.$server, $black);
     $currenty = 24;

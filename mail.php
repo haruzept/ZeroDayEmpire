@@ -1,6 +1,6 @@
 <?php
 
-define('IN_HTN', 1);
+define('IN_ZDE', 1);
 $FILE_REQUIRES_PC = false;
 include('ingame.php');
 
@@ -716,7 +716,7 @@ createlayout_bottom();
 
         $text = '|'.str_replace(LF, LF.'|', wordwrap($text, 50, LF));
 
-        createlayout_top('HackTheNet - Messages');
+        createlayout_top('ZeroDayEmpire - Messages');
 ?>
 <!-- ZDE theme inject -->
 <style>@import url("style.css");</style>
@@ -741,7 +741,7 @@ createlayout_bottom();
         break;
 
     case 'transmit1': //------------------------- TRANSMIT 1 -------------------------------
-        createlayout_top('HackTheNet - Messages - Mails übertragen');
+        createlayout_top('ZeroDayEmpire - Messages - Mails übertragen');
 ?>
 <!-- ZDE theme inject -->
 <style>@import url("style.css");</style>
@@ -753,7 +753,7 @@ createlayout_bottom();
 <h2>Messages</h2>
 <div id="messages-transmit1">
 <h3>Mails &uuml;bertragen</h3>
-<p>Mit dieser Funktion kannst du ausgew&auml;hlte HTN-Ingame-Nachrichten zur Archivierung oder,
+<p>Mit dieser Funktion kannst du ausgew&auml;hlte ZDE-Ingame-Nachrichten zur Archivierung oder,
 um Platz im Postfach zu schaffen,
 an deine Email-Adresse schicken.<br />
 Du erh&auml;ltst dann eine Email, in deren Anhang du alle gew&auml;hlten Ingame-Messages als Textdateien findest.</p>
@@ -765,7 +765,7 @@ Du erh&auml;ltst dann eine Email, in deren Anhang du alle gew&auml;hlten Ingame-
 </tr>
 <tr id="messages-transmit1-mail-subject">
 <th>Email-Betreff:</th>
-<td><input type="text" value="HackTheNet-Ingame-Mails" name="subject" /></td>
+<td><input type="text" value="ZeroDayEmpire-Ingame-Mails" name="subject" /></td>
 </tr>
 <tr><th>Ordner:</th>
 <td><input type="checkbox" name="in" value="yes" checked="checked" /> Nachrichten-Eingang<br />
@@ -788,7 +788,7 @@ createlayout_bottom();
         break;
 
     case 'transmit2': //------------------------- TRANSMIT 2 -------------------------------
-        createlayout_top('HackTheNet - Messages - Mails übertragen');
+        createlayout_top('ZeroDayEmpire - Messages - Mails übertragen');
 ?>
 <!-- ZDE theme inject -->
 <style>@import url("style.css");</style>
@@ -950,7 +950,7 @@ createlayout_bottom();
             }
         }
 
-        $bound = 'BOUND_'.randomx(5).'_HTN';
+        $bound = 'BOUND_'.randomx(5).'_ZDE';
 #$bound='BOUND';
 
         $body = '';
@@ -966,22 +966,22 @@ createlayout_bottom();
         }
 
         $msg = nicetime(
-            ).LF.'http://www.hackthenet.org/'.LF."\n".'Hallo '.$usr['name'].'!'.LF.'Hier kommen deine HackTheNet-Ingame-Messages!'.LF."\n"
+            ).LF.'http://www.ZeroDayEmpire.org/'.LF."\n".'Hallo '.$usr['name'].'!'.LF.'Hier kommen deine ZeroDayEmpire-Ingame-Messages!'.LF."\n"
             .'Es sind insgesamt '.count(
                 $list
             ).' Nachrichten, die jeweils als Textdatei an diese Mail angehangen wurden:'."\n";
         foreach ($list As $mail) {
             $msg .= '    » '.$mail."\n";
         }
-        $msg .= "\n".LF.'Greetz'.LF.'HackTheNet-Team';
-        $header = 'From: HackTheNet-Mail-Robot <robot@hackthenet.org>'.LF.'To: '.$usr['name'].' <'.$email.'>'.LF.'X-Mailer: HackTheNet-Mail-Robot by IR'.LF.'MIME-Version: 1.0'.LF.'Content-Type: multipart/mixed; boundary="'.$bound.'"';
+        $msg .= "\n".LF.'Greetz'.LF.'ZeroDayEmpire-Team';
+        $header = 'From: ZeroDayEmpire-Mail-Robot <robot@ZeroDayEmpire.org>'.LF.'To: '.$usr['name'].' <'.$email.'>'.LF.'X-Mailer: ZeroDayEmpire-Mail-Robot by IR'.LF.'MIME-Version: 1.0'.LF.'Content-Type: multipart/mixed; boundary="'.$bound.'"';
 
         $body = '--'.$bound."\n".'Content-Type: text/plain; charset="ISO-8859-1"'."\n"
             .'Content-Disposition: inline'."\n"
             .'Content-Transfer-Encoding: 8bit'."\n"
             .LF.$msg."\n".$body;
 
-        createlayout_top('HackTheNet - Messages');
+        createlayout_top('ZeroDayEmpire - Messages');
 ?>
 <!-- ZDE theme inject -->
 <style>@import url("style.css");</style>

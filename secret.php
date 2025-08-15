@@ -1,6 +1,6 @@
 <?php
 
-define('IN_HTN', 1);
+define('IN_ZDE', 1);
 $FILE_REQUIRES_PC = false;
 include('ingame.php');
 
@@ -38,7 +38,7 @@ switch ($action) {
                 break;
         }
 
-        $title = 'htn_server'.$server.'.'.$_REQUEST['type'].'s.'.$dat['id'];
+        $title = 'zde_server'.$server.'.'.$_REQUEST['type'].'s.'.$dat['id'];
 
         if ($usr['stat'] == 1000) {
             $hw = 'Du bist Administrator und darfst alles ansehen und &auml;ndern!';
@@ -162,7 +162,7 @@ alert(\'Bitte Zahl eingeben!\');
             exit;
         }
 
-        createlayout_top('HackTheNet - FREMDES Board');
+        createlayout_top('ZeroDayEmpire - FREMDES Board');
         echo '<div id="cluster-board" class="content">';
         echo '<h2>FREMDES Board</h2>';
 
@@ -350,13 +350,13 @@ alert(\'Bitte Zahl eingeben!\');
 
 
         while ($data = mysql_fetch_assoc($r)):
-            /*mail($data['email'], 'Dein HackTheNet-Account wird bald gelöscht!',
+            /*mail($data['email'], 'Dein ZeroDayEmpire-Account wird bald gelöscht!',
             'Hallo '.$data['name'].'!'.LF.'Du hast dich in deinen Account des browserbasierten Online-Spiels '.
-            'HackTheNet ( http://www.hackthenet.org/ ) seit '.nicetime($data['login_time']).' nicht mehr '.
+            'ZeroDayEmpire ( http://www.ZeroDayEmpire.org/ ) seit '.nicetime($data['login_time']).' nicht mehr '.
             'eingeloggt.'.LF.'Wenn du dich nicht bis zum 3. Juli, 24 Uhr mit den folgenden Daten einloggst, '.
             'wird dein Account automatisch gelöscht!'.LF."\n".'Nickname: '.$data['name'].LF.'Passwort: '.$data['password'].LF.'Server: 1'.LF."\n".
-            'MfG'.LF.'Das HackTheNet-Team',
-            'From: HackTheNet <robot@hackthenet.org>');*/
+            'MfG'.LF.'Das ZeroDayEmpire-Team',
+            'From: ZeroDayEmpire <robot@ZeroDayEmpire.org>');*/
             #delete_account($data['id']);
         endwhile;
 

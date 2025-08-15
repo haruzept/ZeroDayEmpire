@@ -1,11 +1,11 @@
 <?php
 
-if (!defined('IN_HTN')) {
+if (!defined('IN_ZDE')) {
     die('Hacking attempt');
 }
 
 #if($_COOKIE['SSL']=='yes' && $_SERVER['HTTP_HOST']!='ssl-id1.de') {
-#  header('Location: http://ssl-id1.de/htn.ir0.de'.$_SERVER['REQUEST_URI']);
+#  header('Location: http://ssl-id1.de/zde.ir0.de'.$_SERVER['REQUEST_URI']);
 #}
 
 define('LF', "\n");
@@ -15,7 +15,7 @@ define('LF', "\n");
 if (file_exists('data/work.txt') == true || file_exists('data/mysql-backup.txt') == true) {
     $STYLESHEET = 'crystal';
     include_once('layout.php');
-    createlayout_top('HackTheNet - Serverarbeiten', true);
+    createlayout_top('ZeroDayEmpire - Serverarbeiten', true);
     echo '
 <div class="content" id="work">
 <h2>Serverarbeiten</h2>
@@ -23,7 +23,7 @@ if (file_exists('data/work.txt') == true || file_exists('data/mysql-backup.txt')
 <h3>Information</h3>
 <p>Im Moment wird am Server gearbeitet.<br />
 Bitte probiere es doch später noch einmal.<br />
-Du kannst auch so lange dem <a href="http://forum.hackthenet.org/">Forum</a> oder <br />dem <a href="http://www.ghettogame.net">Ghettogame</a> einen Besuch abstatten.</p>
+Du kannst auch so lange dem <a href="http://forum.ZeroDayEmpire.org/">Forum</a> oder <br />dem <a href="http://www.ghettogame.net">Ghettogame</a> einen Besuch abstatten.</p>
 </div>
 </div>
 ';
@@ -148,11 +148,11 @@ if (isset($_GET['error'])) {
 }
 
 $host = $_SERVER['HTTP_HOST'];
-#$localhost=$host=='localhost'||$host=='htn.lc' ? true : false;
+#$localhost=$host=='localhost'||$host=='zde.lc' ? true : false;
 $localhost = false;
-#if($host=='htnsrv.org') $localhost=false;
+#if($host=='zdesrv.org') $localhost=false;
 
-//die('Aus technischen Grnden ist HackTheNet nicht erreichbar.<br />Das Forum ist jedoch zum Glck weiter online unter <a href="http://forum.hackthenet.org/">http://forum.hackthenet.org/</a>.');
+//die('Aus technischen Grnden ist ZeroDayEmpire nicht erreichbar.<br />Das Forum ist jedoch zum Glck weiter online unter <a href="http://forum.ZeroDayEmpire.org/">http://forum.ZeroDayEmpire.org/</a>.');
 
 function dbname($srvid = -1)
 {
@@ -646,9 +646,9 @@ function simple_message($msg, $type = 'warning')
             $c = 'Hinweis';
         }
     }
-    createlayout_top('HackTheNet - Hinweis');
+    createlayout_top('ZeroDayEmpire - Hinweis');
     echo '<div class="content">';
-    echo '<h2>HackTheNet</h2>';
+    echo '<h2>ZeroDayEmpire</h2>';
     echo '<br /><br />';
     echo '<div class="'.$id.'"><h3>'.$c.'</h3><p>'.$msg.'</p></div>';
     createlayout_bottom();

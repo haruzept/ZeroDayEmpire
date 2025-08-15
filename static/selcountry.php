@@ -19,7 +19,7 @@
 <body style="font-family:arial;">
 
 <?php
-define("IN_HTN", 1);
+define("IN_ZDE", 1);
 include("../gres.php");
 echo str_replace("%path%", "../images/maps", file_get("../data/pubtxt/selcountry_body.txt"));
 ?>

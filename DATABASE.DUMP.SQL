@@ -7,8 +7,8 @@ SET FOREIGN_KEY_CHECKS=0;
 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS;
 SET UNIQUE_CHECKS=0;
 
-CREATE DATABASE IF NOT EXISTS `htn_server1` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE htn_server1;
+CREATE DATABASE IF NOT EXISTS `zde_server1` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE zde_server1;
 
 # --------------------------------------------------------
 
@@ -148,7 +148,7 @@ CREATE TABLE `clusters` (
 # Daten für Tabelle `clusters`
 #
 
-INSERT INTO `clusters` VALUES (1, 'TestCluster', '=HTNTC=', ' 00:11 Der Cluster wird durch TestUser gegr&uuml;ndet!', 1, 1, NULL, 30, NULL, NULL, 'Wichtig', 'Allgemein', 'Alte Beiträge', 'yes', 1, NULL, 0, 0, 0);
+INSERT INTO `clusters` VALUES (1, 'TestCluster', '=ZDETC=', ' 00:11 Der Cluster wird durch TestUser gegr&uuml;ndet!', 1, 1, NULL, 30, NULL, NULL, 'Wichtig', 'Allgemein', 'Alte Beiträge', 'yes', 1, NULL, 0, 0, 0);
 INSERT INTO `clusters` VALUES (2, 'Administratoren', '::root::', '24.08. um 00:13 [usr=2]Administrator2[/usr] erh&auml;lt durch [usr=1]Administrator[/usr] den Status LiteAdmin.\n24.08. um 00:13 [usr=2]Administrator2[/usr] tritt dem Cluster bei.\n 00:12 Der Cluster wird durch Administrator gegr&uuml;ndet!', 1, 2, NULL, 13036, NULL, NULL, 'Wichtig', 'Allgemein', 'Alte Beiträge', 'yes', 0, NULL, 0, 0, 0);
 
 # --------------------------------------------------------
