@@ -40,6 +40,7 @@ function synchrclock() {
     getLay("server-time").innerHTML = serverFormatter.format(serverTime) + " Uhr";
 }
 function startsynchr() {
+    synchrclock();
     setInterval(synchrclock, 1000);
 }
 

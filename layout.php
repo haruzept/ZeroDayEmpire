@@ -9,6 +9,15 @@ $bodytag = '';
 
 include_once('config.php');
 
+$server_tz = @file_get_contents('/etc/timezone');
+if ($server_tz !== false) {
+    $server_tz = trim($server_tz);
+}
+if ($server_tz === '' || $server_tz === false) {
+    $server_tz = date_default_timezone_get();
+}
+date_default_timezone_set($server_tz);
+
 function menu_entry($url, $text, $help = '', $em = '', $emclass = '', $selftags = false, $inatag = '')
 {
     // refaktorisierte Funktion *muaahaahhaahaaa*
@@ -29,7 +38,7 @@ function menu_entry($url, $text, $help = '', $em = '', $emclass = '', $selftags 
 
 function basicheader($title)
 {
-    global $usr, $javascript, $STYLESHEET, $bodytag, $stylesheets;
+    global $usr, $javascript, $STYLESHEET, $bodytag, $stylesheets, $server_tz;
     global $STYLESHEET_BASEDIR, $standard_stylesheet;
     $stylesheet = $STYLESHEET;
     if ($stylesheets[$stylesheet]['id'] == '' || $stylesheet == '') {
@@ -44,7 +53,7 @@ function basicheader($title)
     echo '<meta charset="utf-8">' . "\n";
     echo '<title>' . $title . '</title>' . "\n";
     echo '<link rel="stylesheet" href="' . $STYLESHEET_BASEDIR . $stylesheet . '/style.css">' . "\n";
-    echo '<script>var stm=' . $ts . '; var stz="' . $tz . '"; var sltm=new Date().getTime();</script>' . "\n";
+    echo '<script>var stm=' . $ts . '; var stz="' . $server_tz . '"; var sltm=new Date().getTime();</script>' . "\n";
     echo '<script src="global.js" defer></script>' . "\n";
     echo '<link rel="icon" href="favicon.ico">' . "\n";
     echo $javascript;
