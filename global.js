@@ -26,11 +26,18 @@ function fmtint(i) {
     return (i < 10 ? "0" + i : i);
 }
 
+var serverFormatter = new Intl.DateTimeFormat('de-DE', {
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false,
+    timeZone: stz
+});
+
 function synchrclock() {
     var now = new Date().getTime();
-    var serverTime = (stm * 1000) + (now - sltm) + (stz * 1000);
-    var c = new Date(serverTime);
-    getLay("server-time").innerHTML = fmtint(c.getUTCHours()) + ":" + fmtint(c.getUTCMinutes()) + ":" + fmtint(c.getUTCSeconds()) + " Uhr";
+    var serverTime = (stm * 1000) + (now - sltm);
+    getLay("server-time").innerHTML = serverFormatter.format(serverTime) + " Uhr";
 }
 function startsynchr() {
     setInterval(synchrclock, 1000);
