@@ -111,11 +111,11 @@ function newmailform($recip = '', $subject = '', $text = '', $xnl2br = true)
 <h3>Mail verfassen</h3>
 <form action="mail.php?a=sendmail&amp;sid='.$sid.'" method="post" name="newmail">
 <table>
+'.$bigacc.'
 <tr id="messages-compose-recipient">
 <th>Empf&auml;nger:</th>
 <td><input name="recipient" type="text" value="'.$recip.'" /></td>
 </tr>
-'.$bigacc.'
 <tr id="messages-compose-subject">
 <th>Betreff:</th>
 <td><input name="subject" type="text" value="'.$subject.'" /></td>
@@ -178,9 +178,8 @@ switch ($action) {
             $sysmsgs .= '</tr>';
         }
 
-        $inboxstate = '<p><strong>'.$maillist_mcnt.' von maximal '.getmaxmails(
-                'in'
-            ).' Mails im Posteingang</strong></p>'."\n";
+        $maxMails = getmaxmails('in');
+        $progressBar = '<div id="mail-progress" class="progress" style="max-width:250px;"><div class="bar" style="width:'.($maxMails > 0 ? ($maillist_mcnt / $maxMails * 100) : 0).'%"></div></div>';
         $arcstate = (int)@mysql_num_rows(
                 db_query('SELECT mail FROM mails WHERE user='.mysql_escape_string($usrid).' AND box=\'arc\';')
             ).'/'.getmaxmails('arc');
@@ -208,13 +207,13 @@ switch ($action) {
 <h2>Messages</h2>
 <div class="submenu">
 <p>'.$link_inbox.$link_sysmsgs.'<a href="#messages-compose">Mail verfassen</a></p>
-<p><a href="mail.php?m=archiv&amp;sid='.$sid.'">Nachrichten-Archiv</a> ('.$arcstate.') | <a href="mail.php?m=outbox&amp;sid='.$sid.'">Zuletzt gesendete Mails</a> | <a href="mail.php?m=transmit1&amp;sid='.$sid.'">Mails &uuml;bertragen</a></p>
+<p><a href="mail.php?m=outbox&amp;sid='.$sid.'">Zuletzt gesendete Mails</a> | <a href="mail.php?m=transmit1&amp;sid='.$sid.'">Mails &uuml;bertragen</a></p>
 </div>
-'.$notif.$full;
+<p><a href="mail.php?m=archiv&amp;sid='.$sid.'">Nachrichten-Archiv</a> ('.$arcstate.')</p>
+'.$progressBar.$notif.$full;
         if ($inbox != '') {
             echo '<div id="messages-inbox">
 <h3>Posteingang</h3>
-'.$inboxstate.'
 <form action="mail.php?type=in&amp;sid='.$sid.'&amp;redir=start" method="post">
 <table>
 <tr>
