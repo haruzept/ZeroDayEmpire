@@ -244,8 +244,13 @@ document.querySelectorAll('#computers li[data-item]').forEach(li => {
       const html = await res.text();
       const div = document.createElement('div');
       div.innerHTML = html;
-      const content = div.querySelector('.content');
-      tip.textContent = content ? content.textContent.trim() : div.textContent.trim();
+      const content = div.querySelector('#computer-item');
+      let text = '';
+      if (content) {
+        const ps = content.querySelectorAll('p');
+        text = ps.length >= 2 ? ps[1].textContent.trim() : ps.length === 1 ? ps[0].textContent.trim() : '';
+      }
+      tip.textContent = text;
     } catch (e) {
       tip.textContent = '';
     }
