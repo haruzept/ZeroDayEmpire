@@ -30,6 +30,12 @@ switch ($action) {
         $javascript .= "\n".'</script>';
 
         createlayout_top('ZeroDayEmpire - Rangliste');
+?>
+<!-- ZDE theme inject -->
+<style>@import url("style.css");</style>
+<div class="container">
+<?php // /ZDE theme inject start ?>
+
 
         $updtime = nicetime((int)@file_get('data/calc-time.dat'));
         echo '<div class="content" id="ranking">
@@ -188,7 +194,11 @@ Das n&auml;chste Mal passiert das um '.$updtime.'.</p>
 
             if ($total == 0) {
                 echo '</table>';
-                createlayout_bottom();
+                ?>
+</div>
+<!-- /ZDE theme inject -->
+<?php
+createlayout_bottom();
                 exit;
             }
 
@@ -296,7 +306,11 @@ Das n&auml;chste Mal passiert das um '.$updtime.'.</p>
 </div>
 ';
 
-        createlayout_bottom();
+        ?>
+</div>
+<!-- /ZDE theme inject -->
+<?php
+createlayout_bottom();
 
         break;
 
