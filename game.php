@@ -64,7 +64,11 @@ switch ($action) {
         createlayout_top('ZeroDayEmpire - &Uuml;bersicht');
 ?>
 <!-- ZDE theme inject -->
-<style>@import url("style.css");</style>
+<style>@import url("style.css");
+#computers li{position:relative}
+#computers li .tip{display:none;position:absolute;top:100%;left:0;background:#222;color:#fff;padding:4px;border-radius:3px;max-width:240px;font-size:12px;z-index:10}
+#computers li:hover .tip{display:block}
+</style>
 <div class="container">
 <?php // /ZDE theme inject start
 
@@ -181,15 +185,15 @@ switch ($action) {
   <article class="card span-6" id="computers">
     <h3>Computer</h3>
     <ul class="muted" style="list-style:none; padding-left:0; margin:10px 0 0 0">
-      <li><strong><?php echo safeentities($pc['name']); ?></strong> (10.47.<?php echo $pc['ip']; ?>)</li>
-      <li>CPU: <?php echo $cpu_levels[$pc['cpu']]; ?> Mhz</li>
-      <li>RAM: <?php echo $ram_levels[$pc['ram']]; ?> MB</li>
-      <li>LAN: Level <?php echo $pc['lan']; ?></li>
-      <li>MM: Version <?php echo $pc['mm']; ?></li>
-      <li>BB: Version <?php echo $pc['bb']; ?></li>
-      <li>FW: Version <?php echo $pc['fw']; ?></li>
-      <li>AV: Version <?php echo $pc['av']; ?></li>
-      <li>IDS: Level <?php echo $pc['ids']; ?></li>
+      <li><a href="game.php?m=pc&amp;sid=<?php echo $sid; ?>"><strong><?php echo safeentities($pc['name']); ?></strong> (10.47.<?php echo $pc['ip']; ?>)</a></li>
+      <li data-item="cpu"><?php echo idtoname('cpu'); ?>: <?php echo $cpu_levels[$pc['cpu']]; ?> Mhz<div class="tip"></div></li>
+      <li data-item="ram"><?php echo idtoname('ram'); ?>: <?php echo $ram_levels[$pc['ram']]; ?> MB<div class="tip"></div></li>
+      <li data-item="lan"><?php echo idtoname('lan'); ?>: Level <?php echo $pc['lan']; ?><div class="tip"></div></li>
+      <li data-item="mm"><?php echo idtoname('mm'); ?>: Version <?php echo $pc['mm']; ?><div class="tip"></div></li>
+      <li data-item="bb"><?php echo idtoname('bb'); ?>: Version <?php echo $pc['bb']; ?><div class="tip"></div></li>
+      <li data-item="fw"><?php echo idtoname('fw'); ?>: Version <?php echo $pc['fw']; ?><div class="tip"></div></li>
+      <li data-item="av"><?php echo idtoname('av'); ?>: Version <?php echo $pc['av']; ?><div class="tip"></div></li>
+      <li data-item="ids"><?php echo idtoname('ids'); ?>: Level <?php echo $pc['ids']; ?><div class="tip"></div></li>
     </ul>
   </article>
 
@@ -208,6 +212,27 @@ switch ($action) {
   </article>
 </section>
 
+<script>
+document.querySelectorAll('#computers li[data-item]').forEach(li => {
+  li.addEventListener('mouseenter', async () => {
+    if (li.dataset.loaded) return;
+    const item = li.getAttribute('data-item');
+    const tip = li.querySelector('.tip');
+    try {
+      const res = await fetch(`game.php?m=item&item=${item}&sid=<?php echo $sid; ?>`);
+      const html = await res.text();
+      const div = document.createElement('div');
+      div.innerHTML = html;
+      const content = div.querySelector('.content');
+      tip.textContent = content ? content.textContent.trim() : div.textContent.trim();
+    } catch (e) {
+      tip.textContent = '';
+    }
+    li.dataset.loaded = '1';
+  });
+});
+</script>
+
 <?php
         if ($newtotal > 0) {
             echo '<div id="overview-messages">'."\n";
@@ -224,18 +249,6 @@ switch ($action) {
             echo '<p><a href="game.php?m=pcs&amp;sid='.$sid.'">Gehe zu den Computern</a></p>'."\n";
             echo '</div>';
         }
-
-        $usr['points'] = number_format($usr['points'], 0, ',', '.');
-        echo '<div id="overview-ranking">'.LF;
-        echo '<h3>Situation</h3>'.LF;
-        echo '<p>Du besitzt im Moment <strong>'.$usr['points'].' Punkte</strong>, aufgeteilt auf <strong>'.$pccnt.' Computer</strong>. Damit bist du auf dem <strong>'.$usr['rank'].'. Platz</strong> in der Gesamtwertung.</p>'.LF;
-        echo '<p><a href="ranking.php?m=ranking&amp;sid='.$sid.'">Gehe zur Rangliste</a></p>'.LF;
-        if ($c !== false) {
-            $c['points'] = number_format($c['points'], 0, ',', '.');
-            echo '<p>Dein Cluster besitzt <strong>'.$c['points'].' Punkte</strong>. Damit ist dein Cluster auf dem <strong>'.$c['rank'].'. Platz</strong> in der Gesamtwertung.</p>'.LF;
-            echo '<p><a href="ranking.php?m=ranking&amp;type=cluster&amp;sid='.$sid.'">Gehe zur Cluster-Rangliste</a></p>'.LF;
-        }
-        echo '</div>';
         ?>
 </div>
 <!-- /ZDE theme inject -->
