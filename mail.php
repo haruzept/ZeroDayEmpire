@@ -189,6 +189,12 @@ switch ($action) {
             $full = '<div class="important">'.LF.'<h3>Dein Posteingang ist voll!</h3>'.LF.'<p>Bitte l&ouml;sche Mails, damit andere User dir wieder schreiben k&ouml;nnen.</p>'.LF.'</div>'."\n";
         }
         createlayout_top('ZeroDayEmpire - Messages');
+?>
+<!-- ZDE theme inject -->
+<style>@import url("style.css");</style>
+<div class="container">
+<?php // /ZDE theme inject start ?>
+
         $link_inbox = '';
         $link_sysmsgs = '';
         if ($inbox != '') {
@@ -257,7 +263,11 @@ switch ($action) {
         }
         newmailform();
         echo '</div>'."\n";
-        createlayout_bottom();
+        ?>
+</div>
+<!-- /ZDE theme inject -->
+<?php
+createlayout_bottom();
         break;
 
     case 'sysmsg_exec':  //------------------------- sysmsg_exec -------------------------------
@@ -292,15 +302,31 @@ switch ($action) {
 
     case 'newmailform':  //------------------------- NewMailForm -------------------------------
         createlayout_top('ZeroDayEmpire - Messages');
+?>
+<!-- ZDE theme inject -->
+<style>@import url("style.css");</style>
+<div class="container">
+<?php // /ZDE theme inject start ?>
+
         echo '<div class="content" id="messages">'.LF.'<h2>Messages</h2>'.LF.$notif;
         newmailform($_REQUEST['recip'], $_REQUEST['subject'], $_REQUEST['text']);
         echo '</div>'."\n";
-        createlayout_bottom();
+        ?>
+</div>
+<!-- /ZDE theme inject -->
+<?php
+createlayout_bottom();
         break;
 
 
     case 'archiv':  //------------------------- ARCHIV -------------------------------
         createlayout_top('ZeroDayEmpire - Messages');
+?>
+<!-- ZDE theme inject -->
+<style>@import url("style.css");</style>
+<div class="container">
+<?php // /ZDE theme inject start ?>
+
         $x = maillist('arc');
         echo '<div class="content" id="messages">
 <h2>Messages</h2>
@@ -329,11 +355,21 @@ switch ($action) {
             echo '<p>Es sind keine Nachrichten im Archiv.</p>'."\n";
         }
         echo '</div>'.LF.'</div>'."\n";
-        createlayout_bottom();
+        ?>
+</div>
+<!-- /ZDE theme inject -->
+<?php
+createlayout_bottom();
         break;
 
     case 'outbox':  //------------------------- OUTBOX -------------------------------
         createlayout_top('ZeroDayEmpire - Messages');
+?>
+<!-- ZDE theme inject -->
+<style>@import url("style.css");</style>
+<div class="container">
+<?php // /ZDE theme inject start ?>
+
         $x = maillist('out');
         echo '<div class="content" id="messages">
 <h2>Messages</h2>
@@ -361,7 +397,11 @@ switch ($action) {
 </div>
 </div>
 ';
-        createlayout_bottom();
+        ?>
+</div>
+<!-- /ZDE theme inject -->
+<?php
+createlayout_bottom();
         break;
 
     case 'delete': //------------------------- DELETE -------------------------------
@@ -525,10 +565,20 @@ switch ($action) {
         } else {
             $err = '<div class="error"><h3>Fehler</h3><p>'.$error.'</p></div>';
             createlayout_top('ZeroDayEmpire - Messages');
+?>
+<!-- ZDE theme inject -->
+<style>@import url("style.css");</style>
+<div class="container">
+<?php // /ZDE theme inject start ?>
+
             echo '<div class="content" id="messages">'.LF.'<h2>Messages</h2>'.LF.$err."\n";
             newmailform($_REQUEST['recip'], $_REQUEST['subject'], $_REQUEST['text'], false);
             echo '</div>'."\n";
-            createlayout_bottom();
+            ?>
+</div>
+<!-- /ZDE theme inject -->
+<?php
+createlayout_bottom();
         }
 
 
@@ -586,6 +636,12 @@ switch ($action) {
         }
 
         createlayout_top('ZeroDayEmpire - Messages');
+?>
+<!-- ZDE theme inject -->
+<style>@import url("style.css");</style>
+<div class="container">
+<?php // /ZDE theme inject start ?>
+
         echo '<div class="content" id="messages">
 <h2>Messages</h2>
 <div id="messages-message-read">
@@ -612,7 +668,11 @@ switch ($action) {
 </div>
 </div>
 ';
-        createlayout_bottom();
+        ?>
+</div>
+<!-- /ZDE theme inject -->
+<?php
+createlayout_bottom();
 
         break;
 
@@ -651,6 +711,12 @@ switch ($action) {
         $text = '|'.str_replace(LF, LF.'|', wordwrap($text, 50, LF));
 
         createlayout_top('HackTheNet - Messages');
+?>
+<!-- ZDE theme inject -->
+<style>@import url("style.css");</style>
+<div class="container">
+<?php // /ZDE theme inject start ?>
+
         echo '<div class="content" id="messages">'.LF.'<h2>Messages</h2>'.LF;
         newmailform(
             $sender['name'],
@@ -659,12 +725,22 @@ switch ($action) {
             false
         );
         echo '</div>'."\n";
-        createlayout_bottom();
+        ?>
+</div>
+<!-- /ZDE theme inject -->
+<?php
+createlayout_bottom();
 
         break;
 
     case 'transmit1': //------------------------- TRANSMIT 1 -------------------------------
         createlayout_top('HackTheNet - Messages - Mails übertragen');
+?>
+<!-- ZDE theme inject -->
+<style>@import url("style.css");</style>
+<div class="container">
+<?php // /ZDE theme inject start ?>
+
         echo '<div class="content" id="messages">
 <h2>Messages</h2>
 <div id="messages-transmit1">
@@ -696,11 +772,21 @@ Du erh&auml;ltst dann eine Email, in deren Anhang du alle gew&auml;hlten Ingame-
 </div>
 </div>
 ';
-        createlayout_bottom();
+        ?>
+</div>
+<!-- /ZDE theme inject -->
+<?php
+createlayout_bottom();
         break;
 
     case 'transmit2': //------------------------- TRANSMIT 2 -------------------------------
         createlayout_top('HackTheNet - Messages - Mails übertragen');
+?>
+<!-- ZDE theme inject -->
+<style>@import url("style.css");</style>
+<div class="container">
+<?php // /ZDE theme inject start ?>
+
         echo '<div class="content" id="messages">
 <h2>Messages</h2>
 <div id="messages-transmit2">
@@ -795,7 +881,11 @@ Du erh&auml;ltst dann eine Email, in deren Anhang du alle gew&auml;hlten Ingame-
 </div>
 </div>
 ';
-        createlayout_bottom();
+        ?>
+</div>
+<!-- /ZDE theme inject -->
+<?php
+createlayout_bottom();
         break;
 
     case 'transmit3': //------------------------- TRANSMIT 3 -------------------------------
@@ -883,6 +973,12 @@ Du erh&auml;ltst dann eine Email, in deren Anhang du alle gew&auml;hlten Ingame-
             .LF.$msg."\n".$body;
 
         createlayout_top('HackTheNet - Messages');
+?>
+<!-- ZDE theme inject -->
+<style>@import url("style.css");</style>
+<div class="container">
+<?php // /ZDE theme inject start ?>
+
         echo '<div class="content" id="messages">'."\n";
 #if(!$localhost) {
         if (@mail($email, $subject, $body, $header)) {
@@ -896,7 +992,11 @@ Du erh&auml;ltst dann eine Email, in deren Anhang du alle gew&auml;hlten Ingame-
 #  echo 'FRESH';
 #}
         echo '</div>';
-        createlayout_bottom();
+        ?>
+</div>
+<!-- /ZDE theme inject -->
+<?php
+createlayout_bottom();
 
 
         break;
