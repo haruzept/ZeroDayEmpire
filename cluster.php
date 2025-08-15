@@ -56,6 +56,12 @@ switch ($action) {
         }
 
         createlayout_top('ZeroDayEmpire - Cluster');
+?>
+<!-- ZDE theme inject -->
+<style>@import url("style.css");</style>
+<div class="container">
+<?php // /ZDE theme inject start ?>
+
         echo '<div class="content" id="cluster">'."\n";
         echo '<h2>Cluster</h2>'."\n";
 
@@ -90,7 +96,11 @@ Dort findest du einen "Mitgliedsantrag stellen"-Link.</p></div>
 #  kein Cluster
         if ($cluster === false) {
             nocluster();
-            createlayout_bottom();
+            ?>
+</div>
+<!-- /ZDE theme inject -->
+<?php
+createlayout_bottom();
             exit;
         }
 
@@ -265,7 +275,11 @@ Dort findest du einen "Mitgliedsantrag stellen"-Link.</p></div>
 
         echo '</div>'."\n";
 
-        createlayout_bottom();
+        ?>
+</div>
+<!-- /ZDE theme inject -->
+<?php
+createlayout_bottom();
         break;
 
     case 'delconvent': //----------------- DELETE CONVENT -------------------------
@@ -327,6 +341,12 @@ Dort findest du einen "Mitgliedsantrag stellen"-Link.</p></div>
 #exit;
 
             createlayout_top('ZeroDayEmpire - Cluster - Vertr&auml;ge');
+?>
+<!-- ZDE theme inject -->
+<style>@import url("style.css");</style>
+<div class="container">
+<?php // /ZDE theme inject start ?>
+
             echo '<div class="content" id="cluster">
 <h2>Cluster</h2>'
                 .$notif.'<div id="cluster-create-convent">
@@ -411,7 +431,11 @@ Dort findest du einen "Mitgliedsantrag stellen"-Link.</p></div>
             }
 
             echo '</div>'."\n";
-            createlayout_bottom();
+            ?>
+</div>
+<!-- /ZDE theme inject -->
+<?php
+createlayout_bottom();
 
         } else {
             no_();
@@ -512,6 +536,12 @@ function autosel(obj) { var i = (obj.name==\'pcip\' ? 1 : 0);
 </script>';
 
             createlayout_top('ZeroDayEmpire - Cluster - Finanzen');
+?>
+<!-- ZDE theme inject -->
+<style>@import url("style.css");</style>
+<div class="container">
+<?php // /ZDE theme inject start ?>
+
             echo '<div class="content" id="cluster">
 <h2>Cluster</h2>
 '.$notif;
@@ -586,7 +616,11 @@ function autosel(obj) { var i = (obj.name==\'pcip\' ? 1 : 0);
             }
             echo '</table>'.LF.'</div>'.LF.'</div>'.LF;
 
-            createlayout_bottom();
+            ?>
+</div>
+<!-- /ZDE theme inject -->
+<?php
+createlayout_bottom();
 
         } else {
             no_();
@@ -597,6 +631,12 @@ function autosel(obj) { var i = (obj.name==\'pcip\' ? 1 : 0);
         if ($usr['clusterstat'] == CS_ADMIN) {
 
             createlayout_top('ZeroDayEmpire - Cluster');
+?>
+<!-- ZDE theme inject -->
+<style>@import url("style.css");</style>
+<div class="container">
+<?php // /ZDE theme inject start ?>
+
             echo '<div class="content" id="cluster">
 <h2>Cluster</h2>
 '.$notif.'<div id="cluster-member-administration">
@@ -652,7 +692,11 @@ function autosel(obj) { var i = (obj.name==\'pcip\' ? 1 : 0);
 </div>
 </div>
 ';
-            createlayout_bottom();
+            ?>
+</div>
+<!-- /ZDE theme inject -->
+<?php
+createlayout_bottom();
 
         } else {
             no_();
@@ -727,6 +771,12 @@ function autosel(obj) { var i = (obj.name==\'pcip\' ? 1 : 0);
             $anch = ($cluster['acceptnew'] == 'yes' ? ' checked="checked"' : '');
 
             createlayout_top('ZeroDayEmpire - Cluster');
+?>
+<!-- ZDE theme inject -->
+<style>@import url("style.css");</style>
+<div class="container">
+<?php // /ZDE theme inject start ?>
+
             echo '<div class="content" id="cluster">
 <h2>Cluster</h2>
 '.$notif.'<div id="cluster-settings">
@@ -778,7 +828,11 @@ Ordner 3:<br />
 </div>
 </div>
 ';
-            createlayout_bottom();
+            ?>
+</div>
+<!-- /ZDE theme inject -->
+<?php
+createlayout_bottom();
 
         } else {
             no_();
@@ -813,6 +867,12 @@ Ordner 3:<br />
             if ($_POST['delete'] == 'yes') {
 
                 createlayout_top();
+?>
+<!-- ZDE theme inject -->
+<style>@import url("style.css");</style>
+<div class="container">
+<?php // /ZDE theme inject start ?>
+
                 echo '<div class="content" id="cluster">
 <h2>Cluster l&ouml;schen</h2>
 <h3>Bitte best&auml;tigen!</h3>
@@ -822,7 +882,11 @@ Ordner 3:<br />
 <p><input type="submit" value=" Weiter " /></p>
 </form>
 </div>';
-                createlayout_bottom();
+                ?>
+</div>
+<!-- /ZDE theme inject -->
+<?php
+createlayout_bottom();
 
             } else {
 
@@ -957,8 +1021,18 @@ Ordner 3:<br />
 
         } else {
             createlayout_top();
+?>
+<!-- ZDE theme inject -->
+<style>@import url("style.css");</style>
+<div class="container">
+<?php // /ZDE theme inject start ?>
+
             echo '<div class="error"><h3>Fehler</h3><p>'.$msg.'</p></div>';
-            createlayout_bottom();
+            ?>
+</div>
+<!-- /ZDE theme inject -->
+<?php
+createlayout_bottom();
         }
 
         break;
@@ -1020,6 +1094,12 @@ Ordner 3:<br />
 
     case 'leave': //------------------------- LEAVE -------------------------------
         createlayout_top('ZeroDayEmpire - Cluster');
+?>
+<!-- ZDE theme inject -->
+<style>@import url("style.css");</style>
+<div class="container">
+<?php // /ZDE theme inject start ?>
+
 #$r=db_query('SELECT id FROM users WHERE cluster='.mysql_escape_string($clusterid).';');
 #$members=mysql_num_rows($r);
         $r = db_query(
@@ -1040,7 +1120,11 @@ Ordner 3:<br />
 </form>
 ';
         }
-        createlayout_bottom();
+        ?>
+</div>
+<!-- /ZDE theme inject -->
+<?php
+createlayout_bottom();
         break;
 
     case 'do_leave': //------------------------- DO LEAVE -------------------------------
@@ -1094,6 +1178,12 @@ Ordner 3:<br />
         if ($c !== false) {
 
             createlayout_top('ZeroDayEmpire - Cluster - Mitglieder');
+?>
+<!-- ZDE theme inject -->
+<style>@import url("style.css");</style>
+<div class="container">
+<?php // /ZDE theme inject start ?>
+
 
             $members = '';
             $r = db_query(
@@ -1149,7 +1239,11 @@ Ordner 3:<br />
 </div>
 </div>
 ';
-            createlayout_bottom();
+            ?>
+</div>
+<!-- /ZDE theme inject -->
+<?php
+createlayout_bottom();
         } else {
             simple_message('Diesen Cluster gibt es nicht!');
         }
@@ -1291,6 +1385,12 @@ Ordner 3:<br />
             }
 
             createlayout_top('ZeroDayEmpire - Cluster');
+?>
+<!-- ZDE theme inject -->
+<style>@import url("style.css");</style>
+<div class="container">
+<?php // /ZDE theme inject start ?>
+
             echo '<div class="content" id="cluster">'."\n";
             echo '<h2>Cluster</h2>'."\n";
             echo '<div id="cluster-battles">'."\n";
@@ -1301,7 +1401,11 @@ Ordner 3:<br />
             echo '<br /><p><strong>Angriffe <em>auf</em> Mitglieder des Clusters</strong></p>'."\n";
             battle_table('in');
 
-            createlayout_bottom();
+            ?>
+</div>
+<!-- /ZDE theme inject -->
+<?php
+createlayout_bottom();
         } else {
             no_();
         }
@@ -1316,6 +1420,12 @@ Ordner 3:<br />
             $hp = '';
             $aufnahme = '';
             createlayout_top('ZeroDayEmpire - Cluster-Profil');
+?>
+<!-- ZDE theme inject -->
+<style>@import url("style.css");</style>
+<div class="container">
+<?php // /ZDE theme inject start ?>
+
             echo '<div class="content" id="cluster-profile">
 <h2>Cluster-Profil</h2>
 <div id="cluster-profile-profile">
@@ -1397,7 +1507,11 @@ Ordner 3:<br />
 ';
             echo conventlist($c);
             echo '</div>'."\n";
-            createlayout_bottom();
+            ?>
+</div>
+<!-- /ZDE theme inject -->
+<?php
+createlayout_bottom();
         } else {
             simple_message('Diesen Cluster gibt es nicht!');
         }
@@ -1451,6 +1565,12 @@ Ordner 3:<br />
                 $tcode = randomx(16);
                 $fin = 0;
                 createlayout_top('ZeroDayEmpire - Cluster - &Uuml;berweisen');
+?>
+<!-- ZDE theme inject -->
+<style>@import url("style.css");</style>
+<div class="container">
+<?php // /ZDE theme inject start ?>
+
                 echo '<div class="content" id="cluster">
 <h2>Cluster</h2>
 <div id="cluster-transfer1">
@@ -1484,7 +1604,11 @@ Ordner 3:<br />
                         }
                         if ($rest < 1) {
                             echo '<div class="error"><h3>BucksBunker voll</h3><p>Der BucksBunker von '.$recip_usr['name'].' ist voll! &Uuml;berweisung wird abgebrochen!</p></div>';
-                            createlayout_bottom();
+                            ?>
+</div>
+<!-- /ZDE theme inject -->
+<?php
+createlayout_bottom();
                             exit;
                         }
                         echo $text;
@@ -1499,7 +1623,11 @@ Ordner 3:<br />
                 }
                 echo '<br /><p><input type="submit" value=" Ausf&uuml;hren "></p></form>';
                 echo '</div></div>';
-                createlayout_bottom();
+                ?>
+</div>
+<!-- /ZDE theme inject -->
+<?php
+createlayout_bottom();
                 file_put($DATADIR.'/tmp/transfer_'.$tcode.'.txt', $type.'|'.$recip['id'].'|'.$credits.'|'.$fin);
                 db_query(
                     'UPDATE users SET tcode=\''.mysql_escape_string($tcode).'\' WHERE id=\''.mysql_escape_string(
@@ -1599,6 +1727,12 @@ Ordner 3:<br />
             exit;
         }
         createlayout_top('ZeroDayEmpire - Cluster - Mitgliedsantrag');
+?>
+<!-- ZDE theme inject -->
+<style>@import url("style.css");</style>
+<div class="container">
+<?php // /ZDE theme inject start ?>
+
         echo '<div class="content" id="cluster">
 <h2>Cluster</h2>
 <div id="cluster-request-new1">
@@ -1618,7 +1752,11 @@ Du wirst dann per System-Nachricht informiert, ob du aufgenommen wurdest oder ni
 </p>
 </form>
 </div></div>';
-        createlayout_bottom();
+        ?>
+</div>
+<!-- /ZDE theme inject -->
+<?php
+createlayout_bottom();
         break;
 
     case 'request2': // ------------------------- REQUEST 2 -----------------------
@@ -1637,6 +1775,12 @@ Du wirst dann per System-Nachricht informiert, ob du aufgenommen wurdest oder ni
         );
 
         createlayout_top('ZeroDayEmpire - Cluster - Mitgliedsantrag');
+?>
+<!-- ZDE theme inject -->
+<style>@import url("style.css");</style>
+<div class="container">
+<?php // /ZDE theme inject start ?>
+
         echo '<div class="content" id="cluster">
 <h2>Cluster</h2>
 <div id="cluster-request-new2">
@@ -1645,13 +1789,23 @@ Du wirst dann per System-Nachricht informiert, ob du aufgenommen wurdest oder ni
 Wenn ein Admin oder ein Mitgliederminister des Clusters &uuml;ber deine Aufnahme entschieden
 hat, wirst du per System-Nachricht informiert.</b></p>
 </div></div>';
-        createlayout_bottom();
+        ?>
+</div>
+<!-- /ZDE theme inject -->
+<?php
+createlayout_bottom();
         break;
 
     case 'req_verw': // ------------------------- REQUEST VERWALTUNG -----------------------
         if ($usr['clusterstat'] == CS_ADMIN || $usr['clusterstat'] == CS_MITGLIEDERMINISTER || $usr['clusterstat'] == CS_COADMIN):
 
             createlayout_top('ZeroDayEmpire - Cluster - Mitgliedsantr&auml;ge verwalten');
+?>
+<!-- ZDE theme inject -->
+<style>@import url("style.css");</style>
+<div class="container">
+<?php // /ZDE theme inject start ?>
+
             echo '<div class="content" id="cluster">
 <h2>Cluster</h2>
 <div id="cluster-request-administration">
@@ -1679,7 +1833,11 @@ hat, wirst du per System-Nachricht informiert.</b></p>
             echo '<tr><th colspan="6" align="right"><input type="submit" value=" &Uuml;bernehmen "></th></tr>
 </table></form>
 </div></div>';
-            createlayout_bottom();
+            ?>
+</div>
+<!-- /ZDE theme inject -->
+<?php
+createlayout_bottom();
 
         endif;
         break;
@@ -1741,11 +1899,21 @@ hat, wirst du per System-Nachricht informiert.</b></p>
         );
 
         createlayout_top('ZeroDayEmpire - Cluster-Notiz');
+?>
+<!-- ZDE theme inject -->
+<style>@import url("style.css");</style>
+<div class="container">
+<?php // /ZDE theme inject start ?>
+
         echo '<div class="content" id="cluster-notice-saved">'."\n";
         echo '<h2>Cluster-Notiz</h2>'."\n";
         echo '<div class="ok">'.LF.'<h3>Aktion ausgeführt</h3>'.LF.'<p>Notiz gespeichert!</p></div>';
         echo '</div>';
-        createlayout_bottom();
+        ?>
+</div>
+<!-- /ZDE theme inject -->
+<?php
+createlayout_bottom();
 
         db_query(
             'INSERT INTO logs SET type=\'chclinfo\', usr_id=\'0\', payload=\''.mysql_escape_string(
