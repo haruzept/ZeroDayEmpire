@@ -37,13 +37,14 @@ function basicheader($title)
     }
 
     $ts = time() + 1;
+    $tz = (int)date('Z');
     echo '<!DOCTYPE html>'."\n";
     echo '<html lang="de">' . "\n";
     echo '<head>' . "\n";
     echo '<meta charset="utf-8">' . "\n";
     echo '<title>' . $title . '</title>' . "\n";
     echo '<link rel="stylesheet" href="' . $STYLESHEET_BASEDIR . $stylesheet . '/style.css">' . "\n";
-    echo '<script>var stm=new Date(); stm.setTime(' . $ts . '000); var sltm=new Date();</script>' . "\n";
+    echo '<script>var stm=' . $ts . '; var stz=' . $tz . '; var sltm=new Date().getTime();</script>' . "\n";
     echo '<script src="global.js" defer></script>' . "\n";
     echo '<link rel="icon" href="favicon.ico">' . "\n";
     echo $javascript;
