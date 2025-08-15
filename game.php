@@ -66,7 +66,8 @@ switch ($action) {
 <!-- ZDE theme inject -->
 <style>@import url("style.css");</style>
 <div class="container">
-<?php // /ZDE theme inject start ?>
+<?php // /ZDE theme inject start
+
 
 
 # Cluster-Mitgliedsbeitrag bezahlen:
@@ -214,7 +215,8 @@ createlayout_bottom();
 <!-- ZDE theme inject -->
 <style>@import url("style.css");</style>
 <div class="container">
-<?php // /ZDE theme inject start ?>
+<?php // /ZDE theme inject start
+
 
 
         if ($pc['blocked'] > time()) {
@@ -383,7 +385,8 @@ createlayout_bottom();
 <!-- ZDE theme inject -->
 <style>@import url("style.css");</style>
 <div class="container">
-<?php // /ZDE theme inject start ?>
+<?php // /ZDE theme inject start
+
 
             echo '<div class="content" id="computer">'.LF.'<h2>Deine Computer</h2>'.LF.'<div class="error">'.LF.'<h3>Fehler</h3>'.LF.'<p>Dieses Item wurde nicht gefunden.</p>'.LF.'</div>'.LF.'</div>'."\n";
             ?>
@@ -398,7 +401,8 @@ createlayout_bottom();
 <!-- ZDE theme inject -->
 <style>@import url("style.css");</style>
 <div class="container">
-<?php // /ZDE theme inject start ?>
+<?php // /ZDE theme inject start
+
 
         $val = $pcItemValue;
         if ($item == 'ram') {
@@ -625,7 +629,8 @@ createlayout_bottom();
 <!-- ZDE theme inject -->
 <style>@import url("style.css");</style>
 <div class="container">
-<?php // /ZDE theme inject start ?>
+<?php // /ZDE theme inject start
+
 
         echo '<div class="content" id="computer">'."\n";
         echo '<h2>Dein Computer</h2>'."\n";
@@ -828,7 +833,8 @@ createlayout_bottom();
 <!-- ZDE theme inject -->
 <style>@import url("style.css");</style>
 <div class="container">
-<?php // /ZDE theme inject start ?>
+<?php // /ZDE theme inject start
+
 
                     echo '<div id="computer" class="content">'."\n";
                     echo '<h2>Dein Computer</h2>'."\n";
@@ -914,7 +920,8 @@ createlayout_bottom();*/
 <!-- ZDE theme inject -->
 <style>@import url("style.css");</style>
 <div class="container">
-<?php // /ZDE theme inject start ?>
+<?php // /ZDE theme inject start
+
 
 
         echo '<div class="content" id="computer">
@@ -1082,7 +1089,8 @@ createlayout_bottom();
 <!-- ZDE theme inject -->
 <style>@import url("style.css");</style>
 <div class="container">
-<?php // /ZDE theme inject start ?>
+<?php // /ZDE theme inject start
+
 
         echo '<div class="content" id="computer">
 <h2>Deine Computer</h2>
@@ -1162,7 +1170,8 @@ createlayout_bottom();
 <!-- ZDE theme inject -->
 <style>@import url("style.css");</style>
 <div class="container">
-<?php // /ZDE theme inject start ?>
+<?php // /ZDE theme inject start
+
 
         if ($usr['bigacc'] == 'yes') {
             $bigacc = '&nbsp;<a href="javascript:show_abook(\'pc\')">Adressbuch</a>';
@@ -1243,7 +1252,8 @@ createlayout_bottom();
 <!-- ZDE theme inject -->
 <style>@import url("style.css");</style>
 <div class="container">
-<?php // /ZDE theme inject start ?>
+<?php // /ZDE theme inject start
+
 
             echo '<div class="content">
 <h2>&Uuml;berweisung</h2>
@@ -1476,7 +1486,8 @@ location.href=\'../game.php?mode=subnet&sid='.$sid.'&subnet=\'+s;
 <!-- ZDE theme inject -->
 <style>@import url("style.css");</style>
 <div class="container">
-<?php // /ZDE theme inject start ?>
+<?php // /ZDE theme inject start
+
 
         echo '<div class="content" id="subnet">
 <h2>Subnet</h2>
@@ -1577,7 +1588,8 @@ createlayout_bottom();
 <!-- ZDE theme inject -->
 <style>@import url("style.css");</style>
 <div class="container">
-<?php // /ZDE theme inject start ?>
+<?php // /ZDE theme inject start
+
 
         readfile('data/static/kb.html');
         ?>

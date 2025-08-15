@@ -193,7 +193,8 @@ switch ($action) {
 <!-- ZDE theme inject -->
 <style>@import url("style.css");</style>
 <div class="container">
-<?php // /ZDE theme inject start ?>
+<?php // /ZDE theme inject start
+
 
         $link_inbox = '';
         $link_sysmsgs = '';
@@ -306,7 +307,8 @@ createlayout_bottom();
 <!-- ZDE theme inject -->
 <style>@import url("style.css");</style>
 <div class="container">
-<?php // /ZDE theme inject start ?>
+<?php // /ZDE theme inject start
+
 
         echo '<div class="content" id="messages">'.LF.'<h2>Messages</h2>'.LF.$notif;
         newmailform($_REQUEST['recip'], $_REQUEST['subject'], $_REQUEST['text']);
@@ -325,7 +327,8 @@ createlayout_bottom();
 <!-- ZDE theme inject -->
 <style>@import url("style.css");</style>
 <div class="container">
-<?php // /ZDE theme inject start ?>
+<?php // /ZDE theme inject start
+
 
         $x = maillist('arc');
         echo '<div class="content" id="messages">
@@ -368,7 +371,8 @@ createlayout_bottom();
 <!-- ZDE theme inject -->
 <style>@import url("style.css");</style>
 <div class="container">
-<?php // /ZDE theme inject start ?>
+<?php // /ZDE theme inject start
+
 
         $x = maillist('out');
         echo '<div class="content" id="messages">
@@ -569,7 +573,8 @@ createlayout_bottom();
 <!-- ZDE theme inject -->
 <style>@import url("style.css");</style>
 <div class="container">
-<?php // /ZDE theme inject start ?>
+<?php // /ZDE theme inject start
+
 
             echo '<div class="content" id="messages">'.LF.'<h2>Messages</h2>'.LF.$err."\n";
             newmailform($_REQUEST['recip'], $_REQUEST['subject'], $_REQUEST['text'], false);
@@ -640,7 +645,8 @@ createlayout_bottom();
 <!-- ZDE theme inject -->
 <style>@import url("style.css");</style>
 <div class="container">
-<?php // /ZDE theme inject start ?>
+<?php // /ZDE theme inject start
+
 
         echo '<div class="content" id="messages">
 <h2>Messages</h2>
@@ -715,7 +721,8 @@ createlayout_bottom();
 <!-- ZDE theme inject -->
 <style>@import url("style.css");</style>
 <div class="container">
-<?php // /ZDE theme inject start ?>
+<?php // /ZDE theme inject start
+
 
         echo '<div class="content" id="messages">'.LF.'<h2>Messages</h2>'.LF;
         newmailform(
@@ -739,7 +746,8 @@ createlayout_bottom();
 <!-- ZDE theme inject -->
 <style>@import url("style.css");</style>
 <div class="container">
-<?php // /ZDE theme inject start ?>
+<?php // /ZDE theme inject start
+
 
         echo '<div class="content" id="messages">
 <h2>Messages</h2>
@@ -785,7 +793,8 @@ createlayout_bottom();
 <!-- ZDE theme inject -->
 <style>@import url("style.css");</style>
 <div class="container">
-<?php // /ZDE theme inject start ?>
+<?php // /ZDE theme inject start
+
 
         echo '<div class="content" id="messages">
 <h2>Messages</h2>
@@ -977,7 +986,8 @@ createlayout_bottom();
 <!-- ZDE theme inject -->
 <style>@import url("style.css");</style>
 <div class="container">
-<?php // /ZDE theme inject start ?>
+<?php // /ZDE theme inject start
+
 
         echo '<div class="content" id="messages">'."\n";
 #if(!$localhost) {
