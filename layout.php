@@ -51,7 +51,7 @@ function createlayout_top($title = 'ZeroDayEmpire', $nomenu = false)
     echo "<body$bodytag>\n";
     echo '<header class="site-header">';
     echo '<div class="container nav" id="nav">';
-    echo '<a class="brand" href="index.php" aria-label="ZeroDayEmpire Startseite">';
+    echo '<a class="brand" href="game.php?m=start' . $sid . '" aria-label="ZeroDayEmpire Startseite">';
     echo '<svg viewBox="0 0 100 100" aria-hidden="true" role="img">';
     echo '<path d="M50 5L95 50 50 95 5 50z" fill="rgb(var(--accent))"/>';
     echo '<path d="M50 20 80 50 50 80 20 50z" fill="#0b0f14"/>';
