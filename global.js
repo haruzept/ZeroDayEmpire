@@ -27,10 +27,10 @@ function fmtint(i) {
 }
 
 function synchrclock() {
-    var now = new Date();
-    var c = new Date();
-    c.setTime(stm.getTime() + (now.getTime() - sltm.getTime()));
-    getLay("server-time").innerHTML = fmtint(c.getHours()) + ":" + fmtint(c.getMinutes()) + ":" + fmtint(c.getSeconds()) + " Uhr";
+    var now = new Date().getTime();
+    var serverTime = (stm * 1000) + (now - sltm) + (stz * 1000);
+    var c = new Date(serverTime);
+    getLay("server-time").innerHTML = fmtint(c.getUTCHours()) + ":" + fmtint(c.getUTCMinutes()) + ":" + fmtint(c.getUTCSeconds()) + " Uhr";
 }
 function startsynchr() {
     setInterval(synchrclock, 1000);
