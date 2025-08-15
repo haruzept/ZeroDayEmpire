@@ -210,13 +210,37 @@ switch ($action) {
         <h4>Software</h4>
         <ul class="muted" style="list-style:none; padding-left:0; margin:10px 0 0 0">
           <li data-item="mm"><?php echo idtoname('mm'); ?>: Version <?php echo $pc['mm']; ?><?php echo overview_upgrade_link('mm'); ?><div class="tip"></div></li>
-          <li data-item="bb"><?php echo idtoname('bb'); ?>: Version <?php echo $pc['bb']; ?><?php echo overview_upgrade_link('bb'); ?><div class="tip"></div></li>
+      <li data-item="bb"><?php echo idtoname('bb'); ?>: Version <?php echo $pc['bb']; ?><?php echo overview_upgrade_link('bb'); ?><div class="tip"></div></li>
           <li><?php echo idtoname('fw'); ?>: Version <?php echo $pc['fw']; ?></li>
           <li><?php echo idtoname('av'); ?>: Version <?php echo $pc['av']; ?></li>
           <li><?php echo idtoname('ids'); ?>: Level <?php echo $pc['ids']; ?></li>
         </ul>
       </div>
     </article>
+
+  <article class="card span-6" id="upgradequeue">
+    <h3>Upgrade-Queue</h3>
+    <?php
+      $r = db_query('SELECT * FROM `upgrades` WHERE `pc`=\''.mysql_escape_string($pcid).'\' AND `end`>\''.time().'\' ORDER BY `start` ASC;');
+      $full = @mysql_num_rows($r);
+      echo '<p><strong>Es sind '.$full.' von '.UPGRADE_QUEUE_LENGTH.' Slots belegt</strong></p>';
+      if ($full > 0) {
+          $tmppc = $pc;
+          echo '<ul class="muted" style="list-style:none; padding-left:0; margin:10px 0 0 0">';
+          while ($data = mysql_fetch_assoc($r)) {
+              $item = $data['item'];
+              $newlv = itemnextlevel($item, $tmppc[$item]);
+              $s1 = formatitemlevel($item, $tmppc[$item]);
+              $s2 = formatitemlevel($item, $newlv);
+              echo '<li>'.idtoname($item).' '.$s1.' &raquo; '.$s2.' '.nicetime($data['end']).'</li>';
+              $tmppc[$item] = $newlv;
+          }
+          echo '</ul>';
+      } else {
+          echo '<p class="muted">Keine Upgrades geplant.</p>';
+      }
+    ?>
+  </article>
 
   <article class="card span-6" id="cluster">
     <h3>Cluster</h3>
