@@ -87,7 +87,7 @@ function createlayout_bottom()
     echo "</main>\n";
     echo '<footer><div class="container foot">';
     echo '<div>© <span id="year"></span> ZeroDayEmpire</div>';
-    echo '<div class="links"><a href="impressum.php">Impressum</a><a href="legal.php">Legal</a></div>';
+    echo '<div class="links"><a href="impressum.php">Impressum</a><a href="legal.php">Legal</a><a href="pub.php?d=rules">Spielregeln</a></div>';
     echo '</div></footer>';
     echo '<script>(function(){const nav=document.getElementById("nav");const btn=document.getElementById("menuBtn");if(btn){btn.addEventListener("click",()=>{const open=nav.classList.toggle("open");btn.setAttribute("aria-expanded",String(open));});}})();';
     echo 'window.addEventListener("pointermove",e=>{const x=e.clientX/window.innerWidth*100;const y=e.clientY/window.innerHeight*100;document.documentElement.style.setProperty("--mx",x+"%");document.documentElement.style.setProperty("--my",y+"%");},{passive:true});';
