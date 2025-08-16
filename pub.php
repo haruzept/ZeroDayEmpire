@@ -537,7 +537,7 @@ createlayout_bottom();
                 $dummy=reloadsperre_CheckIP(true); # IP speichern
                 */
                 if (isset($_GET['direct'])) {
-                    header('Location: login.php');
+                    header('Location: pub.php');
                     exit;
                 }
                   createlayout_top('ZeroDayEmpire - Account aktivieren');
