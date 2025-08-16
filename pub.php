@@ -550,7 +550,7 @@ createlayout_bottom();
 <div id="register-activate">
 ';
                 echo '<div class="ok"><h3>Registrierung erfolgreich!</h3>';
-                echo '<p>Herzlichen Gl&uuml;ckwunsch!<br />Dein Account wurde aktiviert.<br /><a href="./">Jetzt spielen!</a></p></div>';
+                echo '<p>Herzlichen Gl&uuml;ckwunsch!<br />Dein Account wurde aktiviert.<br /><button type="button" class="btn play-link" onclick="location.href=\'pub.php\'">Jetzt spielen!</button></p></div>';
 
             } else {
                 createlayout_top('ZeroDayEmpire - Registrierung');
