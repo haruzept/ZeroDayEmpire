@@ -122,6 +122,16 @@ Wenn mehrere Systemnutzer deployen, kannst du eine gemeinsame Gruppe verwenden u
 
 Rufe die Site im Browser auf. Initial stehen Test‑Accounts zur Verfügung (z. B. *Administrator*, *Administrator2*, *TestUser*). **Passwörter sind leer** – bitte sofort ändern bzw. Testnutzer deaktivieren.
 
+### 6. Cronjob für Punkteberechnung
+
+Die Rangliste wird nicht mehr durch das Aufrufen einer Webseite aktualisiert. Stattdessen muss regelmäßig ein Cronjob den Punkteberechnungsskript ausführen:
+
+```cron
+0 */3 * * * /bin/sh /pfad/zum/zde2/cron/run_calc_points.sh
+```
+
+Der obige Eintrag berechnet alle drei Stunden die Punkte neu. `run_calc_points.sh` ruft intern `run_calc_points.php` im CLI-Modus auf.
+
 ---
 
 ## 🔒 Sicherheitsempfehlungen

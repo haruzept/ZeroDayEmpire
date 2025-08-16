@@ -39,12 +39,6 @@ switch ($action) {
 
 
         $next_update = (int)@file_get('data/calc-time.dat');
-        if ($next_update < time() && !file_exists('data/calc-running.dat')) {
-            ob_start();
-            include __DIR__ . '/calc_points.php';
-            ob_end_clean();
-            $next_update = (int)@file_get('data/calc-time.dat');
-        }
         $updtime = nicetime($next_update);
         echo '<div class="content" id="ranking">
 <h2>Rangliste</h2>
