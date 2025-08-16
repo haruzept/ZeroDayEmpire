@@ -473,7 +473,7 @@ createlayout_bottom();
             exit;
         }
 
-        header('Location: pub.php?a=regactivate&code='.$tmpfnx.'&direct=1');
+        header('Location: pub.php?a=regactivate&code='.$tmpfnx);
         exit;
 
         break;
@@ -536,11 +536,7 @@ createlayout_bottom();
                 setcookie('regc1','yes',time()+24*60*60);
                 $dummy=reloadsperre_CheckIP(true); # IP speichern
                 */
-                if (isset($_GET['direct'])) {
-                    header('Location: pub.php');
-                    exit;
-                }
-                  createlayout_top('ZeroDayEmpire - Account aktivieren');
+                createlayout_top('ZeroDayEmpire - Registrierung erfolgreich');
 
 ?>
 <!-- ZDE theme inject -->
@@ -550,14 +546,14 @@ createlayout_bottom();
 
 
                 echo '<div class="content" id="register">
-<h2>Account aktivieren</h2>
+<h2>Registrierung</h2>
 <div id="register-activate">
 ';
-                echo '<div class="ok"><h3>Account aktiviert!</h3>';
-                echo '<p>Herzlichen Gl&uuml;ckwunsch!<br />Dein Account wurde aktiviert!<br />Du kannst dich jetzt auf der <a href="./">Startseite</a> einloggen!</p></div>';
+                echo '<div class="ok"><h3>Registrierung erfolgreich!</h3>';
+                echo '<p>Herzlichen Gl&uuml;ckwunsch!<br />Dein Account wurde aktiviert.<br /><a href="./">Jetzt spielen!</a></p></div>';
 
             } else {
-                createlayout_top();
+                createlayout_top('ZeroDayEmpire - Registrierung');
 ?>
 <!-- ZDE theme inject -->
 <style>@import url("style.css");</style>
@@ -566,7 +562,7 @@ createlayout_bottom();
 
 
                 echo '<div class="content" id="register">
-<h2>Account aktivieren</h2>
+<h2>Registrierung</h2>
 <div id="register-activate">
 ';
                 echo '<div class="error"><h3>Sorry</h3>
