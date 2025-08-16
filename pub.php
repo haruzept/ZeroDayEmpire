@@ -71,13 +71,24 @@ switch ($action) {
         break;
         break;
 
-    case 'nickcheck':
+case 'nickcheck':
         $nick = trim($_GET['nick'] ?? '');
         mysql_select_db(dbname(1));
         header('Content-Type: application/json');
         $exists = false;
         if ($nick !== '') {
             $exists = getuser($nick, 'name') !== false;
+        }
+        echo json_encode(['exists' => $exists]);
+        exit;
+
+    case 'emailcheck':
+        $email = trim($_GET['email'] ?? '');
+        mysql_select_db(dbname(1));
+        header('Content-Type: application/json');
+        $exists = false;
+        if ($email !== '') {
+            $exists = getuser($email, 'email') !== false;
         }
         echo json_encode(['exists' => $exists]);
         exit;
@@ -95,7 +106,7 @@ switch ($action) {
         echo '<div class="content" id="register">
 <h2>Registrieren</h2>';
         echo $notif.'<div id="register-step1">
-<h3>Schritt 1: Zugangsdaten und Server</h3>
+<h3>Schritt 1: Zugangsdaten</h3>
 <form action="pub.php?a=regsubmit" method="post">
 <table>
 <tr>
@@ -104,24 +115,23 @@ switch ($action) {
 </tr>
 <tr>
 <th>E-Mail-Adresse:</th>
-<td><input name="email" id="_email" type="email" maxlength="50" required /><br />
-Nur wenn eine korrekte Email-Adresse angegeben wurde, kann der Account aktiviert werden!</td>
+<td><input name="email" id="_email" type="email" maxlength="50" required /><span id="email-status"></span></td>
 </tr>
 <tr>
 <th>E-Mail-Adresse (Wiederholung):</th>
-<td><input name="email2" id="_email2" type="email" maxlength="50" required /></td>
+<td><input name="email2" id="_email2" type="email" maxlength="50" required /><span id="email2-status"></span></td>
 </tr>
 <tr>
 <th>Passwort:</th>
-<td><input type="password" name="pwd" id="_pwd" required /></td>
+<td><input type="password" name="pwd" id="_pwd" required /><span id="pwd-status"></span><div id="pwd-guidelines" style="display:none;">Passwort muss mindestens 8 Zeichen lang sein und sowohl Buchstaben als auch Zahlen enthalten.</div></td>
 </tr>
 <tr>
 <th>Passwort (Wiederholung):</th>
-<td><input type="password" name="pwd2" id="_pwd2" required /></td>
+<td><input type="password" name="pwd2" id="_pwd2" required /><span id="pwd2-status"></span></td>
 </tr>
 <tr>
 <td colspan="2"><input type="hidden" name="server" value="1" />
-<label><input type="checkbox" name="rules" required> Ich akzeptiere die <a href="pub.php?d=rules" target="_blank">Spielregeln</a></label></td>
+<label><input type="checkbox" name="rules" required> Ich akzeptiere die <a href="pub.php?d=rules" target="_blank"><u>Spielregeln</u></a>.</label></td>
 </tr>
 <tr>
 <td colspan="2"><input type="submit" value="Registrieren" /></td>
@@ -131,7 +141,92 @@ Nur wenn eine korrekte Email-Adresse angegeben wurde, kann der Account aktiviert
 </div>
 </div>
 ';
-        echo '<script>(function(){const nickInput=document.getElementById("_nick");const status=document.getElementById("nick-status");nickInput.addEventListener("input",()=>{const value=nickInput.value.trim();if(value.length<3){status.textContent="";return;}fetch("pub.php?a=nickcheck&nick="+encodeURIComponent(value)).then(r=>r.json()).then(d=>{if(d.exists){status.textContent="Nickname bereits vergeben";status.style.color="red";}else{status.textContent="Nickname verfügbar";status.style.color="green";}});});})();</script>';
+echo <<<'SCRIPT'
+<script>
+(function(){
+    const nickInput=document.getElementById("_nick");
+    const nickStatus=document.getElementById("nick-status");
+    nickInput.addEventListener("input",()=>{
+        const value=nickInput.value.trim();
+        if(value.length<3){nickStatus.textContent="";return;}
+        fetch("pub.php?a=nickcheck&nick="+encodeURIComponent(value)).then(r=>r.json()).then(d=>{
+            if(d.exists){nickStatus.textContent="Nickname bereits vergeben";nickStatus.style.color="red";}
+            else{nickStatus.textContent="Nickname verfügbar";nickStatus.style.color="green";}
+        });
+    });
+
+    const emailInput=document.getElementById("_email");
+    const emailStatus=document.getElementById("email-status");
+    const email2Input=document.getElementById("_email2");
+    const email2Status=document.getElementById("email2-status");
+    function checkEmail(){
+        const value=emailInput.value.trim();
+        if(value===""){emailStatus.textContent="";return;}
+        if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(value)){
+            emailStatus.textContent="Ungültige Email";
+            emailStatus.style.color="red";
+            return;
+        }
+        fetch("pub.php?a=emailcheck&email="+encodeURIComponent(value)).then(r=>r.json()).then(d=>{
+            if(d.exists){
+                emailStatus.textContent="Email bereits registriert";
+                emailStatus.style.color="red";
+            }else{
+                emailStatus.textContent="Email verfügbar";
+                emailStatus.style.color="green";
+            }
+        });
+        checkEmailMatch();
+    }
+    function checkEmailMatch(){
+        const v1=emailInput.value.trim();
+        const v2=email2Input.value.trim();
+        if(v2===""){email2Status.textContent="";return;}
+        if(v1===v2){
+            email2Status.textContent="Emails stimmen überein";
+            email2Status.style.color="green";
+        }else{
+            email2Status.textContent="Emails stimmen nicht überein";
+            email2Status.style.color="red";
+        }
+    }
+    emailInput.addEventListener("input",checkEmail);
+    email2Input.addEventListener("input",checkEmailMatch);
+
+    const pwdInput=document.getElementById("_pwd");
+    const pwdStatus=document.getElementById("pwd-status");
+    const pwd2Input=document.getElementById("_pwd2");
+    const pwd2Status=document.getElementById("pwd2-status");
+    const guidelines=document.getElementById("pwd-guidelines");
+    function checkPwd(){
+        const v=pwdInput.value;
+        const ok=v.length>=8 && /[a-z]/.test(v) && /[A-Z]/.test(v) && /[0-9]/.test(v);
+        if(v===""){pwdStatus.textContent="";}
+        else if(ok){pwdStatus.textContent="Passwort erfüllt Richtlinien";pwdStatus.style.color="green";}
+        else{pwdStatus.textContent="Passwort zu schwach";pwdStatus.style.color="red";}
+        checkPwdMatch();
+    }
+    function checkPwdMatch(){
+        const v1=pwdInput.value;
+        const v2=pwd2Input.value;
+        if(v2===""){pwd2Status.textContent="";return;}
+        if(v1===v2){
+            pwd2Status.textContent="Passwörter stimmen überein";
+            pwd2Status.style.color="green";
+        }else{
+            pwd2Status.textContent="Passwörter stimmen nicht überein";
+            pwd2Status.style.color="red";
+        }
+    }
+    pwdInput.addEventListener("input",checkPwd);
+    pwd2Input.addEventListener("input",checkPwdMatch);
+    pwdInput.addEventListener("mouseover",()=>{guidelines.style.display="block";});
+    pwdInput.addEventListener("mouseout",()=>{guidelines.style.display="none";});
+    pwdInput.addEventListener("focus",()=>{guidelines.style.display="block";});
+    pwdInput.addEventListener("blur",()=>{guidelines.style.display="none";});
+})();
+</script>
+SCRIPT;
         ?>
 </div>
 <!-- /ZDE theme inject -->
