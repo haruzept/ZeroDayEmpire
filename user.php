@@ -252,7 +252,11 @@ createlayout_bottom();
             if ($delusr !== false) {
                 db_query('INSERT INTO logs SET type=\'deluser\', usr_id=\''.mysql_escape_string($delusr['id']).'\', payload=\''.mysql_escape_string($delusr['name']).' '.mysql_escape_string($delusr['email']).' self-deleted\';');
                 @unlink('data/login/'.$sid.'.txt');
-                simple_message('Account '.$delusr['name'].' ('.$usrid.') gel&ouml;scht!');
+                header('Refresh: 5; url=index.php');
+                $msg = 'Account '.$delusr['name'].' ('.$usrid.') gel&ouml;scht!';
+                $msg .= '<br />Du wirst in <span id="countdown">5</span> Sekunden automatisch zur <a href="index.php">Startseite</a> weitergeleitet.';
+                $msg .= '<script>var seconds=5;var c=document.getElementById("countdown");var i=setInterval(function(){seconds--;if(seconds<=0){clearInterval(i);window.location.href="index.php";}c.textContent=seconds;},1000);</script>';
+                simple_message($msg);
             } else {
                 simple_message('Account '.$usrid.' existiert nicht!');
             }
