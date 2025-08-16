@@ -44,48 +44,9 @@ switch ($action) {
         }
 
         $dd = explode('.', $usr['birthday']);
-        if ($dd[0] == 0) {
-            $xx = ' selected';
-        } else {
-            $xx = '';
-        }
-        $days = '<option'.$xx.' value="0">?</option>';
-        for ($i = 1; $i < 32; $i++) {
-            if ((int)$dd[0] == $i) {
-                $xx = ' selected="selected"';
-            } else {
-                $xx = '';
-            }
-            $days .= '<option'.$xx.' value="'.$i.'">'.$i.'</option>';
-        }
-        if ($dd[1] == 0) {
-            $xx = ' selected';
-        } else {
-            $xx = '';
-        }
-        $months = '<option value="0">?</option>';
-        for ($i = 1; $i < 13; $i++) {
-            if ((int)$dd[1] == $i) {
-                $xx = ' selected="selected"';
-            } else {
-                $xx = '';
-            }
-            $months .= '<option'.$xx.' value="'.$i.'">'.$i.'</option>';
-        }
-        if ($dd[2] == 0) {
-            $xx = ' selected';
-        } else {
-            $xx = '';
-        }
-        $years = '<option value="0">?</option>';
-        for ($i = 1900; $i < 2001; $i++) {
-            if ((int)$dd[2] == $i) {
-                $xx = ' selected="selected"';
-            } else {
-                $xx = '';
-            }
-            $years .= '<option'.$xx.' value="'.$i.'">'.$i.'</option>';
-        }
+        $dayVal = sprintf('%02d', (int)$dd[0]);
+        $monthVal = sprintf('%02d', (int)$dd[1]);
+        $yearVal = sprintf('%04d', (int)$dd[2]);
 
         $statx = '';
         if ($usr['stat'] > 1) {
@@ -107,26 +68,6 @@ switch ($action) {
         if (preg_match('#^https?://.*/.+#i', $usr['avatar'])) {
             $avatar = '<br />'.LF.'<img src="'.$usr['avatar'].'" alt="Avatar" />';
         }
-
-        $xsinfo = '';
-        $styles = '';
-        reset($stylesheets);
-        foreach ($stylesheets As $data) {
-            if (($data['bigacc'] == 'yes' && $usr['bigacc'] == 'yes') || $data['bigacc'] == 'no') {
-                $styles .= '<option value="'.$data['id'].'"';
-                if ($usr['stylesheet'] == $data['id']) {
-                    $styles .= ' selected';
-                }
-                $styles .= '>'.$data['name'].' (by '.$data['author'].')</option>';
-            } else {
-                $xsinfo .= '<em>'.$data['name'].'</em>, ';
-            }
-        }
-        if ($xsinfo != '') {
-            $xsinfo = '<br />Weitere Stylesheets in Extended Accounts: '.substr($xsinfo, 0, strlen($xsinfo) - 2);
-        }
-
-        $ipcheck = ($usr['noipcheck'] == 'yes' ? '' : 'checked="checked" ');
         /*
         if($usr['bigacc']=='yes') {
           #$usessl=($usr['usessl']=='yes' ? 'checked="checked" ' : 'no');
@@ -177,11 +118,7 @@ switch ($action) {
 </tr>
 <tr id="settings-settings-date-of-birth">
 <th>Geburtsdatum:</th>
-<td><select name="bday">'.$days.'</select>. <select name="bmonth">'.$months.'</select> <select name="byear">'.$years.'</select></td>
-</tr>
-<tr id="settings-settings-style">
-<th>ZeroDayEmpire-Style:</th>
-<td><select name="style">'.$styles.'</select>'.$xsinfo.'</td>
+<td><input type="text" name="bday" value="'.$dayVal.'" size="2" maxlength="2" />.<input type="text" name="bmonth" value="'.$monthVal.'" size="2" maxlength="2" />.<input type="text" name="byear" value="'.$yearVal.'" size="4" maxlength="4" /></td>
 </tr>
 <tr id="settings-settings-homepage">
 <th>Deine Homepage:</th>
@@ -211,10 +148,6 @@ switch ($action) {
 <th>&raquo;Posteingang voll&laquo;-Nachricht:</th>
 <td><input type="text" value="'.$usr['inbox_full'].'" name="inbox_full" maxlength="250" /><br />
 Wenn dein Posteingang voll ist, erh&auml;lt ein User, der dir eine Nachricht schicken will, diese Meldung</td>
-</tr>
-<tr id="settings-settings-ipcheck">
-<th>Session an IP-Adresse binden:</th>
-<td><input type="checkbox" value="yes" name="ipcheck" '.$ipcheck.'/></td>
 </tr>
 <tr id="settings-settings-usrimg">
 <th>Benutzerinfo-Bild aktivieren:</th>
@@ -259,13 +192,8 @@ Wenn dein Posteingang voll ist, erh&auml;lt ein User, der dir eine Nachricht sch
 </select></td>
 </tr>';
         }
-        echo '<tr id="settings-settings-delete-account">
-<th>Account l&ouml;schen:</th>
-<td><input type="checkbox" value="yes" name="delete_account" /></td>
-</tr>
-'.$statx.'
-<tr id="settings-settings-confirm">
-<td colspan="2"><input type="submit" value="Speichern" /></td>
+        echo $statx.'<tr id="settings-settings-confirm">
+<td colspan="2"><input type="submit" value="Speichern" /><button type="submit" name="delete_account" value="yes" style="background-color:red;color:white;float:right;" onclick="return confirm(\'Bist du sicher, dass du deinen Account l&ouml;schen m&ouml;chtest?\');">Account l&ouml;schen</button></td>
 </tr>
 </table>
 </form>
@@ -320,33 +248,24 @@ createlayout_bottom();
     case 'saveconfig': //------------------------- SAVE CONFIG -------------------------------
 
         if (isset($_POST['delete_account']) && $_POST['delete_account'] == 'yes') {
-            echo '<html><head><title>Account l&ouml;schen</title></head><body style="font-family:arial;">
-<br /><br /><br /><br /><hr>
-<b>Dir wurde eine Email zugeschickt ('.$usr['email'].'), in der du die L&ouml;schung des Accounts noch einmal best&auml;tigen musst!
-<br /><br />Du wurdest au&szlig;erdem ausgeloggt!</b>
-<hr>
-</body></html>';
-            $code = randomx(16);
-
-            $body = 'Hallo '.$usr['name'].'!'.LF."\n".'Schade, dass du deinen Account bei www.ZeroDayEmpire.org löschen möchtest!'.LF."\n";
-            $body .= 'Wenn du dir ganz sicher bist, klicke auf den folgenden Link:'."\n";
-            $body .= 'http://'.$_SERVER['HTTP_HOST'].dirname(
-                    $_SERVER['PHP_SELF']
-                ).'/pub.php?a=deleteaccount&code='.$code;
-
-            if (!@mail($usr['email'], 'ZeroDayEmpire-Account löschen?', $body, 'From: robot@ZeroDayEmpire.org')) {
-                echo nl2br($body);
+            $delusr = @delete_account($usrid);
+            if ($delusr !== false) {
+                db_query('INSERT INTO logs SET type=\'deluser\', usr_id=\''.mysql_escape_string($delusr['id']).'\', payload=\''.mysql_escape_string($delusr['name']).' '.mysql_escape_string($delusr['email']).' self-deleted\';');
+                @unlink('data/login/'.$sid.'.txt');
+                simple_message('Account '.$delusr['name'].' ('.$usrid.') gel&ouml;scht!');
+            } else {
+                simple_message('Account '.$usrid.' existiert nicht!');
             }
-
-            file_put('data/regtmp/del_account_'.$code.'.txt', $usrid.'|'.$server);
-            @unlink('data/login/'.$sid.'.txt');
         } else { # Nicht Account löschen sondern Settings speichern
 
             $g = $_POST['sex'];
             if ($g == '') {
                 $g = 'x';
             }
-            $birthday = $_POST['bday'].'.'.$_POST['bmonth'].'.'.$_POST['byear'];
+            $bday = (int)$_POST['bday'];
+            $bmonth = (int)$_POST['bmonth'];
+            $byear = (int)$_POST['byear'];
+            $birthday = sprintf('%02d.%02d.%04d', $bday, $bmonth, $byear);
             $hp = trim($_POST['homepage']);
             $ort = trim($_POST['ort']);
             $text = trim($_POST['aboutme']);
@@ -354,8 +273,6 @@ createlayout_bottom();
             $sig_board = trim($_POST['sig_board']);
             $inbox_full = trim($_POST['inbox_full']);
             $avatar = trim($_POST['avatar']);
-            $style = $_POST['style'];
-            $noipcheck = ($_POST['ipcheck'] != 'yes' ? 'yes' : 'no');
 
             $usessl = (isset($_POST['usessl']) && $_POST['usessl'] == 'yes' ? 'yes' : 'no');
             if ($usr['bigacc'] != 'yes') {
@@ -415,12 +332,6 @@ createlayout_bottom();
                 $usr['sig_board'] = safeentities($sig_board);
                 $usr['inbox_full'] = safeentities($inbox_full);
                 $usr['avatar'] = safeentities($avatar);
-                if ($stylesheets[$style]['bigacc'] == 'yes' && $usr['bigacc'] == 'no') {
-                    $style = $standard_stylesheet;
-                }
-                $usr['stylesheet'] = $style;
-                $STYLESHEET = $style;
-                $usr['noipcheck'] = $noipcheck;
                 $usr['usessl'] = $usessl;
                 if ($usr['usrimg_fmt'] != $usrimg_fmt || $usr['enable_usrimg'] != $enable_usrimg) {
                     @unlink('data/_server'.$server.'/usrimgs/'.$usrid.'.png');
