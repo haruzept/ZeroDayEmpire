@@ -36,7 +36,7 @@
       <ul>
         <li>PHP</li>
         <li>Nginx</li>
-        <li>MySQL</li>
+        <li>MariaDB</li>
       </ul>
       <p>Das Originalspiel inklusive Spielmechaniken basiert auf <a href="https://github.com/dergriewatz/htn-original">HackTheNet.org</a>.</p>
     </div>
