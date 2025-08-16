@@ -71,6 +71,17 @@ switch ($action) {
         break;
         break;
 
+    case 'nickcheck':
+        $nick = trim($_GET['nick'] ?? '');
+        mysql_select_db(dbname(1));
+        header('Content-Type: application/json');
+        $exists = false;
+        if ($nick !== '') {
+            $exists = getuser($nick, 'name') !== false;
+        }
+        echo json_encode(['exists' => $exists]);
+        exit;
+
     case 'register':
 
         createlayout_top('ZeroDayEmpire - Account anlegen');
@@ -82,36 +93,45 @@ switch ($action) {
 
 
         echo '<div class="content" id="register">
-<h2>Registrieren</h2>
-';
-        if ($notif == '') {
-            echo '<div class="important">'."\n";
-            echo '<h3>Wichtig!</h3>'."\n";
-            echo '<p>Jeder User verpflichtet sich, die <a href="pub.php?d=rules">Regeln</a> einzuhalten.<br />'.LF.'Verst&ouml;&szlig;e gegen die Regeln f&uuml;hren zum Ausschluss vom Spiel!</p>'."\n";
-            echo '</div>'."\n";
-        }
+<h2>Registrieren</h2>';
         echo $notif.'<div id="register-step1">
 <h3>Schritt 1: Zugangsdaten und Server</h3>
 <form action="pub.php?a=regsubmit" method="post">
 <table>
 <tr>
-<th>Gew&uuml;nschter NickName:</th>
-<td><input name="nick" id="_nick" maxlength="20" /></td>
+<th>Nickname:</th>
+<td><input name="nick" id="_nick" maxlength="20" required /><span id="nick-status"></span></td>
 </tr>
 <tr>
-<th>Deine Email-Adresse:</th>
-<td><input name="email" id="_email" maxlength="50" /><br />
+<th>E-Mail-Adresse:</th>
+<td><input name="email" id="_email" type="email" maxlength="50" required /><br />
 Nur wenn eine korrekte Email-Adresse angegeben wurde, kann der Account aktiviert werden!</td>
 </tr>
 <tr>
+<th>E-Mail-Adresse (Wiederholung):</th>
+<td><input name="email2" id="_email2" type="email" maxlength="50" required /></td>
+</tr>
+<tr>
+<th>Passwort:</th>
+<td><input type="password" name="pwd" id="_pwd" required /></td>
+</tr>
+<tr>
+<th>Passwort (Wiederholung):</th>
+<td><input type="password" name="pwd2" id="_pwd2" required /></td>
+</tr>
+<tr>
 <td colspan="2"><input type="hidden" name="server" value="1" />
-<input type="submit" value="Abschicken" /></td>
+<label><input type="checkbox" name="rules" required> Ich akzeptiere die <a href="pub.php?d=rules" target="_blank">Spielregeln</a></label></td>
+</tr>
+<tr>
+<td colspan="2"><input type="submit" value="Registrieren" /></td>
 </tr>
 </table>
 </form>
 </div>
 </div>
 ';
+        echo '<script>(function(){const nickInput=document.getElementById("_nick");const status=document.getElementById("nick-status");nickInput.addEventListener("input",()=>{const value=nickInput.value.trim();if(value.length<3){status.textContent="";return;}fetch("pub.php?a=nickcheck&nick="+encodeURIComponent(value)).then(r=>r.json()).then(d=>{if(d.exists){status.textContent="Nickname bereits vergeben";status.style.color="red";}else{status.textContent="Nickname verfügbar";status.style.color="green";}});});})();</script>';
         ?>
 </div>
 <!-- /ZDE theme inject -->
@@ -159,6 +179,9 @@ createlayout_bottom();
     case 'regsubmit': // ----------------------- RegSubmit --------------------------
 
         $email = trim($_POST['email']);
+        $email2 = trim($_POST['email2']);
+        $pwd = (string)($_POST['pwd'] ?? '');
+        $pwd2 = (string)($_POST['pwd2'] ?? '');
         $nick = trim($_POST['nick']);
         $server = (int)$_POST['server'];
         if ($server < 1 || $server > 2) {
@@ -224,6 +247,21 @@ createlayout_bottom();
             $e = true;
             $msg .= 'Bitte eine g&uuml;ltige Email-Adresse im Format x@y.z angeben.<br />';
         }
+        if ($email !== $email2) {
+            $e = true;
+            $msg .= 'Die Email-Adressen m&uuml;ssen &uuml;bereinstimmen.<br />';
+        }
+        if ($pwd === '') {
+            $e = true;
+            $msg .= 'Bitte ein Passwort eingeben.<br />';
+        } elseif ($pwd !== $pwd2) {
+            $e = true;
+            $msg .= 'Die Passw&ouml;rter m&uuml;ssen &uuml;bereinstimmen.<br />';
+        }
+        if (!isset($_POST['rules'])) {
+            $e = true;
+            $msg .= 'Bitte die Regeln akzeptieren.<br />';
+        }
 
         $javascript = file_get('data/pubtxt/selcountry_head.txt');
 
@@ -238,7 +276,6 @@ createlayout_bottom();
 
 
 
-            $pwd = generateMnemonicPassword();
             $tmpfnx = randomx(REG_CODE_LEN);
             $tmpdir = 'data/regtmp';
             if (!is_dir($tmpdir) && !mkdir($tmpdir, 0777, true)) {
@@ -341,8 +378,8 @@ createlayout_bottom();
         }
 
         $body = 'Hallo '.$nick.'!'.LF."\n".'Du hast dich bei ZeroDayEmpire (http://www.ZeroDayEmpire.org) angemeldet!';
-        $body .= ' Hier sind deine Zugangsdaten!'.LF."\n".'Server: Server '.$server."\n".'Nickname: '.$nick."\n".'Passwort: '.$pwd."\n"."\n".'Bevor du deinen';
-        $body .= ' neuen Account nutzen kannst, musst du ihn aktivieren! Rufe dazu die folgende URL in deinem Browser auf:'.LF."\n";
+        $body .= ' Server: Server '.$server."\n".'Nickname: '.$nick."\n\n";
+        $body .= 'Um deinen neuen Account zu nutzen, musst du ihn aktivieren! Rufe dazu die folgende URL in deinem Browser auf:'.LF."\n";
         /*if($localhost)*/
         $body .= '<a href="';
         $body .= 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'].'?a=regactivate&code='.$tmpfnx;
@@ -491,7 +528,7 @@ createlayout_bottom();
 
             if ($usr !== false) {
                 if ($email == strtolower($usr['email'])) {
-                    $pwd = generateMnemonicPassword();
+                    $pwd = bin2hex(random_bytes(4));
 
                     db_query(
                         'UPDATE users SET password=\''.md5($pwd).'\' WHERE id=\''.mysql_escape_string($usr['id']).'\';'
@@ -673,29 +710,5 @@ echo "</table>";
 
 }*/
 
-function generateMnemonicPassword()
-{
-
-    $charset[0] = array('a', 'e', 'i', 'o', 'u');
-    $charset[1] = array('b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'r', 's', 't', 'v', 'w', 'x', 'z');
-    $specials = array('!', '$', '%', '&', '/', '=', '?', '+', '-', '.', ':', ',', ';', '*', '#', '_');
-
-    $password = '';
-
-    for ($i = 1; $i <= 2; $i++) {
-        $password .= $charset[$i % 2][array_rand($charset[$i % 2])];
-    }
-    $password .= $specials[mt_rand(0, count($specials) - 1)];
-    for ($i = 1; $i <= 2; $i++) {
-        $password .= $charset[$i % 2][array_rand($charset[$i % 2])];
-    }
-
-    for ($i = 1; $i <= 2; $i++) {
-        $password .= rand(0, 9);
-    }
-    $password .= $charset[1][mt_rand(0, count($charset[1]) - 1)];
-
-    return $password;
-}
 
 ?>
