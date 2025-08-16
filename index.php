@@ -84,8 +84,8 @@
 
         <div class="strip" aria-label="Kurzinfo">
           <div class="kpi"><div class="label">Spieler online</div><div class="value" id="kpiOnline">—</div></div>
-          <div class="kpi"><div class="label">Letzter Season‑Champion</div><div class="value">NOVA‑Δ</div></div>
-          <div class="kpi"><div class="label">Aktuelle Version</div><div class="value" id="kpiVersion">v0.9.0</div></div>
+          <div class="kpi"><div class="label">Platz 1 der Rangliste</div><div class="value" id="kpiChampion">—</div></div>
+          <div class="kpi"><div class="label">Aktuelle Version</div><div class="value" id="kpiVersion">v0.0.1</div></div>
         </div>
       </div>
     </section>
@@ -95,9 +95,8 @@
     <div class="container foot">
       <div>© <span id="year"></span> ZeroDayEmpire</div>
       <div class="links">
-        <a href="#">Status</a>
-        <a href="#">Roadmap</a>
-        <a href="impressum.html">Impressum</a>
+        <a href="impressum.php">Impressum</a>
+        <a href="legal.php">Legal</a>
       </div>
     </div>
   </footer>
@@ -155,13 +154,33 @@
       document.documentElement.style.setProperty('--my', y + '%');
     }, {passive:true});
 
-    // Demo: Fake online players counter (replace with real data later)
+    // Spieler online aus Statistik laden
     (function(){
       const el = document.getElementById('kpiOnline');
       if(!el) return;
-      const base = 1242, jitter = 40;
-      const update = () => { el.textContent = (base + Math.floor(Math.random()*jitter)).toLocaleString('de-DE'); };
-      update(); setInterval(update, 4000);
+      const update = () => {
+        fetch('pub.php?d=stats')
+          .then(r => r.text())
+          .then(html => {
+            const m = html.match(/Spieler online:<\/th>\s*<td>(\d+)/i);
+            if(m) el.textContent = Number(m[1]).toLocaleString('de-DE');
+          });
+      };
+      update();
+      setInterval(update, 60000);
+    })();
+
+    // Platz 1 aus der Rangliste laden
+    (function(){
+      const el = document.getElementById('kpiChampion');
+      if(!el) return;
+      fetch('ranking.php?m=ranking')
+        .then(r => r.text())
+        .then(html => {
+          const doc = new DOMParser().parseFromString(html, 'text/html');
+          const top = doc.querySelector('#rank-table tr:nth-child(2) td.name');
+          if(top) el.textContent = top.textContent.trim();
+        });
     })();
 
     // Year in footer
