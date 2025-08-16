@@ -17,7 +17,11 @@ switch ($action) {
         createlayout_top('ZeroDayEmpire - Optionen');
 ?>
 <!-- ZDE theme inject -->
-<style>@import url("style.css");</style>
+<style>
+@import url("style.css");
+.pwd-wrapper{position:relative;display:inline-block;}
+#pwd-guidelines{display:none;position:absolute;left:0;top:calc(100% + 4px);background:var(--bg-2);border:1px solid var(--border);padding:10px;border-radius:8px;max-width:250px;z-index:10;}
+</style>
 <div class="container">
 <?php // /ZDE theme inject start
 
@@ -47,6 +51,25 @@ switch ($action) {
         $dayVal = sprintf('%02d', (int)$dd[0]);
         $monthVal = sprintf('%02d', (int)$dd[1]);
         $yearVal = sprintf('%04d', (int)$dd[2]);
+
+        $dayOptions = '';
+        for ($i = 1; $i <= 31; $i++) {
+            $d = sprintf('%02d', $i);
+            $sel = ($d == $dayVal ? ' selected="selected"' : '');
+            $dayOptions .= '<option value="'.$d.'"'.$sel.'>'.$d.'</option>';
+        }
+        $monthOptions = '';
+        for ($i = 1; $i <= 12; $i++) {
+            $m = sprintf('%02d', $i);
+            $sel = ($m == $monthVal ? ' selected="selected"' : '');
+            $monthOptions .= '<option value="'.$m.'"'.$sel.'>'.$m.'</option>';
+        }
+        $yearOptions = '';
+        $currentYear = (int)date('Y');
+        for ($y = $currentYear; $y >= 1900; $y--) {
+            $sel = ($y == (int)$yearVal ? ' selected="selected"' : '');
+            $yearOptions .= '<option value="'.$y.'"'.$sel.'>'.$y.'</option>';
+        }
 
         $statx = '';
         if ($usr['stat'] > 1) {
@@ -118,7 +141,7 @@ switch ($action) {
 </tr>
 <tr id="settings-settings-date-of-birth">
 <th>Geburtsdatum:</th>
-<td><input type="text" name="bday" value="'.$dayVal.'" size="2" maxlength="2" />.<input type="text" name="bmonth" value="'.$monthVal.'" size="2" maxlength="2" />.<input type="text" name="byear" value="'.$yearVal.'" size="4" maxlength="4" /></td>
+<td><select name="bday">'.$dayOptions.'</select>.<select name="bmonth">'.$monthOptions.'</select>.<select name="byear">'.$yearOptions.'</select></td>
 </tr>
 <tr id="settings-settings-homepage">
 <th>Deine Homepage:</th>
@@ -219,24 +242,65 @@ Bitte zur Best&auml;tigung eingeben.</td>
 </table>
 </form>
 </div>';
-
-        if ($usr['stat'] > 10) {
-            echo '<div id="settings-password">
-<form action="user.php?a=newpwd&amp;sid='.$sid.'" method="post">
-<h3>Passwort &auml;ndern (Sonder-Funktion)</h3>
+echo '<div id="settings-password">
+<h3>Kennwort &auml;ndern</h3>
+<form action="user.php?a=setpwd&amp;sid='.$sid.'" method="post">
 <table>
-<tr id="settings-password-password">
-<th>Neues Passwort:</th>
-<td><input name="pwd" type="password" maxlength="16" /></td>
+<tr id="settings-password-old">
+<th>Aktuelles Passwort:</th>
+<td><input name="oldpwd" type="password" /></td>
+</tr>
+<tr id="settings-password-new">
+<th id="pwd-label">Neues Passwort:</th>
+<td><div class="pwd-wrapper"><input name="pwd" id="_pwd" type="password" /><span id="pwd-status"></span><div id="pwd-guidelines">Passwort muss mindestens 8 Zeichen lang sein und Buchstaben sowie mindestens eine Zahl oder ein Sonderzeichen enthalten.</div></div></td>
+</tr>
+<tr id="settings-password-new2">
+<th>Neues Passwort (Wiederholung):</th>
+<td><input name="pwd2" id="_pwd2" type="password" /><span id="pwd2-status"></span></td>
 </tr>
 <tr id="settings-password-confirm">
 <td colspan="2"><input type="submit" value="Speichern" /></td>
 </tr>
 </table>
 </form>
-</div>
-';
-        }
+</div>';
+echo '<script>
+const pwdInput=document.getElementById("_pwd");
+const pwdStatus=document.getElementById("pwd-status");
+const pwd2Input=document.getElementById("_pwd2");
+const pwd2Status=document.getElementById("pwd2-status");
+const guidelines=document.getElementById("pwd-guidelines");
+const pwdLabel=document.getElementById("pwd-label");
+function checkPwd(){
+    const v=pwdInput.value;
+    const ok=v.length>=8 && /[A-Za-z]/.test(v) && (/[0-9]/.test(v) || /[^A-Za-z0-9]/.test(v));
+    if(v===""){pwdStatus.textContent="";}
+    else if(ok){pwdStatus.textContent="Passwort erfüllt Richtlinien";pwdStatus.style.color="green";}
+    else{pwdStatus.textContent="Passwort zu schwach";pwdStatus.style.color="red";}
+    checkPwdMatch();
+}
+function checkPwdMatch(){
+    const v1=pwdInput.value;
+    const v2=pwd2Input.value;
+    if(v2===""){pwd2Status.textContent="";return;}
+    if(v1===v2){
+        pwd2Status.textContent="Passwörter stimmen überein";
+        pwd2Status.style.color="green";
+    }else{
+        pwd2Status.textContent="Passwörter stimmen nicht überein";
+        pwd2Status.style.color="red";
+    }
+}
+pwdInput.addEventListener("input",checkPwd);
+pwd2Input.addEventListener("input",checkPwdMatch);
+[pwdInput,pwdLabel].forEach(el=>{
+    el.addEventListener("mouseover",()=>{guidelines.style.display="block";});
+    el.addEventListener("mouseout",()=>{guidelines.style.display="none";});
+});
+pwdInput.addEventListener("focus",()=>{guidelines.style.display="block";});
+pwdInput.addEventListener("blur",()=>{guidelines.style.display="none";});
+</script>';
+
         echo '</div>'."\n";
         ?>
 </div>
@@ -379,6 +443,26 @@ createlayout_bottom();
             } else {
                 simple_message('Falsches Passwort!');
             }
+        }
+        break;
+
+    case 'setpwd': //------------------------- SET PASSWORD -------------------------------
+        $oldpwd = trim($_POST['oldpwd'] ?? '');
+        $pwd = (string)($_POST['pwd'] ?? '');
+        $pwd2 = (string)($_POST['pwd2'] ?? '');
+        $real_pwd = $usr['password'];
+
+        if (!($oldpwd == $real_pwd || md5($oldpwd) == $real_pwd)) {
+            simple_message('Falsches Passwort!');
+        } elseif ($pwd === '') {
+            simple_message('Bitte ein neues Passwort eingeben!');
+        } elseif ($pwd !== $pwd2) {
+            simple_message('Die Passw&ouml;rter m&uuml;ssen &uuml;bereinstimmen!');
+        } elseif (strlen($pwd) < 8 || !preg_match('/[A-Za-z]/', $pwd) || !preg_match('/[0-9\\W]/', $pwd)) {
+            simple_message('Das Passwort muss mindestens 8 Zeichen lang sein und Buchstaben sowie mindestens eine Zahl oder ein Sonderzeichen enthalten.');
+        } else {
+            db_query('UPDATE users SET password=\''.md5($pwd).'\' WHERE id=\''.mysql_escape_string($usrid).'\';');
+            header('Location: user.php?a=config&sid='.$sid.'&ok='.urlencode('Passwort ge&auml;ndert.'));
         }
         break;
 
