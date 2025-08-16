@@ -10,67 +10,48 @@
 </div>
 
 <div id="rules-rules">
-<h3>&sect;1 - Multis</h3>
-<p>Das Besitzen mehrerer Accounts gleichzeitig, ist verboten und führt zum Spielausschluss.
-Ausnahmen:<br />
-<p>a) Extended Account-Spieler dürfen pro Server einen Account besitzen.<br />
-b) Es ist gestattet, einen fremden Account kurzfristig zu "sitten", z.B. wenn der Besitzer im Urlaub ist.</p>
+<h3>&sect;1 &ndash; Accounts</h3>
+<p>Das Anlegen mehrerer Accounts ist erlaubt.</p>
+<p>Die Verantwortung f&uuml;r Sicherheit und Nutzung der eigenen Accounts liegt beim jeweiligen Inhaber.</p>
 
-<h3>&sect;2 - Beleidigungen</h3>
-<p>Beleidigungen, die innerhalb des Spiels oder Forums ablaufen (der IRC-Channel gehört hier nicht dazu) können mit Punkt-Abzug
-oder zeitweiliger Account-Sperrung bestraft werden.</p>
+<h3>&sect;2 &ndash; Verhalten</h3>
+<p>Im Spiel ist ein respektvoller Umgangston Pflicht.</p>
+<p>Bel&auml;stigungen, gezielte St&ouml;rungen oder Hassinhalte sind untersagt.</p>
 
-<h3>&sect;3 - Bugusing</h3>
-<p>Das Ausnutzen von Fehlern in der Programmierung, sogenannte Bugs, zu seinem eigenen Vorteil
-ist nicht gestattet. Wer Bugs ausnutzt um sich oder anderen dadurch einen Vorteil zu verschaffen,
-wird mit sofortiger Wirkung aus dem Spiel gelöscht.<br />
-Es ist dagegen erwünscht, dass Fehler bei den Admins oder im Forum gemeldet werden.
-In diesem Fall bestehen allerdings keinerlei Entlohnungs-Ansprüche!</p>
+<h3>&sect;3 &ndash; Bugs &amp; Schwachstellen</h3>
+<p>Das Ausnutzen von Bugs oder technischen Schwachstellen ist verboten.</p>
+<p>Bitte meldet Fehler &uuml;ber den Melde-Button. Es besteht kein Anspruch auf Belohnung.</p>
 
-<h3>&sect;4 - Bots</h3>
-<p>Es ist strengstens verboten, jegliche Seiten von ZeroDayEmpire mit anderen Programmen außer dem Browser abzurufen,
-dies bezieht sich besonders auf sogenannte Bots oder auch andere Tools, die das Webinterface ersetzen sollen.<br />
+<h3>&sect;4 &ndash; Automatisierung &amp; Bots</h3>
+<p>Bots, Scripts oder Tools, die Aktionen automatisieren oder die Bedienoberfl&auml;che umgehen, sind nicht erlaubt.</p>
+<p>Die Nutzung &ouml;ffentlich verf&uuml;gbarer Standard-Browser ist unkritisch; Manipulationen an Spiel-Links oder -Requests sind untersagt.</p>
 
-a) Erlaubt sind jegliche öffentlich zugänglichen Browser wie Mozilla, Opera, Netscape, Internet Explorer, Konqueror oder Lynx.
-<br />
-b) Jegliche Aufrufe von Fremdquellen (Seiten oder Programme), die nicht auf dem ZDE-Server liegen, sind verboten,
-Hierzu zählen insbesondere Seiten/Tools die vereinfachtes einloggen oder Verwalten von Accounts ermöglichen.
-<br />
-c) Auch das programmtechnische oder manuelle Verändern von Links, die vom ZDE-Server stammen, ist illegal.
-</p>
+<h3>&sect;5 &ndash; Technische Eingriffe</h3>
+<p>Ma&szlig;nahmen, die den Server belasten, Sicherheit gef&auml;hrden oder den Spielablauf st&ouml;ren (z. B. Flooding, unautorisierte Datenbankabfragen, Eingriffe in Mechaniken), sind verboten.</p>
+<p>Unbefugter Zugriff auf fremde Accounts kann rechtliche Schritte nach sich ziehen.</p>
 
-<h3>&sect;5 - Eingriffe in die Spieltechnik</h3>
-<p>Maßnahmen die übermäßigen Traffic verursachen oder dazu geeignet sind, den Spielablauf zu beeinträchtigen
-sind zu unterlassen und können geahndet werden.<br />
-Verboten sind ebenso automatische oder halbautomatische Scripts, welche Anfragen an die Datenbank ausführen oder
-Spielmechanismen in Gang setzen.<br />
-Ein Verstoß dagegen führt zum sofortigen Ausschluss aus dem Spiel und kann in Ausnahmefällen zu einer
-Strafanzeige führen. Verschafft sich ein User widerrechtlich Zugang zu einem fremden Account muss er mit einer
-Strafanzeige rechnen.</p>
+<h3>&sect;6 &ndash; Meldungen &amp; Falschmeldungen</h3>
+<p>Nutzt den Melde-Button f&uuml;r Verdachtsf&auml;lle.</p>
+<p>Wissentlich falsche Meldungen oder das Vort&auml;uschen von Verst&ouml;&szlig;en sind selbst ein Regelversto&szlig;.</p>
 
-<h3>&sect;6 - Falschmeldungen</h3>
-<p>Wer wissentlich falsche Bugs oder falsche Regelverstöße meldet oder anderweitig versucht Bugs oder Regelverstöße vorzutäuschen,
-wird mit sofortiger Wirkung aus dem Spiel gelöscht.
-Dies gilt insbesondere für Personen die darauf spekulieren, verlorene Credits oder PCs damit
-wieder zu bekommen.</p>
+<h3>&sect;7 &ndash; Schadensf&auml;lle</h3>
+<p>Kein Anspruch auf Wiedergutmachung bei Verlusten durch Bugs, Ausf&auml;lle o. &Auml;.</p>
+<p>Backups k&ouml;nnen in begr&uuml;ndeten Ausnahmef&auml;llen eingespielt werden; die Entscheidung trifft der zust&auml;ndige Admin.</p>
 
-<h3>&sect;7 - Wiedergutmachung im Schadensfall</h3>
-<p>Wer durch einen Bug, Serverausfall oder Ähnliches Credits, PCs usw. verliert, hat keinen Anspruch auf Wiedergutmachung, egal 
-in welcher Form. Persönliche Backups werden nur in Ausnahmefällen bewilligt,
-dies entscheidet wiederum der Admin welcher den jeweiligen Fall bearbeitet.<br />
-Eine Entscheidung eines Admins bei einem Anderen zu hinterfragen um ein anderes Ergebnis zu erhalten, wird bestraft.</p>
+<h3>&sect;8 &ndash; Spielkultur</h3>
+<p>Verlieren geh&ouml;rt zum Spiel. Fairness und Gelassenheit gehen vor.</p>
 
-<h3>&sect;8 - Verlieren können</h3>
-<p>Der Spieler muss es akzeptieren können, auch mal zu verlieren! Es ist nur ein Spiel. Ebenso sind heul Threads im Forum nicht erwünscht!</p>
+<h3>&sect;9 &ndash; Eigentum &amp; Handel</h3>
+<p>Accounts, In-Game-W&auml;hrungen und Gegenst&auml;nde sind virtuelle G&uuml;ter und bleiben Eigentum der Betreiber; sie werden zur Nutzung bereitgestellt.</p>
+<p>Handel/Verkauf von Accounts oder In-Game-Werten ist erlaubt; erfolgt auf eigenes Risiko ohne Gew&auml;hr.</p>
 
-<h3>&sect;9 - Eigentumsverhältnisse</h3>
-<p>Jeder Account, sowie die Credits und Computer sind virtuelle Gegenstände im Spiel
-und bleiben Eigentum der ZDE-Admins. Sie werden den Spielern nur leihweise zur Verfügung gestellt.
-Das Verkaufen von Accounts oder Credits ist allerdings erlaubt.</p>
+<h3>&sect;10 &ndash; Haftung</h3>
+<p>Das Spiel wird &bdquo;wie gesehen&ldquo; (as is) bereitgestellt.</p>
+<p>Es bestehen keine Anspr&uuml;che gegen die Betreiber bei Datenverlusten oder sonstigen Sch&auml;den.</p>
 
-<h3>&sect; 10 - Haftungsausschluss</h3>
-<p>Das Spiel wird "so wie es ist" zur Verfügung gestellt. Es bestehen auch im Falle eines Datenverlustes keinerlei materielle oder
-sonstwie geartete Ansprüche gegen die Spiel-Admins.</p>
-
+<h3>&sect;11 &ndash; Ma&szlig;nahmen bei Verst&ouml;&szlig;en</h3>
+<p>Bei Verst&ouml;&szlig;en kann der betroffene Account vor&uuml;bergehend gesperrt oder dauerhaft deaktiviert werden.</p>
+<p>Die Ma&szlig;nahme richtet sich nach Art und Schwere des Versto&szlig;es.</p>
 </div>
 </div>
+
