@@ -25,7 +25,14 @@ function showdoc($fn, $te = '')
     createlayout_top('ZeroDayEmpire'.$x);
 ?>
 <!-- ZDE theme inject -->
-<style>@import url("style.css");</style>
+<style>
+@import url("style.css");
+#register-step1 input[type="text"],
+#register-step1 input[type="email"],
+#register-step1 input[type="password"]{width:250px;}
+.pwd-wrapper{position:relative;display:inline-block;}
+#pwd-guidelines{display:none;position:absolute;left:0;top:calc(100% + 4px);background:var(--bg-2);border:1px solid var(--border);padding:10px;border-radius:8px;max-width:250px;z-index:10;}
+</style>
 <div class="container">
 <?php // /ZDE theme inject start
 
@@ -95,10 +102,21 @@ case 'nickcheck':
 
     case 'register':
 
+        $nickVal = htmlspecialchars($_GET['nick'] ?? '', ENT_QUOTES);
+        $emailVal = htmlspecialchars($_GET['email'] ?? '', ENT_QUOTES);
+        $email2Val = htmlspecialchars($_GET['email2'] ?? '', ENT_QUOTES);
+
         createlayout_top('ZeroDayEmpire - Account anlegen');
 ?>
 <!-- ZDE theme inject -->
-<style>@import url("style.css");</style>
+<style>
+@import url("style.css");
+#register-step1 input[type="text"],
+#register-step1 input[type="email"],
+#register-step1 input[type="password"]{width:250px;}
+.pwd-wrapper{position:relative;display:inline-block;}
+#pwd-guidelines{display:none;position:absolute;left:0;top:calc(100% + 4px);background:var(--bg-2);border:1px solid var(--border);padding:10px;border-radius:8px;max-width:250px;z-index:10;}
+</style>
 <div class="container">
 <?php // /ZDE theme inject start
 
@@ -111,19 +129,19 @@ case 'nickcheck':
 <table>
 <tr>
 <th>Nickname:</th>
-<td><input name="nick" id="_nick" maxlength="20" required /><span id="nick-status"></span></td>
+<td><input name="nick" id="_nick" maxlength="20" required value="'.$nickVal.'" /><span id="nick-status"></span></td>
 </tr>
 <tr>
 <th>E-Mail-Adresse:</th>
-<td><input name="email" id="_email" type="email" maxlength="50" required /><span id="email-status"></span></td>
+<td><input name="email" id="_email" type="email" maxlength="50" required value="'.$emailVal.'" /><span id="email-status"></span></td>
 </tr>
 <tr>
 <th>E-Mail-Adresse (Wiederholung):</th>
-<td><input name="email2" id="_email2" type="email" maxlength="50" required /><span id="email2-status"></span></td>
+<td><input name="email2" id="_email2" type="email" maxlength="50" required value="'.$email2Val.'" /><span id="email2-status"></span></td>
 </tr>
 <tr>
-<th>Passwort:</th>
-<td><input type="password" name="pwd" id="_pwd" required /><span id="pwd-status"></span><div id="pwd-guidelines" style="display:none;">Passwort muss mindestens 8 Zeichen lang sein und sowohl Buchstaben als auch Zahlen enthalten.</div></td>
+<th id="pwd-label">Passwort:</th>
+<td><div class="pwd-wrapper"><input type="password" name="pwd" id="_pwd" required /><span id="pwd-status"></span><div id="pwd-guidelines">Passwort muss mindestens 8 Zeichen lang sein und Buchstaben sowie mindestens eine Zahl oder ein Sonderzeichen enthalten.</div></div></td>
 </tr>
 <tr>
 <th>Passwort (Wiederholung):</th>
@@ -172,8 +190,7 @@ echo <<<'SCRIPT'
                 emailStatus.textContent="Email bereits registriert";
                 emailStatus.style.color="red";
             }else{
-                emailStatus.textContent="Email verfügbar";
-                emailStatus.style.color="green";
+                emailStatus.textContent="";
             }
         });
         checkEmailMatch();
@@ -183,10 +200,10 @@ echo <<<'SCRIPT'
         const v2=email2Input.value.trim();
         if(v2===""){email2Status.textContent="";return;}
         if(v1===v2){
-            email2Status.textContent="Emails stimmen überein";
+            email2Status.textContent="E-Mail-Adressen stimmen überein";
             email2Status.style.color="green";
         }else{
-            email2Status.textContent="Emails stimmen nicht überein";
+            email2Status.textContent="E-Mail-Adressen stimmen nicht überein";
             email2Status.style.color="red";
         }
     }
@@ -198,9 +215,10 @@ echo <<<'SCRIPT'
     const pwd2Input=document.getElementById("_pwd2");
     const pwd2Status=document.getElementById("pwd2-status");
     const guidelines=document.getElementById("pwd-guidelines");
+    const pwdLabel=document.getElementById("pwd-label");
     function checkPwd(){
         const v=pwdInput.value;
-        const ok=v.length>=8 && /[a-z]/.test(v) && /[A-Z]/.test(v) && /[0-9]/.test(v);
+        const ok=v.length>=8 && /[A-Za-z]/.test(v) && (/[0-9]/.test(v) || /[^A-Za-z0-9]/.test(v));
         if(v===""){pwdStatus.textContent="";}
         else if(ok){pwdStatus.textContent="Passwort erfüllt Richtlinien";pwdStatus.style.color="green";}
         else{pwdStatus.textContent="Passwort zu schwach";pwdStatus.style.color="red";}
@@ -220,10 +238,14 @@ echo <<<'SCRIPT'
     }
     pwdInput.addEventListener("input",checkPwd);
     pwd2Input.addEventListener("input",checkPwdMatch);
-    pwdInput.addEventListener("mouseover",()=>{guidelines.style.display="block";});
-    pwdInput.addEventListener("mouseout",()=>{guidelines.style.display="none";});
+    [pwdInput,pwdLabel].forEach(el=>{
+        el.addEventListener("mouseover",()=>{guidelines.style.display="block";});
+        el.addEventListener("mouseout",()=>{guidelines.style.display="none";});
+    });
     pwdInput.addEventListener("focus",()=>{guidelines.style.display="block";});
     pwdInput.addEventListener("blur",()=>{guidelines.style.display="none";});
+    if(emailInput.value!="") checkEmail();
+    if(email2Input.value!="") checkEmailMatch();
 })();
 </script>
 SCRIPT;
@@ -344,7 +366,7 @@ createlayout_bottom();
         }
         if ($email !== $email2) {
             $e = true;
-            $msg .= 'Die Email-Adressen m&uuml;ssen &uuml;bereinstimmen.<br />';
+            $msg .= 'Die E-Mail-Adressen m&uuml;ssen &uuml;bereinstimmen.<br />';
         }
         if ($pwd === '') {
             $e = true;
@@ -352,6 +374,9 @@ createlayout_bottom();
         } elseif ($pwd !== $pwd2) {
             $e = true;
             $msg .= 'Die Passw&ouml;rter m&uuml;ssen &uuml;bereinstimmen.<br />';
+        } elseif (strlen($pwd) < 8 || !preg_match('/[A-Za-z]/', $pwd) || !preg_match('/[0-9\\W]/', $pwd)) {
+            $e = true;
+            $msg .= 'Das Passwort muss mindestens 8 Zeichen lang sein und Buchstaben sowie mindestens eine Zahl oder ein Sonderzeichen enthalten.<br />';
         }
         if (!isset($_POST['rules'])) {
             $e = true;
@@ -401,7 +426,7 @@ createlayout_bottom();
 <?php
 createlayout_bottom();
         } else {
-            header('Location:pub.php?a=register&error='.urlencode($msg));
+            header('Location:pub.php?a=register&error='.urlencode($msg).'&nick='.urlencode($nick).'&email='.urlencode($email).'&email2='.urlencode($email2));
         }
         break;
 
