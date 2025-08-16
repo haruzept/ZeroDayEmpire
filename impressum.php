@@ -21,7 +21,6 @@
       <button class="btn ghost menu-toggle" id="menuBtn" aria-expanded="false" aria-controls="navList">Menü</button>
       <nav class="nav-links" id="navList" aria-label="Hauptnavigation">
         <a href="pub.php?a=register" id="registerLink">Registrieren</a>
-        <a href="pub.php" id="loginLink">Anmelden</a>
         <a href="dashboard.html" id="dashboardLink" style="display:none">Dashboard</a>
         <a href="#" id="logoutLink" style="display:none" onclick="logout()">Abmelden</a>
         <a href="config.html" id="configLink" style="display:none">Config</a>
@@ -49,10 +48,12 @@
   </footer>
   <script>
     (function(){
-      const token = localStorage.getItem('token') || sessionStorage.getItem('token') || (document.cookie.match(/token=([^;]+)/)||[])[1];
+      let token = localStorage.getItem('token') || sessionStorage.getItem('token') || (document.cookie.match(/token=([^;]+)/)||[])[1];
+      if(token && !localStorage.getItem('token') && !sessionStorage.getItem('token')){
+        localStorage.setItem('token', token);
+      }
       const role = localStorage.getItem('role') || sessionStorage.getItem('role');
       const reg = document.getElementById('registerLink');
-      const login = document.getElementById('loginLink');
       const dash = document.getElementById('dashboardLink');
       const logout = document.getElementById('logoutLink');
       const cfg = document.getElementById('configLink');
@@ -68,7 +69,6 @@
       };
       if(token){
         if(reg) reg.style.display='none';
-        if(login) login.style.display='none';
         if(dash) dash.style.display='inline-flex';
         if(logout) logout.style.display='inline-flex';
         playLinks.forEach(a => a.href='dashboard.html');

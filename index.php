@@ -35,7 +35,6 @@ if ($row = mysql_fetch_assoc($r)) {
 
       <nav class="nav-links" id="navList" aria-label="Hauptnavigation">
         <a href="pub.php?a=register" id="registerLink">Registrieren</a>
-        <a href="pub.php" id="loginLink">Anmelden</a>
         <a href="dashboard.html" id="dashboardLink" style="display:none">Dashboard</a>
         <a href="#" id="logoutLink" style="display:none" onclick="logout()">Abmelden</a>
         <a href="config.html" id="configLink" style="display:none">Config</a>
@@ -114,37 +113,38 @@ if ($row = mysql_fetch_assoc($r)) {
 
   <script>
     // Anzeige basierend auf Login-Status und Rolle
-    (function(){
-      const token = localStorage.getItem('token') || sessionStorage.getItem('token') || (document.cookie.match(/token=([^;]+)/)||[])[1];
-      const role = localStorage.getItem('role') || sessionStorage.getItem('role');
-      const reg = document.getElementById('registerLink');
-      const login = document.getElementById('loginLink');
-      const dash = document.getElementById('dashboardLink');
-      const logout = document.getElementById('logoutLink');
-      const cfg = document.getElementById('configLink');
-      const playLinks = document.querySelectorAll('.play-link');
+      (function(){
+        let token = localStorage.getItem('token') || sessionStorage.getItem('token') || (document.cookie.match(/token=([^;]+)/)||[])[1];
+        if(token && !localStorage.getItem('token') && !sessionStorage.getItem('token')){
+          localStorage.setItem('token', token);
+        }
+        const role = localStorage.getItem('role') || sessionStorage.getItem('role');
+        const reg = document.getElementById('registerLink');
+        const dash = document.getElementById('dashboardLink');
+        const logout = document.getElementById('logoutLink');
+        const cfg = document.getElementById('configLink');
+        const playLinks = document.querySelectorAll('.play-link');
 
-      window.logout = function(){
-        localStorage.removeItem('token');
-        localStorage.removeItem('role');
-        sessionStorage.removeItem('token');
-        sessionStorage.removeItem('role');
-        document.cookie = 'token=; Max-Age=0; path=/';
-        fetch('/logout',{method:'POST',headers:{'Authorization':token}});
-        window.location.href = 'index.php';
-      };
+        window.logout = function(){
+          localStorage.removeItem('token');
+          localStorage.removeItem('role');
+          sessionStorage.removeItem('token');
+          sessionStorage.removeItem('role');
+          document.cookie = 'token=; Max-Age=0; path=/';
+          fetch('/logout',{method:'POST',headers:{'Authorization':token}});
+          window.location.href = 'index.php';
+        };
 
-      if(token){
-        if(reg) reg.style.display='none';
-        if(login) login.style.display='none';
-        if(dash) dash.style.display='inline-flex';
-        if(logout) logout.style.display='inline-flex';
-        playLinks.forEach(a => a.href='dashboard.html');
-      }else{
-        playLinks.forEach(a => a.href='pub.php');
-      }
-      if(role === 'admin' && cfg){ cfg.style.display = 'inline-flex'; }
-    })();
+        if(token){
+          if(reg) reg.style.display='none';
+          if(dash) dash.style.display='inline-flex';
+          if(logout) logout.style.display='inline-flex';
+          playLinks.forEach(a => a.href='dashboard.html');
+        }else{
+          playLinks.forEach(a => a.href='pub.php');
+        }
+        if(role === 'admin' && cfg){ cfg.style.display = 'inline-flex'; }
+      })();
 
     // Mobile menu toggle
     (function(){
