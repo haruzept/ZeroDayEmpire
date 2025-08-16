@@ -4,11 +4,6 @@
 <p><a href="pub.php?d=regelverstoss">Regelversto&szlig; melden</a></p>
 </div>
 
-<div class="important">
-<h3>Wichtig</h3>
-<p>Jeder User, der sich f&uuml;r das Spiel registriert, verpflichtet sich, diese Regeln einzuhalten und Regelverst&ouml;&szlig;e anderer zu melden.</p>
-</div>
-
 <div id="rules-rules">
 <h3>&sect;1 &ndash; Accounts</h3>
 <p>Das Anlegen mehrerer Accounts ist erlaubt.</p>
