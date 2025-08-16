@@ -448,18 +448,6 @@ createlayout_bottom();
         list($nick, $email, $pwd, $server) = $parts;
         mysql_select_db(dbname($server));
 
-        createlayout_top('ZeroDayEmpire - Account anlegen');
-?>
-<!-- ZDE theme inject -->
-<style>@import url("style.css");</style>
-<div class="container">
-<?php // /ZDE theme inject start
-
-
-        echo '<div class="content" id="register">
-<h2>Registrieren</h2>
-<div id="register-step3">
-';
         $country = $_POST['country'];
 
 # IST DAS LAND VOLL ? START
@@ -472,22 +460,10 @@ createlayout_bottom();
 
         if ($xip > 254) {
             @unlink('data/regtmp/'.$tmpfnx.'.txt');
-            echo '  <div class="error"><h3>Sorry</h3>
-  <p>Das gew&auml;hlte Land ist schon "voll"! Bitte such dir ein anderes Land aus!</p></div>
-  <form action="pub.php?a=regsubmit" method="post">
-  <input type=hidden name="server" value="'.$server.'">
-  <input type=hidden name="nick" value="'.$nick.'">
-  <input type=hidden name="email" value="'.$email.'">
-  <p><input type=submit value=" Zur&uuml;ck "></p>
-  </form>';
-            echo '</div>'.LF.'</div>';
-            ?>
-</div>
-<!-- /ZDE theme inject -->
-<?php
-createlayout_bottom();
+            simple_message('Das gew&auml;hlte Land ist schon &quot;voll&quot;! Bitte such dir ein anderes Land aus!');
             exit;
         }
+
 
 # IST DAS LAND VOLL ? X_END
 
@@ -497,31 +473,9 @@ createlayout_bottom();
             exit;
         }
 
-        $body = 'Hallo '.$nick.'!'.LF."\n".'Du hast dich bei ZeroDayEmpire (http://www.ZeroDayEmpire.org) angemeldet!';
-        $body .= ' Server: Server '.$server."\n".'Nickname: '.$nick."\n\n";
-        $body .= 'Um deinen neuen Account zu nutzen, musst du ihn aktivieren! Rufe dazu die folgende URL in deinem Browser auf:'.LF."\n";
-        /*if($localhost)*/
-        $body .= '<a href="';
-        $body .= 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'].'?a=regactivate&code='.$tmpfnx;
-        /*if($localhost)*/
-        $body .= '">aktivieren</a>';
-        $body .= "\n";
+        header('Location: pub.php?a=regactivate&code='.$tmpfnx.'&direct=1');
+        exit;
 
-        /*
-        if(@mail($email,'Dein ZeroDayEmpire Account',$body,'From: ZeroDayEmpire <robot@ZeroDayEmpire.org>')) {
-          readfile('data/pubtxt/regok.txt');
-        } else {
-        if($localhost)*/
-        echo nl2br($body); /*else
-  echo 'Beim Verschicken der Email mit deinen Zugangsdaten trat ein Fehler auf!';
-}*/
-
-        echo '</div>'.LF.'</div>';
-        ?>
-</div>
-<!-- /ZDE theme inject -->
-<?php
-createlayout_bottom();
         break;
 
     case 'regactivate': // ----------------------- RegActivate --------------------------
@@ -582,7 +536,12 @@ createlayout_bottom();
                 setcookie('regc1','yes',time()+24*60*60);
                 $dummy=reloadsperre_CheckIP(true); # IP speichern
                 */
-                createlayout_top('ZeroDayEmpire - Account aktivieren');
+                if (isset($_GET['direct'])) {
+                    header('Location: login.php');
+                    exit;
+                }
+                  createlayout_top('ZeroDayEmpire - Account aktivieren');
+
 ?>
 <!-- ZDE theme inject -->
 <style>@import url("style.css");</style>
