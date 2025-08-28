@@ -23,7 +23,7 @@ if ($action === 'cancel') {
     if (research_cancel($pcid, $id)) {
         header('Location: research.php?sid='.$sid.'&ok='.urlencode('Forschung abgebrochen'));
     } else {
-        header('Location: research.php?sid='.$sid.'&error='.urlencode('Abbruch nicht m&ouml;glich'));
+        header('Location: research.php?sid='.$sid.'&error='.urlencode('Abbruch nicht möglich'));
     }
     exit;
 }
@@ -40,7 +40,7 @@ createlayout_top('ZeroDayEmpire - Forschung');
 
 echo '<div class="content" id="computer">'."\n";
 echo '<h2>Forschung</h2>'."\n";
-echo '<div class="submenu"><p><a href="game.php?m=start&amp;sid='.$sid.'">Zur &Uuml;bersicht</a></p></div>'."\n";
+echo '<div class="submenu"><p><a href="game.php?m=start&amp;sid='.$sid.'">Zur Übersicht</a></p></div>'."\n";
 
 if (!function_exists('infobox')) {
     function infobox($titel, $class, $text, $param = 'class')
@@ -78,7 +78,7 @@ if ($full > 0) {
         $name = mysql_result($ti,0,'name');
         $cur = $states[$row['track']] ?? ($row['target_level']-1);
         $next = $row['target_level'];
-        echo '<tr><th>'.htmlspecialchars($name).'</th><td>L'.$cur.' &raquo; L'.$next.'</td>';
+        echo '<tr><th>'.htmlspecialchars($name).'</th><td>L'.$cur.' » L'.$next.'</td>';
         echo '<td>'.nicetime($row['end']).'</td>';
         echo '<td><a href="research.php?a=cancel&amp;id='.$row['id'].'&amp;sid='.$sid.'">Abbrechen</a></td></tr>'."\n";
         $states[$row['track']] = $next;
@@ -91,10 +91,10 @@ if ($full > 0) {
 
 if ($full < $maxSlots) {
     $tracks = research_get_tracks();
-    echo '<h3>Verf&uuml;gbare Forschung</h3>';
+    echo '<h3>Verfügbare Forschung</h3>';
     echo '<p><strong>Geld: '.number_format($pc['credits'],0,',','.').' Credits</strong></p>'."\n";
     echo '<table>'."\n";
-    echo '<tr><th>Zweig</th><th>Level</th><th>Dauer</th><th>Kosten</th><th>Start</th></tr>'."\n";
+    echo '<tr><th>Zweig</th><th>Level</th><th>Dauer</th><th>Kosten</th><th>Erforschen</th></tr>'."\n";
     foreach ($tracks as $track => $info) {
         $cur = $info['level'];
         $max = $info['max_level'];
@@ -113,16 +113,16 @@ if ($full < $maxSlots) {
         $can = ($dep === true);
         echo '<td>'.$timeStr.'</td><td>'.$info['next_cost'].' Credits</td><td>';
         if ($can && $pc['credits'] >= $info['next_cost']) {
-            echo '<a href="research.php?a=start&amp;track='.$track.'&amp;sid='.$sid.'">Start</a>';
+            echo '<a href="research.php?a=start&amp;track='.$track.'&amp;sid='.$sid.'">Erforschen</a>';
         } else {
-            $msg = $can ? 'Nicht gen&uuml;gend Credits' : $dep;
-            echo '<span title="'.htmlspecialchars($msg).'">Start</span>';
+            $msg = $can ? 'Nicht genügend Credits' : $dep;
+            echo '<span title="'.htmlspecialchars($msg).'">Erforschen</span>';
         }
         echo '</td></tr>'."\n";
     }
     echo '</table>';
 } else {
-    echo '<h3>Verf&uuml;gbare Forschung</h3><p>Alle Slots belegt.</p>';
+    echo '<h3>Verfügbare Forschung</h3><p>Alle Slots belegt.</p>';
 }
 
 echo "\n".'</div>'."\n";

@@ -56,7 +56,7 @@ function research_check_deps($pcid,$track,$target_level)
         );
         $level = ($tmp = mysql_fetch_assoc($req)) ? (int)$tmp['level'] : 0;
         if ($level < (int)$dep['req_level']) {
-            return 'Ben&ouml;tigt '.$dep['req_track'].' Stufe '.$dep['req_level'];
+            return 'Benötigt '.$dep['req_track'].' Stufe '.$dep['req_level'];
         }
     }
     return true;
@@ -103,11 +103,11 @@ function research_start($pcid,$track)
     }
     $calc = research_calculate($row['base_cost'],$row['cost_mult'],$row['base_time_min'],$row['time_mult'],$target);
     if ($pc['credits'] < $calc['cost']) {
-        return array('error'=>'Nicht gen&uuml;gend Credits');
+        return array('error'=>'Nicht genügend Credits');
     }
     db_query('UPDATE pcs SET credits=credits-'.mysql_escape_string($calc['cost']).' WHERE id=\''.mysql_escape_string($pcid).'\' AND credits>='.mysql_escape_string($calc['cost']).'');
     if (mysql_affected_rows() < 1) {
-        return array('error'=>'Nicht gen&uuml;gend Credits');
+        return array('error'=>'Nicht genügend Credits');
     }
     $pc['credits'] -= $calc['cost'];
     $start = time();
