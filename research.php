@@ -42,6 +42,16 @@ echo '<div class="content" id="computer">'."\n";
 echo '<h2>Forschung</h2>'."\n";
 echo '<div class="submenu"><p><a href="game.php?m=start&amp;sid='.$sid.'">Zur &Uuml;bersicht</a></p></div>'."\n";
 
+if (!function_exists('infobox')) {
+    function infobox($titel, $class, $text, $param = 'class')
+    {
+        return "<div {$param}=\"{$class}\">\n"
+            . "<h3>{$titel}</h3>\n"
+            . "<p>{$text}</p>\n"
+            . "</div>\n";
+    }
+}
+
 include 'includes/codex_infobox_research.php';
 
 $notif = '';
