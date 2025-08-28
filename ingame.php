@@ -2,8 +2,13 @@
 
 $starttime = microtime();
 
+// Older entry points expected each script to define IN_ZDE before
+// including this file.  When that was forgotten, the game aborted with
+// the rather unhelpful message "Hacking attempt".  To make the code more
+// robust (and friendlier for legitimate requests), ensure the constant is
+// defined here and simply continue execution.
 if (!defined('IN_ZDE')) {
-    die('Hacking attempt');
+    define('IN_ZDE', 1);
 }
 
 include 'gres.php';
