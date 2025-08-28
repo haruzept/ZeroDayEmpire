@@ -244,12 +244,12 @@ switch ($action) {
 
   <article class="card span-6" id="cluster">
     <h3>Cluster</h3>
-    <?php if ($c !== false) { ?>
+    <?php if ($cluster !== false) { ?>
       <ul class="muted" style="list-style:none; padding-left:0; margin:10px 0 0 0">
-        <li><strong><?php echo safeentities($c['name']); ?></strong></li>
-        <li>Punkte: <?php echo number_format($c['points'],0,',','.'); ?></li>
-        <li>Mitglieder: <?php echo $c['members']; ?></li>
-        <li>Geld: <?php echo number_format($c['money'],0,',','.'); ?> CR</li>
+        <li><strong><?php echo safeentities($cluster['name']); ?></strong></li>
+        <li>Punkte: <?php echo number_format($cluster['points'],0,',','.'); ?></li>
+        <li>Mitglieder: <?php echo $cluster['members']; ?></li>
+        <li>Geld: <?php echo number_format($cluster['money'],0,',','.'); ?> CR</li>
       </ul>
     <?php } else { ?>
       <p class="muted">Du bist in keinem Cluster.</p>
