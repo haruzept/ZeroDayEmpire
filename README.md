@@ -179,3 +179,8 @@ Der obige Eintrag berechnet alle drei Stunden die Punkte neu. `run_calc_points.s
 ## 💡 Beiträge
 
 Verbesserungen oder Fixes willkommen! Reiche Änderungen als Archiv (ZIP/TAR.GZ) an zde2code@ZeroDayEmpire.org ein, damit sie ggf. auf der offiziellen Seite veröffentlicht werden.
+
+### Forschung & Entwicklung
+- Migration `sql/2025-08-28_research_migration.sql` in die Datenbank importieren.
+- Neue Seite `research.php` im Spiel aufrufen, um Forschungen zu verwalten.
+- Laufende Forschungen werden durch den Aufruf von `research_process()` in `processupgrades()` automatisch verarbeitet.
