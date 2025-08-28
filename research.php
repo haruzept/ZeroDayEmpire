@@ -50,7 +50,7 @@ if (!empty($_GET['error'])) {
 }
 echo $notif;
 
-$r = db_query('SELECT * FROM research WHERE pc=\''.mysql_escape_string($pcid).'\' AND end>\''.time().'\' ORDER BY start ASC;');
+$r = db_query('SELECT * FROM research WHERE pc=\''.mysql_escape_string($pcid).'\' AND `end`>\''.time().'\' ORDER BY `start` ASC;');
 $full = mysql_num_rows($r);
 $maxSlots = isset($pc['research_slots']) ? (int)$pc['research_slots'] : 1;
 if ($full > 0) {

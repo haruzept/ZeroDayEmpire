@@ -66,7 +66,7 @@ function research_slots_available($pcid)
 {
     global $pc;
     $pcid = (int)$pcid;
-    $r = db_query('SELECT COUNT(*) AS c FROM research WHERE pc=\''.mysql_escape_string($pcid).'\' AND end>\''.time().'\'');
+    $r = db_query('SELECT COUNT(*) AS c FROM research WHERE pc=\''.mysql_escape_string($pcid).'\' AND `end`>\''.time().'\'');
     $cnt = (int)mysql_result($r,0,'c');
     $max = isset($pc['research_slots']) ? (int)$pc['research_slots'] : 1;
     if ($cnt >= $max) {
@@ -112,14 +112,14 @@ function research_start($pcid,$track)
     $pc['credits'] -= $calc['cost'];
     $start = time();
     $end = $start + $calc['time'];
-    db_query('INSERT INTO research SET pc=\''.mysql_escape_string($pcid).'\', start=\''.mysql_escape_string($start).'\', end=\''.mysql_escape_string($end).'\', track=\''.$track.'\', target_level=\''.mysql_escape_string($target).'\'');
+    db_query('INSERT INTO research SET pc=\''.mysql_escape_string($pcid).'\', `start`=\''.mysql_escape_string($start).'\', `end`=\''.mysql_escape_string($end).'\', track=\''.$track.'\', target_level=\''.mysql_escape_string($target).'\'');
     return array('id'=>mysql_insert_id(),'end'=>$end);
 }
 
 function research_process($now = null)
 {
     if ($now === null) { $now = time(); }
-    $r = db_query('SELECT * FROM research WHERE end<=\''.mysql_escape_string($now).'\' ORDER BY start ASC');
+    $r = db_query('SELECT * FROM research WHERE `end`<=\''.mysql_escape_string($now).'\' ORDER BY `start` ASC');
     while ($row = mysql_fetch_assoc($r)) {
         db_query('INSERT INTO research_state SET pc=\''.mysql_escape_string($row['pc']).'\', track=\''.mysql_escape_string($row['track']).'\', level=\''.mysql_escape_string($row['target_level']).'\' ON DUPLICATE KEY UPDATE level=VALUES(level)');
         db_query('DELETE FROM research WHERE id=\''.mysql_escape_string($row['id']).'\'');
