@@ -10,6 +10,8 @@ if (!defined('IN_ZDE')) {
 
 define('LF', "\n");
 
+include_once 'config.php';
+
 
 #if($_SERVER['REMOTE_ADDR']!='213.54.101.168') {
 if (file_exists('data/work.txt') == true || file_exists('data/mysql-backup.txt') == true) {
