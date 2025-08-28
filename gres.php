@@ -100,6 +100,12 @@ function mysql_insert_id()
     return mysqli_insert_id($dbcon);
 }
 
+function mysql_affected_rows()
+{
+    global $dbcon;
+    return mysqli_affected_rows($dbcon);
+}
+
 function mysql_data_seek($r, $offset)
 {
     return mysqli_data_seek($r, $offset);
