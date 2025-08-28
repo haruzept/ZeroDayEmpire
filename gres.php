@@ -32,7 +32,7 @@ Du kannst auch so lange dem <a href="http://forum.ZeroDayEmpire.org/">Forum</a> 
 }
 #} #else ini_set('display_errors',1);
 
-include 'config.php';
+include 'includes/research.php';
 $STYLESHEET = $standard_stylesheet;
 mysqli_report(MYSQLI_REPORT_OFF);
 
@@ -956,7 +956,9 @@ function dereferurl($url)
 }
 
 function processupgrades(&$pc, $savepc = true)
-{ //----------------- PROCRESS UPGRADES -------------------
+{
+    research_process();
+    //----------------- PROCRESS UPGRADES -------------------
     global $bucks;
     $pcid = $pc['id']; # h4ck
 
