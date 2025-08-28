@@ -1,7 +1,10 @@
 <?php
 define('IN_ZDE', 1);
 $FILE_REQUIRES_PC = true;
-include 'ingame.php';
+// Load the common game bootstrap. Using an absolute path via __DIR__
+// avoids include_path issues that previously resulted in the script
+// terminating with "Hacking attempt" when the file could not be found.
+require_once __DIR__.'/ingame.php';
 
 $action = $_REQUEST['a'] ?? $_REQUEST['action'] ?? $_REQUEST['m'] ?? $_REQUEST['page'] ?? '';
 
