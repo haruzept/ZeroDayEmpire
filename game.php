@@ -248,7 +248,7 @@ switch ($action) {
       <ul class="muted" style="list-style:none; padding-left:0; margin:10px 0 0 0">
         <li><strong><?php echo safeentities($cluster['name']); ?></strong></li>
         <li>Punkte: <?php echo number_format($cluster['points'],0,',','.'); ?></li>
-        <li>Mitglieder: <?php echo $cluster['members']; ?></li>
+        <li>Mitglieder: <?php echo $cluster['members'] ?? 0; ?></li>
         <li>Geld: <?php echo number_format($cluster['money'],0,',','.'); ?> CR</li>
       </ul>
     <?php } else { ?>
