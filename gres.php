@@ -36,9 +36,12 @@ include 'includes/research.php';
 $STYLESHEET = $standard_stylesheet;
 mysqli_report(MYSQLI_REPORT_OFF);
 
-if ($db_use_this_values) {
-    $dbcon = @mysqli_connect($db_host, $db_username, $db_password);
-} else {
+// mysqli_connect() ohne Parameter nutzt seit PHP 8 nicht mehr automatisch
+// die Standardwerte aus der php.ini. Deshalb versuchen wir zunächst, mit den
+// in der Konfiguration hinterlegten Daten zu verbinden und greifen nur bei
+// Bedarf auf die alten Defaults zurück.
+$dbcon = @mysqli_connect($db_host, $db_username, $db_password);
+if (!$dbcon && !$db_use_this_values) {
     $dbcon = @mysqli_connect();
 }
 
