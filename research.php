@@ -45,9 +45,10 @@ echo '<div class="submenu"><p><a href="game.php?m=start&amp;sid='.$sid.'">Zur Ü
 if (!function_exists('infobox')) {
     function infobox($titel, $class, $text, $param = 'class')
     {
+        $formatted = nl2br($text);
         return "<div {$param}=\"{$class}\">\n"
             . "<h3>{$titel}</h3>\n"
-            . "<p>{$text}</p>\n"
+            . "<p>{$formatted}</p>\n"
             . "</div>\n";
     }
 }
