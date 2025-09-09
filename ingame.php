@@ -243,214 +243,39 @@ function cscodetostring($code)
 }
 
 
+
 function getiteminfo($key, $stage)
 { //--------------------- Get Item Info --------------------------
-    global $STYLESHEET, $REMOTE_FILES_DIR, $DATADIR, $pc;
-    global $cpu_levels, $ram_levels;
-    $d;
-    $c;
+    global $pc;
+    $c = $d = 0;
     if ($stage < 1) {
         $stage = 1;
     }
     $stage = (float)$stage;
-    switch ($key) {
-        case 'cpu':
-            switch ($stage) {
-                case 0:
-                    $d = 20;
-                    $c = 60;
-                    break;
-                case 1:
-                    $d = 25;
-                    $c = 80;
-                    break;
-                case 2:
-                    $d = 30;
-                    $c = 90;
-                    break;
-                case 3:
-                    $d = 35;
-                    $c = 110;
-                    break;
-                case 4:
-                    $d = 40;
-                    $c = 120;
-                    break;
-                case 5:
-                    $d = 45;
-                    $c = 140;
-                    break;
-                case 6:
-                    $d = 50;
-                    $c = 150;
-                    break;
-                case 7:
-                    $d = 55;
-                    $c = 255;
-                    break;
-                case 8:
-                    $d = 55;
-                    $c = 300;
-                    break;
-                case 9:
-                    $d = 60;
-                    $c = 512;
-                    break;
-                case 10:
-                    $d = 90;
-                    $c = 768;
-                    break;
-                case 11:
-                    $d = 120;
-                    $c = 1150;
-                    break;
-                case 12:
-                    $d = 150;
-                    $c = 1730;
-                    break;
-                case 13:
-                    $d = 180;
-                    $c = 2590;
-                    break;
-                case 14:
-                    $d = 210;
-                    $c = 3890;
-                    break;
-                case 15:
-                    $d = 240;
-                    $c = 5800;
-                    break;
-                case 16:
-                    $d = 300;
-                    $c = 8500;
-                    break;
-                case 17:
-                    $d = 360;
-                    $c = 12000;
-                    break;
-                case 18:
-                    $d = 420;
-                    $c = 18000;
-                    break;
-                case 19:
-                    $d = 460;
-                    $c = 25000;
-                    break;
-                case 20:
-                    $d = 580;
-                    $c = 50000;
-                    break;
-            }
-            break;
-        case 'ram':
-            switch ($stage) {
-                case 0:
-                    $d = 30;
-                    $c = 200;
-                    break;
-                case 1:
-                    $d = 45;
-                    $c = 300;
-                    break;
-                case 2:
-                    $d = 60;
-                    $c = 500;
-                    break;
-                case 3:
-                    $d = 70;
-                    $c = 800;
-                    break;
-                case 4:
-                    $d = 90;
-                    $c = 1000;
-                    break;
-                case 5:
-                    $d = 120;
-                    $c = 1200;
-                    break;
-                case 6:
-                    $d = 150;
-                    $c = 3000;
-                    break;
-                case 7:
-                    $d = 180;
-                    $c = 4000;
-                    break;
-                case 8:
-                    $d = 210;
-                    $c = 10000;
-                    break;
-            }
-            break;
-        case 'mm':
-            $stage += 0.5;
-            $c = $stage * 51;
-            $d = $stage * 10;
-            break;
-        case 'bb':
-            $stage += 0.5;
-            $c = $stage * 45;
-            $d = $stage * 11;
-            break;
-        case 'lan':
-            $stage += 0.5;
-            $c = $stage * 150;
-            $d = $stage * 25;
-            break;
-        case 'sdk':
-            $stage += 0.5;
-            $c = $stage * 100;
-            $d = $stage * 15;
-            break;
-        case 'fw':
-            $stage += 0.5;
-            $c = $stage * 49;
-            $d = $stage * 5;
-            break;
-        case 'av':
-            $stage += 0.15;
-            $c = $stage * 50;
-            $d = $stage * 6;
-            break;
-        case 'mk':
-            $stage += 0.5;
-            $c = $stage * 100;
-            $d = $stage * 16;
-            break;
-        case 'ips':
-            $stage += 0.5;
-            $c = $stage * 33;
-            $d = $stage * 8;
-            break;
-        case 'ids':
-            $stage += 0.5;
-            $c = $stage * 44;
-            $d = $stage * 7;
-            break;
-        case 'rh':
-            $stage += 0.5;
-            $c = $stage * 400;
-            $d = $stage * 10;
-            break;
-        case 'trojan':
-            $stage += 0.5;
-            $c = $stage * 39;
-            $d = $stage * 8;
-            break;
+    $cost_mult = 1;
+    if ($key == 'cpu' || $key == 'ram') {
+        $res = db_query('SELECT next_cost,next_duration FROM item_levels WHERE item=\''.mysql_escape_string($key).'\' AND level=\''.mysql_escape_string((int)$stage).'\' LIMIT 1;');
+        if ($row = mysql_fetch_assoc($res)) {
+            $c = (int)$row['next_cost'];
+            $d = (int)$row['next_duration'];
+        }
+    } else {
+        $res = db_query('SELECT offset,cost_factor,duration_factor,cost_multiplier FROM item_formulas WHERE item=\''.mysql_escape_string($key).'\' LIMIT 1;');
+        if ($row = mysql_fetch_assoc($res)) {
+            $stage += (float)$row['offset'];
+            $c = $stage * (float)$row['cost_factor'];
+            $d = $stage * (float)$row['duration_factor'];
+            $cost_mult = (float)$row['cost_multiplier'];
+        }
     }
-
-    $r['c'] = ceil($c); # Kosten
-    $r['d'] = floor($d); # Dauer in Minuten
+    $r = array('c' => ceil($c), 'd' => floor($d));
     if ($key != 'cpu' && $key != 'ram') {
-        $r['c'] *= 4;
+        $r['c'] *= $cost_mult;
         $df = duration_faktor($pc['cpu'], $pc['ram']);
-        $r['d'] *= $df;
+        $r['d'] = ceil($r['d'] * $df);
         $r['c'] = floor($r['c']);
-        $r['d'] = ceil($r['d']);
     }
-
     return $r;
-
 }
 
 function duration_faktor($cpu, $ram)

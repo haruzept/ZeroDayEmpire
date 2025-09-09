@@ -202,8 +202,8 @@ switch ($action) {
       <h3>Computer</h3>
       <ul class="muted" style="list-style:none; padding-left:0; margin:10px 0 0 0">
         <li><a href="game.php?m=pc&amp;sid=<?php echo $sid; ?>"><strong><?php echo safeentities($pc['name']); ?></strong> (10.47.<?php echo $pc['ip']; ?>)</a></li>
-        <li data-item="cpu"><?php echo idtoname('cpu'); ?>: <?php echo $cpu_names[$pc['cpu']]; ?><?php echo overview_upgrade_link('cpu'); ?><div class="tip"></div></li>
-        <li data-item="ram"><?php echo idtoname('ram'); ?>: <?php echo $ram_levels[$pc['ram']]; ?> MB<?php echo overview_upgrade_link('ram'); ?><div class="tip"></div></li>
+          <li data-item="cpu"><?php echo idtoname('cpu'); ?>: <?php echo formatitemlevel('cpu',$pc['cpu']); ?><?php echo overview_upgrade_link('cpu'); ?><div class="tip"></div></li>
+          <li data-item="ram"><?php echo idtoname('ram'); ?>: <?php echo formatitemlevel('ram',$pc['ram']); ?><?php echo overview_upgrade_link('ram'); ?><div class="tip"></div></li>
         <li data-item="lan"><?php echo idtoname('lan'); ?>: Level <?php echo $pc['lan']; ?><?php echo overview_upgrade_link('lan'); ?><div class="tip"></div></li>
       </ul>
       <div class="software">
@@ -327,23 +327,16 @@ createlayout_bottom();
 
         function showinfo($id, $txt, $val = -1)
         {
-            global $pc, $sid, $pcid, $usrid, $ram_levels, $cpu_levels, $cpu_names;
+            global $pc, $sid, $pcid, $usrid;
             if ($val == -1) {
                 $val = $pc[$id];
             }
-            if ($id == 'ram') {
-                $val = $ram_levels[$val];
-            } elseif ($id == 'cpu') {
-                $val = $cpu_names[$val];
-            }
             $name = idtoname($id);
-            if ($val && $val != '0.0') {
-                if (strlen((string)$val) == 1 || $val == 10) {
-                    $val = $val.'.0';
-                }
+            $disp = formatitemlevel($id, $val);
+            if ($disp && $disp != '0.0') {
                 echo '<a href="game.php?m=item&amp;item='.$id.'&amp;sid='.$sid.'">'.$name.'</a>';
                 if ($txt != '') {
-                    echo ' ('.str_replace('%v', $val, $txt).')';
+                    echo ' ('.str_replace('%v', $disp, $txt).')';
                 }
                 echo "\n";
             }
@@ -497,16 +490,7 @@ createlayout_bottom();
 <?php // /ZDE theme inject start
 
 
-        $val = $pcItemValue;
-        if ($item == 'ram') {
-            $val = $ram_levels[$val];
-        } elseif ($item == 'cpu') {
-            $val = $cpu_names[$val];
-        } else {
-            if (strlen((string)$val) == 1) {
-                $val = $val.'.0';
-            }
-        }
+        $val = formatitemlevel($item, $pcItemValue);
 
         $cssid = 'essential';
         if ($item == 'sdk' || $item == 'mk' || $item == 'ips') {
@@ -768,7 +752,7 @@ createlayout_bottom();
             function buildinfo($id)
             {
                 global $STYLESHEET, $DATADIR, $pc, $bucks, $sid, $usrid, $pcid;
-                global $ram_levels, $cpu_levels, $r, $full, $SALT, $idparam;
+                global $r, $full, $SALT, $idparam;
                 if (isavailb($id, $pc)) {
                     $inf = getiteminfo($id, $pc[$id]);
 
