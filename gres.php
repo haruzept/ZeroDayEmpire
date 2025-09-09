@@ -189,68 +189,17 @@ if ($localhost) {
     setlocale(LC_TIME, 'de_DE');
 }
 
-$cpu_levels = array(
-    0 => 1200,
-    1 => 1400,
-    2 => 1600,
-    3 => 1800,
-    4 => 2000,
-    5 => 2200,
-    6 => 2400,
-    7 => 2600,
-    8 => 2800,
-    9 => 3000,
-    10 => 3200,
-    11 => 3400,
-    12 => 3600,
-    13 => 3800,
-    14 => 4000,
-    15 => 4200,
-    16 => 4400,
-    17 => 4600,
-    18 => 4800,
-    19 => 5000,
-    20 => 5200,
-    21 => 5400,
-);
-
-$cpu_names = array(
-    0 => 'Single-Core 1200 Ghz',
-    1 => 'Single-Core 1400 Ghz',
-    2 => 'Single-Core 1600 Ghz',
-    3 => 'Single-Core 1800 Ghz',
-    4 => 'Dual-Core 2x2000 Ghz',
-    5 => 'Dual-Core 2x2200 Ghz',
-    6 => 'Dual-Core 2x2400 Ghz',
-    7 => 'Dual-Core 2x2600 Ghz',
-    8 => 'Dual-Core 2x2800 Ghz',
-    9 => 'Dual-Core 2x3000 Ghz',
-    10 => 'Dual-Core 4x3200 Ghz',
-    11 => 'Quad-Core 4x3400 Ghz',
-    12 => 'Quad-Core 4x3600 Ghz',
-    13 => 'Quad-Core 4x3800 Ghz',
-    14 => 'Quad-Core 4x4000 Ghz',
-    15 => 'Quad-Core 4x4200 Ghz',
-    16 => 'Quad-Core 4x4400 Ghz',
-    17 => 'Quad-Core 4x4600 Ghz',
-    18 => 'Quad-Core 4x4800 Ghz',
-    19 => 'Quad-Core 4x5000 Ghz',
-    20 => 'Quad-Core 4x5200 Ghz',
-    21 => 'Quad-Core 4x5400 Ghz',
-);
-
-$ram_levels = array(
-    0 => 1024,
-    1 => 2048,
-    2 => 3072,
-    3 => 4096,
-    4 => 5120,
-    5 => 6144,
-    6 => 7168,
-    7 => 8192,
-    8 => 9216,
-    9 => 10240,
-);
+$cpu_levels = $cpu_names = $ram_levels = array();
+$r = db_query("SELECT level,value,name FROM item_levels WHERE item='cpu' ORDER BY level");
+while ($row = mysql_fetch_assoc($r)) {
+    $lvl = (int)$row['level'];
+    $cpu_levels[$lvl] = (int)$row['value'];
+    $cpu_names[$lvl] = $row['name'];
+}
+$r = db_query("SELECT level,value FROM item_levels WHERE item='ram' ORDER BY level");
+while ($row = mysql_fetch_assoc($r)) {
+    $ram_levels[(int)$row['level']] = (int)$row['value'];
+}
 
 define('DPH_ADS', 22, false);
 define('DPH_DIALER', 24, false);
@@ -1037,23 +986,16 @@ function processupgrades(&$pc, $savepc = true)
 function itemmaxval($id)
 { //-------------------- ITEM MAX VALUE ------------------------
     global $cpu_levels, $ram_levels;
-    switch ($id) {
-        case 'cpu':
-            return count($cpu_levels) - 1;
-            break;
-        case 'ram':
-            return count($ram_levels) - 1;
-            break;
-        case 'sdk':
-            return 5;
-            break;
-        case 'trojan':
-            return 5;
-            break;
-        default:
-            return 10;
-            break;
+    if ($id == 'cpu') {
+        return count($cpu_levels) - 1;
+    } elseif ($id == 'ram') {
+        return count($ram_levels) - 1;
     }
+    $r = db_query('SELECT max_level FROM item_formulas WHERE item=\''.mysql_escape_string($id).'\' LIMIT 1;');
+    if ($row = mysql_fetch_assoc($r)) {
+        return (float)$row['max_level'];
+    }
+    return 10;
 }
 
 function itemnextlevel($id, $curlevel)
