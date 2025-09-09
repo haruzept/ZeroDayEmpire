@@ -2,7 +2,6 @@
 // Fetch champion name for KPI display
 define('IN_ZDE', 1);
 require_once __DIR__ . '/gres.php';
-mysql_select_db(dbname(1));
 $champion = '';
 $r = db_query('SELECT name FROM rank_users ORDER BY platz ASC LIMIT 1;');
 if ($row = mysql_fetch_assoc($r)) {

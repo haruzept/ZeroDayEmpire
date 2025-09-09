@@ -172,6 +172,9 @@ function dbname($srvid = -1)
     return $database_prefix.$srvid.$database_suffix;
 }
 
+// Ensure a database is selected before any queries run
+mysql_select_db(dbname(1));
+
 function db_query($q)
 {
     global $dbcon;
