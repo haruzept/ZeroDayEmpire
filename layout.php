@@ -21,6 +21,7 @@ date_default_timezone_set($server_tz);
 function basicheader($title)
 {
     global $javascript;
+    header('Content-Type: text/html; charset=utf-8');
     echo "<!DOCTYPE html>\n";
     echo "<html lang=\"de\">\n";
     echo "<head>\n";

@@ -32,12 +32,6 @@ processupgrades($pc);
 if ($pc['blocked'] > time()) { exit; }
 
 createlayout_top('ZeroDayEmpire - Forschung');
-?>
-<!-- ZDE theme inject -->
-<style>@import url("style.css");</style>
-<div class="container">
-<?php // /ZDE theme inject start
-
 echo '<div class="content" id="computer">'."\n";
 echo '<h2>Forschung</h2>'."\n";
 echo '<div class="submenu"><p><a href="game.php?m=start&amp;sid='.$sid.'">Zur Übersicht</a></p></div>'."\n";
@@ -127,8 +121,5 @@ if ($full < $maxSlots) {
 }
 
 echo "\n".'</div>'."\n";
-?>
-</div>
-<!-- /ZDE theme inject -->
-<?php
+
 createlayout_bottom();
