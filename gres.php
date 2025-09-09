@@ -922,7 +922,7 @@ function processupgrades(&$pc, $savepc = true)
 {
     research_process();
     //----------------- PROCRESS UPGRADES -------------------
-    global $bucks;
+    global $bucks, $usr;
     $pcid = $pc['id']; # h4ck
 
     # Upgrade-Vorgänge verarbeiten
@@ -966,14 +966,16 @@ function processupgrades(&$pc, $savepc = true)
         $pc['credits'] += $plus;
         $max = getmaxbb($pc);
         if ($pc['credits'] > $max) {
-            $c = getcluster($usr['cluster']);
-            if ($c !== false) {
-                $credits = $c['money'] + ($pc['credits'] - $max);
-                db_query(
-                    'UPDATE clusters SET money='.mysql_escape_string($credits).' WHERE id=\''.mysql_escape_string(
-                        $usr['cluster']
-                    ).'\''
-                );
+            if (isset($usr['cluster'])) {
+                $c = getcluster($usr['cluster']);
+                if ($c !== false) {
+                    $credits = $c['money'] + ($pc['credits'] - $max);
+                    db_query(
+                        'UPDATE clusters SET money='.mysql_escape_string($credits).' WHERE id=\''.mysql_escape_string(
+                            $usr['cluster']
+                        ).'\''
+                    );
+                }
             }
             $pc['credits'] = $max;
         }
