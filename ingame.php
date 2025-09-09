@@ -260,7 +260,7 @@ function getiteminfo($key, $stage)
             $d = (int)$row['next_duration'];
         }
     } else {
-        $res = db_query('SELECT offset,cost_factor,duration_factor,cost_multiplier FROM item_formulas WHERE item=\''.mysql_escape_string($key).'\' LIMIT 1;');
+        $res = db_query('SELECT `offset`,cost_factor,duration_factor,cost_multiplier FROM item_formulas WHERE item=\''.mysql_escape_string($key).'\' LIMIT 1;');
         if ($row = mysql_fetch_assoc($res)) {
             $stage += (float)$row['offset'];
             $c = $stage * (float)$row['cost_factor'];
