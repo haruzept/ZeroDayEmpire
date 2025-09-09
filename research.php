@@ -47,7 +47,40 @@ if (!function_exists('infobox')) {
     }
 }
 
-include 'includes/codex_infobox_research.php';
+    echo infobox(
+        'Forschung & Entwicklung – Schadsoftware (sim.)',
+        'info',
+        'Was ist das?\n'
+        . 'F&E erweitert das Upgrade-System um Forschungsslots. Forschung läuft zeitbasiert und schaltet stufenweise Effekte frei.\n\n'
+        . 'Grundprinzip:\n'
+        . '• 10 Forschungszweige mit je 5 Stufen (rein simulativ).\n'
+        . '• Kosten/Zeit analog Upgrade: Basis je Zweig (L1) + Multiplikatoren.\n'
+        . '• Dauer wird – wie bei Upgrades – zusätzlich mit der bestehenden CPU/RAM-Dauerfunktion skaliert.\n'
+        . '• Max. parallele Forschungen = Forschungsslots.\n\n'
+        . 'Zweige (Kurz):\n'
+        . 'T1 r_ana Öffentliche Skriptanalyse → Einstieg.\n'
+        . 'T2 r_poc PoC-Verständnis & Doku → Verständnis vertiefen.\n'
+        . 'T3 r_bauk Modularer Code-Baukasten → Module.\n'
+        . 'T4 r_lab Simuliertes Schwachstellen-Labor → Testumgebungen.\n'
+        . 'T5 r_pers Persistenz-Forschung (sim.) → Haltbarkeit.\n'
+        . 'T6 r_veil Verschleierungs-Methoden (sim.) → Tarnung.\n'
+        . 'T7 r_c2 Steuerkanal-Emulation (sim.) → Kontrolle & Kommunikation.\n'
+        . 'T8 r_data Datenzugriffs-Strategien (sim.) → Zugriff & Pfade.\n'
+        . 'T9 r_se Social-Engineering-Simulation (sim.) → Menschlicher Faktor.\n'
+        . 'T10 r_rans Ransomware-Architektur (sim.) → Endarchitektur.\n\n'
+        . 'Freischaltung (Kurz):\n'
+        . '• T2 ab T1≥2 | T3 ab T2≥2 | T4 ab T3≥2.\n'
+        . '• T5 ab T3≥3 & T4≥2 | T6 ab T3≥3.\n'
+        . '• T7 ab T5≥2 & T6≥2 | T8 ab T4≥3 & T5≥2.\n'
+        . '• T9 ab T2≥3 & T8≥2 | T10 ab T5≥4, T6≥3, T7≥3, T8≥3, T9≥2.\n'
+        . '• Zusätzliche Level-Gates sind in der Datenbank gepflegt.\n\n'
+        . 'Kosten/Zeit (L1, pro Stufe ×1.60 / ×1.45):\n'
+        . 'r_ana 100/5 · r_poc 200/8 · r_bauk 350/12 · r_lab 600/18 · r_pers 900/25 · r_veil 1400/35 · r_c2 2200/50 · r_data 3400/70 · r_se 5200/95 · r_rans 8000/130.\n\n'
+        . 'Hinweise:\n'
+        . '• Rein spielmechanisch (simuliert). Keine realen Anleitungen.\n'
+        . '• Forschung kann pausiert/abgebrochen werden (kein Refund).\n'
+        . '• Admin-Events können Zeit/Kosten global beeinflussen.'
+    );
 
 $notif = '';
 if (!empty($_GET['ok'])) {
