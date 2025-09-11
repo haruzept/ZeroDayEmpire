@@ -43,7 +43,7 @@
       <div class="links">
         <a href="impressum.php">Impressum</a>
         <a href="legal.php">Legal</a>
-        <a href="pub.php?d=rules">Spielregeln</a>
+        <a href="rules.php">Spielregeln</a>
       </div>
     </div>
   </footer>
