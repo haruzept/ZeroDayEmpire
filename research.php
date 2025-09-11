@@ -48,16 +48,16 @@ echo $notif;
  
 // Tooltip descriptions for each research track
 $trackTooltips = [
-    'r_ana' => "Öffentliche Skriptanalyse\nVermittelt die Grundlagen zum Einordnen öffentlich verfügbarer Skripte/PoCs in der Simulation. Dient als Voraussetzung für fortgeschrittene Zweige.",
-    'r_bauk' => "Modularer Code-Baukasten\nBaut wiederverwendbare Module auf, damit Funktionen in Szenarien schneller kombiniert werden können. Erhöht die Effizienz nachfolgender Forschungsschritte.",
-    'r_c2' => "Steuerkanal-Emulation\nEmuliert sichere Command-&-Control-Mechaniken zur Koordination in Szenarien. Verbessert Tests zu Steuerung und Abstimmung verteilter Komponenten.",
-    'r_data' => "Datenzugriffs-Strategien\nAnalysiert und modelliert Zugriffspfade auf Daten in Systemen – rein als Szenario. Verbessert die Bewertung von Risiken/Ertrag in Simulationen.",
-    'r_lab' => "Simuliertes Schwachstellen-Labor\nStellt eine sichere Testumgebung bereit, um Verhalten und Wechselwirkungen zu beobachten. Reduziert Fehlversuche und ist Gate für höhere Forschung.",
-    'r_pers' => "Persistenz-Forschung\nUntersucht, wie Zustände über Szenario-Neustarts hinweg erhalten bleiben (nur simuliert). Erhöht die Beständigkeit von Effekten und öffnet Pfade zu C2/Daten.",
-    'r_poc' => "PoC-Verständnis & Doku\nVertieft das Verständnis von Proof-of-Concepts und sorgt für saubere Dokumentation. Erhöht Nachvollziehbarkeit und schaltet den Baukasten frei.",
-    'r_rans' => "Ransomware-Architektur\nModelliert eine End-to-End-Architektur als reines Lern-/Balancing-Szenario ohne reale Ausführung. Gilt als komplexes Abschlussziel und bündelt Erkenntnisse aus Persistenz, Verschleierung, C2, Datenzugriff und Social Engineering.",
-    'r_se' => "Social-Engineering-Simulation\nTrainiert menschliche Faktoren, Kommunikation und Täuschungsmuster ohne echte Interaktion. Verbessert das Zusammenspiel mit Datenzugriff und Steuerkanal in Szenarien.",
-    'r_veil' => "Verschleierungs-Methoden\nUntersucht Tarnmechaniken abstrakt innerhalb der Simulation. Unterstützt höhere Zweige, indem es Erkennungsrisiken in Szenario-Bewertungen reduziert.",
+    'r_ana' => "Vermittelt die Grundlagen zum Einordnen öffentlich verfügbarer Skripte/PoCs in der Simulation. Dient als Voraussetzung für fortgeschrittene Zweige.",
+    'r_bauk' => "Baut wiederverwendbare Module auf, damit Funktionen in Szenarien schneller kombiniert werden können. Erhöht die Effizienz nachfolgender Forschungsschritte.",
+    'r_c2' => "Emuliert sichere Command-&-Control-Mechaniken zur Koordination in Szenarien. Verbessert Tests zu Steuerung und Abstimmung verteilter Komponenten.",
+    'r_data' => "Analysiert und modelliert Zugriffspfade auf Daten in Systemen – rein als Szenario. Verbessert die Bewertung von Risiken/Ertrag in Simulationen.",
+    'r_lab' => "Stellt eine sichere Testumgebung bereit, um Verhalten und Wechselwirkungen zu beobachten. Reduziert Fehlversuche und ist Gate für höhere Forschung.",
+    'r_pers' => "Untersucht, wie Zustände über Szenario-Neustarts hinweg erhalten bleiben (nur simuliert). Erhöht die Beständigkeit von Effekten und öffnet Pfade zu C2/Daten.",
+    'r_poc' => "Vertieft das Verständnis von Proof-of-Concepts und sorgt für saubere Dokumentation. Erhöht Nachvollziehbarkeit und schaltet den Baukasten frei.",
+    'r_rans' => "Modelliert eine End-to-End-Architektur als reines Lern-/Balancing-Szenario ohne reale Ausführung. Gilt als komplexes Abschlussziel und bündelt Erkenntnisse aus Persistenz, Verschleierung, C2, Datenzugriff und Social Engineering.",
+    'r_se' => "Trainiert menschliche Faktoren, Kommunikation und Täuschungsmuster ohne echte Interaktion. Verbessert das Zusammenspiel mit Datenzugriff und Steuerkanal in Szenarien.",
+    'r_veil' => "Untersucht Tarnmechaniken abstrakt innerhalb der Simulation. Unterstützt höhere Zweige, indem es Erkennungsrisiken in Szenario-Bewertungen reduziert.",
 ];
 
 $r = db_query('SELECT * FROM research WHERE pc=\''.mysql_escape_string($pcid).'\' AND `end`>\''.time().'\' ORDER BY `start` ASC;');
