@@ -56,7 +56,11 @@ function research_check_deps($pcid,$track,$target_level)
         );
         $level = ($tmp = mysql_fetch_assoc($req)) ? (int)$tmp['level'] : 0;
         if ($level < (int)$dep['req_level']) {
-            return 'Benötigt '.$dep['req_track'].' Stufe '.$dep['req_level'];
+            $tn = db_query(
+                'SELECT name FROM research_tracks WHERE track=\''.mysql_escape_string($dep['req_track']).'\' LIMIT 1'
+            );
+            $reqName = (mysql_num_rows($tn) > 0) ? mysql_result($tn,0,'name') : $dep['req_track'];
+            return 'Benötigt '.$reqName.' Stufe '.$dep['req_level'];
         }
     }
     return true;
