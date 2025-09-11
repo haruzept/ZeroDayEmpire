@@ -114,10 +114,10 @@ foreach ($tracks as $track => $info) {
     if ($dep === true && $slotFree && $pc['credits'] >= $info['next_cost']) {
         echo '<a href="research.php?a=start&amp;track='.$track.'&amp;sid='.$sid.'">Erforschen</a>';
     } else {
-        if ($dep !== true) { $msg = $dep; }
-        elseif (!$slotFree) { $msg = 'Alle Slots belegt'; }
-        else { $msg = 'Nicht genügend Credits'; }
-        echo '<span title="'.htmlspecialchars($msg).'">Erforschen</span>';
+        if ($dep !== true) { $msg = $dep; $btn = 'Fehlende Abhängigkeit'; }
+        elseif (!$slotFree) { $msg = 'Alle Slots belegt'; $btn = 'Erforschen'; }
+        else { $msg = 'Nicht genügend Credits'; $btn = 'Erforschen'; }
+        echo '<span title="'.htmlspecialchars($msg).'">'.$btn.'</span>';
     }
     echo '</td></tr>'."\n";
 }
