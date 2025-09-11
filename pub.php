@@ -61,9 +61,6 @@ switch ($action) {
     case 'newpwd':
         showdoc('newpwd', 'Neues Passwort anfordern');
         break;
-    case 'rules':
-        showdoc('rules', 'Regeln');
-        break;
     case 'chat':
         showdoc('chat', 'Chat');
         break;
@@ -149,7 +146,7 @@ case 'nickcheck':
 </tr>
 <tr>
 <td colspan="2"><input type="hidden" name="server" value="1" />
-<label><input type="checkbox" name="rules" required> Ich akzeptiere die <a href="pub.php?d=rules" target="_blank"><u>Spielregeln</u></a>.</label></td>
+<label><input type="checkbox" name="rules" required> Ich akzeptiere die <a href="rules.php" target="_blank"><u>Spielregeln</u></a>.</label></td>
 </tr>
 <tr>
 <td colspan="2"><input type="submit" value="Registrieren" /></td>

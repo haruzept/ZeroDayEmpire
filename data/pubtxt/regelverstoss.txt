@@ -3,7 +3,7 @@
 <div id="ruleoffence-submit">
 <h3>Regelversto&szlig; melden</h3>
 
-<p><strong>Wenn ein User gegen die <a href="pub.php?d=rules">Spielregeln</a> verstößt, kannst du
+<p><strong>Wenn ein User gegen die <a href="rules.php">Spielregeln</a> verstößt, kannst du
 ihn hier melden! Nach Prüfung des Sachverhaltes wird dann evtl. sein Account gesperrt oder gelöscht!</strong></p><br />
 <form action="pub.php?a=baduser" method=post>
 <table>
