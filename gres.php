@@ -50,7 +50,11 @@ if (!$dbcon && !$db_use_this_values) {
 if (!$dbcon) {
     die('Datenbankzugriff gescheitert! Bitte nochmal probieren.');
 }
-mysqli_set_charset($dbcon, 'utf8');
+// Ensure the connection speaks UTF-8 so that umlauts and other
+// multibyte characters are stored and retrieved correctly.
+// Using utf8mb4 matches the character set used when the database is
+// created in DATABASE.DUMP.SQL.
+mysqli_set_charset($dbcon, 'utf8mb4');
 
 function mysql_escape_string($str)
 {
