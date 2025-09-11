@@ -199,8 +199,11 @@ input:focus{ border-color: rgba(var(--accent)/.6); box-shadow: 0 0 0 4px rgba(va
 .content tbody td{
   padding:10px 12px; border-bottom:1px dashed var(--border);
 }
-.content tbody tr:hover{ background:rgba(255,255,255,.03) }
-.content tbody tr:last-child td{ border-bottom:none }
+/* Highlight table rows on hover across the project */
+table tbody tr:hover{
+  background:rgba(255,255,255,.03);
+}
+table tbody tr:last-child td{ border-bottom:none }
 
 /* Tooltips */
 [data-tooltip]{ position:relative; cursor:help }
