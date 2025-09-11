@@ -121,7 +121,7 @@ if ($full < $maxSlots) {
     foreach ($tracks as $track => $info) {
         $cur = $info['level'];
         $max = $info['max_level'];
-        echo '<tr><td>'.htmlspecialchars($info['name']).'</td><td>'.$cur.'/'.$max.'</td>';
+        echo '<tr><td title="'.$titleText.'">'.htmlspecialchars($info['name']).'</td><td>'.$cur.'/'.$max.'</td>';
         if ($cur >= $max) {
             echo '<td colspan="3">Max</td></tr>'."\n";
             continue;
