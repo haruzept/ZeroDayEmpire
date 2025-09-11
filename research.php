@@ -36,45 +36,6 @@ echo '<div class="content" id="computer">'."\n";
 echo '<h2>Forschung</h2>'."\n";
 echo '<div class="submenu"><p><a href="game.php?m=start&amp;sid='.$sid.'">Zur Übersicht</a></p></div>'."\n";
 
-$researchTooltip = <<<'TOOLTIP'
-Forschung & Entwicklung – Schadsoftware (sim.)
-
-Was ist das?
-F&E erweitert das Upgrade-System um Forschungsslots. Forschung läuft zeitbasiert und schaltet stufenweise Effekte frei.
-
-Grundprinzip:
-• 10 Forschungszweige mit je 5 Stufen (rein simulativ).
-• Kosten/Zeit analog Upgrade: Basis je Zweig (L1) + Multiplikatoren.
-• Dauer wird – wie bei Upgrades – zusätzlich mit der bestehenden CPU/RAM-Dauerfunktion skaliert.
-• Max. parallele Forschungen = Forschungsslots.
-
-Zweige (Kurz):
-T1 r_ana Öffentliche Skriptanalyse → Einstieg.
-T2 r_poc PoC-Verständnis & Doku → Verständnis vertiefen.
-T3 r_bauk Modularer Code-Baukasten → Module.
-T4 r_lab Simuliertes Schwachstellen-Labor → Testumgebungen.
-T5 r_pers Persistenz-Forschung (sim.) → Haltbarkeit.
-T6 r_veil Verschleierungs-Methoden (sim.) → Tarnung.
-T7 r_c2 Steuerkanal-Emulation (sim.) → Kontrolle & Kommunikation.
-T8 r_data Datenzugriffs-Strategien (sim.) → Zugriff & Pfade.
-T9 r_se Social-Engineering-Simulation (sim.) → Menschlicher Faktor.
-T10 r_rans Ransomware-Architektur (sim.) → Endarchitektur.
-
-Freischaltung (Kurz):
-• T2 ab T1≥2 | T3 ab T2≥2 | T4 ab T3≥2.
-• T5 ab T3≥3 & T4≥2 | T6 ab T3≥3.
-• T7 ab T5≥2 & T6≥2 | T8 ab T4≥3 & T5≥2.
-• T9 ab T2≥3 & T8≥2 | T10 ab T5≥4, T6≥3, T7≥3, T8≥3, T9≥2.
-• Zusätzliche Level-Gates sind in der Datenbank gepflegt.
-
-Kosten/Zeit (L1, pro Stufe ×1.60 / ×1.45):
-r_ana 100/5 · r_poc 200/8 · r_bauk 350/12 · r_lab 600/18 · r_pers 900/25 · r_veil 1400/35 · r_c2 2200/50 · r_data 3400/70 · r_se 5200/95 · r_rans 8000/130.
-
-Hinweise:
-• Rein spielmechanisch (simuliert). Keine realen Anleitungen.
-• Forschung kann pausiert/abgebrochen werden (kein Refund).
-• Admin-Events können Zeit/Kosten global beeinflussen.
-TOOLTIP;
 
 $notif = '';
 if (!empty($_GET['ok'])) {
@@ -84,16 +45,33 @@ if (!empty($_GET['error'])) {
     $notif .= '<div class="error"><h3>Fehler</h3><p>'.htmlspecialchars($_GET['error']).'</p></div>';
 }
 echo $notif;
+ 
+// Tooltip descriptions for each research track
+$trackTooltips = [
+    'r_ana' => "Öffentliche Skriptanalyse\nVermittelt die Grundlagen zum Einordnen öffentlich verfügbarer Skripte/PoCs in der Simulation. Dient als Voraussetzung für fortgeschrittene Zweige.",
+    'r_bauk' => "Modularer Code-Baukasten\nBaut wiederverwendbare Module auf, damit Funktionen in Szenarien schneller kombiniert werden können. Erhöht die Effizienz nachfolgender Forschungsschritte.",
+    'r_c2' => "Steuerkanal-Emulation\nEmuliert sichere Command-&-Control-Mechaniken zur Koordination in Szenarien. Verbessert Tests zu Steuerung und Abstimmung verteilter Komponenten.",
+    'r_data' => "Datenzugriffs-Strategien\nAnalysiert und modelliert Zugriffspfade auf Daten in Systemen – rein als Szenario. Verbessert die Bewertung von Risiken/Ertrag in Simulationen.",
+    'r_lab' => "Simuliertes Schwachstellen-Labor\nStellt eine sichere Testumgebung bereit, um Verhalten und Wechselwirkungen zu beobachten. Reduziert Fehlversuche und ist Gate für höhere Forschung.",
+    'r_pers' => "Persistenz-Forschung\nUntersucht, wie Zustände über Szenario-Neustarts hinweg erhalten bleiben (nur simuliert). Erhöht die Beständigkeit von Effekten und öffnet Pfade zu C2/Daten.",
+    'r_poc' => "PoC-Verständnis & Doku\nVertieft das Verständnis von Proof-of-Concepts und sorgt für saubere Dokumentation. Erhöht Nachvollziehbarkeit und schaltet den Baukasten frei.",
+    'r_rans' => "Ransomware-Architektur\nModelliert eine End-to-End-Architektur als reines Lern-/Balancing-Szenario ohne reale Ausführung. Gilt als komplexes Abschlussziel und bündelt Erkenntnisse aus Persistenz, Verschleierung, C2, Datenzugriff und Social Engineering.",
+    'r_se' => "Social-Engineering-Simulation\nTrainiert menschliche Faktoren, Kommunikation und Täuschungsmuster ohne echte Interaktion. Verbessert das Zusammenspiel mit Datenzugriff und Steuerkanal in Szenarien.",
+    'r_veil' => "Verschleierungs-Methoden\nUntersucht Tarnmechaniken abstrakt innerhalb der Simulation. Unterstützt höhere Zweige, indem es Erkennungsrisiken in Szenario-Bewertungen reduziert.",
+];
 
 $r = db_query('SELECT * FROM research WHERE pc=\''.mysql_escape_string($pcid).'\' AND `end`>\''.time().'\' ORDER BY `start` ASC;');
 $full = mysql_num_rows($r);
 $maxSlots = isset($pc['research_slots']) ? (int)$pc['research_slots'] : 1;
+
+echo '<div class="strip"><div class="kpi"><div class="label">Laufende Forschungen</div><div class="value">'.$full.' / '.$maxSlots.'</div></div>';
+echo '<div class="kpi"><div class="label">Credits</div><div class="value">'.number_format($pc['credits'],0,',','.').'</div></div></div>';
 if ($full > 0) {
     $states = array();
     $rs = db_query('SELECT track, level FROM research_state WHERE pc=\''.mysql_escape_string($pcid).'\';');
     while ($s = mysql_fetch_assoc($rs)) { $states[$s['track']] = (int)$s['level']; }
 
-    echo '<h3>Laufende Forschungen</h3><p><strong>Es sind '.$full.' von '.$maxSlots.' Slots belegt</strong></p>'."\n";
+    echo '<h3>Laufende Forschungen</h3>'."\n";
     echo '<table>'."\n";
     while ($row = mysql_fetch_assoc($r)) {
         $ti = db_query('SELECT name FROM research_tracks WHERE track=\''.mysql_escape_string($row['track']).'\' LIMIT 1;');
@@ -108,45 +86,42 @@ if ($full > 0) {
     echo '</table>'."\n";
     echo '<p>Abbruch erstattet keine Credits.</p>';
 } else {
-    echo '<h3>Laufende Forschungen</h3><p><strong>Es sind 0 von '.$maxSlots.' Slots belegt</strong></p>';
+    echo '<h3>Laufende Forschungen</h3><p>Keine Forschung aktiv.</p>';
 }
 
-if ($full < $maxSlots) {
-    $tracks = research_get_tracks();
-    echo '<h3>Verfügbare Forschung</h3>';
-    echo '<p><strong>Geld: '.number_format($pc['credits'],0,',','.').' Credits</strong></p>'."\n";
-    echo '<table>'."\n";
-    $titleText = str_replace("\n", '&#10;', htmlspecialchars($researchTooltip, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'));
-    echo '<tr><th title="'.$titleText.'">Zweig</th><th>Level</th><th>Dauer</th><th>Kosten</th><th>Erforschen</th></tr>'."\n";
-    foreach ($tracks as $track => $info) {
-        $cur = $info['level'];
-        $max = $info['max_level'];
-        echo '<tr><td title="'.$titleText.'">'.htmlspecialchars($info['name']).'</td><td>'.$cur.'/'.$max.'</td>';
-        if ($cur >= $max) {
-            echo '<td colspan="3">Max</td></tr>'."\n";
-            continue;
-        }
-        $timeStr = floor($info['next_time']/60).' min';
-        if ($info['next_time'] >= 3600) {
-            $h = floor($info['next_time']/3600);
-            $m = floor(($info['next_time']/60)%60);
-            $timeStr = $h.' h'.($m>0?' '.$m.' min':'');
-        }
-        $dep = research_check_deps($pcid,$track,$cur+1);
-        $can = ($dep === true);
-        echo '<td>'.$timeStr.'</td><td>'.$info['next_cost'].' Credits</td><td>';
-        if ($can && $pc['credits'] >= $info['next_cost']) {
-            echo '<a href="research.php?a=start&amp;track='.$track.'&amp;sid='.$sid.'">Erforschen</a>';
-        } else {
-            $msg = $can ? 'Nicht genügend Credits' : $dep;
-            echo '<span title="'.htmlspecialchars($msg).'">Erforschen</span>';
-        }
-        echo '</td></tr>'."\n";
+$tracks = research_get_tracks();
+echo '<h3>Verfügbare Forschung</h3>';
+echo '<table>'."\n";
+echo '<tr><th>Zweig</th><th>Level</th><th>Dauer</th><th>Kosten</th><th>Erforschen</th></tr>'."\n";
+foreach ($tracks as $track => $info) {
+    $cur = $info['level'];
+    $max = $info['max_level'];
+    $tooltipText = str_replace("\n", '&#10;', htmlspecialchars($trackTooltips[$track] ?? '', ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'));
+    echo '<tr><td'.($tooltipText ? ' title="'.$tooltipText.'"' : '').'>'.htmlspecialchars($info['name']).'</td><td>'.$cur.'/'.$max.'</td>';
+    if ($cur >= $max) {
+        echo '<td colspan="3">Max</td></tr>'."\n";
+        continue;
     }
-    echo '</table>';
-} else {
-    echo '<h3>Verfügbare Forschung</h3><p>Alle Slots belegt.</p>';
+    $timeStr = floor($info['next_time']/60).' min';
+    if ($info['next_time'] >= 3600) {
+        $h = floor($info['next_time']/3600);
+        $m = floor(($info['next_time']/60)%60);
+        $timeStr = $h.' h'.($m>0?' '.$m.' min':'');
+    }
+    $dep = research_check_deps($pcid,$track,$cur+1);
+    $slotFree = ($full < $maxSlots);
+    echo '<td>'.$timeStr.'</td><td>'.$info['next_cost'].' Credits</td><td>';
+    if ($dep === true && $slotFree && $pc['credits'] >= $info['next_cost']) {
+        echo '<a href="research.php?a=start&amp;track='.$track.'&amp;sid='.$sid.'">Erforschen</a>';
+    } else {
+        if ($dep !== true) { $msg = $dep; }
+        elseif (!$slotFree) { $msg = 'Alle Slots belegt'; }
+        else { $msg = 'Nicht genügend Credits'; }
+        echo '<span title="'.htmlspecialchars($msg).'">Erforschen</span>';
+    }
+    echo '</td></tr>'."\n";
 }
+echo '</table>';
 
 echo "\n".'</div>'."\n";
 
