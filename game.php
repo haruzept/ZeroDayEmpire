@@ -321,24 +321,19 @@ createlayout_bottom();
 
         function showinfo($id, $txt, $val = -1)
         {
-            global $pc, $sid, $pcid, $usrid;
+            global $pc, $sid;
             if ($val == -1) {
                 $val = $pc[$id];
             }
             $name = idtoname($id);
             $disp = formatitemlevel($id, $val);
             if ($disp && $disp != '0.0') {
-                echo '<a href="game.php?m=item&amp;item='.$id.'&amp;sid='.$sid.'">'.$name.'</a>';
+                echo '<tr><th><a href="game.php?m=item&amp;item='.$id.'&amp;sid='.$sid.'">'.$name.'</a></th><td>';
                 if ($txt != '') {
-                    echo ' ('.str_replace('%v', $disp, $txt).')';
+                    echo str_replace('%v', $disp, $txt);
                 }
-                echo "\n";
+                echo '</td></tr>';
             }
-        }
-
-        function br()
-        {
-            echo '<br />'."\n";
         }
 
         $rhinfo = '';
@@ -359,6 +354,8 @@ createlayout_bottom();
             echo $notif;
         }
 
+        echo '<div class="strip" style="grid-template-columns:1fr">';
+
         echo '<section class="card" id="computer-properties">';
         echo '<h2>Eigenschaften</h2>';
         echo '<p><a href="game.php?a=renamepclist&amp;sid='.$sid.'">Computer umbenennen</a></p>';
@@ -367,48 +364,42 @@ createlayout_bottom();
         echo '<tr><th>IP:</th><td>10.47.'.$pc['ip'].'</td></tr>';
         echo '<tr><th>Punkte:</th><td>'.$pc['points'].'</td></tr>';
         echo '<tr><th>Geld:</th><td>'.$bucks.' Credits</td></tr>';
-        echo '<tr><th>Angreifbar:</th><td>'.(is_pc_attackable($pc) && is_noranKINGuser($usrid) == false ? 'ja' : 'nein').'</td></tr>';
+        $attackable = is_pc_attackable($pc) && is_noranKINGuser($usrid) == false;
+        $icon = '<svg viewBox="0 0 24 24" aria-hidden="true" width="20" height="20" style="vertical-align:middle;margin-right:4px"><path d="M12 2l8 4v5c0 5-3 9-8 10-5-1-8-5-8-10V6l8-4z" fill="none" stroke="currentColor" stroke-width="2"/><path d="M14 3l7 7-1.5 1.5-2-2-4.5 4.5V20l-2 2-2-2 2-2v-4.5l4.5-4.5-2-2z" fill="none" stroke="currentColor" stroke-width="2"/></svg>';
+        echo '<tr><th>Angreifbar:</th><td>'.$icon.($attackable ? 'ja' : 'nein').'</td></tr>';
         echo $rhinfo;
         echo '</table>';
         echo '</section>';
 
-        echo '<section class="card" id="computer-essentials"><h2>Essentials</h2><p>';
+        echo '<section class="card" id="computer-essentials"><h2>Essentials</h2><table>';
         showinfo('cpu', '%v');
-        br();
         showinfo('ram', '%v MB RAM');
-        br();
         showinfo('lan', 'Level %v');
-        br();
         showinfo('mm', 'Version %v');
-        br();
         showinfo('bb', 'Version %v');
-        echo '</p></section>';
+        echo '</table></section>';
 
-        echo '<section class="card" id="computer-software"><h2>Software</h2><p>';
+        echo '<section class="card" id="computer-software"><h2>Software</h2><table>';
         showinfo('sdk', 'Version %v');
-        br();
         showinfo('mk', 'Version %v');
-        br();
         showinfo('ips', 'Level %v');
-        echo '</p></section>';
+        echo '</table></section>';
 
-        echo '<section class="card" id="computer-security"><h2>Sicherheit</h2><p>';
+        echo '<section class="card" id="computer-security"><h2>Sicherheit</h2><table>';
         showinfo('fw', 'Version %v');
-        br();
         showinfo('av', 'Version %v');
-        br();
         showinfo('ids', 'Level %v');
-        echo '</p></section>';
+        echo '</table></section>';
 
-        echo '<section class="card" id="computer-attack"><h2>Angriff</h2><p>';
+        echo '<section class="card" id="computer-attack"><h2>Angriff</h2><table>';
         showinfo('trojan', 'Level %v');
-        br();
         showinfo('rh', 'Level %v');
         if (isavailh('da', $pc) === true) {
-            br();
             showinfo('da', 'Level %v', 1);
         }
-        echo '</p></section>';
+        echo '</table></section>';
+
+        echo '</div>';
 
         createlayout_bottom();
         break;
