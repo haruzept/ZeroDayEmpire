@@ -359,21 +359,10 @@ createlayout_bottom();
             $rhinfo .= '</td></tr>';
         }
 
-        $op = '';
-        $transfer = '';
-        if ($pc['mk'] >= 1) {
-            $op = ' | <a href="battle.php?m=opc&amp;sid='.$sid.'">Operation Center</a>';
-        }
-        if ($pc['bb'] >= 2 && $pc['mm'] >= 2) {
-            $transfer = ' | <a href="transferform.php?sid='.$sid.'">Geld &uuml;berweisen</a>';
-        }
         $pc['name'] = safeentities($pc['name']);
 
         echo '<div class="content" id="computer">
 <h2>Dein Computer</h2>
-<div class="submenu">
-<p><a href="upgradelist.php?sid='.$sid.'">Upgrade-Men&uuml;</a>'.$op.$transfer.'</p>
-</div>
 
 '.$notif.'<div id="computer-properties">
 <h3>Eigenschaften</h3>
@@ -501,13 +490,7 @@ createlayout_bottom();
             $cssid = 'attack';
         }
 
-        echo '<div class="content" id="computer">
-<h2>Deine Computer</h2>
-<div class="submenu">
-<p><a href="upgradelist.php?sid='.$sid.'">Upgrade-Men&uuml;</a></p>
-</div>
-<div id="computer-item">
-';
+        echo '<div class="content" id="computer"><h2>Deine Computer</h2><div id="computer-item">';
         echo '<h3 id="computer-item-'.$cssid.'">'.idtoname($item).' '.$val.'</h3>';
         echo '<p><strong>Geld: '.$bucks.' Credits</strong></p><br />';
         echo '<p>'.file_get('data/info/'.$item.'.txt').'</p>'."\n";
