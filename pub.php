@@ -26,7 +26,6 @@ function showdoc($fn, $te = '')
 ?>
 <!-- ZDE theme inject -->
 <style>
-@import url("style.css");
 #register-step1 input[type="text"],
 #register-step1 input[type="email"],
 #register-step1 input[type="password"]{width:250px;}
@@ -107,7 +106,6 @@ case 'nickcheck':
 ?>
 <!-- ZDE theme inject -->
 <style>
-@import url("style.css");
 #register-step1 input[type="text"],
 #register-step1 input[type="email"],
 #register-step1 input[type="password"]{width:250px;}
@@ -261,7 +259,6 @@ createlayout_bottom();
         createlayout_top('ZeroDayEmpire - Regelversto&szlig;');
 ?>
 <!-- ZDE theme inject -->
-<style>@import url("style.css");</style>
 <div class="container">
 <?php // /ZDE theme inject start
 
@@ -313,7 +310,7 @@ createlayout_bottom();
         $nickzeichen = 'abcdefghijklmnopqrstuvwxyzäüöABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜß0123456789_-:@.!=?\$%/&';
         function checknick($nick)
         {
-            global $STYLESHEET, $REMOTE_FILES_DIR, $DATADIR, $nickzeichen;
+            global $REMOTE_FILES_DIR, $DATADIR, $nickzeichen;
             $b = true;
             $len = strlen($nick);
             for ($i = 0; $i < $len; $i++) {
@@ -387,7 +384,6 @@ createlayout_bottom();
             createlayout_top('ZeroDayEmpire - Account anlegen');
 ?>
 <!-- ZDE theme inject -->
-<style>@import url("style.css");</style>
 <div class="container">
 <?php // /ZDE theme inject start
 
@@ -537,7 +533,6 @@ createlayout_bottom();
 
 ?>
 <!-- ZDE theme inject -->
-<style>@import url("style.css");</style>
 <div class="container">
 <?php // /ZDE theme inject start
 
@@ -553,7 +548,6 @@ createlayout_bottom();
                 createlayout_top('ZeroDayEmpire - Registrierung');
 ?>
 <!-- ZDE theme inject -->
-<style>@import url("style.css");</style>
 <div class="container">
 <?php // /ZDE theme inject start
 
@@ -641,7 +635,6 @@ createlayout_bottom();
         createlayout_top('ZeroDayEmpire - Statistik');
 ?>
 <!-- ZDE theme inject -->
-<style>@import url("style.css");</style>
 <div class="container">
 <?php // /ZDE theme inject start
 
@@ -737,7 +730,6 @@ createlayout_bottom();
         createlayout_top('ZeroDayEmpire - browserbasiertes Online-Spiel');
 ?>
 <!-- ZDE theme inject -->
-<style>@import url("style.css");</style>
 <div class="container">
 <?php // /ZDE theme inject start
 

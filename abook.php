@@ -56,7 +56,7 @@ function choose(s) {
 
         function list_items($g)
         {
-            global $STYLESHEET, $REMOTE_FILES_DIR, $DATADIR, $b, $sid, $type;
+            global $REMOTE_FILES_DIR, $DATADIR, $b, $sid, $type;
             echo '<table>
 <tr>';
             $a = explode(',', $g);
@@ -175,7 +175,7 @@ function choose(s) {
 
         function admin_list($ix)
         {
-            global $STYLESHEET, $REMOTE_FILES_DIR, $DATADIR, $usrid, $sid;
+            global $REMOTE_FILES_DIR, $DATADIR, $usrid, $sid;
             eval('$ch'.$ix.'=\' selected\';');
             $s = @mysql_result(
                 db_query(

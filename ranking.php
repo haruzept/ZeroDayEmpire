@@ -32,7 +32,6 @@ switch ($action) {
         createlayout_top('ZeroDayEmpire - Rangliste');
 ?>
 <!-- ZDE theme inject -->
-<style>@import url("style.css");</style>
 <div class="container">
 <?php // /ZDE theme inject start
 

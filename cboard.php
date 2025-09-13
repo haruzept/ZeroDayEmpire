@@ -297,7 +297,7 @@ switch ($action) {
 
         function show_beitrag($data)
         {
-            global $STYLESHEET, $DATADIR, $sid;
+            global $DATADIR, $sid;
             #$sender=getuser($data['user']);
             if ($data['relative'] == -1) {
                 echo '<h3>Beitrag: '.$data['subject'].'</h3><br />'."\n";
@@ -375,7 +375,7 @@ function LoadSmilies()
 function formatText($s)
 {
     // ------------------------ FORMAT TEXT ---------------------------------
-    global $STYLESHEET, $REMOTE_FILES_DIR, $DATADIR, $sid, $usrid, $pcid, $cix;
+    global $REMOTE_FILES_DIR, $DATADIR, $sid, $usrid, $pcid, $cix;
 
     $text = $s;
     $text = htmlentities($text);
@@ -400,7 +400,7 @@ function formatText($s)
 function showform($action = 'addthread')
 {
     // ---------------------------- SHOW FORM -----------------------
-    global $STYLESHEET, $REMOTE_FILES_DIR, $DATADIR, $sid, $usrid, $pcid, $usr, $cluster;
+    global $REMOTE_FILES_DIR, $DATADIR, $sid, $usrid, $pcid, $usr, $cluster;
 
     if ($action == 'addreply') {
         $xval = 'Antwort';

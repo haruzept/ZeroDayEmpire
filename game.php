@@ -89,7 +89,7 @@ switch ($action) {
         createlayout_top('ZeroDayEmpire - &Uuml;bersicht');
 ?>
 <!-- ZDE theme inject -->
-<style>@import url("style.css");
+<style>
 #computers li,#software li{position:relative}
 #computers li .tip,#software li .tip{display:none;position:absolute;top:100%;left:0;background:#222;color:#fff;padding:4px;border-radius:3px;max-width:240px;font-size:12px;z-index:10}
 #computers li:hover .tip,#software li:hover .tip{display:block}
@@ -473,7 +473,6 @@ createlayout_bottom();
             createlayout_top('ZeroDayEmpire - Deine Computer');
 ?>
 <!-- ZDE theme inject -->
-<style>@import url("style.css");</style>
 <div class="container">
 <?php // /ZDE theme inject start
 
@@ -489,7 +488,6 @@ createlayout_bottom();
         createlayout_top('ZeroDayEmpire - Deine Computer');
 ?>
 <!-- ZDE theme inject -->
-<style>@import url("style.css");</style>
 <div class="container">
 <?php // /ZDE theme inject start
 
@@ -519,7 +517,7 @@ createlayout_bottom();
                 echo '<tr>'.LF.'<th>Item</th>'.LF.'<th>Status</th>'.LF.'<th>Ertrag</th>'.LF.'<th>Update</th>'.LF.'</tr>'."\n";
                 function mmitem($name, $id, $av, $f)
                 {
-                    global $STYLESHEET, $REMOTE_FILES_DIR, $DATADIR, $pc, $bucks, $pcid, $usrid, $sid;
+                    global $REMOTE_FILES_DIR, $DATADIR, $pc, $bucks, $pcid, $usrid, $sid;
                     $v = (float)$pc['mm'];
                     if ($v >= $av) {
                         echo '<tr class="name">'.LF.'<td>'.$name.'</td>'.LF.'<td class="level">Level '.$pc[$id].'</td>'.LF.'<td class="profit">'.calc_mph(
@@ -623,7 +621,7 @@ createlayout_bottom();
 
         function updredir($x = '')
         {
-            global $STYLESHEET, $REMOTE_FILES_DIR, $DATADIR, $pcid, $usrid, $sid;
+            global $REMOTE_FILES_DIR, $DATADIR, $pcid, $usrid, $sid;
             header('Location: game.php?mode=item&item=mm&sid='.$sid.$x);
         }
 
@@ -754,7 +752,6 @@ createlayout_bottom();
                     /*createlayout_top('ZeroDayEmpire - Dein Computer - Upgrade');
 ?>
 <!-- ZDE theme inject -->
-<style>@import url("style.css");</style>
 <div class="container">
 <?php // /ZDE theme inject start
 
@@ -841,7 +838,6 @@ createlayout_bottom();*/
         createlayout_top('Deine Computer');
 ?>
 <!-- ZDE theme inject -->
-<style>@import url("style.css");</style>
 <div class="container">
 <?php // /ZDE theme inject start
 
@@ -1010,7 +1006,6 @@ createlayout_bottom();
         createlayout_top('ZeroDayEmpire - Deine Computer');
 ?>
 <!-- ZDE theme inject -->
-<style>@import url("style.css");</style>
 <div class="container">
 <?php // /ZDE theme inject start
 
@@ -1115,7 +1110,6 @@ createlayout_bottom();
             createlayout_top('ZeroDayEmpire - Geld &uuml;berweisen');
 ?>
 <!-- ZDE theme inject -->
-<style>@import url("style.css");</style>
 <div class="container">
 <?php // /ZDE theme inject start
 
@@ -1349,7 +1343,6 @@ location.href=\'../game.php?mode=subnet&sid='.$sid.'&subnet=\'+s;
         createlayout_top('ZeroDayEmpire - Subnet');
 ?>
 <!-- ZDE theme inject -->
-<style>@import url("style.css");</style>
 <div class="container">
 <?php // /ZDE theme inject start
 
@@ -1451,7 +1444,6 @@ createlayout_bottom();
         createlayout_top('ZeroDayEmpire - Hilfe');
 ?>
 <!-- ZDE theme inject -->
-<style>@import url("style.css");</style>
 <div class="container">
 <?php // /ZDE theme inject start
 

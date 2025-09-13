@@ -58,7 +58,6 @@ switch ($action) {
         createlayout_top('ZeroDayEmpire - Cluster');
 ?>
 <!-- ZDE theme inject -->
-<style>@import url("style.css");</style>
 <div class="container">
 <?php // /ZDE theme inject start
 
@@ -70,7 +69,7 @@ switch ($action) {
         function nocluster()
         {
 # ich bin keinem (existierenden) Cluster
-            global $STYLESHEET, $REMOTE_FILES_DIR, $DATADIR, $sid, $usrid, $pcid;
+            global $REMOTE_FILES_DIR, $DATADIR, $sid, $usrid, $pcid;
             echo '<div id="cluster-found">
 <h3>Cluster gr&uuml;nden</h3>
 <form action="cluster.php?page=found&amp;sid='.$sid.'" method="post">
@@ -344,7 +343,6 @@ createlayout_bottom();
             createlayout_top('ZeroDayEmpire - Cluster - Vertr&auml;ge');
 ?>
 <!-- ZDE theme inject -->
-<style>@import url("style.css");</style>
 <div class="container">
 <?php // /ZDE theme inject start
 
@@ -540,7 +538,6 @@ function autosel(obj) { var i = (obj.name==\'pcip\' ? 1 : 0);
             createlayout_top('ZeroDayEmpire - Cluster - Finanzen');
 ?>
 <!-- ZDE theme inject -->
-<style>@import url("style.css");</style>
 <div class="container">
 <?php // /ZDE theme inject start
 
@@ -636,7 +633,6 @@ createlayout_bottom();
             createlayout_top('ZeroDayEmpire - Cluster');
 ?>
 <!-- ZDE theme inject -->
-<style>@import url("style.css");</style>
 <div class="container">
 <?php // /ZDE theme inject start
 
@@ -777,7 +773,6 @@ createlayout_bottom();
             createlayout_top('ZeroDayEmpire - Cluster');
 ?>
 <!-- ZDE theme inject -->
-<style>@import url("style.css");</style>
 <div class="container">
 <?php // /ZDE theme inject start
 
@@ -874,7 +869,6 @@ createlayout_bottom();
                 createlayout_top();
 ?>
 <!-- ZDE theme inject -->
-<style>@import url("style.css");</style>
 <div class="container">
 <?php // /ZDE theme inject start
 
@@ -1029,7 +1023,6 @@ createlayout_bottom();
             createlayout_top();
 ?>
 <!-- ZDE theme inject -->
-<style>@import url("style.css");</style>
 <div class="container">
 <?php // /ZDE theme inject start
 
@@ -1103,7 +1096,6 @@ createlayout_bottom();
         createlayout_top('ZeroDayEmpire - Cluster');
 ?>
 <!-- ZDE theme inject -->
-<style>@import url("style.css");</style>
 <div class="container">
 <?php // /ZDE theme inject start
 
@@ -1188,7 +1180,6 @@ createlayout_bottom();
             createlayout_top('ZeroDayEmpire - Cluster - Mitglieder');
 ?>
 <!-- ZDE theme inject -->
-<style>@import url("style.css");</style>
 <div class="container">
 <?php // /ZDE theme inject start
 
@@ -1267,7 +1258,7 @@ createlayout_bottom();
 
             function xpcinfo($item, $ix_usrid, $ix_pcid)
             {
-                global $STYLESHEET, $REMOTE_FILES_DIR, $DATADIR, $cluster, $clusterid, $sid;
+                global $REMOTE_FILES_DIR, $DATADIR, $cluster, $clusterid, $sid;
                 static $usr_cache, $cluster_cache, $pc_cache;
 
                 $tmp = $ix_pcid;
@@ -1314,7 +1305,7 @@ createlayout_bottom();
 
             function battle_table($dir)
             {
-                global $STYLESHEET, $REMOTE_FILES_DIR, $DATADIR, $cluster, $clusterid;
+                global $REMOTE_FILES_DIR, $DATADIR, $cluster, $clusterid;
 
                 echo '<table>
 <tr>
@@ -1396,7 +1387,6 @@ createlayout_bottom();
             createlayout_top('ZeroDayEmpire - Cluster');
 ?>
 <!-- ZDE theme inject -->
-<style>@import url("style.css");</style>
 <div class="container">
 <?php // /ZDE theme inject start
 
@@ -1432,7 +1422,6 @@ createlayout_bottom();
             createlayout_top('ZeroDayEmpire - Cluster-Profil');
 ?>
 <!-- ZDE theme inject -->
-<style>@import url("style.css");</style>
 <div class="container">
 <?php // /ZDE theme inject start
 
@@ -1578,7 +1567,6 @@ createlayout_bottom();
                 createlayout_top('ZeroDayEmpire - Cluster - &Uuml;berweisen');
 ?>
 <!-- ZDE theme inject -->
-<style>@import url("style.css");</style>
 <div class="container">
 <?php // /ZDE theme inject start
 
@@ -1741,7 +1729,6 @@ createlayout_bottom();
         createlayout_top('ZeroDayEmpire - Cluster - Mitgliedsantrag');
 ?>
 <!-- ZDE theme inject -->
-<style>@import url("style.css");</style>
 <div class="container">
 <?php // /ZDE theme inject start
 
@@ -1790,7 +1777,6 @@ createlayout_bottom();
         createlayout_top('ZeroDayEmpire - Cluster - Mitgliedsantrag');
 ?>
 <!-- ZDE theme inject -->
-<style>@import url("style.css");</style>
 <div class="container">
 <?php // /ZDE theme inject start
 
@@ -1816,7 +1802,6 @@ createlayout_bottom();
             createlayout_top('ZeroDayEmpire - Cluster - Mitgliedsantr&auml;ge verwalten');
 ?>
 <!-- ZDE theme inject -->
-<style>@import url("style.css");</style>
 <div class="container">
 <?php // /ZDE theme inject start
 
@@ -1916,7 +1901,6 @@ createlayout_bottom();
         createlayout_top('ZeroDayEmpire - Cluster-Notiz');
 ?>
 <!-- ZDE theme inject -->
-<style>@import url("style.css");</style>
 <div class="container">
 <?php // /ZDE theme inject start
 
@@ -1967,7 +1951,7 @@ function cvCodeToString($code)
 
 
 /*function conventlist($cid) { // ----------- CONVENTLIST -----------
-global $STYLESHEET, $REMOTE_FILES_DIR, $DATADIR, $clusterid,$cluster,$sid;
+global $REMOTE_FILES_DIR, $DATADIR, $clusterid, $cluster, $sid;
 
 $r=db_query('SELECT * FROM cl_pacts WHERE cluster='.mysql_escape_string($cid).' ORDER BY partner;');
 if (mysql_num_rows($r)>0) {
@@ -1987,7 +1971,7 @@ return $s;
 
 function conventlist($cid)
 { // ----------- CONVENTLIST -----------
-    global $STYLESHEET, $REMOTE_FILES_DIR, $DATADIR, $clusterid, $cluster, $sid;
+    global $REMOTE_FILES_DIR, $DATADIR, $clusterid, $cluster, $sid;
 
 #$r=db_query('SELECT pcs.ip AS pcs_ip, pcs.name AS pcs_name, pcs.points AS pcs_points, users.id AS users_id, users.name AS users_name, users.points AS users_points, clusters.id AS clusters_id, clusters.name AS clusters_name
 #FROM (clusters RIGHT JOIN users ON clusters.id = users.cluster) RIGHT JOIN pcs ON users.id = pcs.owner WHERE country LIKE \''.mysql_escape_string($c['id']).'\' ORDER BY pcs.id ASC;');

@@ -173,7 +173,7 @@ alert(\'Bitte Zahl eingeben!\');
 
                 function show_beitrag($data)
                 {
-                    global $STYLESHEET, $DATADIR, $sid;
+                    global $DATADIR, $sid;
                     #$sender=getuser($data['user']);
                     if ($data['relative'] == -1) {
                         echo '<h3>Beitrag: '.$data['subject'].'</h3><br />';
