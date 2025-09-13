@@ -304,26 +304,20 @@ createlayout_bottom();
         processupgrades($pc);
 
         createlayout_top('ZeroDayEmpire - Deine Computer');
-?>
-<!-- ZDE theme inject -->
-<style>@import url("style.css");</style>
-<div class="container">
-<?php // /ZDE theme inject start
-
-
+        echo '<header class="page-head"><h1>Dein Computer</h1></header>';
 
         if ($pc['blocked'] > time()) {
-            echo '<div class="content" id="computer">'.LF.'<h2>Deine Computer</h2>'.LF.'<div class="error">'.LF.'<h3>Fehler</h3>'.LF.'<p>Dieser PC ist blockiert bis '.nicetime2(
-                    $pc['blocked'],
-                    true
-                ).'!</p>'.LF.'</div>'.LF.'</div>'."\n";
-            ?>
-</div>
-<!-- /ZDE theme inject -->
-<?php
-createlayout_bottom();
+            echo '<section class="card"><h2>Fehler</h2><p>Dieser PC ist blockiert bis '.nicetime2($pc['blocked'], true).'!</p></section>';
+            createlayout_bottom();
             exit;
         }
+
+        $attackable = (is_pc_attackable($pc) && is_noranKINGuser($usrid) == false) ? 'ja' : 'nein';
+        echo '<div class="strip">';
+        echo '<div class="kpi kpi-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" width="50" height="50"><path d="M3 12h18M12 3v18" stroke="rgb(var(--accent))" stroke-width="2" fill="none"/></svg><div class="stat"><h3 class="value small">Punkte: '.$pc['points'].'</h3></div></div>';
+        echo '<div class="kpi kpi-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" width="50" height="50"><path d="M4 4h16v12H4z" stroke="rgb(var(--accent))" stroke-width="2" fill="none"/><path d="M2 18h20" stroke="rgb(var(--accent))"/></svg><div class="stat"><h3 class="value small">'.$bucks.' Credits</h3></div></div>';
+        echo '<div class="kpi kpi-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" width="50" height="50"><circle cx="12" cy="12" r="9" stroke="rgb(var(--accent))" stroke-width="2" fill="none"/><path d="M12 6l4 4-4 4-4-4z" stroke="rgb(var(--accent))" stroke-width="2" fill="none"/></svg><div class="stat"><h3 class="value small">Angreifbar: '.$attackable.'</h3></div></div>';
+        echo '</div>';
 
         function showinfo($id, $txt, $val = -1)
         {
@@ -361,39 +355,24 @@ createlayout_bottom();
 
         $pc['name'] = safeentities($pc['name']);
 
-        echo '<div class="content" id="computer">
-<h2>Dein Computer</h2>
+        if (isset($notif)) {
+            echo $notif;
+        }
 
-'.$notif.'<div id="computer-properties">
-<h3>Eigenschaften</h3>
-<br /><p><a href="game.php?a=renamepclist&amp;sid='.$sid.'">Computer umbenennen</a></p>
-<table>
-<tr>
-<th>Name:</th>
-<td>'.$pc['name'].'</td>
-</tr>
-<tr>
-<th>IP:</th>
-<td>10.47.'.$pc['ip'].'</td>
-</tr>
-<tr>
-<th>Punkte:</th>
-<td>'.$pc['points'].'</td>
-</tr>
-<tr>
-<th>Geld:</th>
-<td>'.$bucks.' Credits</td>
-</tr>
-<tr>
-<th>Angreifbar:</th>
-<td>'.(is_pc_attackable($pc) && is_noranKINGuser($usrid) == false ? 'ja' : 'nein').'</td>
-</tr>
-'.$rhinfo.'
-</table>
-</div>
-<div id="computer-essentials">
-<h3>Essentials</h3>
-<p>';
+        echo '<section class="card" id="computer-properties">';
+        echo '<h2>Eigenschaften</h2>';
+        echo '<p><a href="game.php?a=renamepclist&amp;sid='.$sid.'">Computer umbenennen</a></p>';
+        echo '<table>';
+        echo '<tr><th>Name:</th><td>'.$pc['name'].'</td></tr>';
+        echo '<tr><th>IP:</th><td>10.47.'.$pc['ip'].'</td></tr>';
+        echo '<tr><th>Punkte:</th><td>'.$pc['points'].'</td></tr>';
+        echo '<tr><th>Geld:</th><td>'.$bucks.' Credits</td></tr>';
+        echo '<tr><th>Angreifbar:</th><td>'.(is_pc_attackable($pc) && is_noranKINGuser($usrid) == false ? 'ja' : 'nein').'</td></tr>';
+        echo $rhinfo;
+        echo '</table>';
+        echo '</section>';
+
+        echo '<section class="card" id="computer-essentials"><h2>Essentials</h2><p>';
         showinfo('cpu', '%v');
         br();
         showinfo('ram', '%v MB RAM');
@@ -403,31 +382,25 @@ createlayout_bottom();
         showinfo('mm', 'Version %v');
         br();
         showinfo('bb', 'Version %v');
-        echo '</p>
-</div>
-<div id="computer-software">
-<h3>Software</h3>
-<p>';
+        echo '</p></section>';
+
+        echo '<section class="card" id="computer-software"><h2>Software</h2><p>';
         showinfo('sdk', 'Version %v');
         br();
         showinfo('mk', 'Version %v');
         br();
         showinfo('ips', 'Level %v');
-        echo '</p>
-</div>
-<div id="computer-security">
-<h3>Sicherheit</h3>
-<p>';
+        echo '</p></section>';
+
+        echo '<section class="card" id="computer-security"><h2>Sicherheit</h2><p>';
         showinfo('fw', 'Version %v');
         br();
         showinfo('av', 'Version %v');
         br();
         showinfo('ids', 'Level %v');
-        echo '</p>
-</div>
-<div id="computer-attack">
-<h3>Angriff</h3>
-<p>';
+        echo '</p></section>';
+
+        echo '<section class="card" id="computer-attack"><h2>Angriff</h2><p>';
         showinfo('trojan', 'Level %v');
         br();
         showinfo('rh', 'Level %v');
@@ -435,15 +408,9 @@ createlayout_bottom();
             br();
             showinfo('da', 'Level %v', 1);
         }
-        echo '</p>
-</div>
-</div>
-';
-        ?>
-</div>
-<!-- /ZDE theme inject -->
-<?php
-createlayout_bottom();
+        echo '</p></section>';
+
+        createlayout_bottom();
         break;
 
     case 'item': // ----------------------------------- ITEM --------------------------------
