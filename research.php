@@ -65,10 +65,10 @@ $credits = (int)$pc['credits'];
 $queueTime = $running ? $runningRows[0]['end'] - $now : 0;
 
 echo '<div class="strip">';
-echo '<div class="kpi kpi-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h18M12 3v18" stroke="rgb(var(--accent))" stroke-width="2" fill="none"/></svg><div class="stat"><div class="value">'.$running.' / '.$maxSlots.'</div><div class="label">Slots</div><div class="progress"><div class="bar" style="width:'.($maxSlots?($running/$maxSlots*100):0).'%;"></div></div></div></div>';
-echo '<div class="kpi kpi-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16v12H4z" stroke="rgb(var(--accent))" stroke-width="2" fill="none"/><path d="M2 18h20" stroke="rgb(var(--accent))"/></svg><div class="stat"><div class="value" id="kpiCredits" data-value="'.$credits.'">'.format_credits($credits).'</div><div class="label">Credits</div></div></div>';
+echo '<div class="kpi kpi-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" width="12" height="12"><path d="M3 12h18M12 3v18" stroke="rgb(var(--accent))" stroke-width="2" fill="none"/></svg><div class="stat"><div class="value">'.$running.' / '.$maxSlots.'</div><div class="label">Slots</div><div class="progress"><div class="bar" style="width:'.($maxSlots?($running/$maxSlots*100):0).'%;"></div></div></div></div>';
+echo '<div class="kpi kpi-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" width="12" height="12"><path d="M4 4h16v12H4z" stroke="rgb(var(--accent))" stroke-width="2" fill="none"/><path d="M2 18h20" stroke="rgb(var(--accent))"/></svg><div class="stat"><div class="value" id="kpiCredits" data-value="'.$credits.'">'.format_credits($credits).'</div><div class="label">Credits</div></div></div>';
 $queueLabel = $running ? '<span class="cd" data-end="'.($now + $queueTime).'">'.sprintf('%02d:%02d', floor($queueTime/3600), floor(($queueTime%3600)/60)).'</span>' : 'Keine Forschung aktiv';
-echo '<div class="kpi kpi-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="rgb(var(--accent))" stroke-width="2" fill="none"/><path d="M12 7v5l3 2" stroke="rgb(var(--accent))" stroke-width="2" fill="none"/></svg><div class="stat"><div class="value">'.$queueLabel.'</div><div class="label">Warteschlange</div></div></div>';
+echo '<div class="kpi kpi-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" width="12" height="12"><circle cx="12" cy="12" r="9" stroke="rgb(var(--accent))" stroke-width="2" fill="none"/><path d="M12 7v5l3 2" stroke="rgb(var(--accent))" stroke-width="2" fill="none"/></svg><div class="stat"><div class="value">'.$queueLabel.'</div><div class="label">Warteschlange</div></div></div>';
 echo '</div>';
 
 if ($running > 0) {
@@ -102,7 +102,7 @@ $trackTooltips = [
 
 $tracks = research_get_tracks();
 // Tabelle soll die komplette Seite ausfüllen
-echo '<section class="card table-card" id="researchTable"><h2>Verfügbare Forschung</h2><table id="researchTableInner" style="width:100%;height:100%"><thead><tr><th scope="col">Zweig</th><th scope="col">Level</th><th scope="col">Dauer</th><th scope="col">Kosten</th><th scope="col">Status</th><th scope="col">Aktion</th></tr></thead><tbody>';
+echo '<section class="card table-card" id="researchTable"><h2>Verfügbare Forschung</h2><table id="researchTableInner" style="width:100%;height:100%"><thead><tr><th scope="col" style="text-align:center">Zweig</th><th scope="col" style="text-align:center">Level</th><th scope="col" style="text-align:center">Dauer</th><th scope="col" style="text-align:center">Kosten</th><th scope="col" style="text-align:center">Status</th><th scope="col" style="text-align:center">Aktion</th></tr></thead><tbody>';
 foreach ($tracks as $track => $info) {
     $cur = $info['level'];
     $max = $info['max_level'];
@@ -129,7 +129,9 @@ foreach ($tracks as $track => $info) {
     $can = $dep_ok && $slotFree && $creditOK;
     $btnAttr = 'class="btn sm start-btn" data-track="'.$track.'" data-cost="'.$info['next_cost'].'" data-duration="'.$info['next_time'].'"';
     if (!$can) {
-        $btnAttr .= ' disabled aria-disabled="true"'.($tooltip ? ' data-tooltip="'.$tooltip.'"' : '');
+        $btnAttr .= ' disabled aria-disabled="true"';
+        if ($tooltip) { $btnAttr .= ' data-tooltip="'.$tooltip.'"'; }
+        if (!$dep_ok) { $btnAttr .= ' style="background-color:#888;color:#ccc;"'; }
     }
     echo '<td><button '.$btnAttr.'>Erforschen</button></td></tr>';
 }
