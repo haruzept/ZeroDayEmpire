@@ -339,11 +339,14 @@ createlayout_bottom();
             exit;
         }
 
-        $attackable = (is_pc_attackable($pc) && is_noranKINGuser($usrid) == false) ? 'ja' : 'nein';
+        $attackable_bool = is_pc_attackable($pc) && is_noranKINGuser($usrid) == false;
+        $attackable = $attackable_bool ? 'ja' : 'nein';
+        $attack_title = $attackable_bool ? 'Dieser PC kann angegriffen werden' : 'Dieser PC kann nicht angegriffen werden';
+        $attack_icon = '<svg class="icon" viewBox="0 0 24 24" aria-hidden="true" width="50" height="50"><path d="M12 2l8 4v5c0 5-3 9-8 10-5-1-8-5-8-10V6l8-4z" fill="none" stroke="rgb(var(--accent))" stroke-width="2"/><path d="M14 3l7 7-1.5 1.5-2-2-4.5 4.5V20l-2 2-2-2 2-2v-4.5l4.5-4.5-2-2z" fill="none" stroke="rgb(var(--accent))" stroke-width="2"/></svg>';
         echo '<div class="strip">';
         echo '<div class="kpi kpi-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" width="50" height="50"><path d="M3 12h18M12 3v18" stroke="rgb(var(--accent))" stroke-width="2" fill="none"/></svg><div class="stat"><h3 class="value small">Punkte: '.$pc['points'].'</h3></div></div>';
         echo '<div class="kpi kpi-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" width="50" height="50"><path d="M4 4h16v12H4z" stroke="rgb(var(--accent))" stroke-width="2" fill="none"/><path d="M2 18h20" stroke="rgb(var(--accent))"/></svg><div class="stat"><h3 class="value small">'.$bucks.' Credits</h3></div></div>';
-        echo '<div class="kpi kpi-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" width="50" height="50"><circle cx="12" cy="12" r="9" stroke="rgb(var(--accent))" stroke-width="2" fill="none"/><path d="M12 6l4 4-4 4-4-4z" stroke="rgb(var(--accent))" stroke-width="2" fill="none"/></svg><div class="stat"><h3 class="value small">Angreifbar: '.$attackable.'</h3></div></div>';
+        echo '<div class="kpi kpi-icon" title="'.$attack_title.'">'.$attack_icon.'<div class="stat"><h3 class="value small">Angreifbar: '.$attackable.'</h3></div></div>';
         echo '</div>';
 
         function showinfo($id, $txt, $val = -1)
@@ -355,7 +358,9 @@ createlayout_bottom();
             $name = idtoname($id);
             $disp = formatitemlevel($id, $val);
             if ($disp && $disp != '0.0') {
-                echo '<tr><th><a href="game.php?m=item&amp;item='.$id.'&amp;sid='.$sid.'">'.$name.'</a></th><td>';
+                $info_text = htmlspecialchars(strip_tags(file_get('data/info/'.$id.'.txt')));
+                $upgrade = isavailb($id, $pc) === true ? ' (<a href="upgradelist.php?sid='.$sid.'">Upgrade verf&uuml;gbar</a>)' : '';
+                echo '<tr><th><a href="game.php?m=item&amp;item='.$id.'&amp;sid='.$sid.'" title="'.$info_text.'">'.$name.'</a>:'.$upgrade.'</th><td>';
                 if ($txt != '') {
                     echo str_replace('%v', $disp, $txt);
                 }
@@ -381,7 +386,7 @@ createlayout_bottom();
             echo $notif;
         }
 
-        echo '<div class="strip" style="grid-template-columns:1fr">';
+        echo '<div class="strip" style="grid-template-columns:repeat(2,1fr);text-align:left">';
 
         echo '<section class="card" id="computer-properties">';
         echo '<h2>Eigenschaften</h2>';
@@ -392,8 +397,7 @@ createlayout_bottom();
         echo '<tr><th>Punkte:</th><td>'.$pc['points'].'</td></tr>';
         echo '<tr><th>Geld:</th><td>'.$bucks.' Credits</td></tr>';
         $attackable = is_pc_attackable($pc) && is_noranKINGuser($usrid) == false;
-        $icon = '<svg viewBox="0 0 24 24" aria-hidden="true" width="20" height="20" style="vertical-align:middle;margin-right:4px"><path d="M12 2l8 4v5c0 5-3 9-8 10-5-1-8-5-8-10V6l8-4z" fill="none" stroke="currentColor" stroke-width="2"/><path d="M14 3l7 7-1.5 1.5-2-2-4.5 4.5V20l-2 2-2-2 2-2v-4.5l4.5-4.5-2-2z" fill="none" stroke="currentColor" stroke-width="2"/></svg>';
-        echo '<tr><th>Angreifbar:</th><td>'.$icon.($attackable ? 'ja' : 'nein').'</td></tr>';
+        echo '<tr><th>Angreifbar:</th><td>'.($attackable ? 'ja' : 'nein').'</td></tr>';
         echo $rhinfo;
         echo '</table>';
         echo '</section>';
