@@ -288,3 +288,35 @@ pre, code{ background: var(--bg-2); border:1px solid var(--border); border-radiu
 @keyframes spin{to{transform:rotate(360deg);}}
 @media(max-width:1024px){.strip{grid-template-columns:repeat(2,1fr);}}
 @media(max-width:640px){.strip{grid-template-columns:1fr;}}
+/* Research fine-tuning */
+.strip { margin: 24px 0 24px; gap: 14px; }
+.kpi { min-height: 88px; }
+.kpi .icon { width: 24px; height: 24px; }
+.kpi .value { line-height: 1.1; }
+
+.badge.fail{
+  background: rgba(255,71,87,.10);
+  color: #ff4757;
+  border: 1px solid rgba(255,71,87,.45);
+}
+
+/* Lesbarer Hover für Aktions-Buttons in legacy .content */
+.content .button,
+.content button,
+.content input[type="submit"]{
+  color:#fff;
+}
+.content .button:hover,
+.content button:hover,
+.content input[type="submit"]:hover{
+  color:#fff;
+  filter: saturate(1.1) brightness(1.05);
+}
+
+/* Tabelle flexibel */
+.table-card{ margin-top: 24px; overflow:auto; }
+.table-card table{ width:100%; table-layout:auto; }
+.table-card th,.table-card td{ white-space:nowrap; }
+@media (max-width: 900px){
+  .table-card th,.table-card td{ white-space:normal; }
+}
