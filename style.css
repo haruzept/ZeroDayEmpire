@@ -265,7 +265,7 @@ pre, code{ background: var(--bg-2); border:1px solid var(--border); border-radiu
 .page-head{display:flex;align-items:center;justify-content:space-between;margin:24px 0 18px;}
 .page-head h1{margin:0;}
 .kpi-icon{justify-content:flex-start;gap:12px;}
-.kpi-icon .icon{width:6px;height:6px;}
+.kpi-icon .icon{width:50px;height:50px;}
 .kpi-icon .stat{flex:1;}
 .kpi-icon .label{color:var(--muted);font-size:13px;margin-top:2px;}
 .kpi-icon .progress{margin-top:6px;}
