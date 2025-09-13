@@ -79,7 +79,11 @@ function dependency_tooltip_text($item)
     $parts = [];
     foreach ($deps as $dep) {
         [$depItem, $level] = $dep;
-        $parts[] = idtoname($depItem).' Stufe '.$level;
+        if ($depItem === 'cpu' || $depItem === 'ram') {
+            $parts[] = idtoname($depItem).' '.formatitemlevel($depItem, $level);
+        } else {
+            $parts[] = idtoname($depItem).' Stufe '.$level;
+        }
     }
     return 'Benötigt '.implode(', ', $parts);
 }
@@ -119,11 +123,13 @@ if ($running) {
 echo '<div class="strip">';
 echo '<div class="kpi kpi-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" width="50" height="50"><path d="M3 12h18M12 3v18" stroke="rgb(var(--accent))" stroke-width="2" fill="none"/></svg><div class="stat"><h3 class="value small">Verf&uuml;gbare Slots: '.$running.' / '.UPGRADE_QUEUE_LENGTH.'</h3></div></div>';
 echo '<div class="kpi kpi-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" width="50" height="50"><path d="M4 4h16v12H4z" stroke="rgb(var(--accent))" stroke-width="2" fill="none"/><path d="M2 18h20" stroke="rgb(var(--accent))"/></svg><div class="stat"><h3 class="value small" id="kpiCredits" data-value="'.$credits.'">'.format_credits($credits).'</h3></div></div>';
-echo '<div class="kpi kpi-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" width="50" height="50"><circle cx="12" cy="12" r="9" stroke="rgb(var(--accent))" stroke-width="2" fill="none"/><path d="M12 7v5l3 2" stroke="rgb(var(--accent))" stroke-width="2" fill="none"/></svg><div class="stat"><h3 class="value small">'.$queueLabel.'</h3></div></div>';
+if ($running <= 1) {
+    echo '<div class="kpi kpi-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" width="50" height="50"><circle cx="12" cy="12" r="9" stroke="rgb(var(--accent))" stroke-width="2" fill="none"/><path d="M12 7v5l3 2" stroke="rgb(var(--accent))" stroke-width="2" fill="none"/></svg><div class="stat"><h3 class="value small">'.$queueLabel.'</h3></div></div>';
+}
 echo '</div>';
 
-if ($running) {
-    echo '<section class="card table-card" style="overflow:visible"><h2>Upgrade-Queue</h2><table style="width:100%"><thead><tr><th>Item</th><th>Level</th><th>Fertig in</th><th>Aktion</th></tr></thead><tbody>';
+if ($running > 1) {
+    echo '<section class="card table-card" style="overflow:visible"><h2><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" width="24" height="24"><circle cx="12" cy="12" r="9" stroke="rgb(var(--accent))" stroke-width="2" fill="none"/><path d="M12 7v5l3 2" stroke="rgb(var(--accent))" stroke-width="2" fill="none"/></svg> Upgrade-Queue</h2><table style="width:100%"><thead><tr><th>Item</th><th>Level</th><th>Fertig in</th><th>Aktion</th></tr></thead><tbody>';
     $tmppc = $pc;
     foreach ($runningRows as $row) {
         $item = $row['item'];
