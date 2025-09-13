@@ -72,13 +72,14 @@ if ($running) {
     $maxLvl = $info['max_level'] ?? $first['target_level'];
     $progress = $curLvl.'/'.$maxLvl;
     $queueTime = $first['end'] - $now;
-    $queueLabel = $progress.' <span class="cd" data-end="'.$first['end'].'">'.sprintf('%02d:%02d', floor($queueTime/3600), floor(($queueTime%3600)/60)).'</span> min';
+    $name = htmlspecialchars($info['name'] ?? $first['track']);
+    $queueLabel = $name.' '.$progress.' <span class="cd" data-end="'.$first['end'].'">'.sprintf('%02d:%02d', floor($queueTime/3600), floor(($queueTime%3600)/60)).'</span> min';
 }
 
 echo '<div class="strip">';
-echo '<div class="kpi kpi-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" width="50" height="50"><path d="M3 12h18M12 3v18" stroke="rgb(var(--accent))" stroke-width="2" fill="none"/></svg><div class="stat"><h3 class="value">Verfügbare Slots: '.$running.' / '.$maxSlots.'</h3></div></div>';
-echo '<div class="kpi kpi-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" width="50" height="50"><path d="M4 4h16v12H4z" stroke="rgb(var(--accent))" stroke-width="2" fill="none"/><path d="M2 18h20" stroke="rgb(var(--accent))"/></svg><div class="stat"><h3 class="value" id="kpiCredits" data-value="'.$credits.'">'.format_credits($credits).'</h3></div></div>';
-echo '<div class="kpi kpi-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" width="50" height="50"><circle cx="12" cy="12" r="9" stroke="rgb(var(--accent))" stroke-width="2" fill="none"/><path d="M12 7v5l3 2" stroke="rgb(var(--accent))" stroke-width="2" fill="none"/></svg><div class="stat"><h3 class="value">'.$queueLabel.'</h3></div></div>';
+echo '<div class="kpi kpi-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" width="50" height="50"><path d="M3 12h18M12 3v18" stroke="rgb(var(--accent))" stroke-width="2" fill="none"/></svg><div class="stat"><h3 class="value small">Verfügbare Slots: '.$running.' / '.$maxSlots.'</h3></div></div>';
+echo '<div class="kpi kpi-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" width="50" height="50"><path d="M4 4h16v12H4z" stroke="rgb(var(--accent))" stroke-width="2" fill="none"/><path d="M2 18h20" stroke="rgb(var(--accent))"/></svg><div class="stat"><h3 class="value small" id="kpiCredits" data-value="'.$credits.'">'.format_credits($credits).'</h3></div></div>';
+echo '<div class="kpi kpi-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" width="50" height="50"><circle cx="12" cy="12" r="9" stroke="rgb(var(--accent))" stroke-width="2" fill="none"/><path d="M12 7v5l3 2" stroke="rgb(var(--accent))" stroke-width="2" fill="none"/></svg><div class="stat"><h3 class="value small">'.$queueLabel.'</h3></div></div>';
 echo '</div>';
 
 $trackTooltips = [
@@ -122,10 +123,13 @@ foreach ($tracks as $track => $info) {
     $btnAttr = 'class="btn sm start-btn" data-track="'.$track.'" data-cost="'.$info['next_cost'].'" data-duration="'.$info['next_time'].'"';
     if (!$can) {
         $btnAttr .= ' disabled aria-disabled="true"';
-        if ($tooltip) { $btnAttr .= ' data-tooltip="'.$tooltip.'"'; }
         if (!$dep_ok) { $btnAttr .= ' style="background-color:#888;color:#ccc;"'; }
+        $buttonHtml = '<button '.$btnAttr.'>Erforschen</button>';
+        if ($tooltip) { $buttonHtml = '<span class="tooltip" data-tooltip="'.$tooltip.'">'.$buttonHtml.'</span>'; }
+        echo '<td>'.$buttonHtml.'</td></tr>';
+    } else {
+        echo '<td><button '.$btnAttr.'>Erforschen</button></td></tr>';
     }
-    echo '<td><button '.$btnAttr.'>Erforschen</button></td></tr>';
 }
 echo '</tbody></table></section>';
 
