@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Legal - ZeroDayEmpire</title>
+  <title>ZeroDayEmpire - Legal</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath fill='%2300ffc3' d='M50 5L95 50 50 95 5 50z'/%3E%3C/svg%3E"/>
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -52,16 +52,28 @@
   </footer>
   <script>
     (function(){
-      let token = localStorage.getItem('token') || sessionStorage.getItem('token') || (document.cookie.match(/token=([^;]+)/)||[])[1];
-      if(token && !localStorage.getItem('token') && !sessionStorage.getItem('token')){
-        localStorage.setItem('token', token);
-      }
-      const role = localStorage.getItem('role') || sessionStorage.getItem('role');
+      const params = new URLSearchParams(location.search);
+      const sid = params.get('sid');
       const reg = document.getElementById('registerLink');
       const dash = document.getElementById('dashboardLink');
       const logout = document.getElementById('logoutLink');
       const cfg = document.getElementById('configLink');
       const playLinks = document.querySelectorAll('.play-link');
+      if(sid){
+        const brand = document.querySelector('.brand');
+        if(brand) brand.href = 'game.php?m=start&sid=' + sid;
+        if(reg) reg.style.display='none';
+        if(dash){ dash.style.display='inline-flex'; dash.href='game.php?m=start&sid='+sid; }
+        if(logout){ logout.style.display='inline-flex'; logout.href='login.php?a=logout&sid='+sid; logout.removeAttribute('onclick'); }
+        playLinks.forEach(a => a.href='game.php?m=start&sid='+sid);
+        document.querySelectorAll('footer .links a').forEach(a => { a.href = a.getAttribute('href') + '?sid=' + sid; });
+        return;
+      }
+      let token = localStorage.getItem('token') || sessionStorage.getItem('token') || (document.cookie.match(/token=([^;]+)/)||[])[1];
+      if(token && !localStorage.getItem('token') && !sessionStorage.getItem('token')){
+        localStorage.setItem('token', token);
+      }
+      const role = localStorage.getItem('role') || sessionStorage.getItem('role');
       window.logout = function(){
         localStorage.removeItem('token');
         localStorage.removeItem('role');

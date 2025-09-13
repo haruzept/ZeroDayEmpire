@@ -88,10 +88,15 @@ function createlayout_top($title = 'ZeroDayEmpire', $nomenu = false)
 
 function createlayout_bottom()
 {
+    global $usr;
+    $sid = '';
+    if (isset($usr['sid']) && $usr['sid'] !== '') {
+        $sid = '?sid=' . $usr['sid'];
+    }
     echo "</main>\n";
     echo '<footer><div class="container foot">';
     echo '<div>© <span id="year"></span> ZeroDayEmpire</div>';
-    echo '<div class="links"><a href="impressum.php">Impressum</a><a href="legal.php">Legal</a><a href="rules.php">Spielregeln</a></div>';
+    echo '<div class="links"><a href="impressum.php' . $sid . '">Impressum</a><a href="legal.php' . $sid . '">Legal</a><a href="rules.php' . $sid . '">Spielregeln</a></div>';
     echo '</div></footer>';
     echo '<script>(function(){const nav=document.getElementById("nav");const btn=document.getElementById("menuBtn");if(btn){btn.addEventListener("click",()=>{const open=nav.classList.toggle("open");btn.setAttribute("aria-expanded",String(open));});}})();';
     echo 'window.addEventListener("pointermove",e=>{const x=e.clientX/window.innerWidth*100;const y=e.clientY/window.innerHeight*100;document.documentElement.style.setProperty("--mx",x+"%");document.documentElement.style.setProperty("--my",y+"%");},{passive:true});';
