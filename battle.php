@@ -23,7 +23,7 @@ if ($action == '') {
 }
 
 if ($pc['mk'] < 1) {
-    no_();
+    simple_message('Dieses Menü steht dir noch nicht zur Verfügung.<br />Du benötigst ein <a href="game.php?m=item&amp;item=mk&amp;sid='.$sid.'">Malware Kit</a>.', 'info');
     exit;
 }
 if ($pc['blocked'] > time()) {
