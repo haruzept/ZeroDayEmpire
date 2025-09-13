@@ -101,7 +101,8 @@ $trackTooltips = [
 ];
 
 $tracks = research_get_tracks();
-echo '<section class="card table-card"><h2>Verfügbare Forschung</h2><table><thead><tr><th scope="col">Zweig</th><th scope="col">Level</th><th scope="col">Dauer</th><th scope="col">Kosten</th><th scope="col">Status</th><th scope="col">Aktion</th></tr></thead><tbody>';
+// Tabelle soll die komplette Seite ausfüllen
+echo '<section class="card table-card" id="researchTable"><h2>Verfügbare Forschung</h2><table id="researchTableInner" style="width:100%;height:100%"><thead><tr><th scope="col">Zweig</th><th scope="col">Level</th><th scope="col">Dauer</th><th scope="col">Kosten</th><th scope="col">Status</th><th scope="col">Aktion</th></tr></thead><tbody>';
 foreach ($tracks as $track => $info) {
     $cur = $info['level'];
     $max = $info['max_level'];
@@ -135,6 +136,8 @@ foreach ($tracks as $track => $info) {
 echo '</tbody></table></section>';
 
 echo '<script>
+function resizeResearchTable(){var container=document.getElementById("researchTable");if(!container)return;var top=container.getBoundingClientRect().top;container.style.height=(window.innerHeight-top)+"px";}
+resizeResearchTable();window.addEventListener("resize",resizeResearchTable);
 function updTimers(){document.querySelectorAll(".cd").forEach(function(el){var end=parseInt(el.dataset.end,10);var s=end-Math.floor(Date.now()/1000);if(s<0)s=0;var h=Math.floor(s/3600),m=Math.floor((s%3600)/60),sec=s%60;el.textContent=(h>0?String(h).padStart(2,"0")+":"+String(m).padStart(2,"0"):String(m).padStart(2,"0"))+":"+String(sec).padStart(2,"0");});}
 updTimers();setInterval(updTimers,1000);
 document.querySelectorAll(".start-btn").forEach(function(btn){btn.addEventListener("click",function(){if(btn.disabled)return;btn.disabled=true;var track=btn.dataset.track;var cost=parseInt(btn.dataset.cost,10);var old=btn.textContent;btn.innerHTML="<span class=\"spinner\"></span>";fetch("research.php?a=start&sid='.$sid.'",{method:"POST",headers:{"Content-Type":"application/x-www-form-urlencoded"},body:"track="+encodeURIComponent(track)}).then(function(r){return r.json();}).then(function(data){if(data.ok){var c=document.getElementById("kpiCredits");var nv=parseInt(c.dataset.value,10)-cost;c.dataset.value=nv;c.textContent=nv.toLocaleString("de-DE")+" Credits";btn.textContent="Gestartet";}else{btn.textContent=old;btn.disabled=false;}});});});
