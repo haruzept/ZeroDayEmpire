@@ -76,7 +76,7 @@ echo '<div class="kpi kpi-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidde
 echo '</div>';
 
 if ($running) {
-    echo '<section class="card table-card"><h2>Upgrade-Queue</h2><table style="width:100%"><thead><tr><th>Item</th><th>Level</th><th>Fertig in</th><th>Aktion</th></tr></thead><tbody>';
+    echo '<section class="card table-card" style="overflow:visible"><h2>Upgrade-Queue</h2><table style="width:100%"><thead><tr><th>Item</th><th>Level</th><th>Fertig in</th><th>Aktion</th></tr></thead><tbody>';
     $tmppc = $pc;
     foreach ($runningRows as $row) {
         $item = $row['item'];
