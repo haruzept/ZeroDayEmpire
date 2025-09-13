@@ -81,7 +81,7 @@ function dependency_tooltip_text($item)
         [$depItem, $level] = $dep;
         $parts[] = idtoname($depItem).' Stufe '.$level;
     }
-    return 'Ben&ouml;tigt '.implode(', ', $parts);
+    return 'Benötigt '.implode(', ', $parts);
 }
 
 function item_tooltip_text($item)
