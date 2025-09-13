@@ -361,24 +361,24 @@ createlayout_bottom();
             if ($disp && $disp != '0.0') {
                 $info_text = htmlspecialchars(strip_tags(file_get('data/info/'.$id.'.txt')));
                 $upgrade = isavailb($id, $pc) === true ? ' (Upgrade verf&uuml;gbar)' : '';
-                echo '<tr><th><a href="game.php?m=item&amp;item='.$id.'&amp;sid='.$sid.'" title="'.$info_text.'">'.$name.'</a>:</th><td>';
+                echo '<li><a href="game.php?m=item&amp;item='.$id.'&amp;sid='.$sid.'" title="'.$info_text.'">'.$name.'</a>: ';
                 if ($txt != '') {
                     echo str_replace('%v', $disp, $txt).$upgrade;
                 }
-                echo '</td></tr>';
+                echo '</li>';
             }
         }
 
         $rhinfo = '';
         if ($pc['mk'] > 0 && $pc['rh'] > 0) {
-            $rhinfo = '<tr><th>Remote Hijack</th><td>';
+            $rhinfo = '<li>Remote Hijack: ';
             $lastRemote = (int)$pc['lrh'] + REMOTE_HIJACK_DELAY;
             if ($lastRemote <= time()) {
                 $rhinfo .= '<span style="color:green;">sofort verf&uuml;gbar</span>';
             } else {
                 $rhinfo .= nicetime($lastRemote);
             }
-            $rhinfo .= '</td></tr>';
+            $rhinfo .= '</li>';
         }
 
         $pc['name'] = safeentities($pc['name']);
@@ -387,51 +387,51 @@ createlayout_bottom();
             echo $notif;
         }
 
-        echo '<div class="strip" style="grid-template-columns:repeat(2,1fr);text-align:left">';
+        echo '<section class="features" aria-label="Computer">';
 
-        echo '<section class="card" id="computer-properties">';
-        echo '<h2>Eigenschaften</h2>';
-        echo '<p><a href="game.php?a=renamepclist&amp;sid='.$sid.'">Computer umbenennen</a></p>';
-        echo '<table>';
-        echo '<tr><th>Name:</th><td>'.$pc['name'].'</td></tr>';
-        echo '<tr><th>IP:</th><td>10.47.'.$pc['ip'].'</td></tr>';
-        echo '<tr><th>Punkte:</th><td>'.$pc['points'].'</td></tr>';
-        echo '<tr><th>Geld:</th><td>'.$bucks.' Credits</td></tr>';
+        echo '<article class="card span-6" id="computer-properties">';
+        echo '<h3>Eigenschaften</h3>';
+        echo '<ul class="muted" style="list-style:none; padding-left:0; margin:10px 0 0 0">';
+        echo '<li><a href="game.php?a=renamepclist&amp;sid='.$sid.'">Computer umbenennen</a></li>';
+        echo '<li>Name: '.$pc['name'].'</li>';
+        echo '<li>IP: 10.47.'.$pc['ip'].'</li>';
+        echo '<li>Punkte: '.$pc['points'].'</li>';
+        echo '<li>Geld: '.$bucks.' Credits</li>';
         $attackable = is_pc_attackable($pc) && is_noranKINGuser($usrid) == false;
-        echo '<tr><th>Angreifbar:</th><td>'.($attackable ? 'ja' : 'nein').'</td></tr>';
+        echo '<li>Angreifbar: '.($attackable ? 'ja' : 'nein').'</li>';
         echo $rhinfo;
-        echo '</table>';
-        echo '</section>';
+        echo '</ul>';
+        echo '</article>';
 
-        echo '<section class="card" id="computer-essentials"><h2>Essentials</h2><table>';
+        echo '<article class="card span-6" id="computer-essentials"><h3>Essentials</h3><ul class="muted" style="list-style:none; padding-left:0; margin:10px 0 0 0">';
         showinfo('cpu', '%v');
         showinfo('ram', '%v MB RAM');
         showinfo('lan', 'Level %v');
         showinfo('mm', 'Version %v');
         showinfo('bb', 'Version %v');
-        echo '</table></section>';
+        echo '</ul></article>';
 
-        echo '<section class="card" id="computer-software"><h2>Software</h2><table>';
+        echo '<article class="card span-6" id="computer-software"><h3>Software</h3><ul class="muted" style="list-style:none; padding-left:0; margin:10px 0 0 0">';
         showinfo('sdk', 'Version %v');
         showinfo('mk', 'Version %v');
         showinfo('ips', 'Level %v');
-        echo '</table></section>';
+        echo '</ul></article>';
 
-        echo '<section class="card" id="computer-security"><h2>Sicherheit</h2><table>';
+        echo '<article class="card span-6" id="computer-security"><h3>Sicherheit</h3><ul class="muted" style="list-style:none; padding-left:0; margin:10px 0 0 0">';
         showinfo('fw', 'Version %v');
         showinfo('av', 'Version %v');
         showinfo('ids', 'Level %v');
-        echo '</table></section>';
+        echo '</ul></article>';
 
-        echo '<section class="card" id="computer-attack"><h2>Angriff</h2><table>';
+        echo '<article class="card span-6" id="computer-attack"><h3>Angriff</h3><ul class="muted" style="list-style:none; padding-left:0; margin:10px 0 0 0">';
         showinfo('trojan', 'Level %v');
         showinfo('rh', 'Level %v');
         if (isavailh('da', $pc) === true) {
             showinfo('da', 'Level %v', 1);
         }
-        echo '</table></section>';
+        echo '</ul></article>';
 
-        echo '</div>';
+        echo '</section>';
 
         createlayout_bottom();
         break;
