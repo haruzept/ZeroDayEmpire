@@ -46,6 +46,53 @@ function dependency_badge($ok)
     return '<span class="badge muted">'.($ok ? 'Erf&uuml;llte Abh&auml;ngigkeit' : 'Abh&auml;ngigkeit fehlt').'</span>';
 }
 
+function upgrade_dependencies($id)
+{
+    switch ($id) {
+        case 'fw':
+            return [['cpu', 6], ['ram', 2]];
+        case 'mk':
+            return [['cpu', 12], ['sdk', 3]];
+        case 'av':
+            return [['cpu', 10], ['ram', 3]];
+        case 'sdk':
+            return [['cpu', 8], ['ram', 2]];
+        case 'ips':
+            return [['cpu', 8], ['sdk', 2]];
+        case 'ids':
+            return [['cpu', 15], ['sdk', 3]];
+        case 'trojan':
+            return [['mk', 4], ['ram', 4]];
+        case 'rh':
+            return [['cpu', 18], ['ram', 7], ['sdk', 5], ['mk', 10]];
+        default:
+            return [];
+    }
+}
+
+function dependency_tooltip_text($item)
+{
+    $deps = upgrade_dependencies($item);
+    if (!$deps) {
+        return '';
+    }
+    $parts = [];
+    foreach ($deps as $dep) {
+        [$depItem, $level] = $dep;
+        $parts[] = idtoname($depItem).' Stufe '.$level;
+    }
+    return 'Ben&ouml;tigt '.implode(', ', $parts);
+}
+
+function item_tooltip_text($item)
+{
+    $text = file_get('data/info/'.$item.'.txt');
+    $text = strip_tags($text);
+    $text = html_entity_decode($text, ENT_QUOTES, 'UTF-8');
+    $text = preg_replace('/\s+/', ' ', $text);
+    return trim($text);
+}
+
 createlayout_top('ZeroDayEmpire - Dein Computer');
 
 echo '<header class="page-head"><h1>Dein Computer</h1><a href="game.php?m=start&amp;sid='.$sid.'" class="btn ghost sm">Zur &Uuml;bersicht</a></header>';
@@ -98,7 +145,9 @@ foreach ($items as $item) {
     $max = itemmaxval($item);
     $curStr = formatitemlevel($item, $cur);
     $maxStr = formatitemlevel($item, $max);
-    echo '<tr><td><strong>'.idtoname($item).'</strong></td><td>'.$curStr.' / '.$maxStr.'</td>';
+    $itemTooltip = item_tooltip_text($item);
+    $itemTooltip = $itemTooltip ? str_replace("\n", '&#10;', htmlspecialchars($itemTooltip, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8')) : '';
+    echo '<tr><td'.($itemTooltip ? ' class="tooltip" data-tooltip="'.$itemTooltip.'"' : '').'><strong>'.idtoname($item).'</strong></td><td>'.$curStr.' / '.$maxStr.'</td>';
     if ($cur >= $max) {
         echo '<td colspan="3">Max</td><td></td></tr>';
         continue;
@@ -109,7 +158,9 @@ foreach ($items as $item) {
     $slotFree = ($running < UPGRADE_QUEUE_LENGTH);
     $creditOK = ($credits >= $inf['c']);
     echo '<td>'.$timeStr.'</td><td>'.format_credits($inf['c']).'</td>';
-    echo '<td>'.dependency_badge($dep_ok).'</td>';
+    $depTooltip = dependency_tooltip_text($item);
+    $depTooltip = $depTooltip ? str_replace("\n", '&#10;', htmlspecialchars($depTooltip, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8')) : '';
+    echo '<td'.($depTooltip ? ' class="tooltip" data-tooltip="'.$depTooltip.'"' : '').'>'.dependency_badge($dep_ok).'</td>';
     $can = $dep_ok && $slotFree && $creditOK;
     $encrid = crypt($item, $SALT);
     if ($can) {
