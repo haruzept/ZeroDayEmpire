@@ -137,7 +137,7 @@ if ($running > 1) {
         $newlv = itemnextlevel($item, $tmppc[$item]);
         $s1 = formatitemlevel($item, $tmppc[$item]);
         $s2 = formatitemlevel($item, $newlv);
-        echo '<tr><td>'.idtoname($item).'</td><td>'.$s1.' &raquo; '.$s2.'</td><td><span class="cd" data-end="'.$row['end'].'"></span></td><td><a class="btn sm" href="game.php?page=cancelupgrade&amp;upgrade='.$row['id'].'&amp;sid='.$sid.'">Abbrechen</a></td></tr>';
+        echo '<tr><td>'.idtoname($item).'</td><td>'.$s1.' &raquo; '.$s2.'</td><td><span class="cd" data-end="'.$row['end'].'"></span> min</td><td><a class="btn sm" href="game.php?page=cancelupgrade&amp;upgrade='.$row['id'].'&amp;sid='.$sid.'">Abbrechen</a></td></tr>';
         $tmppc[$item] = $newlv;
     }
     echo '</tbody></table><p>Wichtig: Das Geld von einem abgebrochenen Upgrade wird NICHT zur&uuml;ckerstattet, sondern ist verloren!</p></section>';
@@ -158,7 +158,7 @@ foreach ($items as $item) {
         $levelCell = $curStr;
     } else {
         $nextStr = formatitemlevel($item, itemnextlevel($item, $cur));
-        $levelCell = $curStr.' &rarr; '.$nextStr;
+        $levelCell = $curStr.' &raquo; '.$nextStr;
     }
 
     echo '<tr><td'.($itemTooltip ? ' class="tooltip" data-tooltip="'.$itemTooltip.'"' : '').'><strong>'.idtoname($item).'</strong></td><td>'.$levelCell.'</td>';
