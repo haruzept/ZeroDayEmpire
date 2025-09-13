@@ -62,30 +62,24 @@ while ($row = mysql_fetch_assoc($r)) { $runningRows[] = $row; }
 $running = count($runningRows);
 $maxSlots = isset($pc['research_slots']) ? (int)$pc['research_slots'] : 1;
 $credits = (int)$pc['credits'];
-$queueTime = $running ? $runningRows[0]['end'] - $now : 0;
+$tracks = research_get_tracks();
+
+$queueLabel = 'Keine Forschung aktiv';
+if ($running) {
+    $first = $runningRows[0];
+    $info = $tracks[$first['track']] ?? null;
+    $curLvl = $info['level'] ?? ($first['target_level'] - 1);
+    $maxLvl = $info['max_level'] ?? $first['target_level'];
+    $progress = $curLvl.'/'.$maxLvl;
+    $queueTime = $first['end'] - $now;
+    $queueLabel = $progress.' <span class="cd" data-end="'.$first['end'].'">'.sprintf('%02d:%02d', floor($queueTime/3600), floor(($queueTime%3600)/60)).'</span> min';
+}
 
 echo '<div class="strip">';
-echo '<div class="kpi kpi-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" width="50" height="50"><path d="M3 12h18M12 3v18" stroke="rgb(var(--accent))" stroke-width="2" fill="none"/></svg><div class="stat"><div class="value">Verfügbare Slots: '.$running.' / '.$maxSlots.'</div></div></div>';
-echo '<div class="kpi kpi-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" width="50" height="50"><path d="M4 4h16v12H4z" stroke="rgb(var(--accent))" stroke-width="2" fill="none"/><path d="M2 18h20" stroke="rgb(var(--accent))"/></svg><div class="stat"><div class="value" id="kpiCredits" data-value="'.$credits.'">'.format_credits($credits).'</div></div></div>';
-$queueLabel = $running ? '<span class="cd" data-end="'.($now + $queueTime).'">'.sprintf('%02d:%02d', floor($queueTime/3600), floor(($queueTime%3600)/60)).'</span>' : 'Keine Forschung aktiv';
-echo '<div class="kpi kpi-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" width="50" height="50"><circle cx="12" cy="12" r="9" stroke="rgb(var(--accent))" stroke-width="2" fill="none"/><path d="M12 7v5l3 2" stroke="rgb(var(--accent))" stroke-width="2" fill="none"/></svg><div class="stat"><div class="value">'.$queueLabel.'</div></div></div>';
+echo '<div class="kpi kpi-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" width="50" height="50"><path d="M3 12h18M12 3v18" stroke="rgb(var(--accent))" stroke-width="2" fill="none"/></svg><div class="stat"><h3 class="value">Verfügbare Slots: '.$running.' / '.$maxSlots.'</h3></div></div>';
+echo '<div class="kpi kpi-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" width="50" height="50"><path d="M4 4h16v12H4z" stroke="rgb(var(--accent))" stroke-width="2" fill="none"/><path d="M2 18h20" stroke="rgb(var(--accent))"/></svg><div class="stat"><h3 class="value" id="kpiCredits" data-value="'.$credits.'">'.format_credits($credits).'</h3></div></div>';
+echo '<div class="kpi kpi-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" width="50" height="50"><circle cx="12" cy="12" r="9" stroke="rgb(var(--accent))" stroke-width="2" fill="none"/><path d="M12 7v5l3 2" stroke="rgb(var(--accent))" stroke-width="2" fill="none"/></svg><div class="stat"><h3 class="value">'.$queueLabel.'</h3></div></div>';
 echo '</div>';
-
-if ($running > 0) {
-    $states = [];
-    $rs = db_query('SELECT track, level FROM research_state WHERE pc=\''.mysql_escape_string($pcid).'\';');
-    while ($s = mysql_fetch_assoc($rs)) { $states[$s['track']] = (int)$s['level']; }
-    echo '<section class="card list"><h2>Laufende Forschung</h2><ul class="list">';
-    foreach ($runningRows as $row) {
-        $ti = db_query('SELECT name FROM research_tracks WHERE track=\''.mysql_escape_string($row['track']).'\' LIMIT 1;');
-        $name = mysql_result($ti,0,'name');
-        $cur = $states[$row['track']] ?? ($row['target_level']-1);
-        $next = $row['target_level'];
-        echo '<li class="list-row"><span class="name">'.htmlspecialchars($name).'</span><span class="lvl">L'.$cur.'/'.$next.'</span><span class="cd" data-end="'.$row['end'].'"></span><button class="btn ghost sm cancel-btn" data-id="'.$row['id'].'">Abbrechen</button></li>';
-        $states[$row['track']] = $next;
-    }
-    echo '</ul></section>';
-}
 
 $trackTooltips = [
     'r_ana' => "Vermittelt die Grundlagen zum Einordnen öffentlich verfügbarer Skripte/PoCs in der Simulation. Dient als Voraussetzung für fortgeschrittene Zweige.",
@@ -100,7 +94,6 @@ $trackTooltips = [
     'r_veil' => "Untersucht Tarnmechaniken abstrakt innerhalb der Simulation. Unterstützt höhere Zweige, indem es Erkennungsrisiken in Szenario-Bewertungen reduziert.",
 ];
 
-$tracks = research_get_tracks();
 echo '<section class="card table-card" id="researchTable" style="overflow:visible"><h2>Verfügbare Forschung</h2><table id="researchTableInner" style="width:100%"><thead><tr><th scope="col" style="text-align:center">Zweig</th><th scope="col" style="text-align:center">Level</th><th scope="col" style="text-align:center">Dauer</th><th scope="col" style="text-align:center">Kosten</th><th scope="col" style="text-align:center">Status</th><th scope="col" style="text-align:center">Aktion</th></tr></thead><tbody>';
 foreach ($tracks as $track => $info) {
     $cur = $info['level'];
@@ -139,8 +132,7 @@ echo '</tbody></table></section>';
 echo '<script>
 function updTimers(){document.querySelectorAll(".cd").forEach(function(el){var end=parseInt(el.dataset.end,10);var s=end-Math.floor(Date.now()/1000);if(s<0)s=0;var h=Math.floor(s/3600),m=Math.floor((s%3600)/60),sec=s%60;el.textContent=(h>0?String(h).padStart(2,"0")+":"+String(m).padStart(2,"0"):String(m).padStart(2,"0"))+":"+String(sec).padStart(2,"0");});}
 updTimers();setInterval(updTimers,1000);
-document.querySelectorAll(".start-btn").forEach(function(btn){btn.addEventListener("click",function(){if(btn.disabled)return;btn.disabled=true;var track=btn.dataset.track;var cost=parseInt(btn.dataset.cost,10);var old=btn.textContent;btn.innerHTML="<span class=\"spinner\"></span>";fetch("research.php?a=start&sid='.$sid.'",{method:"POST",headers:{"Content-Type":"application/x-www-form-urlencoded"},body:"track="+encodeURIComponent(track)}).then(function(r){return r.json();}).then(function(data){if(data.ok){var c=document.getElementById("kpiCredits");var nv=parseInt(c.dataset.value,10)-cost;c.dataset.value=nv;c.textContent=nv.toLocaleString("de-DE")+" Credits";btn.textContent="Gestartet";}else{btn.textContent=old;btn.disabled=false;}});});});
-document.querySelectorAll(".cancel-btn").forEach(function(btn){btn.addEventListener("click",function(){var id=btn.dataset.id;fetch("research.php?a=cancel&sid='.$sid.'",{method:"POST",headers:{"Content-Type":"application/x-www-form-urlencoded"},body:"id="+id}).then(function(r){return r.json();}).then(function(data){if(data.ok){location.reload();}});});});
+document.querySelectorAll(".start-btn").forEach(function(btn){btn.addEventListener("click",function(){if(btn.disabled)return;btn.disabled=true;var track=btn.dataset.track;var old=btn.textContent;btn.innerHTML="<span class=\"spinner\"></span>";fetch("research.php?a=start&sid='.$sid.'",{method:"POST",headers:{"Content-Type":"application/x-www-form-urlencoded"},body:"track="+encodeURIComponent(track)}).then(function(r){return r.json();}).then(function(data){if(data.ok){location.reload();}else{btn.textContent=old;btn.disabled=false;}});});});
 </script>';
 
 createlayout_bottom();
