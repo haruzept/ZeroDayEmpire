@@ -373,7 +373,7 @@ createlayout_bottom();
 
         function showinfo($id, $txt, $val = -1)
         {
-            global $pc, $sid;
+            global $pc, $sid, $pcid;
             if ($val == -1) {
                 $val = $pc[$id];
             }
@@ -381,7 +381,11 @@ createlayout_bottom();
             $disp = formatitemlevel($id, $val);
             if ($disp && $disp != '0.0') {
                 $info_text = htmlspecialchars(strip_tags(file_get('data/info/'.$id.'.txt')));
-                $upgrade = isavailb($id, $pc) === true ? ' (Upgrade verf&uuml;gbar)' : '';
+                if (isavailb($id, $pc) === true) {
+                    $upgrade = ' (<a href="upgradelist.php?sid='.$sid.'&amp;xpc='.$pcid.'">Upgrade verf&uuml;gbar</a>)';
+                } else {
+                    $upgrade = '';
+                }
                 echo '<li><a href="game.php?m=item&amp;item='.$id.'&amp;sid='.$sid.'" title="'.$info_text.'">'.$name.'</a>: ';
                 if ($txt != '') {
                     echo str_replace('%v', $disp, $txt).$upgrade;
