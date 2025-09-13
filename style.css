@@ -17,11 +17,6 @@ body{
   margin:0; color:var(--text); background: var(--bg);
   font: 500 16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Inter, Arial, "Noto Sans";
   -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
-  background-image:
-    radial-gradient( 1000px 600px at var(--mx,60%) var(--my,30%), rgba(var(--accent)/.07), transparent 60%),
-    linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,0) 12%),
-    repeating-linear-gradient( to right, rgba(255,255,255,.035) 0 1px, transparent 1px 120px ),
-    repeating-linear-gradient( to bottom, rgba(255,255,255,.035) 0 1px, transparent 1px 120px );
 }
 a{color:inherit; text-decoration:none}
 .container{ width:min(1200px, 92%); margin-inline:auto }
