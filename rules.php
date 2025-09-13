@@ -1,8 +1,15 @@
 <?php
 define('IN_ZDE', 1);
 $starttime = microtime();
-include('gres.php');
-include('layout.php');
+// Load player data when a SID is supplied so the navigation reflects the
+// logged-in state. Without a SID the page is shown with the public layout.
+if (isset($_GET['sid'])) {
+    $FILE_REQUIRES_PC = false;
+    include 'ingame.php';
+} else {
+    include 'gres.php';
+    include 'layout.php';
+}
 
 function showdoc($fn, $te = '')
 {
@@ -37,3 +44,4 @@ createlayout_bottom();
 }
 
 showdoc('rules', 'Regeln');
+?>
