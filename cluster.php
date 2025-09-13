@@ -56,15 +56,23 @@ switch ($action) {
         }
 
         createlayout_top('ZeroDayEmpire - Cluster');
-        echo '<header class="page-head"><h1>Cluster</h1></header>';
+?>
+<!-- ZDE theme inject -->
+<style>@import url("style.css");</style>
+<div class="container">
+<?php // /ZDE theme inject start
+
+
+        echo '<div class="content" id="cluster">'."\n";
+        echo '<h2>Cluster</h2>'."\n";
 
 
         function nocluster()
         {
 # ich bin keinem (existierenden) Cluster
             global $STYLESHEET, $REMOTE_FILES_DIR, $DATADIR, $sid, $usrid, $pcid;
-            echo '<section id="cluster-found" class="card">
-<h2>Cluster gr&uuml;nden</h2>
+            echo '<div id="cluster-found">
+<h3>Cluster gr&uuml;nden</h3>
 <form action="cluster.php?page=found&amp;sid='.$sid.'" method="post">
 <table>
 <tr>
@@ -79,16 +87,21 @@ switch ($action) {
 </tr>
 </table>
 </form>
-</section>
-<section class="card important"><h3>Hinweis</h3>
+</div>
+<div class="important"><h3>Hinweis</h3>
 <p>Um einem existierenden Cluster beizutreten, rufe die Info-Seite eines Clusters auf.
-Dort findest du einen "Mitgliedsantrag stellen"-Link.</p></section>';
+Dort findest du einen "Mitgliedsantrag stellen"-Link.</p></div>
+</div>';
         }
 
 #  kein Cluster
         if ($cluster === false) {
             nocluster();
-            createlayout_bottom();
+            ?>
+</div>
+<!-- /ZDE theme inject -->
+<?php
+createlayout_bottom();
             exit;
         }
 
@@ -182,9 +195,9 @@ Dort findest du einen "Mitgliedsantrag stellen"-Link.</p></section>';
             $cluster[$bez] = safeentities($val);
         }
 
-        echo '<section id="cluster-overview" class="card">
-<h2>'.$cluster['name'].'</h2>
-<table style="width:100%">
+        echo '<div id="cluster-overview">
+<h3>'.$cluster['name'].'</h3>
+<table width="90%">
 '.$img.'<tr id="cluster-overview-board1">
 <td colspan="2"><a href="cboard.php?page=board&amp;sid='.$sid.'">Zum Cluster-Board</a></td>
 </tr>
@@ -229,11 +242,11 @@ Dort findest du einen "Mitgliedsantrag stellen"-Link.</p></section>';
 <td colspan="2"><a href="cboard.php?page=board&amp;sid='.$sid.'">Zum Cluster-Board</a></td>
 </tr>
 </table>
-</section>';
+</div>';
 
         if ($usr['clusterstat'] == CS_ADMIN || $usr['clusterstat'] == CS_COADMIN):
             $cluster['notice'] = html_entity_decode($cluster['notice']);
-            echo '<section id="cluster-notice-create" class="card">
+            echo '<div id="cluster-notice-create">
 <h3>Aktuelle Notiz</h3>
 <form action="cluster.php?sid='.$sid.'&amp;page=savenotice" method="post">
 <table>
@@ -243,13 +256,13 @@ Dort findest du einen "Mitgliedsantrag stellen"-Link.</p></section>';
 </td></tr>
 </table>
 </form>
-</section>';
+</div>';
         endif;
 
 #echo '<div class="important"><h3>Hinweis</h3><p>Heute Nachmittag k&ouml;nnen leider keine DAs erstellt / ausgef&uuml;hrt werden, da die
 #interne Verwaltung selbiger umgestellt wird. Danke f&uuml;r euer Verst&auml;ndis!<br />KingIR</p></div>';
 
-        echo '<section id="cluster-distributed-attacks" class="card">
+        echo '<div id="cluster-distributed-attacks">
 <h3>Distributed Attacks</h3><br />';
         if ($usr['da_avail'] == 'yes') {
             $pc = getpc($pcid);
@@ -261,9 +274,13 @@ Dort findest du einen "Mitgliedsantrag stellen"-Link.</p></section>';
         }
         echo '<p><a href="distrattack.php?sid='.$sid.'&amp;page=list">Vorhandene Distributed Attacks anzeigen</a></p>';
 
-        echo '</section>'."\n";
+        echo '</div>'."\n";
 
-        createlayout_bottom();
+        ?>
+</div>
+<!-- /ZDE theme inject -->
+<?php
+createlayout_bottom();
         break;
 
     case 'delconvent': //----------------- DELETE CONVENT -------------------------
