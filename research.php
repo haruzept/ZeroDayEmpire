@@ -65,10 +65,10 @@ $credits = (int)$pc['credits'];
 $queueTime = $running ? $runningRows[0]['end'] - $now : 0;
 
 echo '<div class="strip">';
-echo '<div class="kpi kpi-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" width="12" height="12"><path d="M3 12h18M12 3v18" stroke="rgb(var(--accent))" stroke-width="2" fill="none"/></svg><div class="stat"><div class="value">'.$running.' / '.$maxSlots.'</div><div class="label">Slots</div><div class="progress"><div class="bar" style="width:'.($maxSlots?($running/$maxSlots*100):0).'%;"></div></div></div></div>';
-echo '<div class="kpi kpi-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" width="12" height="12"><path d="M4 4h16v12H4z" stroke="rgb(var(--accent))" stroke-width="2" fill="none"/><path d="M2 18h20" stroke="rgb(var(--accent))"/></svg><div class="stat"><div class="value" id="kpiCredits" data-value="'.$credits.'">'.format_credits($credits).'</div><div class="label">Credits</div></div></div>';
+echo '<div class="kpi kpi-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" width="50" height="50"><path d="M3 12h18M12 3v18" stroke="rgb(var(--accent))" stroke-width="2" fill="none"/></svg><div class="stat"><div class="value">Verfügbare Slots: '.$running.' / '.$maxSlots.'</div></div></div>';
+echo '<div class="kpi kpi-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" width="50" height="50"><path d="M4 4h16v12H4z" stroke="rgb(var(--accent))" stroke-width="2" fill="none"/><path d="M2 18h20" stroke="rgb(var(--accent))"/></svg><div class="stat"><div class="value" id="kpiCredits" data-value="'.$credits.'">'.format_credits($credits).'</div></div></div>';
 $queueLabel = $running ? '<span class="cd" data-end="'.($now + $queueTime).'">'.sprintf('%02d:%02d', floor($queueTime/3600), floor(($queueTime%3600)/60)).'</span>' : 'Keine Forschung aktiv';
-echo '<div class="kpi kpi-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" width="12" height="12"><circle cx="12" cy="12" r="9" stroke="rgb(var(--accent))" stroke-width="2" fill="none"/><path d="M12 7v5l3 2" stroke="rgb(var(--accent))" stroke-width="2" fill="none"/></svg><div class="stat"><div class="value">'.$queueLabel.'</div><div class="label">Warteschlange</div></div></div>';
+echo '<div class="kpi kpi-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" width="50" height="50"><circle cx="12" cy="12" r="9" stroke="rgb(var(--accent))" stroke-width="2" fill="none"/><path d="M12 7v5l3 2" stroke="rgb(var(--accent))" stroke-width="2" fill="none"/></svg><div class="stat"><div class="value">'.$queueLabel.'</div></div></div>';
 echo '</div>';
 
 if ($running > 0) {
@@ -101,8 +101,7 @@ $trackTooltips = [
 ];
 
 $tracks = research_get_tracks();
-// Tabelle soll die komplette Seite ausfüllen
-echo '<section class="card table-card" id="researchTable"><h2>Verfügbare Forschung</h2><table id="researchTableInner" style="width:100%;height:100%"><thead><tr><th scope="col" style="text-align:center">Zweig</th><th scope="col" style="text-align:center">Level</th><th scope="col" style="text-align:center">Dauer</th><th scope="col" style="text-align:center">Kosten</th><th scope="col" style="text-align:center">Status</th><th scope="col" style="text-align:center">Aktion</th></tr></thead><tbody>';
+echo '<section class="card table-card" id="researchTable" style="overflow:visible"><h2>Verfügbare Forschung</h2><table id="researchTableInner" style="width:100%"><thead><tr><th scope="col" style="text-align:center">Zweig</th><th scope="col" style="text-align:center">Level</th><th scope="col" style="text-align:center">Dauer</th><th scope="col" style="text-align:center">Kosten</th><th scope="col" style="text-align:center">Status</th><th scope="col" style="text-align:center">Aktion</th></tr></thead><tbody>';
 foreach ($tracks as $track => $info) {
     $cur = $info['level'];
     $max = $info['max_level'];
@@ -138,8 +137,6 @@ foreach ($tracks as $track => $info) {
 echo '</tbody></table></section>';
 
 echo '<script>
-function resizeResearchTable(){var container=document.getElementById("researchTable");if(!container)return;var top=container.getBoundingClientRect().top;container.style.height=(window.innerHeight-top)+"px";}
-resizeResearchTable();window.addEventListener("resize",resizeResearchTable);
 function updTimers(){document.querySelectorAll(".cd").forEach(function(el){var end=parseInt(el.dataset.end,10);var s=end-Math.floor(Date.now()/1000);if(s<0)s=0;var h=Math.floor(s/3600),m=Math.floor((s%3600)/60),sec=s%60;el.textContent=(h>0?String(h).padStart(2,"0")+":"+String(m).padStart(2,"0"):String(m).padStart(2,"0"))+":"+String(sec).padStart(2,"0");});}
 updTimers();setInterval(updTimers,1000);
 document.querySelectorAll(".start-btn").forEach(function(btn){btn.addEventListener("click",function(){if(btn.disabled)return;btn.disabled=true;var track=btn.dataset.track;var cost=parseInt(btn.dataset.cost,10);var old=btn.textContent;btn.innerHTML="<span class=\"spinner\"></span>";fetch("research.php?a=start&sid='.$sid.'",{method:"POST",headers:{"Content-Type":"application/x-www-form-urlencoded"},body:"track="+encodeURIComponent(track)}).then(function(r){return r.json();}).then(function(data){if(data.ok){var c=document.getElementById("kpiCredits");var nv=parseInt(c.dataset.value,10)-cost;c.dataset.value=nv;c.textContent=nv.toLocaleString("de-DE")+" Credits";btn.textContent="Gestartet";}else{btn.textContent=old;btn.disabled=false;}});});});
