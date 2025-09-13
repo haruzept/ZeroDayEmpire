@@ -202,23 +202,24 @@ switch ($action) {
       <h3>Computer</h3>
       <ul class="muted" style="list-style:none; padding-left:0; margin:10px 0 0 0">
         <li><a href="game.php?m=pc&amp;sid=<?php echo $sid; ?>"><strong><?php echo safeentities($pc['name']); ?></strong> (10.47.<?php echo $pc['ip']; ?>)</a></li>
-          <li data-item="cpu"><?php echo idtoname('cpu'); ?>: <?php echo formatitemlevel('cpu',$pc['cpu']); ?><?php echo overview_upgrade_link('cpu'); ?><div class="tip"></div></li>
-          <li data-item="ram"><?php echo idtoname('ram'); ?>: <?php echo formatitemlevel('ram',$pc['ram']); ?><?php echo overview_upgrade_link('ram'); ?><div class="tip"></div></li>
+        <li data-item="cpu"><?php echo idtoname('cpu'); ?>: <?php echo formatitemlevel('cpu',$pc['cpu']); ?><?php echo overview_upgrade_link('cpu'); ?><div class="tip"></div></li>
+        <li data-item="ram"><?php echo idtoname('ram'); ?>: <?php echo formatitemlevel('ram',$pc['ram']); ?><?php echo overview_upgrade_link('ram'); ?><div class="tip"></div></li>
         <li data-item="lan"><?php echo idtoname('lan'); ?>: Level <?php echo $pc['lan']; ?><?php echo overview_upgrade_link('lan'); ?><div class="tip"></div></li>
       </ul>
-      <div class="software">
-        <h4>Software</h4>
-        <ul class="muted" style="list-style:none; padding-left:0; margin:10px 0 0 0">
-          <li data-item="mm"><?php echo idtoname('mm'); ?>: Version <?php echo $pc['mm']; ?><?php echo overview_upgrade_link('mm'); ?><div class="tip"></div></li>
-      <li data-item="bb"><?php echo idtoname('bb'); ?>: Version <?php echo $pc['bb']; ?><?php echo overview_upgrade_link('bb'); ?><div class="tip"></div></li>
-          <li><?php echo idtoname('fw'); ?>: Version <?php echo $pc['fw']; ?></li>
-          <li><?php echo idtoname('av'); ?>: Version <?php echo $pc['av']; ?></li>
-          <li><?php echo idtoname('ids'); ?>: Level <?php echo $pc['ids']; ?></li>
-        </ul>
-      </div>
     </article>
 
-  <article class="card span-4" id="upgradequeue">
+  <article class="card span-6" id="software">
+      <h3>Software</h3>
+      <ul class="muted" style="list-style:none; padding-left:0; margin:10px 0 0 0">
+        <li data-item="mm"><?php echo idtoname('mm'); ?>: Version <?php echo $pc['mm']; ?><?php echo overview_upgrade_link('mm'); ?><div class="tip"></div></li>
+        <li data-item="bb"><?php echo idtoname('bb'); ?>: Version <?php echo $pc['bb']; ?><?php echo overview_upgrade_link('bb'); ?><div class="tip"></div></li>
+        <li><?php echo idtoname('fw'); ?>: Version <?php echo $pc['fw']; ?></li>
+        <li><?php echo idtoname('av'); ?>: Version <?php echo $pc['av']; ?></li>
+        <li><?php echo idtoname('ids'); ?>: Level <?php echo $pc['ids']; ?></li>
+      </ul>
+    </article>
+
+  <article class="card span-6" id="upgradequeue">
     <h3>Upgrade-Queue</h3>
     <?php
       $r = db_query('SELECT * FROM `upgrades` WHERE `pc`=\''.mysql_escape_string($pcid).'\' AND `end`>\''.time().'\' ORDER BY `start` ASC;');
@@ -242,7 +243,7 @@ switch ($action) {
     ?>
   </article>
 
-  <article class="card span-4" id="researchqueue">
+  <article class="card span-6" id="researchqueue">
     <h3>Forschungs-Queue</h3>
     <?php
       $r = db_query('SELECT * FROM `research` WHERE `pc`=\''.mysql_escape_string($pcid).'\' AND `end`>\''.time().'\' ORDER BY `start` ASC;');
@@ -285,7 +286,7 @@ switch ($action) {
 </section>
 
 <script>
-document.querySelectorAll('#computers li[data-item]').forEach(li => {
+document.querySelectorAll('#computers li[data-item], #software li[data-item]').forEach(li => {
   li.addEventListener('mouseenter', async () => {
     if (li.dataset.loaded) return;
     const item = li.getAttribute('data-item');
