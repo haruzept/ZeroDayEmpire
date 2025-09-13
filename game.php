@@ -359,10 +359,10 @@ createlayout_bottom();
             $disp = formatitemlevel($id, $val);
             if ($disp && $disp != '0.0') {
                 $info_text = htmlspecialchars(strip_tags(file_get('data/info/'.$id.'.txt')));
-                $upgrade = isavailb($id, $pc) === true ? ' (<a href="upgradelist.php?sid='.$sid.'">Upgrade verf&uuml;gbar</a>)' : '';
-                echo '<tr><th><a href="game.php?m=item&amp;item='.$id.'&amp;sid='.$sid.'" title="'.$info_text.'">'.$name.'</a>:'.$upgrade.'</th><td>';
+                $upgrade = isavailb($id, $pc) === true ? ' (Upgrade verf&uuml;gbar)' : '';
+                echo '<tr><th><a href="game.php?m=item&amp;item='.$id.'&amp;sid='.$sid.'" title="'.$info_text.'">'.$name.'</a>:</th><td>';
                 if ($txt != '') {
-                    echo str_replace('%v', $disp, $txt);
+                    echo str_replace('%v', $disp, $txt).$upgrade;
                 }
                 echo '</td></tr>';
             }
