@@ -48,9 +48,7 @@ function format_credits($n) {
     return number_format((int)$n, 0, ',', '.').' Credits';
 }
 function dependency_badge($ok) {
-    return $ok
-        ? '<span class="badge ok">Erfüllte Abhängigkeit</span>'
-        : '<span class="badge muted">Abhängigkeit fehlt</span>';
+    return '<span class="badge muted">'.($ok ? 'Erfüllte Abhängigkeit' : 'Abhängigkeit fehlt').'</span>';
 }
 
 createlayout_top('ZeroDayEmpire - Forschung');
@@ -119,10 +117,13 @@ foreach ($tracks as $track => $info) {
     $slotFree = ($running < $maxSlots);
     $creditOK = $credits >= $info['next_cost'];
     echo '<td>'.$timeStr.'</td><td>'.format_credits($info['next_cost']).'</td>';
-    echo '<td>'.dependency_badge($dep_ok).'</td>';
+    $depTooltip = '';
+    if (!$dep_ok) {
+        $depTooltip = str_replace("\n", '&#10;', htmlspecialchars("Abhängigkeit fehlt:\n".$dep, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'));
+    }
+    echo '<td'.($depTooltip ? ' class="tooltip" data-tooltip="'.$depTooltip.'"' : '').'>'.dependency_badge($dep_ok).'</td>';
     $tooltip = '';
-    if (!$dep_ok) { $tooltip = 'Abhängigkeit fehlt'; }
-    elseif (!$slotFree) { $tooltip = 'Alle Forsch-Slots belegt'; }
+    if (!$slotFree) { $tooltip = 'Alle Forsch-Slots belegt'; }
     elseif (!$creditOK) { $tooltip = 'Zu wenig Credits'; }
     $can = $dep_ok && $slotFree && $creditOK;
     $btnAttr = 'class="btn sm start-btn" data-track="'.$track.'" data-cost="'.$info['next_cost'].'" data-duration="'.$info['next_time'].'"';
