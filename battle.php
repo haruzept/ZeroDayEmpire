@@ -654,7 +654,7 @@ location.replace(\'battle.php?m=opc&sid='.$sid.'\');
 
         function getDefend($s)
         {
-            global $STYLESHEET, $REMOTE_FILES_DIR, $DATADIR, $remote, $local, $pc, $usr, $usrid;
+            global $REMOTE_FILES_DIR, $DATADIR, $remote, $local, $pc, $usr, $usrid;
             eval('$x='.$s.';');
             if ($remote['blocked'] > time()) {
                 $x = $x * 0.8;
@@ -665,7 +665,7 @@ location.replace(\'battle.php?m=opc&sid='.$sid.'\');
 
         function getAttack($s)
         {
-            global $STYLESHEET, $REMOTE_FILES_DIR, $DATADIR, $remote, $local, $pc, $usr, $usrid;
+            global $REMOTE_FILES_DIR, $DATADIR, $remote, $local, $pc, $usr, $usrid;
             eval('$x='.$s.';');
 
             return $x;
@@ -771,7 +771,7 @@ location.replace(\'battle.php?m=opc&sid='.$sid.'\');
         } elseif ($trojan == 1) {  // ------------ TROJAN ------------
             function deactivate($key)
             {
-                global $STYLESHEET, $REMOTE_FILES_DIR, $DATADIR, $remote, $local, $target, $local2, $remote2;
+                global $REMOTE_FILES_DIR, $DATADIR, $remote, $local, $target, $local2, $remote2;
                 global $msg, $success, $noticed, $usr, $usrid;
                 $defend = getDefend('($remote[\'ids\']+$remote[\'av\']+$remote[\'fw\'])*15');
                 $attack = getAttack('($local[\'sdk\']+$local[\'mk\']+$local[\'ips\'])*16');
@@ -980,7 +980,7 @@ location.replace(\'battle.php?m=opc&sid='.$sid.'\');
         } elseif ($smash == 1) {
             function smash($key)
             {
-                global $STYLESHEET, $REMOTE_FILES_DIR, $DATADIR, $remote, $local, $target, $local2, $remote2;
+                global $REMOTE_FILES_DIR, $DATADIR, $remote, $local, $target, $local2, $remote2;
                 global $cpu_levels, $ram_levels, $cpu_names, $msg, $success, $noticed, $usr, $usrid;
                 $defend = getDefend('($remote[\'av\']+$remote[\'fw\'])*25');
                 $attack = getAttack('($local[\'sdk\']+$local[\'mk\'])*30');

@@ -52,7 +52,7 @@ $usr_cache;
 $maillist_mcnt;
 function maillist($boxid)
 { // ------------------------- MAIL LIST -----------------------------
-    global $STYLESHEET, $REMOTE_FILES_DIR, $DATADIR, $usrid, $sid, $full;
+    global $REMOTE_FILES_DIR, $DATADIR, $usrid, $sid, $full;
     global $usr_cache, $maillist_mcnt;
     $output = '';
     $mcnt = 0;
@@ -93,7 +93,7 @@ function maillist($boxid)
 
 function newmailform($recip = '', $subject = '', $text = '', $xnl2br = true)
 { // -------- NEW MAIL FORM -----------
-    global $STYLESHEET, $REMOTE_FILES_DIR, $DATADIR, $sid, $usrid, $usr;
+    global $REMOTE_FILES_DIR, $DATADIR, $sid, $usrid, $usr;
     if ($text != '') {
         $text = mail_format_text($text, $xnl2br);
     }
@@ -190,7 +190,6 @@ switch ($action) {
         createlayout_top('ZeroDayEmpire - Messages');
 ?>
 <!-- ZDE theme inject -->
-<style>@import url("style.css");</style>
 <div class="container">
 <?php // /ZDE theme inject start
 
@@ -304,7 +303,6 @@ createlayout_bottom();
         createlayout_top('ZeroDayEmpire - Messages');
 ?>
 <!-- ZDE theme inject -->
-<style>@import url("style.css");</style>
 <div class="container">
 <?php // /ZDE theme inject start
 
@@ -324,7 +322,6 @@ createlayout_bottom();
         createlayout_top('ZeroDayEmpire - Messages');
 ?>
 <!-- ZDE theme inject -->
-<style>@import url("style.css");</style>
 <div class="container">
 <?php // /ZDE theme inject start
 
@@ -368,7 +365,6 @@ createlayout_bottom();
         createlayout_top('ZeroDayEmpire - Messages');
 ?>
 <!-- ZDE theme inject -->
-<style>@import url("style.css");</style>
 <div class="container">
 <?php // /ZDE theme inject start
 
@@ -570,7 +566,6 @@ createlayout_bottom();
             createlayout_top('ZeroDayEmpire - Messages');
 ?>
 <!-- ZDE theme inject -->
-<style>@import url("style.css");</style>
 <div class="container">
 <?php // /ZDE theme inject start
 
@@ -642,7 +637,6 @@ createlayout_bottom();
         createlayout_top('ZeroDayEmpire - Messages');
 ?>
 <!-- ZDE theme inject -->
-<style>@import url("style.css");</style>
 <div class="container">
 <?php // /ZDE theme inject start
 
@@ -718,7 +712,6 @@ createlayout_bottom();
         createlayout_top('ZeroDayEmpire - Messages');
 ?>
 <!-- ZDE theme inject -->
-<style>@import url("style.css");</style>
 <div class="container">
 <?php // /ZDE theme inject start
 
@@ -743,7 +736,6 @@ createlayout_bottom();
         createlayout_top('ZeroDayEmpire - Messages - Mails übertragen');
 ?>
 <!-- ZDE theme inject -->
-<style>@import url("style.css");</style>
 <div class="container">
 <?php // /ZDE theme inject start
 
@@ -790,7 +782,6 @@ createlayout_bottom();
         createlayout_top('ZeroDayEmpire - Messages - Mails übertragen');
 ?>
 <!-- ZDE theme inject -->
-<style>@import url("style.css");</style>
 <div class="container">
 <?php // /ZDE theme inject start
 
@@ -835,7 +826,7 @@ createlayout_bottom();
 ';
         function transmit2_mail_list($box)
         {
-            global $STYLESHEET, $usrid, $sid, $full;
+            global $usrid, $sid, $full;
             echo '<tr id="messages-transmit2-'.($box == 'in' ? 'inbox' : ($box == 'out' ? 'outbox' : 'archive')).'">'.LF.'<td colspan="4">'.($box == 'in' ? 'Nachrichten-Eingang' : ($box == 'out' ? 'Versendete Mails' : 'Nachrichten-Archiv')).'</b></td><td class="checkbox"><input type="checkbox" onclick="ch_all(this,\''.$box.'\');" /></td></tr>';
             $mcnt = 0;
 
@@ -983,7 +974,6 @@ createlayout_bottom();
         createlayout_top('ZeroDayEmpire - Messages');
 ?>
 <!-- ZDE theme inject -->
-<style>@import url("style.css");</style>
 <div class="container">
 <?php // /ZDE theme inject start
 

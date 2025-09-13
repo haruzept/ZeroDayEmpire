@@ -15,7 +15,6 @@ include_once 'config.php';
 
 #if($_SERVER['REMOTE_ADDR']!='213.54.101.168') {
 if (file_exists('data/work.txt') == true || file_exists('data/mysql-backup.txt') == true) {
-    $STYLESHEET = 'crystal';
     include_once('layout.php');
     createlayout_top('ZeroDayEmpire - Serverarbeiten', true);
     echo '
@@ -35,7 +34,6 @@ Du kannst auch so lange dem <a href="http://forum.ZeroDayEmpire.org/">Forum</a> 
 #} #else ini_set('display_errors',1);
 
 include 'includes/research.php';
-$STYLESHEET = $standard_stylesheet;
 mysqli_report(MYSQLI_REPORT_OFF);
 
 // mysqli_connect() ohne Parameter nutzt seit PHP 8 nicht mehr automatisch
@@ -314,7 +312,7 @@ function rem_esc_chars($s)
 
 function file_get($filename)
 { //----------- File Get -----------------
-    global $STYLESHEET, $REMOTE_FILES_DIR, $DATADIR;
+    global $REMOTE_FILES_DIR, $DATADIR;
     $fdata = '';
     $file = @fopen($filename, 'r');
     if ($file) {
@@ -338,7 +336,7 @@ function file_get($filename)
 
 function file_put($filename, $strContent)
 { //----------- File Put -----------------
-    global $STYLESHEET, $REMOTE_FILES_DIR, $DATADIR;
+    global $REMOTE_FILES_DIR, $DATADIR;
     $fpms = (int)@fileperms($filename);
     if ($fpms < 666 && $fpms != 0) {
         @chmod($filename, 0666);
@@ -629,7 +627,7 @@ function xpoint($v)
 
 function getPCPoints($pc, $mode = 'byid')
 { //---------- Get PC Points -----------------
-    global $STYLESHEET, $REMOTE_FILES_DIR, $DATADIR;
+    global $REMOTE_FILES_DIR, $DATADIR;
     global $cpu_levels, $ram_levels;
     if ($mode == 'byid') {
         $pcdat = @mysql_fetch_assoc(db_query('SELECT * FROM pcs WHERE id=\''.mysql_escape_string($pc).'\''));
@@ -680,7 +678,7 @@ function GetIP()
 
 function addpc($country, $usrid, $byid = true)
 { //--------- ADD PC ------------
-    global $STYLESHEET, $REMOTE_FILES_DIR, $DATADIR;
+    global $REMOTE_FILES_DIR, $DATADIR;
 
     if ($byid == true) {
         $c = GetCountry('id', $country);
@@ -1053,7 +1051,7 @@ function calc_mph($level, $factor)
 
 function get_gdph($_pc = '')
 { //---------- Get Total Money per Hour -----------------
-    global $STYLESHEET, $REMOTE_FILES_DIR, $DATADIR, $pc;
+    global $REMOTE_FILES_DIR, $DATADIR, $pc;
     if ($_pc == '') {
         $_pc = $pc;
     }
@@ -1064,7 +1062,7 @@ function get_gdph($_pc = '')
 
 function getmaxbb($_pc = '')
 { //---------- Get Max BucksBunker -----------------
-    global $STYLESHEET, $REMOTE_FILES_DIR, $DATADIR, $pc;
+    global $REMOTE_FILES_DIR, $DATADIR, $pc;
     if ($_pc == '') {
         $_pc = $pc;
     }

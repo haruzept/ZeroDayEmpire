@@ -21,7 +21,6 @@ $javascript .= 'function autosel(obj) { var i = (obj.name==\'pcip\' ? 1 : 0);\n 
 createlayout_top('ZeroDayEmpire - Geld &uuml;berweisen');
 ?>
 <!-- ZDE theme inject -->
-<style>@import url("style.css");</style>
 <div class="container">
 <?php // /ZDE theme inject start
 

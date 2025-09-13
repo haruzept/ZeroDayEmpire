@@ -102,7 +102,6 @@ if ($FILE_REQUIRES_PC == true) {
 if ($usr['stat'] > 100 && is_noranKINGuser($usrid) == false) {
     $usr['stat'] = 0;
 }
-$STYLESHEET = $usr['stylesheet'];
 
 if ($usr['liu'] > $usr['lic']) {
     $unread = (int)@mysql_num_rows(
@@ -342,7 +341,7 @@ function IDToName($id)
 
 function AddSysMsg($user, $msg, $save = true)
 { //----- ADD SYSTEM MESSAGE -----
-    global $STYLESHEET, $REMOTE_FILES_DIR, $DATADIR, $usrid, $usr;
+    global $REMOTE_FILES_DIR, $DATADIR, $usrid, $usr;
 
     $udat = getuser($user);
     if ($udat !== false) {
@@ -379,7 +378,7 @@ function AddSysMsg($user, $msg, $save = true)
 
 function isattackallowed(&$ret, &$ret2)
 { //---------------- IS ATTACK ALLOWED ----------------
-    global $STYLESHEET, $REMOTE_FILES_DIR, $DATADIR, $usr, $pc, $usrid, $localhost;
+    global $REMOTE_FILES_DIR, $DATADIR, $usr, $pc, $usrid, $localhost;
 #if($localhost || is_noranKINGuser($usrid)) return true;
     define('TO_1', 2 * 60, false);
     $x = floor((5 / 3) * (10 - ($pc['lan'] ?? 0)) + 5) * 60;
@@ -414,7 +413,7 @@ function write_pc_list($usrid)
 
 function tIsAvail($key, $_pc = -1)
 { //---------------- TROJANER IS AVAIL ----------------
-    global $STYLESHEET, $REMOTE_FILES_DIR, $DATADIR, $pc;
+    global $REMOTE_FILES_DIR, $DATADIR, $pc;
     if ($_pc == -1) {
         $_pc = $pc;
     }

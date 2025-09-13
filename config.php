@@ -9,22 +9,6 @@ $db_host = '';
 $db_username = 'root';
 $db_password = '';
 
-# STYLESHEETS:
-$standard_stylesheet = 'crystal';
-$stylesheets['standard'] = array(
-    'id' => 'standard',
-    'name' => 'ZeroDayEmpire Standard',
-    'author' => 'ZeroDayEmpire-Team',
-    'bigacc' => 'no',
-);
-$stylesheets['crystal'] = array(
-    'id' => 'crystal',
-    'name' => 'ZeroDayEmpire Crystal',
-    'author' => 'ZeroDayEmpire-Team',
-    'bigacc' => 'no',
-);
-$stylesheets['konsole'] = array('id' => 'konsole', 'name' => 'Konsole', 'author' => 'Volkmar', 'bigacc' => 'yes');
-$stylesheets['anti-ie'] = array('id' => 'anti-ie', 'name' => 'Anti-IE', 'author' => 'Volkmar', 'bigacc' => 'yes');
 
 # KEINE MITSPIELER:
 $no_ranking_users = '1,2';
@@ -39,7 +23,6 @@ define('MAX_USERS_PER_SERVER', 4444, false); # Maximale Anzahl von Spielern pro 
 
 # DIVERSES
 $REMOTE_FILES_DIR = '.'; # dreck
-$STYLESHEET_BASEDIR = 'styles/';
 
 
 ?>

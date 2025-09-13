@@ -20,7 +20,6 @@ function showdoc($fn, $te = '')
 ?>
 <!-- ZDE theme inject -->
 <style>
-@import url("style.css");
 #register-step1 input[type="text"],
 #register-step1 input[type="email"],
 #register-step1 input[type="password"]{width:250px;}

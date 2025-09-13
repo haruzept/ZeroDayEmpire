@@ -18,7 +18,6 @@ switch ($action) {
 ?>
 <!-- ZDE theme inject -->
 <style>
-@import url("style.css");
 .pwd-wrapper{position:relative;display:inline-block;}
 #pwd-guidelines{display:none;position:absolute;left:0;top:calc(100% + 4px);background:var(--bg-2);border:1px solid var(--border);padding:10px;border-radius:8px;max-width:250px;z-index:10;}
 #settings-settings-date-of-birth td{display:flex;align-items:center;gap:4px;}
@@ -485,7 +484,6 @@ createlayout_bottom();
             createlayout_top('ZeroDayEmpire - Benutzerprofil');
 ?>
 <!-- ZDE theme inject -->
-<style>@import url("style.css");</style>
 <div class="container">
 <?php // /ZDE theme inject start
 
