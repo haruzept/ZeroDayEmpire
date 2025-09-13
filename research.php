@@ -97,7 +97,7 @@ foreach ($tracks as $track => $info) {
     $cur = $info['level'];
     $max = $info['max_level'];
     $tooltipText = str_replace("\n", '&#10;', htmlspecialchars($trackTooltips[$track] ?? '', ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'));
-    echo '<tr><td'.($tooltipText ? ' data-tooltip="'.$tooltipText.'"' : '').'>'.htmlspecialchars($info['name']).'</td><td>'.$cur.'/'.$max.'</td>';
+    echo '<tr><td'.($tooltipText ? ' class="tooltip" data-tooltip="'.$tooltipText.'"' : '').'>'.htmlspecialchars($info['name']).'</td><td>'.$cur.'/'.$max.'</td>';
     if ($cur >= $max) {
         echo '<td colspan="3">Max</td></tr>'."\n";
         continue;
