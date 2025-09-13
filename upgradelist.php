@@ -150,10 +150,17 @@ foreach ($items as $item) {
     $cur = $pc[$item];
     $max = itemmaxval($item);
     $curStr = formatitemlevel($item, $cur);
-    $maxStr = formatitemlevel($item, $max);
     $itemTooltip = item_tooltip_text($item);
     $itemTooltip = $itemTooltip ? str_replace("\n", '&#10;', htmlspecialchars($itemTooltip, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8')) : '';
-    echo '<tr><td'.($itemTooltip ? ' class="tooltip" data-tooltip="'.$itemTooltip.'"' : '').'><strong>'.idtoname($item).'</strong></td><td>'.$curStr.' / '.$maxStr.'</td>';
+
+    if ($cur >= $max) {
+        $levelCell = $curStr;
+    } else {
+        $nextStr = formatitemlevel($item, itemnextlevel($item, $cur));
+        $levelCell = $curStr.' &rarr; '.$nextStr;
+    }
+
+    echo '<tr><td'.($itemTooltip ? ' class="tooltip" data-tooltip="'.$itemTooltip.'"' : '').'><strong>'.idtoname($item).'</strong></td><td>'.$levelCell.'</td>';
     if ($cur >= $max) {
         echo '<td colspan="3">Max</td><td></td></tr>';
         continue;
