@@ -97,9 +97,10 @@ function item_tooltip_text($item)
     return trim($text);
 }
 
+
 createlayout_top('ZeroDayEmpire - Dein Computer');
 
-echo '<header class="page-head"><h1>Dein Computer</h1><a href="game.php?m=start&amp;sid='.$sid.'" class="btn ghost sm">Zur &Uuml;bersicht</a></header>';
+echo '<header class="page-head"><h1>Dein Computer</h1></header>';
 
 $now = time();
 $runningRows = [];
@@ -129,7 +130,7 @@ if ($running <= 1) {
 echo '</div>';
 
 if ($running > 1) {
-    echo '<section class="card table-card" style="overflow:visible"><h2><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" width="24" height="24"><circle cx="12" cy="12" r="9" stroke="rgb(var(--accent))" stroke-width="2" fill="none"/><path d="M12 7v5l3 2" stroke="rgb(var(--accent))" stroke-width="2" fill="none"/></svg> Upgrade-Queue</h2><table style="width:100%"><thead><tr><th>Item</th><th>Level</th><th>Fertig in</th><th>Aktion</th></tr></thead><tbody>';
+    echo '<section class="card table-card" style="overflow:visible"><h2><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" width="50" height="50"><circle cx="12" cy="12" r="9" stroke="rgb(var(--accent))" stroke-width="2" fill="none"/><path d="M12 7v5l3 2" stroke="rgb(var(--accent))" stroke-width="2" fill="none"/></svg> Upgrade-Queue</h2><table style="width:100%"><thead><tr><th>Item</th><th>Level</th><th>Fertig in</th><th>Aktion</th></tr></thead><tbody>';
     $tmppc = $pc;
     foreach ($runningRows as $row) {
         $item = $row['item'];
