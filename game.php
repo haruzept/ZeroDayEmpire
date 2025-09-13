@@ -218,7 +218,7 @@ switch ($action) {
       </div>
     </article>
 
-  <article class="card span-6" id="upgradequeue">
+  <article class="card span-4" id="upgradequeue">
     <h3>Upgrade-Queue</h3>
     <?php
       $r = db_query('SELECT * FROM `upgrades` WHERE `pc`=\''.mysql_escape_string($pcid).'\' AND `end`>\''.time().'\' ORDER BY `start` ASC;');
@@ -238,6 +238,33 @@ switch ($action) {
           echo '</ul>';
       } else {
           echo '<p class="muted">Keine Upgrades geplant.</p>';
+      }
+    ?>
+  </article>
+
+  <article class="card span-4" id="researchqueue">
+    <h3>Forschungs-Queue</h3>
+    <?php
+      $r = db_query('SELECT * FROM `research` WHERE `pc`=\''.mysql_escape_string($pcid).'\' AND `end`>\''.time().'\' ORDER BY `start` ASC;');
+      $running = @mysql_num_rows($r);
+      $maxSlots = isset($pc['research_slots']) ? (int)$pc['research_slots'] : 1;
+      echo '<p><strong>Es sind '.$running.' von '.$maxSlots.' Slots belegt</strong></p>';
+      if ($running > 0) {
+          $tracks = research_get_tracks();
+          echo '<ul class="muted" style="list-style:none; padding-left:0; margin:10px 0 0 0">';
+          while ($data = mysql_fetch_assoc($r)) {
+              $track = $data['track'];
+              $info = $tracks[$track] ?? null;
+              $name = safeentities($info['name'] ?? $track);
+              $curLvl = $data['target_level'] - 1;
+              $maxLvl = $info['max_level'] ?? $data['target_level'];
+              $s1 = $curLvl.'/'.$maxLvl;
+              $s2 = $data['target_level'].'/'.$maxLvl;
+              echo '<li>'.$name.' '.$s1.' &raquo; '.$s2.' '.nicetime($data['end']).'</li>';
+          }
+          echo '</ul>';
+      } else {
+          echo '<p class="muted">Keine Forschung in Arbeit.</p>';
       }
     ?>
   </article>
