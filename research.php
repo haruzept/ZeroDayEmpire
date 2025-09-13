@@ -119,7 +119,7 @@ foreach ($tracks as $track => $info) {
     echo '<td>'.$timeStr.'</td><td>'.format_credits($info['next_cost']).'</td>';
     $depTooltip = '';
     if (!$dep_ok) {
-        $depTooltip = str_replace("\n", '&#10;', htmlspecialchars("Abhängigkeit fehlt:\n".$dep, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'));
+        $depTooltip = str_replace("\n", '&#10;', htmlspecialchars($dep, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'));
     }
     echo '<td'.($depTooltip ? ' class="tooltip" data-tooltip="'.$depTooltip.'"' : '').'>'.dependency_badge($dep_ok).'</td>';
     $tooltip = '';

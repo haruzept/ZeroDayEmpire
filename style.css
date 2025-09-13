@@ -265,7 +265,7 @@ pre, code{ background: var(--bg-2); border:1px solid var(--border); border-radiu
 .page-head{display:flex;align-items:center;justify-content:space-between;margin:24px 0 18px;}
 .page-head h1{margin:0;}
 .kpi-icon{justify-content:flex-start;gap:12px;}
-.kpi-icon .icon{width:12px;height:12px;}
+.kpi-icon .icon{width:6px;height:6px;}
 .kpi-icon .stat{flex:1;}
 .kpi-icon .label{color:var(--muted);font-size:13px;margin-top:2px;}
 .kpi-icon .progress{margin-top:6px;}
@@ -277,8 +277,8 @@ pre, code{ background: var(--bg-2); border:1px solid var(--border); border-radiu
 .list-row{display:flex;align-items:center;gap:12px;padding:12px 18px;border-top:1px solid var(--border);}
 .list-row:first-child{border-top:none;}
 .list-row .name{flex:1;font-weight:600;}
-.table-card{margin-top:36px;overflow:auto;grid-column:1/-1;}
-.table-card table{width:100%;border-collapse:collapse;}
+.table-card{margin-top:36px;overflow:auto;grid-column:1/-1;width:100%;}
+.table-card table{width:100%;border-collapse:collapse;table-layout:auto;}
 .table-card thead th{position:sticky;top:0;background:rgba(255,255,255,.03);text-align:left;}
 .table-card tbody tr:nth-child(even){background:rgba(255,255,255,.02);}
 .table-card th, .table-card td{padding:10px 12px;border-bottom:1px dashed var(--border);}
