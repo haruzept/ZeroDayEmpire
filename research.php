@@ -53,7 +53,7 @@ function dependency_badge($ok) {
 
 createlayout_top('ZeroDayEmpire - Forschung');
 
-echo '<header class="page-head"><h1>Forschung</h1><a href="game.php?m=start&amp;sid='.$sid.'" class="btn ghost sm">Zur Übersicht</a></header>';
+echo '<header class="page-head"><h1>Forschung</h1></header>';
 
 $now = time();
 $runningRows = [];
