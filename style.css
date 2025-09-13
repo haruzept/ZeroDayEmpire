@@ -33,9 +33,9 @@ a{color:inherit; text-decoration:none}
 .nav a:hover{ background:rgba(255,255,255,.05) }
 .btn{ display:inline-flex; align-items:center; justify-content:center; gap:10px; padding:12px 16px; border-radius:14px; border:1px solid color-mix(in oklab, rgba(var(--accent)/.35), transparent 40%);
   background:linear-gradient(180deg, rgba(var(--accent)/.14), rgba(var(--accent)/.045)); box-shadow: 0 0 0 1px rgba(255,255,255,.03) inset, 0 8px 30px rgba(var(--accent)/.08); color: white; cursor:pointer }
-.btn:hover{ box-shadow: 0 12px 40px rgba(var(--accent)/.20); transform: translateY(-1px) }
+.btn:hover{ box-shadow:none; transform: translateY(-1px) }
 .btn.ghost{ background:transparent; color:var(--text); border-color:var(--border) }
-.btn.ghost:hover{ border-color:rgba(var(--accent)/.35); background:rgba(255,255,255,.03) }
+.btn.ghost:hover{ border-color:var(--border); background:rgba(255,255,255,.03) }
 .btn.sm{ padding:8px 12px; border-radius:10px; font-size:14px }
 .btn.w-100{ width:100% }
 .menu-toggle{ display:none }
@@ -51,7 +51,7 @@ a{color:inherit; text-decoration:none}
 /* Feature Cards */
 .features{ display:grid; gap:14px; grid-template-columns: repeat(12, 1fr); margin-top: 40px }
 .card{ grid-column: span 4; background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02)); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px; position:relative; overflow:hidden }
-.card::after{ content:""; position:absolute; inset:-2px; border-radius: inherit; background: conic-gradient(from 0turn, rgba(var(--accent)/.0), rgba(var(--accent)/.35), rgba(var(--accent)/.0) 25%); filter: blur(16px); opacity:0; transition: .25s opacity; pointer-events:none }
+.card::after{ content:""; position:absolute; inset:-2px; border-radius: inherit; background:none; filter: blur(16px); opacity:0; transition: .25s opacity; pointer-events:none }
 .card:hover::after{ opacity:.9 }
 .card h3{ margin:2px 0 6px; font-size: 18px }
 .card p{ margin:0; color:var(--muted) }
@@ -83,7 +83,7 @@ footer{ color:var(--muted); border-top:1px solid var(--border); margin-top:52px 
 .input-with-action input{ flex:1 }
 label{ font-weight:600 }
 input, select{ background: var(--bg-2); color:var(--text); border:1px solid var(--border); border-radius:12px; padding:12px 14px; outline:none }
-input:focus{ border-color: rgba(var(--accent)/.6); box-shadow: 0 0 0 4px rgba(var(--accent)/.15) }
+input:focus{ border-color: var(--border); box-shadow: none }
 .checkbox{ display:inline-flex; align-items:center; gap:10px }
 .error{ color: #ff4757 }
 
@@ -182,7 +182,7 @@ input:focus{ border-color: rgba(var(--accent)/.6); box-shadow: 0 0 0 4px rgba(va
   box-shadow: 0 0 0 1px rgba(255,255,255,.03) inset, 0 8px 30px rgba(var(--accent)/.08);
   color:white;
 }
-.submenu a:hover, #submenu a:hover{ box-shadow: 0 12px 40px rgba(var(--accent)/.20); transform: translateY(-1px); }
+.submenu a:hover, #submenu a:hover{ box-shadow: none; transform: translateY(-1px); }
 
 /* Tables -> sleek */
 .content table{
@@ -238,17 +238,17 @@ table tbody tr:last-child td{ border-bottom:none }
 .content input[type="text"], .content input[type="password"], .content input[type="email"], .content select, .content textarea{
   width:100%; background: var(--bg-2); color:var(--text); border:1px solid var(--border); border-radius:12px; padding:10px 12px; outline:none;
 }
-.content input:focus, .content select:focus, .content textarea:focus{ border-color: rgba(var(--accent)/.6); box-shadow: 0 0 0 4px rgba(var(--accent)/.15) }
+.content input:focus, .content select:focus, .content textarea:focus{ border-color: var(--border); box-shadow: none }
 .content .checkbox{ display:inline-flex; align-items:center; gap:8px }
 .content button, .content input[type="submit"], .content .button{
   display:inline-flex; align-items:center; gap:10px; padding:10px 14px; border-radius:12px; border:1px solid color-mix(in oklab, rgba(var(--accent)/.35), transparent 40%); background:linear-gradient(180deg, rgba(var(--accent)/.14), rgba(var(--accent)/.045)); box-shadow: 0 0 0 1px rgba(255,255,255,.03) inset, 0 8px 30px rgba(var(--accent)/.08); color:white; cursor:pointer; text-decoration:none
 }
-.content button:hover, .content input[type="submit"]:hover, .content .button:hover{ box-shadow: 0 12px 40px rgba(var(--accent)/.20); transform: translateY(-1px) }
+.content button:hover, .content input[type="submit"]:hover, .content .button:hover{ box-shadow: none; transform: translateY(-1px) }
 
 /* Pagination / small nav bars */
 .pager, #pager{ display:flex; gap:8px; justify-content:flex-end; margin-top:8px }
 .pager a, #pager a{ padding:8px 12px; border:1px solid var(--border); border-radius:10px; color:var(--text) }
-.pager a:hover{ border-color:rgba(var(--accent)/.35); background:rgba(255,255,255,.03) }
+.pager a:hover{ border-color:var(--border); background:rgba(255,255,255,.03) }
 
 /* Code blocks & mono */
 pre, code{ background: var(--bg-2); border:1px solid var(--border); border-radius:10px; padding:8px 10px }
