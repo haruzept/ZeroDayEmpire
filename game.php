@@ -90,10 +90,10 @@ switch ($action) {
 ?>
 <!-- ZDE theme inject -->
 <style>@import url("style.css");
-#computers li{position:relative}
-#computers li .tip{display:none;position:absolute;top:100%;left:0;background:#222;color:#fff;padding:4px;border-radius:3px;max-width:240px;font-size:12px;z-index:10}
-#computers li:hover .tip{display:block}
-#computers li a:hover + .tip{display:none}
+#computers li,#software li{position:relative}
+#computers li .tip,#software li .tip{display:none;position:absolute;top:100%;left:0;background:#222;color:#fff;padding:4px;border-radius:3px;max-width:240px;font-size:12px;z-index:10}
+#computers li:hover .tip,#software li:hover .tip{display:block}
+#computers li a:hover + .tip,#software li a:hover + .tip{display:none}
 </style>
 <div class="container">
 <?php // /ZDE theme inject start
@@ -239,6 +239,16 @@ switch ($action) {
           echo '</ul>';
       } else {
           echo '<p class="muted">Keine Upgrades geplant.</p>';
+          $upgradeAvailable = false;
+          foreach ($items as $it) {
+              if (isavailb($it, $pc)) {
+                  $upgradeAvailable = true;
+                  break;
+              }
+          }
+          if ($upgradeAvailable) {
+              echo '<p><a href="upgradelist.php?sid='.$sid.'&amp;xpc='.$pcid.'">Upgrades verf&uuml;gbar</a></p>';
+          }
       }
     ?>
   </article>
@@ -266,6 +276,17 @@ switch ($action) {
           echo '</ul>';
       } else {
           echo '<p class="muted">Keine Forschung in Arbeit.</p>';
+          $tracks = research_get_tracks();
+          $availResearch = false;
+          foreach ($tracks as $track => $info) {
+              if ($info['level'] < $info['max_level'] && research_check_deps($pcid, $track, $info['level'] + 1) === true) {
+                  $availResearch = true;
+                  break;
+              }
+          }
+          if ($availResearch) {
+              echo '<p><a href="research.php?sid='.$sid.'">Forschung verf&uuml;gbar</a></p>';
+          }
       }
     ?>
   </article>
@@ -274,7 +295,7 @@ switch ($action) {
     <h3>Cluster</h3>
     <?php if ($cluster !== false) { ?>
       <ul class="muted" style="list-style:none; padding-left:0; margin:10px 0 0 0">
-        <li><strong><?php echo safeentities($cluster['name']); ?></strong></li>
+        <li><strong><a href="cluster.php?a=start&amp;sid=<?php echo $sid; ?>"><?php echo safeentities($cluster['name']); ?></a></strong></li>
         <li>Punkte: <?php echo number_format($cluster['points'],0,',','.'); ?></li>
         <li>Mitglieder: <?php echo $cluster['members'] ?? 0; ?></li>
         <li>Geld: <?php echo number_format($cluster['money'],0,',','.'); ?> CR</li>
