@@ -12,8 +12,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         header('Content-Type: application/json');
         if (isset($res['error'])) {
             $reason = 'deps';
-            if ($res['error'] === 'Nicht genügend Credits') {
-                $reason = 'credits';
+            if ($res['error'] === 'Nicht genügend CryptoCoins') {
+                $reason = 'cc';
             } elseif ($res['error'] === 'Keine freien Slots') {
                 $reason = 'slots';
             }
@@ -44,8 +44,8 @@ function format_duration($seconds) {
     }
     return $m.' min';
 }
-function format_credits($n) {
-    return number_format((int)$n, 0, ',', '.').' Credits';
+function format_cc($n) {
+    return number_format((int)$n, 0, ',', '.').' CryptoCoins';
 }
 function dependency_badge($ok) {
     return '<span class="badge muted">'.($ok ? 'Erfüllte Abhängigkeit' : 'Abhängigkeit fehlt').'</span>';
@@ -63,7 +63,7 @@ $running = count($runningRows);
 $runningTracks = [];
 foreach ($runningRows as $row) { $runningTracks[$row['track']] = true; }
 $maxSlots = isset($pc['research_slots']) ? (int)$pc['research_slots'] : 1;
-$credits = (int)$pc['credits'];
+$cc = (int)$pc['cc'];
 $tracks = research_get_tracks();
 
 $queueLabel = 'Keine Forschung aktiv';
@@ -80,7 +80,7 @@ if ($running) {
 
 echo '<div class="strip">';
 echo '<div class="kpi kpi-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" width="50" height="50"><path d="M3 12h18M12 3v18" stroke="rgb(var(--accent))" stroke-width="2" fill="none"/></svg><div class="stat"><h3 class="value small">Verfügbare Slots: '.$running.' / '.$maxSlots.'</h3></div></div>';
-echo '<div class="kpi kpi-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" width="50" height="50"><path d="M4 4h16v12H4z" stroke="rgb(var(--accent))" stroke-width="2" fill="none"/><path d="M2 18h20" stroke="rgb(var(--accent))"/></svg><div class="stat"><h3 class="value small" id="kpiCredits" data-value="'.$credits.'">'.format_credits($credits).'</h3></div></div>';
+echo '<div class="kpi kpi-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" width="50" height="50"><path d="M4 4h16v12H4z" stroke="rgb(var(--accent))" stroke-width="2" fill="none"/><path d="M2 18h20" stroke="rgb(var(--accent))"/></svg><div class="stat"><h3 class="value small" id="kpiCryptoCoins" data-value="'.$cc.'">'.format_cc($cc).'</h3></div></div>';
 echo '<div class="kpi kpi-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" width="50" height="50"><circle cx="12" cy="12" r="9" stroke="rgb(var(--accent))" stroke-width="2" fill="none"/><path d="M12 7v5l3 2" stroke="rgb(var(--accent))" stroke-width="2" fill="none"/></svg><div class="stat"><h3 class="value small">'.$queueLabel.'</h3></div></div>';
 echo '</div>';
 
@@ -111,9 +111,9 @@ foreach ($tracks as $track => $info) {
     $dep = research_check_deps($pcid, $track, $cur + 1);
     $dep_ok = $dep === true;
     $slotFree = ($running < $maxSlots);
-    $creditOK = $credits >= $info['next_cost'];
+    $ccOK = $cc >= $info['next_cost'];
     $runningThis = isset($runningTracks[$track]);
-    echo '<td>'.$timeStr.'</td><td>'.format_credits($info['next_cost']).'</td>';
+    echo '<td>'.$timeStr.'</td><td>'.format_cc($info['next_cost']).'</td>';
     if ($runningThis) {
         echo '<td>Upgrade l&auml;uft</td>';
     } else {
@@ -125,9 +125,9 @@ foreach ($tracks as $track => $info) {
     }
     $tooltip = '';
     if (!$slotFree) { $tooltip = 'Alle Forsch-Slots belegt'; }
-    elseif (!$creditOK) { $tooltip = 'Zu wenig Credits'; }
+    elseif (!$ccOK) { $tooltip = 'Zu wenig CryptoCoins'; }
     elseif ($runningThis) { $tooltip = 'Upgrade l&auml;uft'; }
-    $can = $dep_ok && $slotFree && $creditOK && !$runningThis;
+    $can = $dep_ok && $slotFree && $ccOK && !$runningThis;
     $btnAttr = 'class="btn sm start-btn" data-track="'.$track.'" data-cost="'.$info['next_cost'].'" data-duration="'.$info['next_time'].'"';
     if (!$can) {
         $btnAttr .= ' disabled aria-disabled="true"';

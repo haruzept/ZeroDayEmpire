@@ -30,7 +30,7 @@ if ($pc['blocked'] > time()) {
     exit;
 }
 
-$bucks = number_format($pc['credits'], 0, ',', '.');
+$bucks = number_format($pc['cc'], 0, ',', '.');
 
 switch ($action) {
 
@@ -109,7 +109,7 @@ function fill(s) {
 #  <tr><td colspan="4"><sup>1)</sup> Diese Waffe kann entweder alleine oder zusammen mit dem Scan eingesetzt werden.
 #Eine Kombination zwischen dieser und einer anderen ist jedoch nicht m&ouml;glich.</td></tr>
 
-        echo '<p><b>Geld: '.$bucks.' Credits</b></p><br />
+        echo '<p><b>Geld: '.$bucks.' CryptoCoins</b></p><br />
 <form action="battle.php?sid='.$sid.'&action=opc_submit"  method="post" name="frm">
 <table>
 <tr><th>Befehle</th></tr>
@@ -416,8 +416,8 @@ function fill(s) {
                 $cost = 0;
             }
 
-            if ($pc['credits'] - $cost < 0 && $country != $country2) {
-                $e .= 'Nicht gen&uuml;gend Credits! Dieser Angriff w&uuml;rde '.$cost.' Credits kosten, du hast aber nur '.$pc['credits'].' Credits!<br />';
+            if ($pc['cc'] - $cost < 0 && $country != $country2) {
+                $e .= 'Nicht gen&uuml;gend CryptoCoins! Dieser Angriff w&uuml;rde '.$cost.' CryptoCoins kosten, du hast aber nur '.$pc['cc'].' CryptoCoins!<br />';
             }
         }
 
@@ -436,7 +436,7 @@ function fill(s) {
             $text .= '.</b></li>';
 
             if ($country != $country2) {
-                $text .= '<li>Es fallen '.$cost.' Credits Geb&uuml;hren f&uuml;r den Angriff an. '.$out.' Credits Ausfuhr aus '.$country.' und '.$in.' Credits Einfuhr nach '.$country2.'.</li>';
+                $text .= '<li>Es fallen '.$cost.' CryptoCoins Geb&uuml;hren f&uuml;r den Angriff an. '.$out.' CryptoCoins Ausfuhr aus '.$country.' und '.$in.' CryptoCoins Einfuhr nach '.$country2.'.</li>';
             } else {
                 $cost = 0;
             }
@@ -559,8 +559,8 @@ function fill(s) {
         }
 
         if ($cost > 0):
-            $pc['credits'] -= $cost;
-            db_query('UPDATE servers SET credits='.$pc['credits'].' WHERE id='.$pcid.';');
+            $pc['cc'] -= $cost;
+            db_query('UPDATE servers SET cc='.$pc['cc'].' WHERE id='.$pcid.';');
         endif;
 
         $delay = 110 - ((int)$pc['lan'] * 10);
@@ -764,7 +764,7 @@ location.replace(\'battle.php?m=opc&sid='.$sid.'\');
     IPS = v'.$remote['ips'].',<br /> Malware Kit = v'.$remote['mk'].',<br /> Trojaner = v'.$remote['trojan'].',<br /> SDK = v'.$remote['sdk'].',<br />
     Remote Hijack = v'.$remote['rh'].',<br /> Distributed Attack = '.(int)isavailh('da', $remote)
                 ).'<br />
-    Geld: '.$remote['credits'].' Credits';
+    Geld: '.$remote['cc'].' CryptoCoins';
             }
             echo '</p></div></div>';
             createlayout_bottom();
@@ -893,20 +893,20 @@ location.replace(\'battle.php?m=opc&sid='.$sid.'\');
                     # Geld updaten:
                     if ($remote2['lmupd'] + 60 <= time()) {
                         $plus = (int)round(get_gdph($remote2) * ((time() - $remote2['lmupd']) / 3600), 0);
-                        $remote2['credits'] += $plus;
+                        $remote2['cc'] += $plus;
                         $remote2['lmupd'] = time();
                         $max = getmaxbb($remote2);
-                        if ($remote2['credits'] > $max) {
-                            $remote2['credits'] = $max;
+                        if ($remote2['cc'] > $max) {
+                            $remote2['cc'] = $max;
                         }
                         db_query(
                             'UPDATE servers SET lmupd=\''.mysql_escape_string(
                                 $remote2['lmupd']
-                            ).'\', credits=\''.mysql_escape_string(
-                                $remote2['credits']
+                            ).'\', cc=\''.mysql_escape_string(
+                                $remote2['cc']
                             ).'\' WHERE id='.mysql_escape_string($remote2['id']).';'
                         );
-                        $remote['credits'] = $remote2['credits'];
+                        $remote['cc'] = $remote2['cc'];
                     }
 
                     createlayout_top('ZeroDayEmpire - Operation Center');
@@ -921,32 +921,32 @@ location.replace(\'battle.php?m=opc&sid='.$sid.'\');
                         } else {
                             $quo = 4;
                         }
-                        $credits = floor($remote['credits'] / $quo);
-                        if (getmaxbb($local) < $local['credits'] + $credits) {
-                            $credits = getmaxbb($local) - $local['credits'];
-                            if ($credits == 0) {
+                        $cc = floor($remote['cc'] / $quo);
+                        if (getmaxbb($local) < $local['cc'] + $cc) {
+                            $cc = getmaxbb($local) - $local['cc'];
+                            if ($cc == 0) {
                                 echo 'Dein BucksBunker ist voll! Es kann nichts geklaut werden!';
                                 echo '</p></div></div>';
                                 createlayout_bottom();
                                 exit;
                             }
                         }
-                        $remote2['credits'] -= $credits;
-                        $local['credits'] += $credits;
-                        if ($local['credits'] > 0 && $remote2['credits'] > 0) {
+                        $remote2['cc'] -= $cc;
+                        $local['cc'] += $cc;
+                        if ($local['cc'] > 0 && $remote2['cc'] > 0) {
                             db_query(
-                                'UPDATE servers SET credits=\''.mysql_escape_string(
-                                    $remote2['credits']
+                                'UPDATE servers SET cc=\''.mysql_escape_string(
+                                    $remote2['cc']
                                 ).'\' WHERE id='.mysql_escape_string($remote2['id']).';'
                             );
                             db_query(
-                                'UPDATE servers SET credits=\''.mysql_escape_string(
-                                    $local['credits']
+                                'UPDATE servers SET cc=\''.mysql_escape_string(
+                                    $local['cc']
                                 ).'\' WHERE id='.mysql_escape_string($local['id']).';'
                             );
                         }
-                        echo '<span style="color:green;"><b>Der Angriff war erfolgreich! Du hast '.$credits.' Credits geklaut!</b></span><br /><br />';
-                        $s = 'Von deinem Rechner 10.47.'.$remote['ip'].' ('.$remote['name'].') wurden '.$credits.' Credits geklaut!<br />';
+                        echo '<span style="color:green;"><b>Der Angriff war erfolgreich! Du hast '.$cc.' CryptoCoins geklaut!</b></span><br /><br />';
+                        $s = 'Von deinem Rechner 10.47.'.$remote['ip'].' ('.$remote['name'].') wurden '.$cc.' CryptoCoins geklaut!<br />';
                     } else {
                         echo '<span style="color:red;"><b>Der Angriff war NICHT erfolgreich!</b></span><br /><br />';
                         $s = 'Es wurde erfolglos versucht, Geld von deinem Rechner 10.47.'.mysql_escape_string(
