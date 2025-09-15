@@ -60,6 +60,8 @@ $runningRows = [];
 $r = db_query('SELECT * FROM research WHERE pc=\''.mysql_escape_string($pcid).'\' AND `end`>\''.mysql_escape_string($now).'\' ORDER BY `start` ASC');
 while ($row = mysql_fetch_assoc($r)) { $runningRows[] = $row; }
 $running = count($runningRows);
+$runningTracks = [];
+foreach ($runningRows as $row) { $runningTracks[$row['track']] = true; }
 $maxSlots = isset($pc['research_slots']) ? (int)$pc['research_slots'] : 1;
 $credits = (int)$pc['credits'];
 $tracks = research_get_tracks();
@@ -110,20 +112,26 @@ foreach ($tracks as $track => $info) {
     $dep_ok = $dep === true;
     $slotFree = ($running < $maxSlots);
     $creditOK = $credits >= $info['next_cost'];
+    $runningThis = isset($runningTracks[$track]);
     echo '<td>'.$timeStr.'</td><td>'.format_credits($info['next_cost']).'</td>';
-    $depTooltip = '';
-    if (!$dep_ok) {
-        $depTooltip = str_replace("\n", '&#10;', htmlspecialchars($dep, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'));
+    if ($runningThis) {
+        echo '<td>Upgrade l&auml;uft</td>';
+    } else {
+        $depTooltip = '';
+        if (!$dep_ok) {
+            $depTooltip = str_replace("\n", '&#10;', htmlspecialchars($dep, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'));
+        }
+        echo '<td'.($depTooltip ? ' class="tooltip" data-tooltip="'.$depTooltip.'"' : '').'>'.dependency_badge($dep_ok).'</td>';
     }
-    echo '<td'.($depTooltip ? ' class="tooltip" data-tooltip="'.$depTooltip.'"' : '').'>'.dependency_badge($dep_ok).'</td>';
     $tooltip = '';
     if (!$slotFree) { $tooltip = 'Alle Forsch-Slots belegt'; }
     elseif (!$creditOK) { $tooltip = 'Zu wenig Credits'; }
-    $can = $dep_ok && $slotFree && $creditOK;
+    elseif ($runningThis) { $tooltip = 'Upgrade l&auml;uft'; }
+    $can = $dep_ok && $slotFree && $creditOK && !$runningThis;
     $btnAttr = 'class="btn sm start-btn" data-track="'.$track.'" data-cost="'.$info['next_cost'].'" data-duration="'.$info['next_time'].'"';
     if (!$can) {
         $btnAttr .= ' disabled aria-disabled="true"';
-        if (!$dep_ok) { $btnAttr .= ' style="background-color:#888;color:#ccc;"'; }
+        if (!$dep_ok || $runningThis) { $btnAttr .= ' style="background-color:#888;color:#ccc;"'; }
         $buttonHtml = '<button '.$btnAttr.'>Erforschen</button>';
         if ($tooltip) { $buttonHtml = '<span class="tooltip" data-tooltip="'.$tooltip.'">'.$buttonHtml.'</span>'; }
         echo '<td>'.$buttonHtml.'</td></tr>';
