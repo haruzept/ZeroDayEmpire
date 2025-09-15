@@ -165,7 +165,7 @@ switch ($action) {
 <td><textarea name="sig_mails" rows="4" cols="30">'.$usr['sig_mails'].'</textarea></td>
 </tr>
 <tr id="settings-settings-board-signature">
-<th>Signatur f&uuml;r Cluster-Board (max. 255 Zeichen):</th>
+<th>Signatur f&uuml;r Syndikat-Board (max. 255 Zeichen):</th>
 <td><textarea name="sig_board" rows="4" cols="30">'.$usr['sig_board'].'</textarea></td>
 </tr>
 <tr id="settings-settings-mail-maximum">
@@ -188,17 +188,17 @@ Wenn dein Posteingang voll ist, erh&auml;lt ein User, der dir eine Nachricht sch
             'points',
             'ranking',
             'points ranking',
-            'cluster points',
-            'cluster ranking',
-            'cluster points ranking',
+            'syndikat points',
+            'syndikat ranking',
+            'syndikat points ranking',
         );
         $fmtnms = array(
             'Punkte',
             'Ranglisten-Platz',
             'Punkte + Platz',
-            'Cluster + Punkte',
-            'Cluster + Platz',
-            'Cluster + Platz + Punkte',
+            'Syndikat + Punkte',
+            'Syndikat + Platz',
+            'Syndikat + Platz + Punkte',
         );
         for ($i = 0; $i < count($fmts); $i++) {
             $usrimg_fmt .= '<option value="'.$fmts[$i].'"';
@@ -379,7 +379,7 @@ createlayout_bottom();
             }
             if (strlen($sig_board) > 255) {
                 $e = true;
-                $error .= 'Die Signatur f&uuml;rs Cluster-Board darf maximal 255 Zeichen haben!';
+                $error .= 'Die Signatur f&uuml;rs Syndikat-Board darf maximal 255 Zeichen haben!';
             }
             if (strlen($inbox_full) > 255) {
                 $e = true;
@@ -528,12 +528,12 @@ createlayout_bottom();
                     ).'</a></td>'.LF.'</tr>'."\n";
             }
             $descr = nl2br($a['infotext']);
-            $c = $a['cluster'];
+            $c = $a['syndikat'];
             if ($c != false) {
-                $c = getcluster($c);
-                $scluster = '<a href="cluster.php?a=info&amp;cluster='.$a['cluster'].'&amp;sid='.$sid.'">'.$c['name'].'</a> '.$c['code'];
+                $c = getsyndikat($c);
+                $ssyndikat = '<a href="syndikat.php?a=info&amp;syndikat='.$a['syndikat'].'&amp;sid='.$sid.'">'.$c['name'].'</a> '.$c['code'];
             } else {
-                $scluster = 'keiner';
+                $ssyndikat = 'keiner';
             }
 
             $spcs = '';
@@ -619,7 +619,7 @@ createlayout_bottom();
 </tr>
 '.$geschl.$gb.$ort.$hp.$locked.'
 <tr>
-<th>Cluster</th><td>'.$scluster.'</td></tr>
+<th>Syndikat</th><td>'.$ssyndikat.'</td></tr>
 <tr>
 <th>Computer ('.$pccnt.')</th>
 <td><ul>'.$spcs.'</ul>'.$pchw.'</td>

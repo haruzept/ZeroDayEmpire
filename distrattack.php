@@ -6,11 +6,11 @@ include('ingame.php');
 
 $action = $_REQUEST['page'];
 
-# Cluster-Daten lesen:
-$clusterid = $usr['cluster'];
-$cluster = getcluster($clusterid);
-if ($cluster == false) {
-    die('Du hast keinen Cluster!');
+# Syndikat-Daten lesen:
+$syndikatid = $usr['syndikat'];
+$syndikat = getsyndikat($syndikatid);
+if ($syndikat == false) {
+    die('Du hast keinen Syndikat!');
 }
 if ($usr['da_avail'] != 'yes') {
     simple_message('Noch nicht verf&uuml;gbar!');
@@ -40,18 +40,18 @@ return window.confirm(\'Die Distributed Attack wirklich abbrechen?\');
 }
 </script>';
 
-createlayout_top('ZeroDayEmpire - Cluster - Distributed Attacks');
-echo '<div class="content" id="cluster">'."\n";
-echo '<h2>Cluster</h2>'."\n";
+createlayout_top('ZeroDayEmpire - Syndikat - Distributed Attacks');
+echo '<div class="content" id="syndikat">'."\n";
+echo '<h2>Syndikat</h2>'."\n";
 
 switch ($action) {
 
     case 'list':  // -------------------------------- LIST -------------------------------
 
-        $r = db_query('SELECT * FROM distr_attacks WHERE cluster='.mysql_escape_string($clusterid).';');
+        $r = db_query('SELECT * FROM distr_attacks WHERE syndikat='.mysql_escape_string($syndikatid).';');
         $cnt = mysql_num_rows($r);
 
-        echo '<div id="cluster-distributed-attacks">
+        echo '<div id="syndikat-distributed-attacks">
 <h3>Distributed Attacks (Anzahl: '.$cnt.')</h3>';
         if ($usr['da_avail'] == 'yes') {
             if (isavailh('da', $pc) == true) {
@@ -107,7 +107,7 @@ switch ($action) {
                     }
                     echo '</td>'.LF.'<td>';
                     if ($usr['da_avail'] == 'yes') {
-                        if ($initusr['id'] == $usrid || $usr['clusterstat'] == CS_ADMIN) {
+                        if ($initusr['id'] == $usrid || $usr['syndikatetat'] == CS_ADMIN) {
                             echo '<a href="distrattack.php?page=cancel&amp;sid='.$sid.'&amp;da='.$item['id'].'" onclick="return confirm_abort();">Abbrechen</a>,'.LF.'<a href="distrattack.php?page=exec&amp;sid='.$sid.'&amp;da='.$item['id'].'">Angriff!</a>, '."\n";
                         }
                         echo '<a href="distrattack.php?page=join&amp;sid='.$sid.'&amp;da='.$item['id'].'">Mitmachen</a>';
@@ -129,25 +129,25 @@ switch ($action) {
         }
         echo '<div class="tip">
 <h3>Info</h3>
-<p>Du erstellst jetzt eine Art Einladung. Andere User aus deinem Cluster k&ouml;nnen sich dieser Einladung anschlie&szlig;en.<br />
+<p>Du erstellst jetzt eine Art Einladung. Andere User aus deinem Syndikat k&ouml;nnen sich dieser Einladung anschlie&szlig;en.<br />
 Sobald du es bestimmst, wird der Feind mit der gesammelten Power aller Teilnehmer angegriffen!</p>
 </div>
 
-<div id="cluster-create-distributed-attack">
+<div id="syndikat-create-distributed-attack">
 <h3>Distributed Attack erstellen</h3>
 <form action="distrattack.php?page=create_submit&amp;sid='.$sid.'" method="post">
 <table>
-<tr id="cluster-create-distributed-attack-ip">
+<tr id="syndikat-create-distributed-attack-ip">
 <th>Ziel-Computer:</th>
 <td><input type="text" name="ip" value="10.47." /></td>
 </tr>
-<tr id="cluster-create-distributed-attack-target">
+<tr id="syndikat-create-distributed-attack-target">
 <th>Zerst&ouml;rungs-Ziel:</th>
 <td><input name="t" value="cpu" checked="checked" type="radio" /> Prozessor<br />
 <input name="t" value="av" type="radio" /> Antivirus-Programm<br />
 <input name="t" value="fw" type="radio" /> Firewall</td>
 </tr>
-<tr id="cluster-create-distributed-attack-confirm">
+<tr id="syndikat-create-distributed-attack-confirm">
 <td colspan="2"><input type="submit" value="Erstellen" /></td>
 </tr>
 </table>
@@ -182,8 +182,8 @@ Sobald du es bestimmst, wird der Feind mit der gesammelten Power aller Teilnehme
                 exit;
         }
         $owner = getuser($target['owner']);
-        if ($owner['id'] == $usrid || ($owner['cluster'] == $clusterid && $owner != false)) {
-            $e .= 'Du kannst weder dich selber noch deinen eigenen Cluster angreifen!<br />';
+        if ($owner['id'] == $usrid || ($owner['syndikat'] == $syndikatid && $owner != false)) {
+            $e .= 'Du kannst weder dich selber noch deinen eigenen Syndikat angreifen!<br />';
         }
 
         if ($e == '') {
@@ -193,7 +193,7 @@ Sobald du es bestimmst, wird der Feind mit der gesammelten Power aller Teilnehme
                 $e .= 'Du hast nicht gen&uuml;gend Geld, um die Einfuhr-Geb&uuml;hr von '.$credits.' Credits nach '.$country['name'].', dem Standort von 10.47.'.$target['ip'].', zu bezahlen!';
             } else {
                 $code = randomx(10);
-                echo '<div id="cluster-create-distributed-attack2">
+                echo '<div id="syndikat-create-distributed-attack2">
 <h3>Distributed Attack erstellen</h3>
 <form action="distrattack.php?page=create_final&amp;sid='.$sid.'" method="post">
 <table>
@@ -210,7 +210,7 @@ Sobald du es bestimmst, wird der Feind mit der gesammelten Power aller Teilnehme
 <td>F&uuml;r die Einfuhr nach '.$country['name'].' fallen '.$credits.' Credits an.<br />
 Diese werden schon jetzt vom Konto deines PCs 10.47.'.$pc['ip'].' ('.$pc['name'].') abgezogen.</td>
 </tr>
-<tr id="cluster-create-distributed-attack2-confirm">
+<tr id="syndikat-create-distributed-attack2-confirm">
 <td colspan="2"><input type="hidden" name="code" value="'.$code.'" /><input type="submit" value="Erstellen!" /></td>
 </tr>
 </table>
@@ -237,7 +237,7 @@ Diese werden schon jetzt vom Konto deines PCs 10.47.'.$pc['ip'].' ('.$pc['name']
         list($target, $credits, $item) = explode('|', file_get($fn));
         @unlink($fn);
         db_query(
-            'INSERT INTO distr_attacks VALUES(\'0\', \''.mysql_escape_string($clusterid).'\', \''.mysql_escape_string(
+            'INSERT INTO distr_attacks VALUES(\'0\', \''.mysql_escape_string($syndikatid).'\', \''.mysql_escape_string(
                 $pcid
             ).'\', \''.mysql_escape_string($usrid).'\', \''.mysql_escape_string($target).'\', \''.mysql_escape_string(
                 $item
@@ -263,8 +263,8 @@ Diese werden schon jetzt vom Konto deines PCs 10.47.'.$pc['ip'].' ('.$pc['name']
 
         $i = (int)$_REQUEST['da'];
         $a = @mysql_fetch_assoc(db_query('SELECT * FROM distr_attacks WHERE id='.mysql_escape_string($i).' LIMIT 1;'));
-        if (isset($a['id']) == true && $a['cluster'] == $clusterid) {
-            echo '<div id="cluster-distributed-attack-join-start">'."\n";
+        if (isset($a['id']) == true && $a['syndikat'] == $syndikatid) {
+            echo '<div id="syndikat-distributed-attack-join-start">'."\n";
             echo '<h3>Mitmachen</h3>'."\n";
             echo '<p><strong>W&auml;hle die PCs, mit denen du bei der DA mithelfen willst:</strong></p>'."\n";
             echo '<p>Das Mitmachen kostet 1000 Credits pro PC. Nur PCs mit mindestens 1000 Credits im BucksBunker und solche, die noch nicht an der DA teilnehmen, werden angezeigt.</p>'."\n";
@@ -340,7 +340,7 @@ Diese werden schon jetzt vom Konto deines PCs 10.47.'.$pc['ip'].' ('.$pc['name']
 
         $i = (int)$_REQUEST['da'];
         $a = @mysql_fetch_assoc(db_query('SELECT * FROM distr_attacks WHERE id='.mysql_escape_string($i).' LIMIT 1;'));
-        if (isset($a['id']) == true && $a['cluster'] == $clusterid) {
+        if (isset($a['id']) == true && $a['syndikat'] == $syndikatid) {
 
             $sql = db_query('SELECT * FROM pcs WHERE owner='.$usr['id'].';');
             while ($xpc = mysql_fetch_assoc($sql)) {
@@ -390,7 +390,7 @@ Diese werden schon jetzt vom Konto deines PCs 10.47.'.$pc['ip'].' ('.$pc['name']
 
     case 'joinall': // -------------------------------- JOIN ALL -------------------------------
 
-        $r = db_query('SELECT id FROM distr_attacks WHERE cluster='.mysql_escape_string($clusterid).';');
+        $r = db_query('SELECT id FROM distr_attacks WHERE syndikat='.mysql_escape_string($syndikatid).';');
         $cnt = mysql_num_rows($r);
 
         echo '<p><strong>W&auml;hle die PCs, mit denen du an allen DAs teilnehmen m&ouml;chtest!</strong><br />
@@ -458,7 +458,7 @@ Es werden nur PCs angezeigt, auf denen die DA und gen&uuml;gend Geld vorhanden i
             }
         }
 
-        $r = db_query('SELECT id FROM distr_attacks WHERE cluster='.mysql_escape_string($clusterid).';');
+        $r = db_query('SELECT id FROM distr_attacks WHERE syndikat='.mysql_escape_string($syndikatid).';');
 
         while ($a = mysql_fetch_assoc($r)) {
             $sql = db_query('SELECT * FROM pcs WHERE owner='.mysql_escape_string($usr['id']).';');
@@ -511,8 +511,8 @@ Es werden nur PCs angezeigt, auf denen die DA und gen&uuml;gend Geld vorhanden i
 
         $i = (int)$_REQUEST['da'];
         $a = @mysql_fetch_assoc(db_query('SELECT * FROM distr_attacks WHERE id='.mysql_escape_string($i).' LIMIT 1;'));
-        if ($usr['clusterstat'] == CS_ADMIN || $a['initiator_usr'] == $usrid) {
-            if (isset($a['id']) == true && $a['cluster'] == $clusterid) {
+        if ($usr['syndikatetat'] == CS_ADMIN || $a['initiator_usr'] == $usrid) {
+            if (isset($a['id']) == true && $a['syndikat'] == $syndikatid) {
                 db_query('DELETE FROM distr_attacks WHERE id='.mysql_escape_string($a['id']).' LIMIT 1;');
                 db_query('DELETE FROM da_participants WHERE relative='.mysql_escape_string($a['id']).';');
                 echo '<div class="important"><h3>Abgebrochen</h3><p>Distributed Attack abgebrochen!</p></div>';
@@ -529,9 +529,9 @@ Es werden nur PCs angezeigt, auf denen die DA und gen&uuml;gend Geld vorhanden i
         $a = @mysql_fetch_assoc(db_query('SELECT * FROM distr_attacks WHERE id='.mysql_escape_string($i).' LIMIT 1;'));
 
 
-        if (isset($a['id']) == true && $a['cluster'] == $clusterid) {
+        if (isset($a['id']) == true && $a['syndikat'] == $syndikatid) {
 
-            if ($a['initiator_usr'] != $usrid && $usr['clusterstat'] != CS_ADMIN) {
+            if ($a['initiator_usr'] != $usrid && $usr['syndikatetat'] != CS_ADMIN) {
                 exit;
             }
             $result = db_query('SELECT * FROM da_participants WHERE relative=\''.mysql_escape_string($a['id']).'\'');
@@ -614,7 +614,7 @@ Es werden nur PCs angezeigt, auf denen die DA und gen&uuml;gend Geld vorhanden i
                     $msg = 'Die Distributed Attack auf 10.47.'.$remote['ip'].' (Besitzer: [usr='.$owner['id'].']'.$owner['name'].'[/usr]), an der du teilgenommen hast, war leider nicht erfolgreich!';
                     addsysmsg(
                         $owner['id'],
-                        $total.' Mitglieder des Clusters [cluster='.$clusterid.']'.$cluster['code'].'[/cluster] haben eine Distributed Attack gegen dich ausgef&uuml;hrt!<br />Sie konnte aber abgewehrt werden: Auf deinem PC 10.47.'.$remote['ip'].' ('.$remote['name'].') gab es keinen Schaden!'
+                        $total.' Mitglieder des Syndikate [syndikat='.$syndikatid.']'.$syndikat['code'].'[/syndikat] haben eine Distributed Attack gegen dich ausgef&uuml;hrt!<br />Sie konnte aber abgewehrt werden: Auf deinem PC 10.47.'.$remote['ip'].' ('.$remote['name'].') gab es keinen Schaden!'
                     );
                 } else {
 
@@ -631,7 +631,7 @@ Es werden nur PCs angezeigt, auf denen die DA und gen&uuml;gend Geld vorhanden i
                         ).' wurde auf Level '.$lv.' zerst&ouml;rt!!';
                     addsysmsg(
                         $remote['owner'],
-                        $total.' Mitglieder des Clusters [cluster='.$clusterid.']'.$cluster['code'].'[/cluster] haben eine Distributed Attack gegen dich ausgef&uuml;hrt!<br />Sie war erfolgreich: Auf deinem PC 10.47.'.$remote['ip'].' ('.$remote['name'].') wurde '.idtoname(
+                        $total.' Mitglieder des Syndikate [syndikat='.$syndikatid.']'.$syndikat['code'].'[/syndikat] haben eine Distributed Attack gegen dich ausgef&uuml;hrt!<br />Sie war erfolgreich: Auf deinem PC 10.47.'.$remote['ip'].' ('.$remote['name'].') wurde '.idtoname(
                             $a['item']
                         ).' auf '.$lv.' zerst&ouml;rt!'
                     );

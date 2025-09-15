@@ -33,8 +33,8 @@ switch ($action) {
             case 'user':
                 $dat = getuser($_REQUEST['id']);
                 break;
-            case 'cluster':
-                $dat = getcluster($_REQUEST['id']);
+            case 'syndikat':
+                $dat = getsyndikat($_REQUEST['id']);
                 break;
         }
 
@@ -141,8 +141,8 @@ alert(\'Bitte Zahl eingeben!\');
             case 'user':
                 saveuser($_REQUEST['id'], $_POST);
                 break;
-            case 'cluster':
-                savecluster($_REQUEST['id'], $_POST);
+            case 'syndikat':
+                savesyndikat($_REQUEST['id'], $_POST);
                 break;
         }
         header(
@@ -157,13 +157,13 @@ alert(\'Bitte Zahl eingeben!\');
             simple_message('Nix gibts!');
             exit;
         }
-        $cluster = getcluster($cix);
-        if ($cluster == false) {
+        $syndikat = getsyndikat($cix);
+        if ($syndikat == false) {
             exit;
         }
 
         createlayout_top('ZeroDayEmpire - FREMDES Board');
-        echo '<div id="cluster-board" class="content">';
+        echo '<div id="syndikat-board" class="content">';
         echo '<h2>FREMDES Board</h2>';
 
         switch ($_REQUEST['board']) {
@@ -209,18 +209,18 @@ alert(\'Bitte Zahl eingeben!\');
 
             default:
 
-                echo '<h3>Cluster-Board von '.$cluster['code'].'</h3><br />';
+                echo '<h3>Syndikat-Board von '.$syndikat['code'].'</h3><br />';
 
                 function listboard($boxid)
                 {
-                    global $sid, $cluster, $cix;
+                    global $sid, $syndikat, $cix;
                     echo '<table cellpadding=3 style="font-size:10pt;">';
                     echo '<tr class=head><td><b>Titel</b></td><td><b>Autor</b></td><td><b>Datum</b></td><td><b>Ge&auml;ndert</b></td><td><b>Antw.</b></td>';
                     echo '</tr>';
 
                     $output = '';
                     $result = db_query(
-                        'SELECT * FROM cboards WHERE cluster LIKE \''.mysql_escape_string(
+                        'SELECT * FROM cboards WHERE syndikat LIKE \''.mysql_escape_string(
                             $cix
                         ).'\' AND box LIKE \''.mysql_escape_string(
                             $boxid
@@ -230,7 +230,7 @@ alert(\'Bitte Zahl eingeben!\');
                     while ($data = mysql_fetch_assoc($result)):
                         $tmp = '';
                         $r = db_query(
-                            'SELECT * FROM cboards WHERE cluster LIKE \''.mysql_escape_string(
+                            'SELECT * FROM cboards WHERE syndikat LIKE \''.mysql_escape_string(
                                 $cix
                             ).'\' AND relative LIKE \''.mysql_escape_string($data['thread']).'\' ORDER BY time ASC;'
                         );
@@ -275,11 +275,11 @@ alert(\'Bitte Zahl eingeben!\');
                     echo '</table>';
                 }
 
-                echo '<br /><b>Ordner 1 ('.$cluster['box1'].'):</b>';
+                echo '<br /><b>Ordner 1 ('.$syndikat['box1'].'):</b>';
                 listboard(0);
-                echo '<br /><b>Ordner 2 ('.$cluster['box2'].'):</b>';
+                echo '<br /><b>Ordner 2 ('.$syndikat['box2'].'):</b>';
                 listboard(1);
-                echo '<br /><b>Ordner 3 ('.$cluster['box3'].'):</b>';
+                echo '<br /><b>Ordner 3 ('.$syndikat['box3'].'):</b>';
                 listboard(2);
 
                 break;
@@ -368,7 +368,7 @@ alert(\'Bitte Zahl eingeben!\');
 
     case 'investigate':
         echo '<pre>';
-        $r = db_query('SELECT * FROM `transfers` WHERE `from_id`=483 AND `from_type` LIKE \'cluster\';');
+        $r = db_query('SELECT * FROM `transfers` WHERE `from_id`=483 AND `from_type` LIKE \'syndikat\';');
         while ($data = mysql_fetch_assoc($r)):
             echo "\n".nicetime($data['time'])."\t";
             echo $data['credits'].' Credits nach ';
@@ -376,8 +376,8 @@ alert(\'Bitte Zahl eingeben!\');
                 $p = getpc($data['to_id']);
                 echo 'PC 10.47.'.$p['ip'].' von '.$p['owner_name']."\t";
             } else {
-                $c = getcluster($data['to_id']);
-                echo 'Cluster '.$c['code'].' ('.$c['name'].')'."\t";
+                $c = getsyndikat($data['to_id']);
+                echo 'Syndikat '.$c['code'].' ('.$c['name'].')'."\t";
             }
         endwhile;
 
@@ -394,7 +394,7 @@ alert(\'Bitte Zahl eingeben!\');
         $gcnt = 0;
         foreach ($countrys as $bez => $item):
             $r = db_query(
-                'SELECT pcs.id AS pcs_id, pcs.ip AS pcs_ip, pcs.name AS pcs_name, pcs.points AS pcs_points, users.id AS users_id, users.name AS users_name, users.points AS users_points, clusters.id AS clusters_id, clusters.name AS clusters_name FROM (clusters RIGHT JOIN users ON clusters.id = users.cluster) RIGHT JOIN pcs ON users.id = pcs.owner WHERE pcs.country LIKE \''.mysql_escape_string(
+                'SELECT pcs.id AS pcs_id, pcs.ip AS pcs_ip, pcs.name AS pcs_name, pcs.points AS pcs_points, users.id AS users_id, users.name AS users_name, users.points AS users_points, syndikate.id AS syndikate_id, syndikate.name AS syndikate_name FROM (syndikate RIGHT JOIN users ON syndikate.id = users.syndikat) RIGHT JOIN pcs ON users.id = pcs.owner WHERE pcs.country LIKE \''.mysql_escape_string(
                     $item['id']
                 ).'\' AND pcs.points<\'50\' ORDER BY pcs.id ASC;'
             );
@@ -457,13 +457,13 @@ function idtotext($id)
         'email' => 'Email',
         'gender' => 'Geschlecht',
         'birthday' => 'Geburtstag',
-        'clusterstat' => 'Cluster-Status',
-        'cluster' => 'Cluster-ID',
+        'syndikatetat' => 'Syndikat-Status',
+        'syndikat' => 'Syndikat-ID',
         'newmail' => 'Neue Messages',
         'liu' => 'Letztes Post-Update',
         'pcs' => 'Computer',
         'stat' => 'Status (1000=king)',
-        'cm' => 'Cluster-Geld-&Uuml;berweisung',
+        'cm' => 'Syndikat-Geld-&Uuml;berweisung',
         'homepage' => 'Homepage',
         'sid' => 'Session-ID',
         'pacts' => 'Vertr&auml;ge',

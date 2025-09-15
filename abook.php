@@ -98,7 +98,7 @@ function choose(s) {
 
         echo "\n".'<h3>Gruppe: Allgemein</h3>';
         list_items($b['set1']);
-        echo "\n".'<h3>Gruppe: Cluster</h3>';
+        echo "\n".'<h3>Gruppe: Syndikat</h3>';
         list_items($b['set2']);
         echo "\n".'<h3>Gruppe: Freunde</h3>';
         list_items($b['set3']);
@@ -169,7 +169,7 @@ function choose(s) {
 <table>
 <tr><th colspan="2">Benutzer hinzuf&uuml;gen</th></tr>
 <tr><th>Benutzername:</th><td><input name="user" size="20" maxlength="20" /></td></tr>
-<tr><th>Gruppe:</th><td><select name="group"><option value="1">Allgemein</option><option value=2>Cluster</option><option value=3>Freunde</option><option value=4>Andere</option></select></td></tr>
+<tr><th>Gruppe:</th><td><select name="group"><option value="1">Allgemein</option><option value=2>Syndikat</option><option value=3>Freunde</option><option value=4>Andere</option></select></td></tr>
 <tr><td colspan="2" align="right"><input type="submit" value="Hinzuf&uuml;gen" /></td></tr>
 </table></form><br />';
 
@@ -194,7 +194,7 @@ function choose(s) {
                         if ($u !== false) {
                             $name = $u['name'];
                             echo '<tr><td width="100"><a href="user.php?a=info&sid='.$sid.'&user='.$item.'">'.$name.'</a></td>';
-                            echo '<td><select name="group'.$item.'"><option value=1'.$ch1.'>Allgemein</option><option value=2'.$ch2.'>Cluster</option><option value=3'.$ch3.'>Freunde</option><option value=4'.$ch4.'>Andere</option></select></td>';
+                            echo '<td><select name="group'.$item.'"><option value=1'.$ch1.'>Allgemein</option><option value=2'.$ch2.'>Syndikat</option><option value=3'.$ch3.'>Freunde</option><option value=4'.$ch4.'>Andere</option></select></td>';
                             echo '<td><input type="checkbox" value="yes" name="u'.$item.'" /></td>';
                             echo '</tr>';
                         }
@@ -206,7 +206,7 @@ function choose(s) {
 
         echo '<h3>Gruppe: Allgemein</h3>';
         admin_list(1);
-        echo '<h3>Gruppe: Cluster</h3>';
+        echo '<h3>Gruppe: Syndikat</h3>';
         admin_list(2);
         echo '<h3>Gruppe: Freunde</h3>';
         admin_list(3);

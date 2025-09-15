@@ -126,9 +126,9 @@ if (file_exists('data/worm.txt') === true && ($modulo == 0 || $modulo == 30)) {
 }
 
 #if($server==1)
-#  define('MAX_CLUSTER_MEMBERS',64,false); # Maximale Anzahl von Mitgliedern eines Clusters
+#  define('MAX_SYNDIKAT_MEMBERS',64,false); # Maximale Anzahl von Mitgliedern eines Syndikate
 #else
-define('MAX_CLUSTER_MEMBERS', 32, false); # Maximale Anzahl von Mitgliedern eines Clusters
+define('MAX_SYNDIKAT_MEMBERS', 32, false); # Maximale Anzahl von Mitgliedern eines Syndikate
 
 if ($usr['bigacc'] != 'yes') {
     define('UPGRADE_QUEUE_LENGTH', 3, false);
@@ -180,7 +180,7 @@ function SaveUser($usrid, $usr)
     }
 }
 
-function SaveCluster($id, $dat)
+function SaveSyndikat($id, $dat)
 { //------------------------- Save User -------------------------------
     $s = '';
     foreach ($dat as $bez => $val) {
@@ -188,7 +188,7 @@ function SaveCluster($id, $dat)
     }
     $s = trim($s, ',');
     if ($s != '') {
-        db_query('UPDATE clusters SET '.$s.' WHERE id=\''.$id.'\'');
+        db_query('UPDATE syndikate SET '.$s.' WHERE id=\''.$id.'\'');
     }
 }
 
@@ -205,7 +205,7 @@ function SavePC($pcid, $pc)
 }
 
 function cscodetostring($code)
-{ //----------------- Cluster Stat Code to String ------------------
+{ //----------------- Syndikat Stat Code to String ------------------
     switch ($code) {
         case CS_ADMIN:
             $s = 'Admin';
@@ -430,12 +430,12 @@ function tIsAvail($key, $_pc = -1)
 }
 
 /* keine ahnung was das für nen shice ist ;-)*/
-function format_cluster_code($c)
+function format_syndikat_code($c)
 {
     return str_replace('\\', '%b', $c);
 }
 
-function unformat_cluster_code($c)
+function unformat_syndikat_code($c)
 {
     return str_replace('%b', '\\', $c);
 }

@@ -20,32 +20,32 @@ if ($action == '') {
     $action = $_REQUEST['m'] ?? '';
 }
 
-# Konstanten für Cluster-Verträge:
+# Konstanten für Syndikat-Verträge:
 define('CV_WAR', 1, false);
 define('CV_BEISTAND', 2, false);
 define('CV_PEACE', 3, false);
 define('CV_NAP', 5, false);
 define('CV_WING', 6, false);
 
-# Cluster-Daten lesen:
-$clusterid = $usr['cluster'];
+# Syndikat-Daten lesen:
+$syndikatid = $usr['syndikat'];
 $good_actions = 'start join found info listmembers request1 request2';
-$cluster = getcluster($clusterid);
+$syndikat = getsyndikat($syndikatid);
 // eregi() was removed in PHP 7.0; use stripos() for a case-insensitive check instead
-if ($cluster == false && stripos($good_actions, $action) === false) {
+if ($syndikat == false && stripos($good_actions, $action) === false) {
     no_();
     exit;
 }
 
-function savemycluster()
-{ # Eigenen Cluster speichern
-    global $clusterid, $cluster;
+function savemysyndikat()
+{ # Eigenen Syndikat speichern
+    global $syndikatid, $syndikat;
     $s = '';
-    foreach ($cluster as $bez => $val) {
+    foreach ($syndikat as $bez => $val) {
         $s .= $bez.'=\''.mysql_escape_string($val).'\',';
     }
     $s = trim($s, ',');
-    db_query('UPDATE clusters SET '.$s.' WHERE id=\''.mysql_escape_string($clusterid).'\'');
+    db_query('UPDATE syndikate SET '.$s.' WHERE id=\''.mysql_escape_string($syndikatid).'\'');
 }
 
 switch ($action) {
@@ -55,24 +55,24 @@ switch ($action) {
             $pc = getpc($pcid);
         }
 
-        createlayout_top('ZeroDayEmpire - Cluster');
+        createlayout_top('ZeroDayEmpire - Syndikat');
 ?>
 <!-- ZDE theme inject -->
 <div class="container">
 <?php // /ZDE theme inject start
 
 
-        echo '<div class="content" id="cluster">'."\n";
-        echo '<h2>Cluster</h2>'."\n";
+        echo '<div class="content" id="syndikat">'."\n";
+        echo '<h2>Syndikat</h2>'."\n";
 
 
-        function nocluster()
+        function nosyndikat()
         {
-# ich bin keinem (existierenden) Cluster
+# ich bin keinem (existierenden) Syndikat
             global $REMOTE_FILES_DIR, $DATADIR, $sid, $usrid, $pcid;
-            echo '<div id="cluster-found">
-<h3>Cluster gr&uuml;nden</h3>
-<form action="cluster.php?page=found&amp;sid='.$sid.'" method="post">
+            echo '<div id="syndikat-found">
+<h3>Syndikat gr&uuml;nden</h3>
+<form action="syndikat.php?page=found&amp;sid='.$sid.'" method="post">
 <table>
 <tr>
 <th>Name:</th>
@@ -88,14 +88,14 @@ switch ($action) {
 </form>
 </div>
 <div class="important"><h3>Hinweis</h3>
-<p>Um einem existierenden Cluster beizutreten, rufe die Info-Seite eines Clusters auf.
+<p>Um einem existierenden Syndikat beizutreten, rufe die Info-Seite eines Syndikate auf.
 Dort findest du einen "Mitgliedsantrag stellen"-Link.</p></div>
 </div>';
         }
 
-#  kein Cluster
-        if ($cluster === false) {
-            nocluster();
+#  kein Syndikat
+        if ($syndikat === false) {
+            nosyndikat();
             ?>
 </div>
 <!-- /ZDE theme inject -->
@@ -104,48 +104,48 @@ createlayout_bottom();
             exit;
         }
 
-        if (eregi('http://.*/.*', $cluster['logofile'])) {
+        if (eregi('http://.*/.*', $syndikat['logofile'])) {
             if ($usr['sid_ip'] != 'noip') {
-                $img = $cluster['logofile'];
+                $img = $syndikat['logofile'];
                 #$img=dereferurl($img);
-                $img = '<tr>'.LF.'<td colspan="2"><img src="'.$img.'" alt="Cluster-Logo" /></td>'.LF.'</tr>'."\n";
+                $img = '<tr>'.LF.'<td colspan="2"><img src="'.$img.'" alt="Syndikat-Logo" /></td>'.LF.'</tr>'."\n";
             }
-            #$img='<tr>'.LF.'<td colspan="2">Das Clusterlogo kann im Moment wegen einer noch nicht geschlossenen Sicherheitsl&uuml;cke nicht angezeigt werden.</td>'.LF.'</tr>'."\n";
+            #$img='<tr>'.LF.'<td colspan="2">Das Syndikatlogo kann im Moment wegen einer noch nicht geschlossenen Sicherheitsl&uuml;cke nicht angezeigt werden.</td>'.LF.'</tr>'."\n";
         } else {
             $img = '';
         }
 
-        $a = explode("\n", $cluster['events']);
+        $a = explode("\n", $syndikat['events']);
         $mod = false;
         if (count($a) > 21) {
-            $cluster['events'] = joinex(array_slice($a, 0, 20), "\n");
+            $syndikat['events'] = joinex(array_slice($a, 0, 20), "\n");
             $mod = true;
         }
-        $list = str_replace("\n", '<br />', $cluster['events']);
+        $list = str_replace("\n", '<br />', $syndikat['events']);
         gFormatText($list);
 
         if ($mod == true) {
-            savemycluster();
+            savemysyndikat();
         }
 
         $reqs = @mysql_num_rows(
-            db_query('SELECT user FROM cl_reqs WHERE cluster='.mysql_escape_string($clusterid).' AND dealed=\'no\'')
+            db_query('SELECT user FROM cl_reqs WHERE syndikat='.mysql_escape_string($syndikatid).' AND dealed=\'no\'')
         );
         $funcs = '';
-        $stat = (int)$usr['clusterstat'];
-        $settings = '<a href="cluster.php?page=config&amp;sid='.$sid.'">Einstellungen</a><br />';
-        $members = '<a href="cluster.php?page=members&amp;sid='.$sid.'">Mitglieder-Verwaltung</a><br />';
-        $finances = '<a href="cluster.php?page=finances&amp;sid='.$sid.'">Cluster-Kasse</a><br />';
-        $battles = '<a href="cluster.php?page=battles&amp;sid='.$sid.'">Angriffs&uuml;bersicht</a><br />';
-        $konvents = '<a href="cluster.php?page=convents&amp;sid='.$sid.'">Vertr&auml;ge</a><br />';
-        $req_verw = '<a href="cluster.php?page=req_verw&amp;sid='.$sid.'">Mitgliedsantr&auml;ge</a> ('.$reqs.')<br />';
+        $stat = (int)$usr['syndikatetat'];
+        $settings = '<a href="syndikat.php?page=config&amp;sid='.$sid.'">Einstellungen</a><br />';
+        $members = '<a href="syndikat.php?page=members&amp;sid='.$sid.'">Mitglieder-Verwaltung</a><br />';
+        $finances = '<a href="syndikat.php?page=finances&amp;sid='.$sid.'">Syndikat-Kasse</a><br />';
+        $battles = '<a href="syndikat.php?page=battles&amp;sid='.$sid.'">Angriffs&uuml;bersicht</a><br />';
+        $konvents = '<a href="syndikat.php?page=convents&amp;sid='.$sid.'">Vertr&auml;ge</a><br />';
+        $req_verw = '<a href="syndikat.php?page=req_verw&amp;sid='.$sid.'">Mitgliedsantr&auml;ge</a> ('.$reqs.')<br />';
         if ($stat == CS_ADMIN) {
             $funcs = $settings.$members.$finances.$battles.$konvents.$req_verw;
-            $jobs = 'Den Cluster verwalten. Du kannst alles machen!';
+            $jobs = 'Den Syndikat verwalten. Du kannst alles machen!';
         }
         if ($stat == CS_COADMIN) {
             $funcs = $settings.$finances.$battles.$konvents.$req_verw;
-            $jobs = 'Den Cluster verwalten. Du kannst alles machen au&szlig;er den Status von Mitgliedern &auml;ndern.';
+            $jobs = 'Den Syndikat verwalten. Du kannst alles machen au&szlig;er den Status von Mitgliedern &auml;ndern.';
         }
         if ($stat == CS_WAECHTER) {
             $funcs = $battles;
@@ -153,15 +153,15 @@ createlayout_bottom();
         }
         if ($stat == CS_WARLORD) {
             $funcs = $battles.$konvents.$finances;
-            $jobs = 'Wie ein General den Cluster durch Kriege f&uuml;hren!';
+            $jobs = 'Wie ein General den Syndikat durch Kriege f&uuml;hren!';
         }
         if ($stat == CS_KONVENTIONIST) {
             $funcs = $konvents.$finances;
-            $jobs = 'Durch Verhandlungen, Zahlungen und Vertr&auml;ge den politischen Status des Clusters bestimmen.';
+            $jobs = 'Durch Verhandlungen, Zahlungen und Vertr&auml;ge den politischen Status des Syndikate bestimmen.';
         }
         if ($stat == CS_SUPPORTER) {
             $funcs = $finances;
-            $jobs = 'Schwache Cluster-Mitglieder unterst&uuml;tzen.';
+            $jobs = 'Schwache Syndikat-Mitglieder unterst&uuml;tzen.';
         }
         if ($stat == CS_MITGLIEDERMINISTER) {
             $funcs = $req_verw;
@@ -177,45 +177,45 @@ createlayout_bottom();
         }
 
         $members = mysql_num_rows(
-            db_query('SELECT id FROM users WHERE cluster=\''.mysql_escape_string($clusterid).'\'')
+            db_query('SELECT id FROM users WHERE syndikat=\''.mysql_escape_string($syndikatid).'\'')
         );
 
-        if ($members > 0 && $cluster['points'] > 0) {
-            $av = round($cluster['points'] / $members, 2);
+        if ($members > 0 && $syndikat['points'] > 0) {
+            $av = round($syndikat['points'] / $members, 2);
         } else {
             $av = 0;
         }
 
-        $money = number_format((int)$cluster['money'], 0, ',', '.');
+        $money = number_format((int)$syndikat['money'], 0, ',', '.');
 
-        $clusterstat = cscodetostring($usr['clusterstat']);
+        $syndikatetat = cscodetostring($usr['syndikatetat']);
 
-        foreach ($cluster as $bez => $val) {
-            $cluster[$bez] = safeentities($val);
+        foreach ($syndikat as $bez => $val) {
+            $syndikat[$bez] = safeentities($val);
         }
 
-        echo '<div id="cluster-overview">
-<h3>'.$cluster['name'].'</h3>
+        echo '<div id="syndikat-overview">
+<h3>'.$syndikat['name'].'</h3>
 <table width="90%">
-'.$img.'<tr id="cluster-overview-board1">
-<td colspan="2"><a href="cboard.php?page=board&amp;sid='.$sid.'">Zum Cluster-Board</a></td>
+'.$img.'<tr id="syndikat-overview-board1">
+<td colspan="2"><a href="cboard.php?page=board&amp;sid='.$sid.'">Zum Syndikat-Board</a></td>
 </tr>
 <tr>
 <th>Name:</th>
-<td>'.$cluster['name'].'</td>
+<td>'.$syndikat['name'].'</td>
 </tr>
 <tr>
 <th>Code:</th>
-<td>'.$cluster['code'].'</td>
+<td>'.$syndikat['code'].'</td>
 </tr>
 <tr>
-<th>Mitglieder (<a href="cluster.php?page=listmembers&amp;cluster='.$usr['cluster'].'&amp;sid='.$sid.'">anzeigen</a>):</th>
+<th>Mitglieder (<a href="syndikat.php?page=listmembers&amp;syndikat='.$usr['syndikat'].'&amp;sid='.$sid.'">anzeigen</a>):</th>
 <td>'.$members.'
-(<a href="cluster.php?page=leave&amp;sid='.$sid.'">Austreten</a>)</td>
+(<a href="syndikat.php?page=leave&amp;sid='.$sid.'">Austreten</a>)</td>
 </tr>
 <tr>
 <th>Punkte</th>
-<td>'.$cluster['points'].'</td>
+<td>'.$syndikat['points'].'</td>
 </tr>
 <tr>
 <th>Durchschnitt:</th>
@@ -223,7 +223,7 @@ createlayout_bottom();
 </tr>
 <tr>
 <th>Dein Status:</th>
-<td>'.$clusterstat.'</td>
+<td>'.$syndikatetat.'</td>
 </tr>
 '.$jobs.$funcs.'<tr>
 <th>Verm&ouml;gen:</th>
@@ -231,25 +231,25 @@ createlayout_bottom();
 </tr>
 <tr>
 <th>Mitgliedsbeitrag:</th>
-<td>'.$cluster['tax'].' Credits pro Tag pro User</td>
+<td>'.$syndikat['tax'].' Credits pro Tag pro User</td>
 </tr>
-<tr id="cluster-overview-events">
+<tr id="syndikat-overview-events">
 <th>Ereignisse:</th>
 <td><div>'.$list.'</div></td>
 </tr>
-<tr id="cluster-overview-board2">
-<td colspan="2"><a href="cboard.php?page=board&amp;sid='.$sid.'">Zum Cluster-Board</a></td>
+<tr id="syndikat-overview-board2">
+<td colspan="2"><a href="cboard.php?page=board&amp;sid='.$sid.'">Zum Syndikat-Board</a></td>
 </tr>
 </table>
 </div>';
 
-        if ($usr['clusterstat'] == CS_ADMIN || $usr['clusterstat'] == CS_COADMIN):
-            $cluster['notice'] = html_entity_decode($cluster['notice']);
-            echo '<div id="cluster-notice-create">
+        if ($usr['syndikatetat'] == CS_ADMIN || $usr['syndikatetat'] == CS_COADMIN):
+            $syndikat['notice'] = html_entity_decode($syndikat['notice']);
+            echo '<div id="syndikat-notice-create">
 <h3>Aktuelle Notiz</h3>
-<form action="cluster.php?sid='.$sid.'&amp;page=savenotice" method="post">
+<form action="syndikat.php?sid='.$sid.'&amp;page=savenotice" method="post">
 <table>
-<tr><th>Text:</th><td><textarea name="notice" rows="4" cols="30">'.$cluster['notice'].'</textarea></td></tr>
+<tr><th>Text:</th><td><textarea name="notice" rows="4" cols="30">'.$syndikat['notice'].'</textarea></td></tr>
 <tr><th>Aktionen:</th><td><input type="submit" value="Speichern" />
 <input type="button" onclick="this.form.notice.value=\'\';this.form.submit();" value="L&ouml;schen" />
 </td></tr>
@@ -261,7 +261,7 @@ createlayout_bottom();
 #echo '<div class="important"><h3>Hinweis</h3><p>Heute Nachmittag k&ouml;nnen leider keine DAs erstellt / ausgef&uuml;hrt werden, da die
 #interne Verwaltung selbiger umgestellt wird. Danke f&uuml;r euer Verst&auml;ndis!<br />KingIR</p></div>';
 
-        echo '<div id="cluster-distributed-attacks">
+        echo '<div id="syndikat-distributed-attacks">
 <h3>Distributed Attacks</h3><br />';
         if ($usr['da_avail'] == 'yes') {
             $pc = getpc($pcid);
@@ -283,15 +283,15 @@ createlayout_bottom();
         break;
 
     case 'delconvent': //----------------- DELETE CONVENT -------------------------
-        if ($usr['clusterstat'] == CS_ADMIN || $usr['clusterstat'] == CS_WARLORD ||
-            $usr['clusterstat'] == CS_KONVENTIONIST || $usr['clusterstat'] == CS_COADMIN
+        if ($usr['syndikatetat'] == CS_ADMIN || $usr['syndikatetat'] == CS_WARLORD ||
+            $usr['syndikatetat'] == CS_KONVENTIONIST || $usr['syndikatetat'] == CS_COADMIN
         ) {
 
             $c = explode('-', $_REQUEST['convent']);
             $c[0] = (int)$c[0];
             $c[1] = (int)$c[1];
 
-            $sql = 'FROM cl_pacts WHERE cluster='.mysql_escape_string($clusterid).' AND partner='.mysql_escape_string(
+            $sql = 'FROM cl_pacts WHERE syndikat='.mysql_escape_string($syndikatid).' AND partner='.mysql_escape_string(
                     $c[1]
                 ).' AND convent='.mysql_escape_string($c[0]).' LIMIT 1';
             $r = db_query('SELECT * '.$sql.';');
@@ -299,32 +299,32 @@ createlayout_bottom();
                 db_query('DELETE '.$sql.';');
 
                 $convent = cvcodetostring($c[0]);
-                $dat = getcluster($c[1]);
+                $dat = getsyndikat($c[1]);
 
                 $dat['events'] = nicetime4(
-                    ).' Der Cluster [cluster='.$clusterid.']'.$cluster['code'].'[/cluster] hat <i>'.$convent.'</i> mit euch annulliert!'.LF.$dat['events'];
+                    ).' Der Syndikat [syndikat='.$syndikatid.']'.$syndikat['code'].'[/syndikat] hat <i>'.$convent.'</i> mit euch annulliert!'.LF.$dat['events'];
                 db_query(
-                    'UPDATE clusters SET events=\''.mysql_escape_string(
+                    'UPDATE syndikate SET events=\''.mysql_escape_string(
                         $dat['events']
                     ).'\' WHERE id='.mysql_escape_string($dat['id'])
                 );
 
-                $cluster['events'] = nicetime4(
-                    ).' [usr='.$usrid.']'.$usr['name'].'[/usr] annulliert <i>'.$convent.'</i> mit dem Cluster [cluster='.$dat['id'].']'.$dat['code'].'[/cluster]!'.LF.$cluster['events'];
+                $syndikat['events'] = nicetime4(
+                    ).' [usr='.$usrid.']'.$usr['name'].'[/usr] annulliert <i>'.$convent.'</i> mit dem Syndikat [syndikat='.$dat['id'].']'.$dat['code'].'[/syndikat]!'.LF.$syndikat['events'];
 
-                $x = explode("\n", $cluster['events']);
+                $x = explode("\n", $syndikat['events']);
                 if (count($x) > 21) {
-                    $cluster['events'] = joinex(array_slice($x, 0, 20), "\n");
+                    $syndikat['events'] = joinex(array_slice($x, 0, 20), "\n");
                 }
 
                 db_query(
-                    'UPDATE clusters SET events=\''.mysql_escape_string(
-                        $cluster['events']
-                    ).'\' WHERE id='.mysql_escape_string($clusterid)
+                    'UPDATE syndikate SET events=\''.mysql_escape_string(
+                        $syndikat['events']
+                    ).'\' WHERE id='.mysql_escape_string($syndikatid)
                 );
             }
 
-            header('Location: cluster.php?sid='.$sid.'&page=convents&ok='.urlencode('Der Vertrag wurde annulliert.'));
+            header('Location: syndikat.php?sid='.$sid.'&page=convents&ok='.urlencode('Der Vertrag wurde annulliert.'));
 
         } else {
             no_();
@@ -333,25 +333,25 @@ createlayout_bottom();
 
 
     case 'convents': //----------------- CONVENTS -------------------------
-        if ($usr['clusterstat'] == CS_ADMIN || $usr['clusterstat'] == CS_WARLORD ||
-            $usr['clusterstat'] == CS_KONVENTIONIST || $usr['clusterstat'] == CS_COADMIN
+        if ($usr['syndikatetat'] == CS_ADMIN || $usr['syndikatetat'] == CS_WARLORD ||
+            $usr['syndikatetat'] == CS_KONVENTIONIST || $usr['syndikatetat'] == CS_COADMIN
         ) {
 
 #simple_message('Die Vertr&auml;ge-Verwaltung ist heute morgen nicht verf&uuml;gbar. Probier es heute nachmittag nochmal.');
 #exit;
 
-            createlayout_top('ZeroDayEmpire - Cluster - Vertr&auml;ge');
+            createlayout_top('ZeroDayEmpire - Syndikat - Vertr&auml;ge');
 ?>
 <!-- ZDE theme inject -->
 <div class="container">
 <?php // /ZDE theme inject start
 
 
-            echo '<div class="content" id="cluster">
-<h2>Cluster</h2>'
-                .$notif.'<div id="cluster-create-convent">
+            echo '<div class="content" id="syndikat">
+<h2>Syndikat</h2>'
+                .$notif.'<div id="syndikat-create-convent">
 <h3>Vertrag erstellen</h3>
-<form action="cluster.php?page=saveconvents&amp;sid='.$sid.'" method="post">
+<form action="syndikat.php?page=saveconvents&amp;sid='.$sid.'" method="post">
 <table>
 <tr>
 <th>Vertrags-Partner (Code):</th>
@@ -367,7 +367,7 @@ createlayout_bottom();
 <option value="6">Wing-Treaty</option>
 </select></td>
 </tr>
-<tr id="cluster-create-convent-confirm">
+<tr id="syndikat-create-convent-confirm">
 <td colspan="2"><input type="submit" value="Erstellen" /></td>
 </tr>
 </table>
@@ -375,16 +375,16 @@ createlayout_bottom();
 </div>';
 
             $r = db_query(
-                'SELECT cl_pacts.convent,clusters.code,clusters.id,cl_pacts.partner FROM (cl_pacts RIGHT JOIN clusters ON cl_pacts.partner=clusters.id) WHERE cl_pacts.cluster='.mysql_escape_string(
-                    $clusterid
-                ).' ORDER BY clusters.code ASC;'
+                'SELECT cl_pacts.convent,syndikate.code,syndikate.id,cl_pacts.partner FROM (cl_pacts RIGHT JOIN syndikate ON cl_pacts.partner=syndikate.id) WHERE cl_pacts.syndikat='.mysql_escape_string(
+                    $syndikatid
+                ).' ORDER BY syndikate.code ASC;'
             );
             if (mysql_num_rows($r) > 0) {
-                echo '<div id="cluster-convents">
+                echo '<div id="syndikat-convents">
 <h3>Eigene bestehende Vertr&auml;ge</h3>
 <table>
 <tr>
-<th>Cluster</th>
+<th>Syndikat</th>
 <th>Vertrag</th>
 <th>Löschen?</th>
 </tr>
@@ -392,9 +392,9 @@ createlayout_bottom();
                 while ($pact = mysql_fetch_assoc($r)):
                     $temp = cvcodetostring($pact['convent']);
                     echo '<tr>
-<td><a href="cluster.php?page=info&amp;sid='.$sid.'&amp;cluster='.$pact['id'].'">'.$pact['code'].'</a></td>
+<td><a href="syndikat.php?page=info&amp;sid='.$sid.'&amp;syndikat='.$pact['id'].'">'.$pact['code'].'</a></td>
 <td>'.$temp.'</td>
-<td><a href="cluster.php?page=delconvent&amp;sid='.$sid.'&amp;convent='.$pact['convent'].'-'.$pact['partner'].'">L&ouml;schen</a></td>
+<td><a href="syndikat.php?page=delconvent&amp;sid='.$sid.'&amp;convent='.$pact['convent'].'-'.$pact['partner'].'">L&ouml;schen</a></td>
 </tr>
 ';
                 endwhile;
@@ -404,23 +404,23 @@ createlayout_bottom();
             }
 
             $r = db_query(
-                'SELECT cl_pacts.convent,clusters.code,clusters.id FROM (cl_pacts RIGHT JOIN clusters ON cl_pacts.cluster=clusters.id) WHERE cl_pacts.partner='.mysql_escape_string(
-                    $clusterid
-                ).' ORDER BY clusters.code ASC;'
+                'SELECT cl_pacts.convent,syndikate.code,syndikate.id FROM (cl_pacts RIGHT JOIN syndikate ON cl_pacts.syndikat=syndikate.id) WHERE cl_pacts.partner='.mysql_escape_string(
+                    $syndikatid
+                ).' ORDER BY syndikate.code ASC;'
             );
             if (mysql_num_rows($r) > 0) {
-                echo '<div id="cluster-convents">
-<h3>Bestehende Vertr&auml;ge anderer Cluster mit uns</h3>
+                echo '<div id="syndikat-convents">
+<h3>Bestehende Vertr&auml;ge anderer Syndikat mit uns</h3>
 <table>
 <tr>
-<th>Cluster</th>
+<th>Syndikat</th>
 <th>Vertrag</th>
 </tr>
 ';
                 while ($pact = mysql_fetch_assoc($r)):
                     $temp = cvcodetostring($pact['convent']);
                     echo '<tr>
-<td><a href="cluster.php?page=info&amp;sid='.$sid.'&amp;cluster='.$pact['id'].'">'.$pact['code'].'</a></td>
+<td><a href="syndikat.php?page=info&amp;sid='.$sid.'&amp;syndikat='.$pact['id'].'">'.$pact['code'].'</a></td>
 <td>'.$temp.'</td>
 </tr>
 ';
@@ -443,15 +443,15 @@ createlayout_bottom();
         break;
 
     case 'saveconvents': //------------------------- SAVE CONVENTS -------------------------------
-        if ($usr['clusterstat'] == CS_ADMIN || $usr['clusterstat'] == CS_WARLORD ||
-            $usr['clusterstat'] == CS_KONVENTIONIST || $usr['clusterstat'] == CS_COADMIN
+        if ($usr['syndikatetat'] == CS_ADMIN || $usr['syndikatetat'] == CS_WARLORD ||
+            $usr['syndikatetat'] == CS_KONVENTIONIST || $usr['syndikatetat'] == CS_COADMIN
         ) {
 
-            $dat = getcluster($_POST['partner'], 'code');
+            $dat = getsyndikat($_POST['partner'], 'code');
             if ($dat == false) {
-                $error = 'Ein Cluster mit dem Code '.$_POST['partner'].' existiert nicht!';
-            } elseif ($dat['id'] == $clusterid) {
-                $error = 'Du kannst keinen Vertrag mit dem eigenen Cluster abschlie&szlig;en!';
+                $error = 'Ein Syndikat mit dem Code '.$_POST['partner'].' existiert nicht!';
+            } elseif ($dat['id'] == $syndikatid) {
+                $error = 'Du kannst keinen Vertrag mit dem eigenen Syndikat abschlie&szlig;en!';
             } else {
                 $type = (int)$_POST['type'];
                 if ($type < 1 OR $type > 6) {
@@ -461,28 +461,28 @@ createlayout_bottom();
                 $convent = cvCodeToString($type);
                 $cname = htmlspecialchars($dat['code']);
                 $dat['events'] = nicetime4(
-                    ).' Der Cluster [cluster='.$clusterid.']'.$cluster['code'].'[/cluster] hat <i>'.$convent.'</i> mit euch eingetragen.'.LF.$dat['events'];
+                    ).' Der Syndikat [syndikat='.$syndikatid.']'.$syndikat['code'].'[/syndikat] hat <i>'.$convent.'</i> mit euch eingetragen.'.LF.$dat['events'];
                 db_query(
-                    'UPDATE clusters SET events=\''.mysql_escape_string(
+                    'UPDATE syndikate SET events=\''.mysql_escape_string(
                         $dat['events']
                     ).'\' WHERE id='.mysql_escape_string($dat['id'])
                 );
                 db_query(
-                    'INSERT INTO cl_pacts VALUES ('.mysql_escape_string($clusterid).', '.mysql_escape_string(
+                    'INSERT INTO cl_pacts VALUES ('.mysql_escape_string($syndikatid).', '.mysql_escape_string(
                         $type
                     ).', '.mysql_escape_string($dat['id']).');'
                 );
-                $cluster['events'] = nicetime4(
-                    ).' [usr='.$usrid.']'.$usr['name'].'[/usr] tr&auml;gt <i>'.$convent.'</i> mit dem Cluster [cluster='.$dat['id'].']'.$cname.'[/cluster] ein.'.LF.$cluster['events'];
+                $syndikat['events'] = nicetime4(
+                    ).' [usr='.$usrid.']'.$usr['name'].'[/usr] tr&auml;gt <i>'.$convent.'</i> mit dem Syndikat [syndikat='.$dat['id'].']'.$cname.'[/syndikat] ein.'.LF.$syndikat['events'];
                 db_query(
-                    'UPDATE clusters SET events=\''.mysql_escape_string(
-                        $cluster['events']
-                    ).'\' WHERE id='.mysql_escape_string($clusterid)
+                    'UPDATE syndikate SET events=\''.mysql_escape_string(
+                        $syndikat['events']
+                    ).'\' WHERE id='.mysql_escape_string($syndikatid)
                 );
                 $ok = 'Der Vertrag wurde abgeschlossen.';
             }
             header(
-                'Location: cluster.php?page=convents&sid='.$sid.'&'.($ok != '' ? 'ok='.urlencode(
+                'Location: syndikat.php?page=convents&sid='.$sid.'&'.($ok != '' ? 'ok='.urlencode(
                         $ok
                     ) : 'error='.urlencode($error))
             );
@@ -493,24 +493,24 @@ createlayout_bottom();
         break;
 
     case 'savefincances': //------------------------- SAVE FINANCES -------------------------------
-        if ($usr['clusterstat'] == CS_ADMIN || $usr['clusterstat'] == CS_COADMIN) {
+        if ($usr['syndikatetat'] == CS_ADMIN || $usr['syndikatetat'] == CS_COADMIN) {
             $tax = $_REQUEST['tax'];
             if (is_long((int)$tax)) {
-                $cluster['events'] = nicetime4(
-                    ).' [usr='.$usrid.']'.$usr['name'].'[/usr] setzt Mitgliedsbeitrag auf '.$tax.' Credits pro Tag'.LF.$cluster['events'];
+                $syndikat['events'] = nicetime4(
+                    ).' [usr='.$usrid.']'.$usr['name'].'[/usr] setzt Mitgliedsbeitrag auf '.$tax.' Credits pro Tag'.LF.$syndikat['events'];
                 db_query(
-                    'UPDATE clusters SET events=\''.mysql_escape_string(
-                        $cluster['events']
-                    ).'\',tax='.mysql_escape_string($tax).' WHERE id='.mysql_escape_string($clusterid)
+                    'UPDATE syndikate SET events=\''.mysql_escape_string(
+                        $syndikat['events']
+                    ).'\',tax='.mysql_escape_string($tax).' WHERE id='.mysql_escape_string($syndikatid)
                 );
                 header(
-                    'Location: cluster.php?page=finances&sid='.$sid.'&ok='.urlencode(
+                    'Location: syndikat.php?page=finances&sid='.$sid.'&ok='.urlencode(
                         'Die &Auml;nderungen wurden &uuml;bernommen.'
                     )
                 );
             } else {
                 header(
-                    'Location: cluster.php?page=finances&sid='.$sid.'&error='.urlencode('Bitte eine Zahl eingeben.')
+                    'Location: syndikat.php?page=finances&sid='.$sid.'&error='.urlencode('Bitte eine Zahl eingeben.')
                 );
             }
         } else {
@@ -519,12 +519,12 @@ createlayout_bottom();
         break;
 
     case 'finances': //------------------------- FINANCES -------------------------------
-        if ($usr['clusterstat'] == CS_ADMIN || $usr['clusterstat'] == CS_WARLORD ||
-            $usr['clusterstat'] == CS_KONVENTIONIST || $usr['clusterstat'] == CS_SUPPORTER || $usr['clusterstat'] == CS_COADMIN
+        if ($usr['syndikatetat'] == CS_ADMIN || $usr['syndikatetat'] == CS_WARLORD ||
+            $usr['syndikatetat'] == CS_KONVENTIONIST || $usr['syndikatetat'] == CS_SUPPORTER || $usr['syndikatetat'] == CS_COADMIN
         ) {
 
-            $cluster['money'] = (int)$cluster['money'];
-            $cluster['tax'] = (int)$cluster['tax'];
+            $syndikat['money'] = (int)$syndikat['money'];
+            $syndikat['tax'] = (int)$syndikat['tax'];
 
             $javascript = '<script type="text/javascript">'."\n";
             if ($usr['bigacc'] == 'yes') {
@@ -535,30 +535,30 @@ function autosel(obj) { var i = (obj.name==\'pcip\' ? 1 : 0);
   document.frm.reciptype[i].checked=true; }
 </script>';
 
-            createlayout_top('ZeroDayEmpire - Cluster - Finanzen');
+            createlayout_top('ZeroDayEmpire - Syndikat - Finanzen');
 ?>
 <!-- ZDE theme inject -->
 <div class="container">
 <?php // /ZDE theme inject start
 
 
-            echo '<div class="content" id="cluster">
-<h2>Cluster</h2>
+            echo '<div class="content" id="syndikat">
+<h2>Syndikat</h2>
 '.$notif;
-            if ($usr['clusterstat'] == CS_ADMIN || $usr['clusterstat'] == CS_COADMIN) {
-                $fm = number_format($cluster['money'], 0, ',', '.');
-                echo '<div id="cluster-money">
+            if ($usr['syndikatetat'] == CS_ADMIN || $usr['syndikatetat'] == CS_COADMIN) {
+                $fm = number_format($syndikat['money'], 0, ',', '.');
+                echo '<div id="syndikat-money">
 <h3>Vermögen</h3>
-<p>Aktuelles Verm&ouml;gen des Clusters: '.$fm.' Credits.</p>
+<p>Aktuelles Verm&ouml;gen des Syndikate: '.$fm.' Credits.</p>
 </div>
-<div id="cluster-tax">
+<div id="syndikat-tax">
 <h3>Mitgliedsbeitrag</h3>
 <p>Mitgliedsbeitrag in Credits pro User pro Tag festlegen:</p>
-<form action="cluster.php?page=savefincances&amp;sid='.$sid.'" method="post">
+<form action="syndikat.php?page=savefincances&amp;sid='.$sid.'" method="post">
 <table>
 <tr>
-<th>Cluster-Mitgliedsbeitrag:</th>
-<td><input type="text" name="tax" maxlength="5" value="'.$cluster['tax'].'" /></td>
+<th>Syndikat-Mitgliedsbeitrag:</th>
+<td><input type="text" name="tax" maxlength="5" value="'.$syndikat['tax'].'" /></td>
 </tr>
 <tr>
 <td colspan="2"><input type="submit" value="Speichern" /></td>
@@ -573,13 +573,13 @@ function autosel(obj) { var i = (obj.name==\'pcip\' ? 1 : 0);
                 $bigacc = '&nbsp;<a href="javascript:show_abook(\'pc\')">Adressbuch</a>';
             }
             echo '
-<div id="cluster-transfers">
+<div id="syndikat-transfers">
 <h3>Überweisungen</h3>
-<form action="cluster.php?page=transfer&amp;sid='.$sid.'" method="post" name="frm">
+<form action="syndikat.php?page=transfer&amp;sid='.$sid.'" method="post" name="frm">
 <table>
 <tr>
 <th>Empf&auml;nger:</th>
-<td><input type="radio" checked="checked" name="reciptype" value="cluster" /> Cluster &ndash; Code: <input type="text" name="clustercode" onchange="autosel(this)" maxlength="12" /><br />
+<td><input type="radio" checked="checked" name="reciptype" value="syndikat" /> Syndikat &ndash; Code: <input type="text" name="syndikatcode" onchange="autosel(this)" maxlength="12" /><br />
 <input type="radio" name="reciptype" value="user" /> Benutzer &ndash; IP: 10.47.<input type="text" name="pcip" onchange="autosel(this)" maxlength="7" />'.$bigacc.'</td>
 </tr>
 <tr>
@@ -592,7 +592,7 @@ function autosel(obj) { var i = (obj.name==\'pcip\' ? 1 : 0);
 </table>
 </form>
 </div>
-<div id="cluster-tax-paid">
+<div id="syndikat-tax-paid">
 <h3>Wer hat bezahlt?</h3>
 <table>
 <tr>
@@ -604,7 +604,7 @@ function autosel(obj) { var i = (obj.name==\'pcip\' ? 1 : 0);
 
 # Wer hat wann bezahlt...?
             $r = db_query(
-                'SELECT id,name,cm FROM users WHERE cluster=\''.mysql_escape_string($clusterid).'\' ORDER BY name ASC'
+                'SELECT id,name,cm FROM users WHERE syndikat=\''.mysql_escape_string($syndikatid).'\' ORDER BY name ASC'
             );
             while ($user = mysql_fetch_assoc($r)) {
                 if ($user['cm'] == strftime('%d.%m.')) {
@@ -628,20 +628,20 @@ createlayout_bottom();
         break;
 
     case 'members': //------------------------- MEMBERS -------------------------------
-        if ($usr['clusterstat'] == CS_ADMIN) {
+        if ($usr['syndikatetat'] == CS_ADMIN) {
 
-            createlayout_top('ZeroDayEmpire - Cluster');
+            createlayout_top('ZeroDayEmpire - Syndikat');
 ?>
 <!-- ZDE theme inject -->
 <div class="container">
 <?php // /ZDE theme inject start
 
 
-            echo '<div class="content" id="cluster">
-<h2>Cluster</h2>
-'.$notif.'<div id="cluster-member-administration">
+            echo '<div class="content" id="syndikat">
+<h2>Syndikat</h2>
+'.$notif.'<div id="syndikat-member-administration">
 <h3>Mitglieder-Verwaltung</h3>
-<form action="cluster.php?page=savemembers&amp;sid='.$sid.'" method="post">
+<form action="syndikat.php?page=savemembers&amp;sid='.$sid.'" method="post">
 <table>
 <tr>
 <th>Name</th>
@@ -660,7 +660,7 @@ createlayout_bottom();
             }
 
             $r = db_query(
-                'SELECT * FROM users WHERE cluster=\''.mysql_escape_string($clusterid).'\' ORDER BY name ASC'
+                'SELECT * FROM users WHERE syndikat=\''.mysql_escape_string($syndikatid).'\' ORDER BY name ASC'
             );
 
             while ($udat = mysql_fetch_assoc($r)) {
@@ -670,15 +670,15 @@ createlayout_bottom();
                 }
                 echo '<tr>'.LF.'<td><a href="user.php?page=info&amp;user='.$uix.'&amp;sid='.$sid.'">'.$udat['name'].'</a></td>'.LF.'<td>'.$udat['points'].'</td>'.LF.'<td>';
                 echo '<select name="stat'.$uix.'">';
-                stat_list_item(CS_MEMBER, $udat['clusterstat']);
-                stat_list_item(CS_ADMIN, $udat['clusterstat']);
-                stat_list_item(CS_COADMIN, $udat['clusterstat']);
-                stat_list_item(CS_WAECHTER, $udat['clusterstat']);
-                stat_list_item(CS_JACKASS, $udat['clusterstat']);
-                stat_list_item(CS_WARLORD, $udat['clusterstat']);
-                stat_list_item(CS_KONVENTIONIST, $udat['clusterstat']);
-                stat_list_item(CS_SUPPORTER, $udat['clusterstat']);
-                stat_list_item(CS_MITGLIEDERMINISTER, $udat['clusterstat']);
+                stat_list_item(CS_MEMBER, $udat['syndikatetat']);
+                stat_list_item(CS_ADMIN, $udat['syndikatetat']);
+                stat_list_item(CS_COADMIN, $udat['syndikatetat']);
+                stat_list_item(CS_WAECHTER, $udat['syndikatetat']);
+                stat_list_item(CS_JACKASS, $udat['syndikatetat']);
+                stat_list_item(CS_WARLORD, $udat['syndikatetat']);
+                stat_list_item(CS_KONVENTIONIST, $udat['syndikatetat']);
+                stat_list_item(CS_SUPPORTER, $udat['syndikatetat']);
+                stat_list_item(CS_MITGLIEDERMINISTER, $udat['syndikatetat']);
                 echo '</select></td>'.LF.'<td>'.nicetime3(
                         $udat['login_time']
                     ).'</td>'.LF.'<td><input type="checkbox" value="yes" name="kick'.$uix.'" /></td></tr>';
@@ -704,11 +704,11 @@ createlayout_bottom();
         break;
 
     case 'savemembers': //-------------------- SAVE MEMBERS ------------------
-        if ($usr['clusterstat'] == CS_ADMIN) {
+        if ($usr['syndikatetat'] == CS_ADMIN) {
 
             $r = db_query(
-                'SELECT id,name,clusterstat FROM users WHERE cluster=\''.mysql_escape_string(
-                    $clusterid
+                'SELECT id,name,syndikatetat FROM users WHERE syndikat=\''.mysql_escape_string(
+                    $syndikatid
                 ).'\' ORDER BY name ASC'
             );
 
@@ -717,42 +717,42 @@ createlayout_bottom();
                 if ($uix == $usrid) {
                     continue;
                 }
-                if ($_POST['kick'.$uix] == 'yes') { # User aus dem Cluster schmei&szlig;en?
-                    db_query('UPDATE users SET cluster=\'\',cm=\'\',clusterstat=0 WHERE id='.mysql_escape_string($uix));
-                    $cluster['events'] = nicetime4(
-                        ).' [usr='.$udat['id'].']'.$udat['name'].'[/usr] wird durch [usr='.$usrid.']'.$usr['name'].'[/usr] aus dem Cluster ausgeschlossen.'.LF.$cluster['events'];
+                if ($_POST['kick'.$uix] == 'yes') { # User aus dem Syndikat schmei&szlig;en?
+                    db_query('UPDATE users SET syndikat=\'\',cm=\'\',syndikatetat=0 WHERE id='.mysql_escape_string($uix));
+                    $syndikat['events'] = nicetime4(
+                        ).' [usr='.$udat['id'].']'.$udat['name'].'[/usr] wird durch [usr='.$usrid.']'.$usr['name'].'[/usr] aus dem Syndikat ausgeschlossen.'.LF.$syndikat['events'];
                     addsysmsg(
                         $udat['id'],
-                        'Du wurdest durch [usr='.$usrid.']{'.$usr['name'].'[/usr] aus dem Cluster [cluster='.$clusterid.']'.$cluster['code'].'[/cluster] ausgeschlossen!'
+                        'Du wurdest durch [usr='.$usrid.']{'.$usr['name'].'[/usr] aus dem Syndikat [syndikat='.$syndikatid.']'.$syndikat['code'].'[/syndikat] ausgeschlossen!'
                     );
                 } else {
                     $stat = (int)$_REQUEST['stat'.$uix];
-                    if ($udat['clusterstat'] != $stat) {
+                    if ($udat['syndikatetat'] != $stat) {
                         db_query(
-                            'UPDATE users SET clusterstat=\''.mysql_escape_string(
+                            'UPDATE users SET syndikatetat=\''.mysql_escape_string(
                                 $stat
                             ).'\' WHERE id='.mysql_escape_string($uix)
                         );
-                        $cluster['events'] = nicetime4(
+                        $syndikat['events'] = nicetime4(
                             ).' [usr='.$udat['id'].']'.$udat['name'].'[/usr] erh&auml;lt durch [usr='.$usrid.']'.$usr['name'].'[/usr] den Status '.cscodetostring(
                                 $stat
-                            ).'.'.LF.$cluster['events'];
+                            ).'.'.LF.$syndikat['events'];
                     }
                 }
             }
 
-            $x = explode("\n", $cluster['events']);
+            $x = explode("\n", $syndikat['events']);
             if (count($x) > 21) {
-                $cluster['events'] = joinex(array_slice($x, 0, 20), "\n");
+                $syndikat['events'] = joinex(array_slice($x, 0, 20), "\n");
             }
             db_query(
-                'UPDATE clusters SET events=\''.mysql_escape_string(
-                    $cluster['events']
-                ).'\' WHERE id='.mysql_escape_string($clusterid)
+                'UPDATE syndikate SET events=\''.mysql_escape_string(
+                    $syndikat['events']
+                ).'\' WHERE id='.mysql_escape_string($syndikatid)
             );
 
             header(
-                'Location: cluster.php?page=members&sid='.$sid.'&ok='.urlencode(
+                'Location: syndikat.php?page=members&sid='.$sid.'&ok='.urlencode(
                     'Die &Auml;nderungen wurden &uuml;bernommen!'
                 )
             );
@@ -762,62 +762,62 @@ createlayout_bottom();
         break;
 
     case 'config': //------------------------- CONFIG -------------------------------
-        if ($usr['clusterstat'] == CS_ADMIN || $usr['clusterstat'] == CS_COADMIN) {
+        if ($usr['syndikatetat'] == CS_ADMIN || $usr['syndikatetat'] == CS_COADMIN) {
 
-            foreach ($cluster as $bez => $val) {
-                $cluster[$bez] = safeentities(html_entity_decode($val));
+            foreach ($syndikat as $bez => $val) {
+                $syndikat[$bez] = safeentities(html_entity_decode($val));
             }
 
-            $anch = ($cluster['acceptnew'] == 'yes' ? ' checked="checked"' : '');
+            $anch = ($syndikat['acceptnew'] == 'yes' ? ' checked="checked"' : '');
 
-            createlayout_top('ZeroDayEmpire - Cluster');
+            createlayout_top('ZeroDayEmpire - Syndikat');
 ?>
 <!-- ZDE theme inject -->
 <div class="container">
 <?php // /ZDE theme inject start
 
 
-            echo '<div class="content" id="cluster">
-<h2>Cluster</h2>
-'.$notif.'<div id="cluster-settings">
-<h3>Cluster-Einstellungen</h3>
-<form action="cluster.php?page=savecfg&amp;sid='.$sid.'" method="post">
+            echo '<div class="content" id="syndikat">
+<h2>Syndikat</h2>
+'.$notif.'<div id="syndikat-settings">
+<h3>Syndikat-Einstellungen</h3>
+<form action="syndikat.php?page=savecfg&amp;sid='.$sid.'" method="post">
 <table>
 <tr>
-<th>Cluster-Name:</th>
-<td><input type="text" name="name" maxlength="48" value="'.$cluster['name'].'" /></td>
+<th>Syndikat-Name:</th>
+<td><input type="text" name="name" maxlength="48" value="'.$syndikat['name'].'" /></td>
 </tr>
 <tr>
-<th>Cluster-Code:</th>
-<td><input type="text" name="code" maxlength="12" value="'.$cluster['code'].'" /></td>
+<th>Syndikat-Code:</th>
+<td><input type="text" name="code" maxlength="12" value="'.$syndikat['code'].'" /></td>
 </tr>
 <tr>
 <th>Neue Mitglieder?</th>
-<td><input name="acceptnew" value="yes" type="checkbox"'.$anch.' /> Sollen Spieler Mitgliedsantr&auml;ge stellen d&uuml;rfen, um dem Cluster beizutreten?</td>
+<td><input name="acceptnew" value="yes" type="checkbox"'.$anch.' /> Sollen Spieler Mitgliedsantr&auml;ge stellen d&uuml;rfen, um dem Syndikat beizutreten?</td>
 </tr>
 <tr>
 <th>Beschreibung:</th>
-<td><textarea rows="10" cols="50" name="about">'.$cluster['infotext'].'</textarea></td>
+<td><textarea rows="10" cols="50" name="about">'.$syndikat['infotext'].'</textarea></td>
 </tr>
 <tr>
-<th>Namen der Ordner im Cluster-Board:</th>
+<th>Namen der Ordner im Syndikat-Board:</th>
 <td>Ordner 1:<br />
-<input type="text" name="box0" value="'.$cluster['box1'].'" maxlength="30" /><br />
+<input type="text" name="box0" value="'.$syndikat['box1'].'" maxlength="30" /><br />
 Ordner 2:<br />
-<input type="text" name="box1" value="'.$cluster['box2'].'" maxlength="30" /><br />
+<input type="text" name="box1" value="'.$syndikat['box2'].'" maxlength="30" /><br />
 Ordner 3:<br />
-<input type="text" name="box2" value="'.$cluster['box3'].'" maxlength="30" /></td>
+<input type="text" name="box2" value="'.$syndikat['box3'].'" maxlength="30" /></td>
 </tr>
 <tr>
 <th>Logo-Datei:</th>
-<td><input type="text" name="logofile" value="'.$cluster['logofile'].'" /><br />Eine Internet-Adresse mit http:// eingeben.</td>
+<td><input type="text" name="logofile" value="'.$syndikat['logofile'].'" /><br />Eine Internet-Adresse mit http:// eingeben.</td>
 </tr>
 <tr>
 <th>Homepage:</th>
-<td><input type="text" name="homepage" value="'.$cluster['homepage'].'" /><br />Eine Internet-Adresse mit http:// eingeben.</td>
+<td><input type="text" name="homepage" value="'.$syndikat['homepage'].'" /><br />Eine Internet-Adresse mit http:// eingeben.</td>
 </tr>
 <tr>
-<th>Cluster l&ouml;schen:</th>
+<th>Syndikat l&ouml;schen:</th>
 <td><input name="delete" value="yes" type="checkbox" /></td>
 </tr>
 <tr>
@@ -839,30 +839,30 @@ createlayout_bottom();
         }
         break;
 
-    case 'delcluster':
+    case 'delsyndikat':
         if ($_POST['delete'] == 'yes') {
-            $r = db_query('SELECT id FROM users WHERE cluster=\''.mysql_escape_string($clusterid).'\';');
+            $r = db_query('SELECT id FROM users WHERE syndikat=\''.mysql_escape_string($syndikatid).'\';');
             while ($data = mysql_fetch_assoc($r)) {
                 addsysmsg(
                     $data['id'],
-                    'Dein Cluster '.$cluster['code'].' wurde gel&ouml;scht! Das passierte durch [usr='.$usrid.']'.$usr['name'].'[/usr] ('.cscodetostring(
-                        $usr['clusterstat']
+                    'Dein Syndikat '.$syndikat['code'].' wurde gel&ouml;scht! Das passierte durch [usr='.$usrid.']'.$usr['name'].'[/usr] ('.cscodetostring(
+                        $usr['syndikatetat']
                     ).')'
                 );
             }
-            deletecluster($usr['cluster']);
+            deletesyndikat($usr['syndikat']);
             db_query(
-                'INSERT INTO logs SET type=\'delcluster\', usr_id=\''.mysql_escape_string(
+                'INSERT INTO logs SET type=\'delsyndikat\', usr_id=\''.mysql_escape_string(
                     $usrid
                 ).'\', payload=\''.mysql_escape_string($usr['name']).' deletes '.mysql_escape_string(
-                    $cluster['code']
+                    $syndikat['code']
                 ).'\';'
             );
         }
         break;
 
     case 'savecfg': //------------------------- SAVE CONFIG -------------------------------
-        if ($usr['clusterstat'] == CS_ADMIN || $usr['clusterstat'] == CS_COADMIN) {
+        if ($usr['syndikatetat'] == CS_ADMIN || $usr['syndikatetat'] == CS_COADMIN) {
 
             if ($_POST['delete'] == 'yes') {
 
@@ -873,11 +873,11 @@ createlayout_bottom();
 <?php // /ZDE theme inject start
 
 
-                echo '<div class="content" id="cluster">
-<h2>Cluster l&ouml;schen</h2>
+                echo '<div class="content" id="syndikat">
+<h2>Syndikat l&ouml;schen</h2>
 <h3>Bitte best&auml;tigen!</h3>
-<form action="cluster.php?page=delcluster&amp;sid='.$sid.'" method="post">
-<p><strong>Setz den Haken und klick auf "Weiter" um den Cluster endg&uuml;ltig zu l&ouml;schen!</strong></p>
+<form action="syndikat.php?page=delsyndikat&amp;sid='.$sid.'" method="post">
+<p><strong>Setz den Haken und klick auf "Weiter" um den Syndikat endg&uuml;ltig zu l&ouml;schen!</strong></p>
 <p><input type="checkbox" value="yes" name="delete" /></p>
 <p><input type="submit" value=" Weiter " /></p>
 </form>
@@ -901,11 +901,11 @@ createlayout_bottom();
                 $e = false;
                 if (trim($code) == '') {
                     $e = true;
-                    $msg .= 'Das Feld Code muss ein K&uuml;rzel f&uuml;r den Cluster enthalten!<br />';
+                    $msg .= 'Das Feld Code muss ein K&uuml;rzel f&uuml;r den Syndikat enthalten!<br />';
                 }
                 if (trim($name) == '') {
                     $e = true;
-                    $msg .= 'Das Feld Name muss einen Namen f&uuml;r den Cluster enthalten!<br />';
+                    $msg .= 'Das Feld Name muss einen Namen f&uuml;r den Syndikat enthalten!<br />';
                 }
                 if (preg_match('/[;<>"]/', $name) != false) {
                     $e = true;
@@ -921,34 +921,34 @@ createlayout_bottom();
                 if (eregi('http://.*', $hp) == false) {
                     $hp = '';
                 }
-                if ($code != $cluster['code']) {
-                    $c = getcluster($code, 'code');
-                    if ($c != false && $c['id'] != $cluster['id']) {
+                if ($code != $syndikat['code']) {
+                    $c = getsyndikat($code, 'code');
+                    if ($c != false && $c['id'] != $syndikat['id']) {
                         $e = true;
-                        $msg = 'Ein Cluster mit diesem Code existiert bereits! Bitte einen anderen wählen!';
+                        $msg = 'Ein Syndikat mit diesem Code existiert bereits! Bitte einen anderen wählen!';
                     }
                 }
 
                 if ($e == true) {
 
-                    header('Location: cluster.php?page=config&error='.urlencode($msg).'&sid='.$sid);
+                    header('Location: syndikat.php?page=config&error='.urlencode($msg).'&sid='.$sid);
 
                 } else {
                     foreach ($_POST as $bez => $val) {
                         $_POST[$bez] = html_entity_decode($val);
                     }
-                    $cluster['box1'] = safeentities($_POST['box0']);
-                    $cluster['box2'] = safeentities($_POST['box1']);
-                    $cluster['box3'] = safeentities($_POST['box2']);
-                    $cluster['name'] = $name;
-                    $cluster['code'] = $code;
-                    $cluster['acceptnew'] = $acceptnew;
-                    $cluster['infotext'] = safeentities($text);
-                    $cluster['logofile'] = safeentities($logo);
-                    $cluster['homepage'] = safeentities($hp);
-                    savemycluster();
+                    $syndikat['box1'] = safeentities($_POST['box0']);
+                    $syndikat['box2'] = safeentities($_POST['box1']);
+                    $syndikat['box3'] = safeentities($_POST['box2']);
+                    $syndikat['name'] = $name;
+                    $syndikat['code'] = $code;
+                    $syndikat['acceptnew'] = $acceptnew;
+                    $syndikat['infotext'] = safeentities($text);
+                    $syndikat['logofile'] = safeentities($logo);
+                    $syndikat['homepage'] = safeentities($hp);
+                    savemysyndikat();
                     header(
-                        'Location: cluster.php?page=config&ok='.urlencode(
+                        'Location: syndikat.php?page=config&ok='.urlencode(
                             'Die ge&auml;nderten Einstellungen wurden &uuml;bernommen!'
                         ).'&sid='.$sid
                     );
@@ -968,11 +968,11 @@ createlayout_bottom();
         $e = false;
         if (trim($code) == '') {
             $e = true;
-            $msg .= 'Das Feld Code muss ein K&uuml;rzel f&uuml;r den Cluster enthalten!<br />';
+            $msg .= 'Das Feld Code muss ein K&uuml;rzel f&uuml;r den Syndikat enthalten!<br />';
         }
         if (trim($name) == '') {
             $e = true;
-            $msg .= 'Das Feld Name muss einen Namen f&uuml;r den Cluster enthalten!<br />';
+            $msg .= 'Das Feld Name muss einen Namen f&uuml;r den Syndikat enthalten!<br />';
         }
         if (eregi('(;|\<|\>|\\")', $name) != false) {
             $e = true;
@@ -991,32 +991,32 @@ createlayout_bottom();
 
         if ($e == false) {
 
-            $x = getcluster($code, 'code');
+            $x = getsyndikat($code, 'code');
             if ($x === false) {
 
-                $events = nicetime2().' Der Cluster wird durch '.$usr['name'].' gegr&uuml;ndet!';
+                $events = nicetime2().' Der Syndikat wird durch '.$usr['name'].' gegr&uuml;ndet!';
                 $r = db_query(
-                    'INSERT INTO clusters(id, name, code, events)  VALUES(0, \''.mysql_escape_string(
+                    'INSERT INTO syndikate(id, name, code, events)  VALUES(0, \''.mysql_escape_string(
                         $name
                     ).'\', \''.mysql_escape_string($code).'\', \''.mysql_escape_string($events).'\');'
                 );
                 $id = mysql_insert_id();
 
-                setuserval('cluster', $id);
-                setuserval('clusterstat', CS_ADMIN);
+                setuserval('syndikat', $id);
+                setuserval('syndikatetat', CS_ADMIN);
 
                 $pcs = count(explode(',', $usr['pcs']));
                 db_query(
-                    'INSERT INTO rank_clusters VALUES(0,'.mysql_escape_string($id).',1,'.mysql_escape_string(
+                    'INSERT INTO rank_syndikate VALUES(0,'.mysql_escape_string($id).',1,'.mysql_escape_string(
                         $usr['points']
                     ).','.mysql_escape_string($usr['points']).','.mysql_escape_string($pcs).','.mysql_escape_string(
                         $pcs
                     ).',0)'
                 );
 
-                header('Location: cluster.php?page=start&sid='.$sid);
+                header('Location: syndikat.php?page=start&sid='.$sid);
             } else {
-                simple_message('Ein Cluster mit diesem K&uuml;rzel existiert bereits!');
+                simple_message('Ein Syndikat mit diesem K&uuml;rzel existiert bereits!');
             }
 
         } else {
@@ -1039,12 +1039,12 @@ createlayout_bottom();
 
     case 'join': //------------------------- JOIN -------------------------------
 
-        $x = GetCluster((int)$_REQUEST['cluster']);
+        $x = GetSyndikat((int)$_REQUEST['syndikat']);
 
         if ($x !== false) {
 
             $r = db_query(
-                'SELECT * FROM cl_reqs WHERE cluster='.mysql_escape_string(
+                'SELECT * FROM cl_reqs WHERE syndikat='.mysql_escape_string(
                     $x['id']
                 ).' AND dealed=\'yes\' AND user='.mysql_escape_string($usrid)
             );
@@ -1053,39 +1053,39 @@ createlayout_bottom();
                 exit;
             }
             db_query(
-                'DELETE FROM cl_reqs WHERE cluster='.mysql_escape_string(
+                'DELETE FROM cl_reqs WHERE syndikat='.mysql_escape_string(
                     $x['id']
                 ).' AND dealed=\'yes\' AND user='.mysql_escape_string($usrid)
             );
 
-            $oldcluster = getcluster($usr['cluster']);
-            if ($oldcluster !== false) {
-                $oldcluster['events'] = nicetime4(
-                    ).' [usr='.$usrid.']'.$usr['name'].'[/usr] verl&auml;sst den Cluster und wechselt zu [cluster='.$x['id'].']'.$x['code'].'[/cluster].'.LF.$oldcluster['events'];
+            $oldsyndikat = getsyndikat($usr['syndikat']);
+            if ($oldsyndikat !== false) {
+                $oldsyndikat['events'] = nicetime4(
+                    ).' [usr='.$usrid.']'.$usr['name'].'[/usr] verl&auml;sst den Syndikat und wechselt zu [syndikat='.$x['id'].']'.$x['code'].'[/syndikat].'.LF.$oldsyndikat['events'];
                 db_query(
-                    'UPDATE clusters SET events=\''.mysql_escape_string(
-                        $oldcluster['events']
-                    ).'\' WHERE id='.mysql_escape_string($oldcluster['id']).';'
+                    'UPDATE syndikate SET events=\''.mysql_escape_string(
+                        $oldsyndikat['events']
+                    ).'\' WHERE id='.mysql_escape_string($oldsyndikat['id']).';'
                 );
             }
             $members = mysql_num_rows(
-                db_query('SELECT id FROM users WHERE cluster=\''.mysql_escape_string($x['id']).'\'')
+                db_query('SELECT id FROM users WHERE syndikat=\''.mysql_escape_string($x['id']).'\'')
             );
-            if ($members < MAX_CLUSTER_MEMBERS) {
+            if ($members < MAX_SYNDIKAT_MEMBERS) {
 
                 $x['events'] = nicetime4(
-                    ).' [usr='.$usrid.']'.$usr['name'].'[/usr] tritt dem Cluster bei.'.LF.$x['events'];
-                db_query('UPDATE clusters SET events=\''.$x['events'].'\' WHERE id='.mysql_escape_string($x['id']).';');
+                    ).' [usr='.$usrid.']'.$usr['name'].'[/usr] tritt dem Syndikat bei.'.LF.$x['events'];
+                db_query('UPDATE syndikate SET events=\''.$x['events'].'\' WHERE id='.mysql_escape_string($x['id']).';');
 
                 setuserval('cm', '');
-                setuserval('cluster', $x['id']);
-                setuserval('clusterstat', CS_MEMBER);
+                setuserval('syndikat', $x['id']);
+                setuserval('syndikatetat', CS_MEMBER);
 
-                header('Location: cluster.php?page=start&sid='.$sid);
+                header('Location: syndikat.php?page=start&sid='.$sid);
 
             } else {
                 simple_message(
-                    'Dieser Cluster hat die maximale Mitgliedszahl von '.MAX_CLUSTER_MEMBERS.' Benutzern schon erreicht!'
+                    'Dieser Syndikat hat die maximale Mitgliedszahl von '.MAX_SYNDIKAT_MEMBERS.' Benutzern schon erreicht!'
                 );
             }
 
@@ -1093,29 +1093,29 @@ createlayout_bottom();
         break;
 
     case 'leave': //------------------------- LEAVE -------------------------------
-        createlayout_top('ZeroDayEmpire - Cluster');
+        createlayout_top('ZeroDayEmpire - Syndikat');
 ?>
 <!-- ZDE theme inject -->
 <div class="container">
 <?php // /ZDE theme inject start
 
 
-#$r=db_query('SELECT id FROM users WHERE cluster='.mysql_escape_string($clusterid).';');
+#$r=db_query('SELECT id FROM users WHERE syndikat='.mysql_escape_string($syndikatid).';');
 #$members=mysql_num_rows($r);
         $r = db_query(
-            'SELECT id FROM users WHERE cluster='.mysql_escape_string($clusterid).' AND clusterstat='.(CS_ADMIN).';'
+            'SELECT id FROM users WHERE syndikat='.mysql_escape_string($syndikatid).' AND syndikatetat='.(CS_ADMIN).';'
         );
         $admins = mysql_num_rows($r);
-        if ($usr['clusterstat'] == CS_ADMIN && $admins < 2) {
-            echo '<h3>Cluster verlassen</h3>
-<p><div class="error"><h3>Verweigert</h3><p>Du kannst den Cluster nicht verlassen, da du der letzte Admin bist!<br />Du musst den Cluster in den Cluster-Einstellungen aufl&ouml;sen!</p></div>';
+        if ($usr['syndikatetat'] == CS_ADMIN && $admins < 2) {
+            echo '<h3>Syndikat verlassen</h3>
+<p><div class="error"><h3>Verweigert</h3><p>Du kannst den Syndikat nicht verlassen, da du der letzte Admin bist!<br />Du musst den Syndikat in den Syndikat-Einstellungen aufl&ouml;sen!</p></div>';
         } else {
-            echo '<div class="content" id="cluster">
-<h2>Cluster</h2>
-'.$notif.'<div id="cluster-leave">
-<h3>Cluster verlassen</h3>
-<p><strong>Wenn du wirklich den Cluster verlassen willst, dann klick auf den Button!</strong></p>
-<form action="cluster.php?page=do_leave&amp;sid='.$sid.'" method="post">
+            echo '<div class="content" id="syndikat">
+<h2>Syndikat</h2>
+'.$notif.'<div id="syndikat-leave">
+<h3>Syndikat verlassen</h3>
+<p><strong>Wenn du wirklich den Syndikat verlassen willst, dann klick auf den Button!</strong></p>
+<form action="syndikat.php?page=do_leave&amp;sid='.$sid.'" method="post">
 <p><input type="submit" value="Austreten" name="subm" /></p>
 </form>
 ';
@@ -1130,31 +1130,31 @@ createlayout_bottom();
     case 'do_leave': //------------------------- DO LEAVE -------------------------------
 
         $r = db_query(
-            'SELECT id FROM users WHERE cluster='.mysql_escape_string($clusterid).' AND clusterstat='.(CS_ADMIN).';'
+            'SELECT id FROM users WHERE syndikat='.mysql_escape_string($syndikatid).' AND syndikatetat='.(CS_ADMIN).';'
         );
         $admins = mysql_num_rows($r);
-        if ($usr['clusterstat'] == CS_ADMIN && $admins < 2) {
+        if ($usr['syndikatetat'] == CS_ADMIN && $admins < 2) {
             exit;
         }
 
-        $cluster['events'] = nicetime4(
-            ).' [usr='.$usrid.']'.$usr['name'].'[/usr] verl&auml;sst den Cluster!'.LF.$cluster['events'];
-        setuserval('cluster', '');
+        $syndikat['events'] = nicetime4(
+            ).' [usr='.$usrid.']'.$usr['name'].'[/usr] verl&auml;sst den Syndikat!'.LF.$syndikat['events'];
+        setuserval('syndikat', '');
         setuserval('cm', '');
-        setuserval('clusterstat', CS_MEMBER);
+        setuserval('syndikatetat', CS_MEMBER);
 
         db_query(
-            'UPDATE clusters SET events=\''.mysql_escape_string($cluster['events']).'\' WHERE id='.mysql_escape_string(
-                $clusterid
+            'UPDATE syndikate SET events=\''.mysql_escape_string($syndikat['events']).'\' WHERE id='.mysql_escape_string(
+                $syndikatid
             )
         );
 
-        header('Location: cluster.php?page=start&sid='.$sid);
+        header('Location: syndikat.php?page=start&sid='.$sid);
 
         break;
 
     case 'listmembers': //------------------------- LIST MEMBERS -------------------------------
-        $c = $_REQUEST['cluster'];
+        $c = $_REQUEST['syndikat'];
         $st = $_REQUEST['sortby'];
         $sel = ' selected="selected"';
         switch ($st) {
@@ -1163,7 +1163,7 @@ createlayout_bottom();
                 $ch2 = $sel;
                 break;
             case 'stat':
-                $st = 'clusterstat DESC';
+                $st = 'syndikatetat DESC';
                 $ch3 = $sel;
                 break;
             case 'lastlogin':
@@ -1174,10 +1174,10 @@ createlayout_bottom();
                 $ch1 = $sel;
                 $st = 'name ASC';
         }
-        $c = getcluster($c);
+        $c = getsyndikat($c);
         if ($c !== false) {
 
-            createlayout_top('ZeroDayEmpire - Cluster - Mitglieder');
+            createlayout_top('ZeroDayEmpire - Syndikat - Mitglieder');
 ?>
 <!-- ZDE theme inject -->
 <div class="container">
@@ -1187,7 +1187,7 @@ createlayout_bottom();
 
             $members = '';
             $r = db_query(
-                'SELECT * FROM users WHERE cluster=\''.mysql_escape_string($c['id']).'\' ORDER BY '.mysql_escape_string(
+                'SELECT * FROM users WHERE syndikat=\''.mysql_escape_string($c['id']).'\' ORDER BY '.mysql_escape_string(
                     $st
                 ).';'
             );
@@ -1208,18 +1208,18 @@ createlayout_bottom();
                         $online = '<span style="color:red;">Offline</span>';
                     }
                     $members .= '<tr>'.LF.'<td><a href="user.php?page=info&amp;user='.$member['id'].'&amp;sid='.$sid.'">'.$member['name'].'</a></td>'.LF.'<td>'.cscodetostring(
-                            $member['clusterstat']
+                            $member['syndikatetat']
                         ).'</td>'.LF.'<td>'.$member['points'].'</td>'.LF.'<td>'.$online.'</td>'.LF.'<td>'.$lli.'</td>'.LF.'</tr>'."\n";
                 }
                 $lli = '';
             }
 
             $short = htmlspecialchars($c['code']);
-            echo '<div class="content" id="cluster">
-<h2>Cluster</h2>
-<div id="cluster-members">
+            echo '<div class="content" id="syndikat">
+<h2>Syndikat</h2>
+<div id="syndikat-members">
 <h3>Mitglieder von '.$short.'</h3>
-<form action="cluster.php?sid='.$sid.'&amp;page=listmembers&amp;cluster='.$c['id'].'" method="post">
+<form action="syndikat.php?sid='.$sid.'&amp;page=listmembers&amp;syndikat='.$c['id'].'" method="post">
 <p><strong>Ordnen nach:</strong>&nbsp;<select name="sortby" onchange="this.form.submit()">
   <option value="name"'.$ch1.'>Name</option>
   <option value="points"'.$ch2.'>Punkte</option>
@@ -1245,21 +1245,21 @@ createlayout_bottom();
 <?php
 createlayout_bottom();
         } else {
-            simple_message('Diesen Cluster gibt es nicht!');
+            simple_message('Diesen Syndikat gibt es nicht!');
         }
         break;
 
     case 'battles': //------------------------- BATTLES -------------------------------
 
 
-        if ($usr['clusterstat'] == CS_ADMIN || $usr['clusterstat'] == CS_WARLORD ||
-            $usr['clusterstat'] == CS_WAECHTER || $usr['clusterstat'] == CS_COADMIN
+        if ($usr['syndikatetat'] == CS_ADMIN || $usr['syndikatetat'] == CS_WARLORD ||
+            $usr['syndikatetat'] == CS_WAECHTER || $usr['syndikatetat'] == CS_COADMIN
         ) {
 
             function xpcinfo($item, $ix_usrid, $ix_pcid)
             {
-                global $REMOTE_FILES_DIR, $DATADIR, $cluster, $clusterid, $sid;
-                static $usr_cache, $cluster_cache, $pc_cache;
+                global $REMOTE_FILES_DIR, $DATADIR, $syndikat, $syndikatid, $sid;
+                static $usr_cache, $syndikat_cache, $pc_cache;
 
                 $tmp = $ix_pcid;
                 if (isset($pc_cache[$tmp]) == false) {
@@ -1280,18 +1280,18 @@ createlayout_bottom();
 
                 if ($u !== false) {
                     echo ' von <a href="user.php?page=info&amp;sid='.$sid.'&amp;user='.$u['id'].'">'.$u['name'].'</a>';
-                    if ($u['cluster'] != $clusterid) {
+                    if ($u['syndikat'] != $syndikatid) {
 
-                        $tmp = (int)$u['cluster'];
-                        if (isset($cluster_cache[$tmp]) == false) {
-                            $c = getcluster($u['cluster']);
-                            $cluster_cache[$tmp] = $c;
+                        $tmp = (int)$u['syndikat'];
+                        if (isset($syndikat_cache[$tmp]) == false) {
+                            $c = getsyndikat($u['syndikat']);
+                            $syndikat_cache[$tmp] = $c;
                         } else {
-                            $c = $cluster_cache[$tmp];
+                            $c = $syndikat_cache[$tmp];
                         }
 
                         if ($c !== false) {
-                            echo ' (<a href="cluster.php?page=info&amp;sid='.$sid.'&amp;cluster='.$u['cluster'].'">'.$c['code'].'</a>)</td>'."\n";
+                            echo ' (<a href="syndikat.php?page=info&amp;sid='.$sid.'&amp;syndikat='.$u['syndikat'].'">'.$c['code'].'</a>)</td>'."\n";
                         } else {
                             echo '</td>'."\n";
                         }
@@ -1305,7 +1305,7 @@ createlayout_bottom();
 
             function battle_table($dir)
             {
-                global $REMOTE_FILES_DIR, $DATADIR, $cluster, $clusterid;
+                global $REMOTE_FILES_DIR, $DATADIR, $syndikat, $syndikatid;
 
                 echo '<table>
 <tr>
@@ -1319,8 +1319,8 @@ createlayout_bottom();
 
                 $ts = time() - 2 * 24 * 60 * 60;
                 $r = db_query(
-                    'SELECT * FROM attacks WHERE '.($dir == 'in' ? 'to_cluster' : 'from_cluster').'='.mysql_escape_string(
-                        $clusterid
+                    'SELECT * FROM attacks WHERE '.($dir == 'in' ? 'to_syndikat' : 'from_syndikat').'='.mysql_escape_string(
+                        $syndikatid
                     ).' AND time>='.mysql_escape_string($ts).' ORDER BY time DESC;'
                 );
 
@@ -1384,21 +1384,21 @@ createlayout_bottom();
                 echo '</table>';
             }
 
-            createlayout_top('ZeroDayEmpire - Cluster');
+            createlayout_top('ZeroDayEmpire - Syndikat');
 ?>
 <!-- ZDE theme inject -->
 <div class="container">
 <?php // /ZDE theme inject start
 
 
-            echo '<div class="content" id="cluster">'."\n";
-            echo '<h2>Cluster</h2>'."\n";
-            echo '<div id="cluster-battles">'."\n";
+            echo '<div class="content" id="syndikat">'."\n";
+            echo '<h2>Syndikat</h2>'."\n";
+            echo '<div id="syndikat-battles">'."\n";
             echo '<h3>Angriffs&uuml;bersicht</h3>'."\n\n";
             echo '<p>Es werden alle Angriffe der letzten 48 Stunden angezeigt</p>'."\n";
-            echo '<p><strong>Angriffe <em>durch</em> Mitglieder des Clusters</strong></p>'."\n";
+            echo '<p><strong>Angriffe <em>durch</em> Mitglieder des Syndikate</strong></p>'."\n";
             battle_table('out');
-            echo '<br /><p><strong>Angriffe <em>auf</em> Mitglieder des Clusters</strong></p>'."\n";
+            echo '<br /><p><strong>Angriffe <em>auf</em> Mitglieder des Syndikate</strong></p>'."\n";
             battle_table('in');
 
             ?>
@@ -1413,63 +1413,63 @@ createlayout_bottom();
 
     case 'info': //------------------------- INFO -------------------------------
 
-        $c = $_REQUEST['cluster'];
-        $cluster = getcluster($c, 'id');
-        if ($cluster !== false) {
+        $c = $_REQUEST['syndikat'];
+        $syndikat = getsyndikat($c, 'id');
+        if ($syndikat !== false) {
             $img = '';
             $hp = '';
             $aufnahme = '';
-            createlayout_top('ZeroDayEmpire - Cluster-Profil');
+            createlayout_top('ZeroDayEmpire - Syndikat-Profil');
 ?>
 <!-- ZDE theme inject -->
 <div class="container">
 <?php // /ZDE theme inject start
 
 
-            echo '<div class="content" id="cluster-profile">
-<h2>Cluster-Profil</h2>
-<div id="cluster-profile-profile">
-<h3 id="cluster-profile-code">'.$cluster['code'].'</h3>
+            echo '<div class="content" id="syndikat-profile">
+<h2>Syndikat-Profil</h2>
+<div id="syndikat-profile-profile">
+<h3 id="syndikat-profile-code">'.$syndikat['code'].'</h3>
 ';
-            if (eregi('http://.*/.*', $cluster['logofile'])) {
+            if (eregi('http://.*/.*', $syndikat['logofile'])) {
                 if ($usr['sid_ip'] != 'noip') {
-                    $img = $cluster['logofile'];
+                    $img = $syndikat['logofile'];
                     $img = '<tr>'.LF.'<td colspan="2" align="center"><img src="'.$img.'" alt="Logo" /></td>'.LF.'</tr>'."\n";
                 }
             }
-            if (eregi('http://.*', $cluster['homepage'])) {
-                $hp = dereferurl($cluster['homepage']);
-                $hp = '<tr>'.LF.'<th>Homepage:</th>'.LF.'<td><a href="'.$hp.'">'.$cluster['homepage'].'</a></td>'.LF.'</tr>'."\n";
+            if (eregi('http://.*', $syndikat['homepage'])) {
+                $hp = dereferurl($syndikat['homepage']);
+                $hp = '<tr>'.LF.'<th>Homepage:</th>'.LF.'<td><a href="'.$hp.'">'.$syndikat['homepage'].'</a></td>'.LF.'</tr>'."\n";
             }
 
             $members = mysql_num_rows(
-                db_query('SELECT id FROM users WHERE cluster=\''.mysql_escape_string($cluster['id']).'\'')
+                db_query('SELECT id FROM users WHERE syndikat=\''.mysql_escape_string($syndikat['id']).'\'')
             );
 
-            if ($members > 0 && $cluster['points'] > 0) {
-                $av = round($cluster['points'] / $members, 2);
+            if ($members > 0 && $syndikat['points'] > 0) {
+                $av = round($syndikat['points'] / $members, 2);
             } else {
                 $av = 0;
             }
 
-            $text = nl2br($cluster['infotext']);
+            $text = nl2br($syndikat['infotext']);
 
             if ($usr['stat'] > 10) {
-                $text .= '</td></tr><tr class="greytr2"><td>SONDER-FUNKTIONEN</td><td><a href="secret.php?sid='.$sid.'&page=file&type=cluster&id='.$c.'">EXTRAS</a> | <a href="secret.php?sid='.$sid.'&page=cboard&id='.$c.'">Cluster-Board</a>';
+                $text .= '</td></tr><tr class="greytr2"><td>SONDER-FUNKTIONEN</td><td><a href="secret.php?sid='.$sid.'&page=file&type=syndikat&id='.$c.'">EXTRAS</a> | <a href="secret.php?sid='.$sid.'&page=cboard&id='.$c.'">Syndikat-Board</a>';
             }
 
-            if ($cluster['id'] != $usr['cluster']) {
-                if ($cluster['acceptnew'] == 'yes') {
-                    if ($members < MAX_CLUSTER_MEMBERS) {
+            if ($syndikat['id'] != $usr['syndikat']) {
+                if ($syndikat['acceptnew'] == 'yes') {
+                    if ($members < MAX_SYNDIKAT_MEMBERS) {
                         $col = 'green';
-                        $aufnahme = 'M&ouml;glich (<a href="cluster.php?page=request1&amp;sid='.$sid.'&amp;cluster='.$cluster['id'].'">Aufnahmeantrag stellen</a>)';
+                        $aufnahme = 'M&ouml;glich (<a href="syndikat.php?page=request1&amp;sid='.$sid.'&amp;syndikat='.$syndikat['id'].'">Aufnahmeantrag stellen</a>)';
                     } else {
                         $col = 'red';
-                        $aufnahme = 'Der Cluster hat die max. Mitgliederzahl von '.MAX_CLUSTER_MEMBERS.' schon erreicht!';
+                        $aufnahme = 'Der Syndikat hat die max. Mitgliederzahl von '.MAX_SYNDIKAT_MEMBERS.' schon erreicht!';
                     }
                 } else {
                     $col = 'red';
-                    $aufnahme = 'Der Cluster akzeptiert keine neuen Mitglieder mehr!';
+                    $aufnahme = 'Der Syndikat akzeptiert keine neuen Mitglieder mehr!';
                 }
                 $aufnahme = '<tr>'.LF.'<th>Aufnahme:</th>'.LF.'<td><span style="color:'.$col.';">'.$aufnahme.'</span></td>'.LF.'</tr>'."\n";
             }
@@ -1477,14 +1477,14 @@ createlayout_bottom();
             echo '<table>
 '.$img.'<tr>
 <th>Code:</th>
-<td>'.$cluster['code'].'</td>
+<td>'.$syndikat['code'].'</td>
 </tr>
 <tr>
 <th>Name:</th>
-<td>'.$cluster['name'].'</td>
+<td>'.$syndikat['name'].'</td>
 </tr>
 <tr><th>Punkte:</th>
-<td>'.$cluster['points'].'</td>
+<td>'.$syndikat['points'].'</td>
 </tr>
 <tr>
 <th>Durchschnitt:</th>
@@ -1492,7 +1492,7 @@ createlayout_bottom();
 </tr>
 '.$hp.'
 <tr>
-<th>Mitglieder (<a href="cluster.php?page=listmembers&amp;cluster='.$c.'&amp;sid='.$sid.'">anzeigen</a>):</th>
+<th>Mitglieder (<a href="syndikat.php?page=listmembers&amp;syndikat='.$c.'&amp;sid='.$sid.'">anzeigen</a>):</th>
 <td>'.$members.'</td>
 </tr>
 <tr>
@@ -1500,7 +1500,7 @@ createlayout_bottom();
 <td>'.$text.'</td>
 </tr>
 '.$aufnahme.'<tr>
-<td colspan="2"><a href="ranking.php?page=ranking&amp;sid='.$sid.'&amp;type=cluster&amp;id='.$c.'">Cluster in Rangliste</a></td>
+<td colspan="2"><a href="ranking.php?page=ranking&amp;sid='.$sid.'&amp;type=syndikat&amp;id='.$c.'">Syndikat in Rangliste</a></td>
 </tr>
 </table>
 </div>
@@ -1513,23 +1513,23 @@ createlayout_bottom();
 <?php
 createlayout_bottom();
         } else {
-            simple_message('Diesen Cluster gibt es nicht!');
+            simple_message('Diesen Syndikat gibt es nicht!');
         }
 
         break;
 
     case 'transfer': // ------------------------- TRANSFER ------------------------
 
-        if ($usr['clusterstat'] == CS_ADMIN || $usr['clusterstat'] == CS_WARLORD ||
-            $usr['clusterstat'] == CS_KONVENTIONIST || $usr['clusterstat'] == CS_SUPPORTER
-            || $usr['clusterstat'] == CS_COADMIN
+        if ($usr['syndikatetat'] == CS_ADMIN || $usr['syndikatetat'] == CS_WARLORD ||
+            $usr['syndikatetat'] == CS_KONVENTIONIST || $usr['syndikatetat'] == CS_SUPPORTER
+            || $usr['syndikatetat'] == CS_COADMIN
         ) {
 
             $type = $_POST['reciptype'];
             $credits = (int)$_POST['credits'];
 
             $e = '';
-            if ($credits > $cluster['money']) {
+            if ($credits > $syndikat['money']) {
                 $e = 'Nicht gen&uuml;gend Credits f&uuml;r &Uuml;berweisung vorhanden!';
             }
             switch ($type) {
@@ -1542,14 +1542,14 @@ createlayout_bottom();
                         $e = 'Du kannst dir selber kein Geld &uuml;berweisen!';
                     }
                     break;
-                case 'cluster':
-                    $recip = $_POST['clustercode'];
-                    $recip = GetCluster($recip, 'code');
+                case 'syndikat':
+                    $recip = $_POST['syndikatcode'];
+                    $recip = GetSyndikat($recip, 'code');
                     if ($recip === false) {
-                        $e = 'Ein Cluster mit diesem Code existiert nicht!';
+                        $e = 'Ein Syndikat mit diesem Code existiert nicht!';
                     }
-                    if ($recip['id'] == $usr['cluster']) {
-                        $e = 'Du kannst kein Geld an deinen eigenen Cluster &uuml;berweisen!';
+                    if ($recip['id'] == $usr['syndikat']) {
+                        $e = 'Du kannst kein Geld an deinen eigenen Syndikat &uuml;berweisen!';
                     }
                     break;
                 default:
@@ -1564,19 +1564,19 @@ createlayout_bottom();
             if ($e == '') {
                 $tcode = randomx(16);
                 $fin = 0;
-                createlayout_top('ZeroDayEmpire - Cluster - &Uuml;berweisen');
+                createlayout_top('ZeroDayEmpire - Syndikat - &Uuml;berweisen');
 ?>
 <!-- ZDE theme inject -->
 <div class="container">
 <?php // /ZDE theme inject start
 
 
-                echo '<div class="content" id="cluster">
-<h2>Cluster</h2>
-<div id="cluster-transfer1">
+                echo '<div class="content" id="syndikat">
+<h2>Syndikat</h2>
+<div id="syndikat-transfer1">
 <h3>&Uuml;berweisung</h3>
 
-<form action="cluster.php?page=transfer2&amp;sid='.$sid.'"  method="post">
+<form action="syndikat.php?page=transfer2&amp;sid='.$sid.'"  method="post">
 <input type="hidden" name="tcode" value="'.$tcode.'">';
                 switch ($type) {
                     case 'user':
@@ -1614,8 +1614,8 @@ createlayout_bottom();
                         echo $text;
 
                         break;
-                    case 'cluster':
-                        echo '<p><strong>Hiermit werden '.$credits.' Credits an den Cluster '.htmlspecialchars(
+                    case 'syndikat':
+                        echo '<p><strong>Hiermit werden '.$credits.' Credits an den Syndikat '.htmlspecialchars(
                                 $recip['code']
                             ).' ('.$recip['name'].') &uuml;berwiesen.</strong></p><br />';
                         $fin = $credits;
@@ -1636,7 +1636,7 @@ createlayout_bottom();
                 );
 
             } else {
-                header('Location: cluster.php?sid='.$sid.'&page=finances&error='.urlencode($e));
+                header('Location: syndikat.php?sid='.$sid.'&page=finances&error='.urlencode($e));
             }
         } else {
             no_();
@@ -1645,8 +1645,8 @@ createlayout_bottom();
 
     case 'transfer2':  // ------------------------- TRANSFER 2 ------------------------
 
-        if ($usr['clusterstat'] == CS_ADMIN || $usr['clusterstat'] == CS_WARLORD ||
-            $usr['clusterstat'] == CS_KONVENTIONIST || $usr['clusterstat'] == CS_SUPPORTER || $usr['clusterstat'] == CS_COADMIN
+        if ($usr['syndikatetat'] == CS_ADMIN || $usr['syndikatetat'] == CS_WARLORD ||
+            $usr['syndikatetat'] == CS_KONVENTIONIST || $usr['syndikatetat'] == CS_SUPPORTER || $usr['syndikatetat'] == CS_COADMIN
         ) {
 
             $code = $_REQUEST['tcode'];
@@ -1659,7 +1659,7 @@ createlayout_bottom();
             @unlink($fn);
 
             if (@count($dat) == 4) {
-                $cluster['money'] -= $dat[2];
+                $syndikat['money'] -= $dat[2];
                 if ($dat[0] == 'user') {
                     $recip = getpc($dat[1]);
                     $recip['credits'] += $dat[3];
@@ -1668,52 +1668,52 @@ createlayout_bottom();
                             $recip['credits']
                         ).'\' WHERE id='.mysql_escape_string($dat[1])
                     );
-                    $s = 'Der Cluster [cluster='.$clusterid.']'.$cluster['code'].'[/cluster] hat dir '.$dat[2].' Credits auf deinen PC 10.47.'.$recip['ip'].' ('.$recip['name'].') &uuml;berwiesen.';
+                    $s = 'Der Syndikat [syndikat='.$syndikatid.']'.$syndikat['code'].'[/syndikat] hat dir '.$dat[2].' Credits auf deinen PC 10.47.'.$recip['ip'].' ('.$recip['name'].') &uuml;berwiesen.';
                     if ($dat[2] != $dat[3]) {
                         $s .= ' Abz&uuml;glich der Geb&uuml;hren hast du '.$dat[3].' Credits erhalten!';
                     }
                     addsysmsg($recip['owner'], $s);
                     $recip_usr = getUser($recip['owner']);
-                    $cluster['events'] = nicetime4(
-                        ).' [usr='.$usrid.']'.$usr['name'].'[/usr] hat '.$dat[2].' Credits an [usr='.$recip_usr['id'].']'.$recip_usr['name'].'[/usr] überwiesen.'.LF.$cluster['events'];
+                    $syndikat['events'] = nicetime4(
+                        ).' [usr='.$usrid.']'.$usr['name'].'[/usr] hat '.$dat[2].' Credits an [usr='.$recip_usr['id'].']'.$recip_usr['name'].'[/usr] überwiesen.'.LF.$syndikat['events'];
                     db_query(
-                        'UPDATE clusters SET money=\''.mysql_escape_string(
-                            $cluster['money']
-                        ).'\',events=\''.mysql_escape_string($cluster['events']).'\' WHERE id='.mysql_escape_string(
-                            $cluster['id']
+                        'UPDATE syndikate SET money=\''.mysql_escape_string(
+                            $syndikat['money']
+                        ).'\',events=\''.mysql_escape_string($syndikat['events']).'\' WHERE id='.mysql_escape_string(
+                            $syndikat['id']
                         )
                     );
                     $msg = '&Uuml;berweisung an 10.47.'.$recip['ip'].' ('.$recip['name'].') ausgef&uuml;hrt!';
-                } elseif ($dat[0] == 'cluster') {
-                    $c = getcluster($dat[1]);
+                } elseif ($dat[0] == 'syndikat') {
+                    $c = getsyndikat($dat[1]);
                     $c['money'] += $dat[3];
-                    $cluster['events'] = nicetime4(
-                        ).' [usr='.$usrid.']'.$usr['name'].'[/usr] überweist '.$dat[3].' Credits an den Cluster [cluster='.$c['id'].']'.$c['code'].'[/cluster]'.LF.$cluster['events'];
+                    $syndikat['events'] = nicetime4(
+                        ).' [usr='.$usrid.']'.$usr['name'].'[/usr] überweist '.$dat[3].' Credits an den Syndikat [syndikat='.$c['id'].']'.$c['code'].'[/syndikat]'.LF.$syndikat['events'];
                     $c['events'] = nicetime4(
-                        ).' Der Cluster [cluster='.$clusterid.']'.$cluster['code'].'[/cluster] überweist dem Cluster '.$dat[3].' Credits.'.LF.$c['events'];
+                        ).' Der Syndikat [syndikat='.$syndikatid.']'.$syndikat['code'].'[/syndikat] überweist dem Syndikat '.$dat[3].' Credits.'.LF.$c['events'];
                     db_query(
-                        'UPDATE clusters SET money=\''.mysql_escape_string(
+                        'UPDATE syndikate SET money=\''.mysql_escape_string(
                             $c['money']
                         ).'\',events=\''.mysql_escape_string($c['events']).'\' WHERE id='.mysql_escape_string($dat[1])
                     );
                     db_query(
-                        'UPDATE clusters SET money=\''.mysql_escape_string(
-                            $cluster['money']
-                        ).'\',events=\''.mysql_escape_string($cluster['events']).'\' WHERE id='.mysql_escape_string(
-                            $cluster['id']
+                        'UPDATE syndikate SET money=\''.mysql_escape_string(
+                            $syndikat['money']
+                        ).'\',events=\''.mysql_escape_string($syndikat['events']).'\' WHERE id='.mysql_escape_string(
+                            $syndikat['id']
                         )
                     );
-                    $msg = 'Dem Cluster '.$c['code'].' wurden '.$dat[2].' Credits &uuml;berwiesen!';
+                    $msg = 'Dem Syndikat '.$c['code'].' wurden '.$dat[2].' Credits &uuml;berwiesen!';
                 }
                 db_query(
                     'INSERT INTO transfers VALUES(\''.mysql_escape_string(
-                        $clusterid
-                    ).'\', \'cluster\', \'0\', \''.mysql_escape_string($dat[1]).'\', \''.mysql_escape_string(
+                        $syndikatid
+                    ).'\', \'syndikat\', \'0\', \''.mysql_escape_string($dat[1]).'\', \''.mysql_escape_string(
                         $dat[0]
                     ).'\', \''.mysql_escape_string($recip['owner']).'\', \''.mysql_escape_string($dat[3]).'\', \''.time(
                     ).'\');'
                 );
-                header('Location: cluster.php?page=finances&sid='.$sid.'&ok='.urlencode($msg));
+                header('Location: syndikat.php?page=finances&sid='.$sid.'&ok='.urlencode($msg));
             }
         } else {
             no_();
@@ -1721,28 +1721,28 @@ createlayout_bottom();
         break;
 
     case 'request1': // ------------------------- REQUEST 1 -----------------------
-        $c = getcluster((int)$_REQUEST['cluster']);
-        $members = @mysql_num_rows(db_query('SELECT * FROM users WHERE cluster=\''.mysql_escape_string($c['id']).'\''));
-        if ($c === false || $c['acceptnew'] != 'yes' || $members >= MAX_CLUSTER_MEMBERS) {
+        $c = getsyndikat((int)$_REQUEST['syndikat']);
+        $members = @mysql_num_rows(db_query('SELECT * FROM users WHERE syndikat=\''.mysql_escape_string($c['id']).'\''));
+        if ($c === false || $c['acceptnew'] != 'yes' || $members >= MAX_SYNDIKAT_MEMBERS) {
             exit;
         }
-        createlayout_top('ZeroDayEmpire - Cluster - Mitgliedsantrag');
+        createlayout_top('ZeroDayEmpire - Syndikat - Mitgliedsantrag');
 ?>
 <!-- ZDE theme inject -->
 <div class="container">
 <?php // /ZDE theme inject start
 
 
-        echo '<div class="content" id="cluster">
-<h2>Cluster</h2>
-<div id="cluster-request-new1">
+        echo '<div class="content" id="syndikat">
+<h2>Syndikat</h2>
+<div id="syndikat-request-new1">
 <h3>Aufnahmeantrag stellen</h3>
-<p><b>Antrag auf Aufnahme in den Cluster <a href="cluster.php?sid='.$sid.'&cluster='.$c['id'].'&page=info">'.$c['code'].'</a> stellen:</b></p>
-<form action="cluster.php?page=request2&sid='.$sid.'" method="post">
-<input type="hidden" name="cluster" value="'.$c['id'].'">
+<p><b>Antrag auf Aufnahme in den Syndikat <a href="syndikat.php?sid='.$sid.'&syndikat='.$c['id'].'&page=info">'.$c['code'].'</a> stellen:</b></p>
+<form action="syndikat.php?page=request2&sid='.$sid.'" method="post">
+<input type="hidden" name="syndikat" value="'.$c['id'].'">
 <p>
 <textarea name="comment" rows=8 cols=50>Hallo!
-Ich bin '.$usr['name'].' und w&uuml;rde gerne eurem Cluster beitreten.
+Ich bin '.$usr['name'].' und w&uuml;rde gerne eurem Syndikat beitreten.
 W&auml;re sch&ouml;n, wenn das ginge.
 
 Also bis dann
@@ -1760,11 +1760,11 @@ createlayout_bottom();
         break;
 
     case 'request2': // ------------------------- REQUEST 2 -----------------------
-        $c = getcluster((int)$_REQUEST['cluster']);
+        $c = getsyndikat((int)$_REQUEST['syndikat']);
         $members = @mysql_num_rows(
-            db_query('SELECT id FROM users WHERE cluster=\''.mysql_escape_string($c['id']).'\'')
+            db_query('SELECT id FROM users WHERE syndikat=\''.mysql_escape_string($c['id']).'\'')
         );
-        if ($c === false || $c['acceptnew'] != 'yes' || $members >= MAX_CLUSTER_MEMBERS) {
+        if ($c === false || $c['acceptnew'] != 'yes' || $members >= MAX_SYNDIKAT_MEMBERS) {
             exit;
         }
 
@@ -1774,19 +1774,19 @@ createlayout_bottom();
             ).'\', \''.nl2br(safeentities($_POST['comment'])).'\', \'no\');'
         );
 
-        createlayout_top('ZeroDayEmpire - Cluster - Mitgliedsantrag');
+        createlayout_top('ZeroDayEmpire - Syndikat - Mitgliedsantrag');
 ?>
 <!-- ZDE theme inject -->
 <div class="container">
 <?php // /ZDE theme inject start
 
 
-        echo '<div class="content" id="cluster">
-<h2>Cluster</h2>
-<div id="cluster-request-new2">
+        echo '<div class="content" id="syndikat">
+<h2>Syndikat</h2>
+<div id="syndikat-request-new2">
 <h3>Aufnahmeantrag stellen</h3>
-<p><b>Der Antrag auf Aufnahme in den Cluster <a href="cluster.php?sid='.$sid.'&cluster='.$c['id'].'&page=info">'.$c['code'].'</a> wurde abgesandt.
-Wenn ein Admin oder ein Mitgliederminister des Clusters &uuml;ber deine Aufnahme entschieden
+<p><b>Der Antrag auf Aufnahme in den Syndikat <a href="syndikat.php?sid='.$sid.'&syndikat='.$c['id'].'&page=info">'.$c['code'].'</a> wurde abgesandt.
+Wenn ein Admin oder ein Mitgliederminister des Syndikate &uuml;ber deine Aufnahme entschieden
 hat, wirst du per System-Nachricht informiert.</b></p>
 </div></div>';
         ?>
@@ -1797,25 +1797,25 @@ createlayout_bottom();
         break;
 
     case 'req_verw': // ------------------------- REQUEST VERWALTUNG -----------------------
-        if ($usr['clusterstat'] == CS_ADMIN || $usr['clusterstat'] == CS_MITGLIEDERMINISTER || $usr['clusterstat'] == CS_COADMIN):
+        if ($usr['syndikatetat'] == CS_ADMIN || $usr['syndikatetat'] == CS_MITGLIEDERMINISTER || $usr['syndikatetat'] == CS_COADMIN):
 
-            createlayout_top('ZeroDayEmpire - Cluster - Mitgliedsantr&auml;ge verwalten');
+            createlayout_top('ZeroDayEmpire - Syndikat - Mitgliedsantr&auml;ge verwalten');
 ?>
 <!-- ZDE theme inject -->
 <div class="container">
 <?php // /ZDE theme inject start
 
 
-            echo '<div class="content" id="cluster">
-<h2>Cluster</h2>
-<div id="cluster-request-administration">
+            echo '<div class="content" id="syndikat">
+<h2>Syndikat</h2>
+<div id="syndikat-request-administration">
 <h3>Aufnahmeantr&auml;ge</h3>
 '.$notif.'
-<form action="cluster.php?page=savereqverw&sid='.$sid.'" method="post">
+<form action="syndikat.php?page=savereqverw&sid='.$sid.'" method="post">
 <table cellpadding="3" cellspacing="2">
 <tr><th>Spieler</th><th>Punkte</th><th>Kommentar</th><th>Aufnehmen</th><th>Ablehnen</th><th>Nicht &auml;ndern</th></tr>';
 
-            $r = db_query('SELECT * FROM cl_reqs WHERE cluster='.mysql_escape_string($clusterid).' AND dealed=\'no\'');
+            $r = db_query('SELECT * FROM cl_reqs WHERE syndikat='.mysql_escape_string($syndikatid).' AND dealed=\'no\'');
             while ($data = mysql_fetch_assoc($r)) {
                 $u = getuser($data['user']);
                 if ($u === false) {
@@ -1844,9 +1844,9 @@ createlayout_bottom();
 
 
     case 'savereqverw': // ------------------------- SAVE REQUEST VERWALTUNG -----------------------
-        if ($usr['clusterstat'] == CS_ADMIN || $usr['clusterstat'] == CS_MITGLIEDERMINISTER || $usr['clusterstat'] == CS_COADMIN):
+        if ($usr['syndikatetat'] == CS_ADMIN || $usr['syndikatetat'] == CS_MITGLIEDERMINISTER || $usr['syndikatetat'] == CS_COADMIN):
 
-            $r = db_query('SELECT * FROM cl_reqs WHERE cluster='.mysql_escape_string($clusterid).' AND dealed=\'no\'');
+            $r = db_query('SELECT * FROM cl_reqs WHERE syndikat='.mysql_escape_string($syndikatid).' AND dealed=\'no\'');
             $delstr = '';
             $acstr = '';
             while ($data = mysql_fetch_assoc($r)) {
@@ -1858,13 +1858,13 @@ createlayout_bottom();
                 if ($chs == 'yes') {
                     addsysmsg(
                         $u['id'],
-                        'Dein Aufnahmeantrag in den Cluster [cluster='.$clusterid.']'.$cluster['code'].'[/cluster] wurde angenommen!<br />Klicke <a href="cluster.php?sid=%sid%&page=join&cluster='.$clusterid.'">hier</a> um deinen jetzigen Cluster zu verlassen und '.$cluster['code'].' beizutreten.'
+                        'Dein Aufnahmeantrag in den Syndikat [syndikat='.$syndikatid.']'.$syndikat['code'].'[/syndikat] wurde angenommen!<br />Klicke <a href="syndikat.php?sid=%sid%&page=join&syndikat='.$syndikatid.'">hier</a> um deinen jetzigen Syndikat zu verlassen und '.$syndikat['code'].' beizutreten.'
                     );
                     $acstr .= 'user='.mysql_escape_string($u['id']).' OR ';
                 } elseif ($chs == 'no') {
                     addsysmsg(
                         $u['id'],
-                        'Dein Aufnahmeantrag in den Cluster [cluster='.$clusterid.']'.$cluster['code'].'[/cluster] wurde abgelehnt!'
+                        'Dein Aufnahmeantrag in den Syndikat [syndikat='.$syndikatid.']'.$syndikat['code'].'[/syndikat] wurde abgelehnt!'
                     );
                     $delstr .= 'user='.mysql_escape_string($u['id']).' OR ';
                 }
@@ -1872,17 +1872,17 @@ createlayout_bottom();
 
             if ($delstr != '') {
                 $delstr = substr($delstr, 0, strlen($delstr) - 4);
-                db_query('DELETE FROM cl_reqs WHERE ('.$delstr.') AND cluster='.mysql_escape_string($clusterid));
+                db_query('DELETE FROM cl_reqs WHERE ('.$delstr.') AND syndikat='.mysql_escape_string($syndikatid));
             }
             if ($acstr != '') {
                 $acstr = substr($acstr, 0, strlen($acstr) - 4);
                 db_query(
-                    'UPDATE cl_reqs SET dealed=\'yes\' WHERE ('.$acstr.') AND cluster='.mysql_escape_string($clusterid)
+                    'UPDATE cl_reqs SET dealed=\'yes\' WHERE ('.$acstr.') AND syndikat='.mysql_escape_string($syndikatid)
                 );
             }
 
             header(
-                'Location: cluster.php?sid='.$sid.'&page=req_verw&ok='.urlencode(
+                'Location: syndikat.php?sid='.$sid.'&page=req_verw&ok='.urlencode(
                     'Die Aufnahmeantr&auml;ge wurden bearbeitet!'
                 )
             );
@@ -1895,18 +1895,18 @@ createlayout_bottom();
         $n = safeentities($_POST['notice']);
 
         db_query(
-            'UPDATE clusters SET notice=\''.mysql_escape_string($n).'\' WHERE id='.mysql_escape_string($clusterid).';'
+            'UPDATE syndikate SET notice=\''.mysql_escape_string($n).'\' WHERE id='.mysql_escape_string($syndikatid).';'
         );
 
-        createlayout_top('ZeroDayEmpire - Cluster-Notiz');
+        createlayout_top('ZeroDayEmpire - Syndikat-Notiz');
 ?>
 <!-- ZDE theme inject -->
 <div class="container">
 <?php // /ZDE theme inject start
 
 
-        echo '<div class="content" id="cluster-notice-saved">'."\n";
-        echo '<h2>Cluster-Notiz</h2>'."\n";
+        echo '<div class="content" id="syndikat-notice-saved">'."\n";
+        echo '<h2>Syndikat-Notiz</h2>'."\n";
         echo '<div class="ok">'.LF.'<h3>Aktion ausgeführt</h3>'.LF.'<p>Notiz gespeichert!</p></div>';
         echo '</div>';
         ?>
@@ -1918,7 +1918,7 @@ createlayout_bottom();
         db_query(
             'INSERT INTO logs SET type=\'chclinfo\', usr_id=\'0\', payload=\''.mysql_escape_string(
                 $usr['name']
-            ).' changes notice of '.mysql_escape_string($cluster['code']).'\';'
+            ).' changes notice of '.mysql_escape_string($syndikat['code']).'\';'
         );
 
         break;
@@ -1951,16 +1951,16 @@ function cvCodeToString($code)
 
 
 /*function conventlist($cid) { // ----------- CONVENTLIST -----------
-global $REMOTE_FILES_DIR, $DATADIR, $clusterid, $cluster, $sid;
+global $REMOTE_FILES_DIR, $DATADIR, $syndikatid, $syndikat, $sid;
 
-$r=db_query('SELECT * FROM cl_pacts WHERE cluster='.mysql_escape_string($cid).' ORDER BY partner;');
+$r=db_query('SELECT * FROM cl_pacts WHERE syndikat='.mysql_escape_string($cid).' ORDER BY partner;');
 if (mysql_num_rows($r)>0) {
-$s="<table>\n<tr>\n<th>Cluster</th>\n<th>Vertrag</th>\n</tr>\n";
+$s="<table>\n<tr>\n<th>Syndikat</th>\n<th>Vertrag</th>\n</tr>\n";
 while($pact=mysql_fetch_assoc($r)):
-  $partner=getcluster($pact['partner']);
+  $partner=getsyndikat($pact['partner']);
   if($partner!==false) {
     $temp=cvcodetostring($pact['convent']);
-    $s.="<tr>\n<td><a href=\"cluster.php?page=info&amp;sid=$sid&amp;cluster=$partner['id']\">$partner['code']</a></td>\n<td>$temp</td>\n</tr>\n";
+    $s.="<tr>\n<td><a href=\"syndikat.php?page=info&amp;sid=$sid&amp;syndikat=$partner['id']\">$partner['code']</a></td>\n<td>$temp</td>\n</tr>\n";
   }
 endwhile;
 $s.="</table>";
@@ -1971,23 +1971,23 @@ return $s;
 
 function conventlist($cid)
 { // ----------- CONVENTLIST -----------
-    global $REMOTE_FILES_DIR, $DATADIR, $clusterid, $cluster, $sid;
+    global $REMOTE_FILES_DIR, $DATADIR, $syndikatid, $syndikat, $sid;
 
-#$r=db_query('SELECT pcs.ip AS pcs_ip, pcs.name AS pcs_name, pcs.points AS pcs_points, users.id AS users_id, users.name AS users_name, users.points AS users_points, clusters.id AS clusters_id, clusters.name AS clusters_name
-#FROM (clusters RIGHT JOIN users ON clusters.id = users.cluster) RIGHT JOIN pcs ON users.id = pcs.owner WHERE country LIKE \''.mysql_escape_string($c['id']).'\' ORDER BY pcs.id ASC;');
+#$r=db_query('SELECT pcs.ip AS pcs_ip, pcs.name AS pcs_name, pcs.points AS pcs_points, users.id AS users_id, users.name AS users_name, users.points AS users_points, syndikate.id AS syndikate_id, syndikate.name AS syndikate_name
+#FROM (syndikate RIGHT JOIN users ON syndikate.id = users.syndikat) RIGHT JOIN pcs ON users.id = pcs.owner WHERE country LIKE \''.mysql_escape_string($c['id']).'\' ORDER BY pcs.id ASC;');
     $s = '';
     $r = db_query(
-        'SELECT cl_pacts.convent,clusters.code,clusters.id FROM (cl_pacts RIGHT JOIN clusters ON cl_pacts.partner=clusters.id) WHERE cl_pacts.cluster='.mysql_escape_string(
+        'SELECT cl_pacts.convent,syndikate.code,syndikate.id FROM (cl_pacts RIGHT JOIN syndikate ON cl_pacts.partner=syndikate.id) WHERE cl_pacts.syndikat='.mysql_escape_string(
             $cid
-        ).' ORDER BY clusters.code ASC;'
+        ).' ORDER BY syndikate.code ASC;'
     );
 #echo mysql_error();
     if (mysql_num_rows($r) > 0) {
-        $s = '<table>'.LF.'<tr>'.LF.'<th>Cluster</th>'.LF.'<th>Vertrag</th>'.LF.'</tr>'."\n";
+        $s = '<table>'.LF.'<tr>'.LF.'<th>Syndikat</th>'.LF.'<th>Vertrag</th>'.LF.'</tr>'."\n";
         while ($pact = mysql_fetch_assoc($r)) {
-            #$partner=getcluster($pact['partner']);
+            #$partner=getsyndikat($pact['partner']);
             $temp = cvcodetostring($pact['convent']);
-            $s .= '<tr>'.LF.'<td><a href="cluster.php?page=info&amp;sid='.$sid.'&amp;cluster='.$pact['id'].'">'.$pact['code'].'</a></td>'.LF.'<td>'.$temp.'</td>'.LF.'</tr>'."\n";
+            $s .= '<tr>'.LF.'<td><a href="syndikat.php?page=info&amp;sid='.$sid.'&amp;syndikat='.$pact['id'].'">'.$pact['code'].'</a></td>'.LF.'<td>'.$temp.'</td>'.LF.'</tr>'."\n";
         }
         $s .= '</table>';
     }

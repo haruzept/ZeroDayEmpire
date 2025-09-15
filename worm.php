@@ -10,8 +10,8 @@ $action = mt_rand(1, 3);
 
 switch ($action) {
 
-    case 1: // Geld aus Clusterkasse eines Clusters mit mehr als einer Million Credits klauen
-        $victim = db_query('SELECT * FROM clusters WHERE money>1000000 ORDER BY RAND() LIMIT 1;');
+    case 1: // Geld aus Syndikatkasse eines Syndikate mit mehr als einer Million Credits klauen
+        $victim = db_query('SELECT * FROM syndikate WHERE money>1000000 ORDER BY RAND() LIMIT 1;');
         if (!$victim) {
             break;
         }
@@ -23,10 +23,10 @@ switch ($action) {
         $creds = floor($creds / 1.5);
         $stolen = ($victim['money'] - $creds);
         $ev = nicetime4(
-            ).' Ein gef&auml;hrlicher Internet-Wurm hat '.$stolen.' Credits aus der Clusterkasse geklaut!'."\n";
+            ).' Ein gef&auml;hrlicher Internet-Wurm hat '.$stolen.' Credits aus der Syndikatkasse geklaut!'."\n";
         $victim['events'] = $ev.$victim['events'];
         db_query(
-            'UPDATE `clusters` SET `money`=' . mysqli_real_escape_string($dbcon, $creds) .
+            'UPDATE `syndikate` SET `money`=' . mysqli_real_escape_string($dbcon, $creds) .
             ", `events`='" . mysqli_real_escape_string($dbcon, $victim['events']) .
             "' WHERE `id`='" . mysqli_real_escape_string($dbcon, $victim['id']) . "';"
         );
@@ -35,7 +35,7 @@ switch ($action) {
             'INSERT INTO logs SET type=\'worm_clmoney\', usr_id=\'' .
             mysqli_real_escape_string($dbcon, $victim['id']) .
             '\', payload=\'stole ' . mysqli_real_escape_string($dbcon, $stolen) .
-            ' credits from cluster ' . mysqli_real_escape_string($dbcon, $victim['id']) . '\';'
+            ' credits from syndikat ' . mysqli_real_escape_string($dbcon, $victim['id']) . '\';'
         );
         break;
 
