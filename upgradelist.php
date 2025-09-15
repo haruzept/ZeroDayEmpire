@@ -3,7 +3,7 @@ define('IN_ZDE', 1);
 $FILE_REQUIRES_PC = true;
 include('ingame.php');
 
-$bucks = number_format($pc['credits'], 0, ',', '.');
+$bucks = number_format($pc['cryptocoins'], 0, ',', '.');
 
 if (isset($_REQUEST['xpc'])) {
     $pci = $_REQUEST['xpc'];
@@ -37,9 +37,9 @@ function format_duration($seconds)
     }
     return $m.' min';
 }
-function format_credits($n)
+function format_cryptocoins($n)
 {
-    return number_format((int)$n, 0, ',', '.').' Credits';
+    return number_format((int)$n, 0, ',', '.').' CryptoCoins';
 }
 function dependency_badge($ok)
 {
@@ -107,7 +107,7 @@ $runningRows = [];
 $r = db_query('SELECT * FROM `upgrades` WHERE `pc`=\''.mysql_escape_string($pcid).'\' AND `end`>\''.mysql_escape_string($now).'\' ORDER BY `start` ASC');
 while ($row = mysql_fetch_assoc($r)) { $runningRows[] = $row; }
 $running = count($runningRows);
-$credits = (int)$pc['credits'];
+$cryptocoins = (int)$pc['cryptocoins'];
 
 $queueLabel = 'Kein Upgrade aktiv';
 if ($running) {
@@ -123,7 +123,7 @@ if ($running) {
 
 echo '<div class="strip">';
 echo '<div class="kpi kpi-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" width="50" height="50"><path d="M3 12h18M12 3v18" stroke="rgb(var(--accent))" stroke-width="2" fill="none"/></svg><div class="stat"><h3 class="value small">Verf&uuml;gbare Slots: '.$running.' / '.UPGRADE_QUEUE_LENGTH.'</h3></div></div>';
-echo '<div class="kpi kpi-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" width="50" height="50"><path d="M4 4h16v12H4z" stroke="rgb(var(--accent))" stroke-width="2" fill="none"/><path d="M2 18h20" stroke="rgb(var(--accent))"/></svg><div class="stat"><h3 class="value small" id="kpiCredits" data-value="'.$credits.'">'.format_credits($credits).'</h3></div></div>';
+echo '<div class="kpi kpi-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" width="50" height="50"><path d="M4 4h16v12H4z" stroke="rgb(var(--accent))" stroke-width="2" fill="none"/><path d="M2 18h20" stroke="rgb(var(--accent))"/></svg><div class="stat"><h3 class="value small" id="kpiCryptoCoins" data-value="'.$cryptocoins.'">'.format_cryptocoins($cryptocoins).'</h3></div></div>';
 if ($running <= 1) {
     echo '<div class="kpi kpi-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" width="50" height="50"><circle cx="12" cy="12" r="9" stroke="rgb(var(--accent))" stroke-width="2" fill="none"/><path d="M12 7v5l3 2" stroke="rgb(var(--accent))" stroke-width="2" fill="none"/></svg><div class="stat"><h3 class="value small">'.$queueLabel.'</h3></div></div>';
 }
@@ -170,19 +170,19 @@ foreach ($items as $item) {
     $timeStr = format_duration($inf['d'] * 60);
     $dep_ok = isavailb($item, $pc);
     $slotFree = ($running < UPGRADE_QUEUE_LENGTH);
-    $creditOK = ($credits >= $inf['c']);
-    echo '<td>'.$timeStr.'</td><td>'.format_credits($inf['c']).'</td>';
+    $cryptocoinOK = ($cryptocoins >= $inf['c']);
+    echo '<td>'.$timeStr.'</td><td>'.format_cryptocoins($inf['c']).'</td>';
     $depTooltip = dependency_tooltip_text($item);
     $depTooltip = $depTooltip ? str_replace("\n", '&#10;', htmlspecialchars($depTooltip, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8')) : '';
     echo '<td'.($depTooltip ? ' class="tooltip" data-tooltip="'.$depTooltip.'"' : '').'>'.dependency_badge($dep_ok).'</td>';
-    $can = $dep_ok && $slotFree && $creditOK;
+    $can = $dep_ok && $slotFree && $cryptocoinOK;
     $encrid = crypt($item, $SALT);
     if ($can) {
         echo '<td><a class="btn sm" href="game.php?m=upgrade&amp;'.$idparam.'='.$encrid.'&amp;sid='.$sid.'">Upgrade</a></td></tr>';
     } else {
         $tooltip = '';
         if (!$slotFree) { $tooltip = 'Alle Upgrade-Slots belegt'; }
-        elseif (!$creditOK) { $tooltip = 'Zu wenig Credits'; }
+        elseif (!$cryptocoinOK) { $tooltip = 'Zu wenig CryptoCoins'; }
         $btnHtml = '<span class="btn sm" style="background-color:#888;color:#ccc;" aria-disabled="true">Upgrade</span>';
         if ($tooltip) { $btnHtml = '<span class="tooltip" data-tooltip="'.$tooltip.'">'.$btnHtml.'</span>'; }
         echo '<td>'.$btnHtml.'</td></tr>';

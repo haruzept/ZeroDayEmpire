@@ -227,11 +227,11 @@ createlayout_bottom();
 </tr>
 '.$jobs.$funcs.'<tr>
 <th>Verm&ouml;gen:</th>
-<td>'.$money.' Credits</td>
+<td>'.$money.' CryptoCoins</td>
 </tr>
 <tr>
 <th>Mitgliedsbeitrag:</th>
-<td>'.$cluster['tax'].' Credits pro Tag pro User</td>
+<td>'.$cluster['tax'].' CryptoCoins pro Tag pro User</td>
 </tr>
 <tr id="cluster-overview-events">
 <th>Ereignisse:</th>
@@ -497,7 +497,7 @@ createlayout_bottom();
             $tax = $_REQUEST['tax'];
             if (is_long((int)$tax)) {
                 $cluster['events'] = nicetime4(
-                    ).' [usr='.$usrid.']'.$usr['name'].'[/usr] setzt Mitgliedsbeitrag auf '.$tax.' Credits pro Tag'.LF.$cluster['events'];
+                    ).' [usr='.$usrid.']'.$usr['name'].'[/usr] setzt Mitgliedsbeitrag auf '.$tax.' CryptoCoins pro Tag'.LF.$cluster['events'];
                 db_query(
                     'UPDATE clusters SET events=\''.mysql_escape_string(
                         $cluster['events']
@@ -549,11 +549,11 @@ function autosel(obj) { var i = (obj.name==\'pcip\' ? 1 : 0);
                 $fm = number_format($cluster['money'], 0, ',', '.');
                 echo '<div id="cluster-money">
 <h3>Vermögen</h3>
-<p>Aktuelles Verm&ouml;gen des Clusters: '.$fm.' Credits.</p>
+<p>Aktuelles Verm&ouml;gen des Clusters: '.$fm.' CryptoCoins.</p>
 </div>
 <div id="cluster-tax">
 <h3>Mitgliedsbeitrag</h3>
-<p>Mitgliedsbeitrag in Credits pro User pro Tag festlegen:</p>
+<p>Mitgliedsbeitrag in CryptoCoins pro User pro Tag festlegen:</p>
 <form action="cluster.php?page=savefincances&amp;sid='.$sid.'" method="post">
 <table>
 <tr>
@@ -584,7 +584,7 @@ function autosel(obj) { var i = (obj.name==\'pcip\' ? 1 : 0);
 </tr>
 <tr>
 <th>Betrag:</th>
-<td><input type="text" name="credits" maxlength="5" value="0" /> Credits</td>
+<td><input type="text" name="cryptocoins" maxlength="5" value="0" /> CryptoCoins</td>
 </tr>
 <tr>
 <td colspan="2"><input type="submit" value="Ausf&uuml;hren" /></td>
@@ -1526,11 +1526,11 @@ createlayout_bottom();
         ) {
 
             $type = $_POST['reciptype'];
-            $credits = (int)$_POST['credits'];
+            $cryptocoins = (int)$_POST['cryptocoins'];
 
             $e = '';
-            if ($credits > $cluster['money']) {
-                $e = 'Nicht gen&uuml;gend Credits f&uuml;r &Uuml;berweisung vorhanden!';
+            if ($cryptocoins > $cluster['money']) {
+                $e = 'Nicht gen&uuml;gend CryptoCoins f&uuml;r &Uuml;berweisung vorhanden!';
             }
             switch ($type) {
                 case 'user':
@@ -1557,8 +1557,8 @@ createlayout_bottom();
                     break;
             }
 
-            if ($credits < 100) {
-                $e = 'Der Mindestbetrag f&uuml;r eine &Uuml;berweisung sind 100 Credits!';
+            if ($cryptocoins < 100) {
+                $e = 'Der Mindestbetrag f&uuml;r eine &Uuml;berweisung sind 100 CryptoCoins!';
             }
 
             if ($e == '') {
@@ -1581,26 +1581,26 @@ createlayout_bottom();
                 switch ($type) {
                     case 'user':
                         $recip_usr = getuser($recip['owner']);
-                        $text = '<p><strong>Hiermit werden '.$credits.' Credits an den Rechner 10.47.'.$recip['ip'].', der <a href="user.php?page=info&user='.$recip['owner'].'&sid='.$sid.'">'.$recip_usr['name'].'</a> geh&ouml;rt, &uuml;berwiesen.</strong></p><br />';
+                        $text = '<p><strong>Hiermit werden '.$cryptocoins.' CryptoCoins an den Rechner 10.47.'.$recip['ip'].', der <a href="user.php?page=info&user='.$recip['owner'].'&sid='.$sid.'">'.$recip_usr['name'].'</a> geh&ouml;rt, &uuml;berwiesen.</strong></p><br />';
 
                         $c = GetCountry('id', $recip['country']);
                         $country2 = $c['name'];
                         $in = $c['in'];
-                        $rest = $credits - $in;
+                        $rest = $cryptocoins - $in;
                         if ($rest > 0) {
                             $fin = $rest;
-                            $text .= '<p>Von diesem Betrag werden noch '.$in.' Credits Geb&uuml;hren als Einfuhr nach '.$country2.', dem Standort von 10.47.'.$recip['ip'].' abgezogen. '.$recip_usr['name'].' erh&auml;lt also noch <b>'.$rest.' Credits.</p>';
+                            $text .= '<p>Von diesem Betrag werden noch '.$in.' CryptoCoins Geb&uuml;hren als Einfuhr nach '.$country2.', dem Standort von 10.47.'.$recip['ip'].' abgezogen. '.$recip_usr['name'].' erh&auml;lt also noch <b>'.$rest.' CryptoCoins.</p>';
                         } else {
-                            $text .= '<p>Da der Betrag sehr gering ist, werden keine Geb&uuml;hren erhoben. '.$recip_usr['name'].' erh&auml;lt <b>'.$credits.' Credits.</p>';
-                            $fin = $credits;
+                            $text .= '<p>Da der Betrag sehr gering ist, werden keine Geb&uuml;hren erhoben. '.$recip_usr['name'].' erh&auml;lt <b>'.$cryptocoins.' CryptoCoins.</p>';
+                            $fin = $cryptocoins;
                         }
 
                         $max = getmaxbb($recip);
-                        if ($recip['credits'] + $fin > $max) {
-                            $rest = $max - $recip['credits'];
+                        if ($recip['cryptocoins'] + $fin > $max) {
+                            $rest = $max - $recip['cryptocoins'];
                             $fin = $rest;
-                            $credits = $rest;
-                            $text .= '<br /><p>Da '.$recip_usr['name'].' seinen BucksBunker nicht weit genug ausgebaut hat, um das Geld zu Empfangen, werden nur <b>'.$rest.' Credits</b> (inklusive Geb&uuml;hren) &uuml;berwiesen!</p>';
+                            $cryptocoins = $rest;
+                            $text .= '<br /><p>Da '.$recip_usr['name'].' seinen BucksBunker nicht weit genug ausgebaut hat, um das Geld zu Empfangen, werden nur <b>'.$rest.' CryptoCoins</b> (inklusive Geb&uuml;hren) &uuml;berwiesen!</p>';
                         }
                         if ($rest < 1) {
                             echo '<div class="error"><h3>BucksBunker voll</h3><p>Der BucksBunker von '.$recip_usr['name'].' ist voll! &Uuml;berweisung wird abgebrochen!</p></div>';
@@ -1615,10 +1615,10 @@ createlayout_bottom();
 
                         break;
                     case 'cluster':
-                        echo '<p><strong>Hiermit werden '.$credits.' Credits an den Cluster '.htmlspecialchars(
+                        echo '<p><strong>Hiermit werden '.$cryptocoins.' CryptoCoins an den Cluster '.htmlspecialchars(
                                 $recip['code']
                             ).' ('.$recip['name'].') &uuml;berwiesen.</strong></p><br />';
-                        $fin = $credits;
+                        $fin = $cryptocoins;
                         break;
                 }
                 echo '<br /><p><input type="submit" value=" Ausf&uuml;hren "></p></form>';
@@ -1628,7 +1628,7 @@ createlayout_bottom();
 <!-- /ZDE theme inject -->
 <?php
 createlayout_bottom();
-                file_put($DATADIR.'/tmp/transfer_'.$tcode.'.txt', $type.'|'.$recip['id'].'|'.$credits.'|'.$fin);
+                file_put($DATADIR.'/tmp/transfer_'.$tcode.'.txt', $type.'|'.$recip['id'].'|'.$cryptocoins.'|'.$fin);
                 db_query(
                     'UPDATE users SET tcode=\''.mysql_escape_string($tcode).'\' WHERE id=\''.mysql_escape_string(
                         $usrid
@@ -1662,20 +1662,20 @@ createlayout_bottom();
                 $cluster['money'] -= $dat[2];
                 if ($dat[0] == 'user') {
                     $recip = getpc($dat[1]);
-                    $recip['credits'] += $dat[3];
+                    $recip['cryptocoins'] += $dat[3];
                     db_query(
-                        'UPDATE pcs SET credits=\''.mysql_escape_string(
-                            $recip['credits']
+                        'UPDATE pcs SET cryptocoins=\''.mysql_escape_string(
+                            $recip['cryptocoins']
                         ).'\' WHERE id='.mysql_escape_string($dat[1])
                     );
-                    $s = 'Der Cluster [cluster='.$clusterid.']'.$cluster['code'].'[/cluster] hat dir '.$dat[2].' Credits auf deinen PC 10.47.'.$recip['ip'].' ('.$recip['name'].') &uuml;berwiesen.';
+                    $s = 'Der Cluster [cluster='.$clusterid.']'.$cluster['code'].'[/cluster] hat dir '.$dat[2].' CryptoCoins auf deinen PC 10.47.'.$recip['ip'].' ('.$recip['name'].') &uuml;berwiesen.';
                     if ($dat[2] != $dat[3]) {
-                        $s .= ' Abz&uuml;glich der Geb&uuml;hren hast du '.$dat[3].' Credits erhalten!';
+                        $s .= ' Abz&uuml;glich der Geb&uuml;hren hast du '.$dat[3].' CryptoCoins erhalten!';
                     }
                     addsysmsg($recip['owner'], $s);
                     $recip_usr = getUser($recip['owner']);
                     $cluster['events'] = nicetime4(
-                        ).' [usr='.$usrid.']'.$usr['name'].'[/usr] hat '.$dat[2].' Credits an [usr='.$recip_usr['id'].']'.$recip_usr['name'].'[/usr] überwiesen.'.LF.$cluster['events'];
+                        ).' [usr='.$usrid.']'.$usr['name'].'[/usr] hat '.$dat[2].' CryptoCoins an [usr='.$recip_usr['id'].']'.$recip_usr['name'].'[/usr] überwiesen.'.LF.$cluster['events'];
                     db_query(
                         'UPDATE clusters SET money=\''.mysql_escape_string(
                             $cluster['money']
@@ -1688,9 +1688,9 @@ createlayout_bottom();
                     $c = getcluster($dat[1]);
                     $c['money'] += $dat[3];
                     $cluster['events'] = nicetime4(
-                        ).' [usr='.$usrid.']'.$usr['name'].'[/usr] überweist '.$dat[3].' Credits an den Cluster [cluster='.$c['id'].']'.$c['code'].'[/cluster]'.LF.$cluster['events'];
+                        ).' [usr='.$usrid.']'.$usr['name'].'[/usr] überweist '.$dat[3].' CryptoCoins an den Cluster [cluster='.$c['id'].']'.$c['code'].'[/cluster]'.LF.$cluster['events'];
                     $c['events'] = nicetime4(
-                        ).' Der Cluster [cluster='.$clusterid.']'.$cluster['code'].'[/cluster] überweist dem Cluster '.$dat[3].' Credits.'.LF.$c['events'];
+                        ).' Der Cluster [cluster='.$clusterid.']'.$cluster['code'].'[/cluster] überweist dem Cluster '.$dat[3].' CryptoCoins.'.LF.$c['events'];
                     db_query(
                         'UPDATE clusters SET money=\''.mysql_escape_string(
                             $c['money']
@@ -1703,7 +1703,7 @@ createlayout_bottom();
                             $cluster['id']
                         )
                     );
-                    $msg = 'Dem Cluster '.$c['code'].' wurden '.$dat[2].' Credits &uuml;berwiesen!';
+                    $msg = 'Dem Cluster '.$c['code'].' wurden '.$dat[2].' CryptoCoins &uuml;berwiesen!';
                 }
                 db_query(
                     'INSERT INTO transfers VALUES(\''.mysql_escape_string(

@@ -19,7 +19,7 @@ if ($action === '') {
     $action = $_REQUEST['m'] ?? '';
 }
 
-$bucks = number_format($pc['credits'], 0, ',', '.');
+$bucks = number_format($pc['cryptocoins'], 0, ',', '.');
 
 switch ($action) {
 
@@ -79,7 +79,7 @@ switch ($action) {
                 $finish = nicetime2(time() + ($xm * 60), false, ' um ', ' Uhr');
 
                 $encrid = crypt($id, $SALT);
-                $title = 'Kosten: '.$inf['c'].' Credits | Dauer: '.$m.' | Fertig: '.$finish;
+                $title = 'Kosten: '.$inf['c'].' CryptoCoins | Dauer: '.$m.' | Fertig: '.$finish;
                 return ' <a href="game.php?m=upgrade&amp;'.$idparam.'='.$encrid.'&amp;sid='.$sid.'" title="'.htmlspecialchars($title).'">(Upgrade kaufen)</a>';
             }
 
@@ -104,11 +104,11 @@ switch ($action) {
         $cluster = getcluster($usr['cluster']);
         if ($cluster !== false && $usr['cm'] != strftime('%d.%m.')) {
             if ($cluster['tax'] > 0) {
-                $pc['credits'] -= $cluster['tax'];
-                if ($pc['credits'] > 0) {
+                $pc['cryptocoins'] -= $cluster['tax'];
+                if ($pc['cryptocoins'] > 0) {
                     db_query(
-                        'UPDATE pcs SET credits='.mysql_escape_string(
-                            $pc['credits']
+                        'UPDATE pcs SET cryptocoins='.mysql_escape_string(
+                            $pc['cryptocoins']
                         ).' WHERE id=\''.mysql_escape_string($pcid).'\';'
                     );
                     $cluster['money'] += $cluster['tax'];
@@ -117,12 +117,12 @@ switch ($action) {
                             $cluster['money']
                         ).' WHERE id=\''.mysql_escape_string($usr['cluster']).'\';'
                     );
-                    $bucks = number_format($pc['credits'], 0, ',', '.');
+                    $bucks = number_format($pc['cryptocoins'], 0, ',', '.');
                 } else {
                     $info .= infobox(
                         'Fehler',
                         'important',
-                        'Du hast auf deinem ersten PC 10.47.'.$pc['ip'].' ('.$pc['name'].') nicht mehr gen&uuml;gend Credits um den Cluster-Mitgliedsbeitrag von '.$cluster['tax'].' Credits zu bezahlen.'
+                        'Du hast auf deinem ersten PC 10.47.'.$pc['ip'].' ('.$pc['name'].') nicht mehr gen&uuml;gend CryptoCoins um den Cluster-Mitgliedsbeitrag von '.$cluster['tax'].' CryptoCoins zu bezahlen.'
                     );
                     # hmmm doppelte ID 'important'
                 }
@@ -193,7 +193,7 @@ switch ($action) {
   <article class="card span-6">
     <h3>&Uuml;bersicht</h3>
     <div class="strip" style="margin-top:10px; grid-template-columns:repeat(auto-fit,minmax(140px,1fr))">
-      <div class="kpi"><div class="label"><strong>Guthaben:</strong></div><div><span><?php echo $bucks; ?></span> <span class="unit">CR</span></div></div>
+      <div class="kpi"><div class="label"><strong>Guthaben:</strong></div><div><span><?php echo $bucks; ?></span> <span class="unit">CC</span></div></div>
       <div class="kpi"><div class="label"><strong>Punkte:</strong></div><div><span><?php echo $usr['points']; ?></span> <span class="unit">Punkte</span></div></div>
     </div>
   </article>
@@ -298,7 +298,7 @@ switch ($action) {
         <li><strong><a href="cluster.php?a=start&amp;sid=<?php echo $sid; ?>"><?php echo safeentities($cluster['name']); ?></a></strong></li>
         <li>Punkte: <?php echo number_format($cluster['points'],0,',','.'); ?></li>
         <li>Mitglieder: <?php echo $cluster['members'] ?? 0; ?></li>
-        <li>Geld: <?php echo number_format($cluster['money'],0,',','.'); ?> CR</li>
+        <li>Geld: <?php echo number_format($cluster['money'],0,',','.'); ?> CC</li>
       </ul>
     <?php } else { ?>
       <p class="muted">Du bist in keinem Cluster.</p>
@@ -367,7 +367,7 @@ createlayout_bottom();
         $attack_icon = '<svg class="icon" viewBox="0 0 24 24" aria-hidden="true" width="50" height="50"><path d="M12 2l8 4v5c0 5-3 9-8 10-5-1-8-5-8-10V6l8-4z" fill="none" stroke="rgb(var(--accent))" stroke-width="2"/><path d="M14 3l7 7-1.5 1.5-2-2-4.5 4.5V20l-2 2-2-2 2-2v-4.5l4.5-4.5-2-2z" fill="none" stroke="rgb(var(--accent))" stroke-width="2"/></svg>';
         echo '<div class="strip">';
         echo '<div class="kpi kpi-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" width="50" height="50"><path d="M3 12h18M12 3v18" stroke="rgb(var(--accent))" stroke-width="2" fill="none"/></svg><div class="stat"><h3 class="value small">Punkte: '.$pc['points'].'</h3></div></div>';
-        echo '<div class="kpi kpi-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" width="50" height="50"><path d="M4 4h16v12H4z" stroke="rgb(var(--accent))" stroke-width="2" fill="none"/><path d="M2 18h20" stroke="rgb(var(--accent))"/></svg><div class="stat"><h3 class="value small">'.$bucks.' Credits</h3></div></div>';
+        echo '<div class="kpi kpi-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" width="50" height="50"><path d="M4 4h16v12H4z" stroke="rgb(var(--accent))" stroke-width="2" fill="none"/><path d="M2 18h20" stroke="rgb(var(--accent))"/></svg><div class="stat"><h3 class="value small">'.$bucks.' CryptoCoins</h3></div></div>';
         echo '<div class="kpi kpi-icon" title="'.$attack_title.'">'.$attack_icon.'<div class="stat"><h3 class="value small">Angreifbar: '.$attackable.'</h3></div></div>';
         echo '</div>';
 
@@ -421,7 +421,7 @@ createlayout_bottom();
         echo '<li>Name: '.$pc['name'].'</li>';
         echo '<li>IP: 10.47.'.$pc['ip'].'</li>';
         echo '<li>Punkte: '.$pc['points'].'</li>';
-        echo '<li>Geld: '.$bucks.' Credits</li>';
+        echo '<li>Geld: '.$bucks.' CryptoCoins</li>';
         $attackable = is_pc_attackable($pc) && is_noranKINGuser($usrid) == false;
         echo '<li>Angreifbar: '.($attackable ? 'ja' : 'nein').'</li>';
         echo $rhinfo;
@@ -505,7 +505,7 @@ createlayout_bottom();
 
         echo '<div class="content" id="computer"><h2>Deine Computer</h2><div id="computer-item">';
         echo '<h3 id="computer-item-'.$cssid.'">'.idtoname($item).' '.$val.'</h3>';
-        echo '<p><strong>Geld: '.$bucks.' Credits</strong></p><br />';
+        echo '<p><strong>Geld: '.$bucks.' CryptoCoins</strong></p><br />';
         echo '<p>'.file_get('data/info/'.$item.'.txt').'</p>'."\n";
 
         switch ($item) {
@@ -523,15 +523,15 @@ createlayout_bottom();
                         echo '<tr class="name">'.LF.'<td>'.$name.'</td>'.LF.'<td class="level">Level '.$pc[$id].'</td>'.LF.'<td class="profit">'.calc_mph(
                                 $pc[$id],
                                 $f
-                            ).' Credits/h</td>'.LF.'<td>';
+                            ).' CryptoCoins/h</td>'.LF.'<td>';
                         if ($pc[$id] < 5) {
                             $c = (((int)$pc[$id] + 1) * 15 * $f);
-                            if ($pc['credits'] - $c >= 0) {
+                            if ($pc['cryptocoins'] - $c >= 0) {
                                 echo '<a href="game.php?mode=update&item='.$id.'&sid='.$sid.'">Update</a>';
                             } else {
                                 echo 'Update';
                             }
-                            echo ' kostet '.$c.' Credits';
+                            echo ' kostet '.$c.' CryptoCoins';
                         } else {
                             echo 'Kein Update mehr m&ouml;glich!';
                         }
@@ -547,16 +547,16 @@ createlayout_bottom();
                 echo '</div>'."\n";
                 echo '<div id="computer-profit">'."\n";
                 echo '<h3>Einkommen</h3>'."\n";
-                echo '<p>'.get_gdph().' Credits/Stunde<br />'.number_format(
+                echo '<p>'.get_gdph().' CryptoCoins/Stunde<br />'.number_format(
                         (get_gdph() / 60),
                         1,
                         ',',
                         '.'
-                    ).' Credits/Minute<br />'.number_format((get_gdph() * 24), 0, ',', '.').' Credits/Tag</p>';
+                    ).' CryptoCoins/Minute<br />'.number_format((get_gdph() * 24), 0, ',', '.').' CryptoCoins/Tag</p>';
                 break;
 
             case 'bb':
-                echo '<p>Lagerkapazit&auml;t:</b> '.number_format(getmaxbb(), 0, ',', '.').' Credits</p>'."\n";
+                echo '<p>Lagerkapazit&auml;t:</b> '.number_format(getmaxbb(), 0, ',', '.').' CryptoCoins</p>'."\n";
                 break;
 
             case 'mk':
@@ -654,13 +654,13 @@ createlayout_bottom();
 
         if ($pc[$id] < 5) {
             $c = (((int)$pc[$id] + 1) * 15 * $f);
-            if ($pc['credits'] - $c >= 0) {
+            if ($pc['cryptocoins'] - $c >= 0) {
                 $pc[$id] += 1;
-                $pc['credits'] -= $c;
+                $pc['cryptocoins'] -= $c;
                 db_query(
                     'UPDATE pcs SET '.mysql_escape_string($id).'='.mysql_escape_string(
                         $pc[$id]
-                    ).', credits='.mysql_escape_string($pc['credits']).' WHERE id=\''.mysql_escape_string($pcid).'\''
+                    ).', cryptocoins='.mysql_escape_string($pc['cryptocoins']).' WHERE id=\''.mysql_escape_string($pcid).'\''
                 );
                 updredir('&purchased=1');
             } else {
@@ -728,13 +728,13 @@ createlayout_bottom();
             );
             $itemcnt = mysql_num_rows($r2) / 2;
             if ($cnt1 < UPGRADE_QUEUE_LENGTH && ($pc[$id] + $itemcnt) < itemmaxval($id)) {
-                if ($pc['credits'] >= $inf['c']) {
-                    $pc['credits'] -= $inf['c'];
+                if ($pc['cryptocoins'] >= $inf['c']) {
+                    $pc['cryptocoins'] -= $inf['c'];
 
                     $lastend = ($cnt1 < 1 ? time() : mysql_result($r1, $cnt1 - 1, 'end'));
                     $ftime = $lastend + (int)($inf['d'] * 60);
                     db_query(
-                        'UPDATE `pcs` SET `credits`=`credits`-'.mysql_escape_string(
+                        'UPDATE `pcs` SET `cryptocoins`=`cryptocoins`-'.mysql_escape_string(
                             $inf['c']
                         ).' WHERE `id`=\''.mysql_escape_string($pcid).'\''
                     );
@@ -865,7 +865,7 @@ createlayout_bottom();*/
 <th class="name">Computername</th>
 <th class="ip">IP-Adresse</th>
 <th class="points">Punkte</th>
-<th class="credits">Geld</th>';
+<th class="cryptocoins">Geld</th>';
         if ($ext) {
             echo '<th class="upgrade">Upgrade-Status</th>
 <th class="attack">Angriff</th>';
@@ -898,7 +898,7 @@ createlayout_bottom();*/
             $sql = db_query('SELECT * FROM pcs WHERE owner='.mysql_escape_string($usr['id']).$ord.';');
         } else {
             $sql = db_query(
-                'SELECT id,name,ip,country,points,credits,rh,lrh FROM pcs WHERE owner='.mysql_escape_string(
+                'SELECT id,name,ip,country,points,cryptocoins,rh,lrh FROM pcs WHERE owner='.mysql_escape_string(
                     $usr['id']
                 ).$ord.';'
             );
@@ -928,8 +928,8 @@ createlayout_bottom();*/
             } else {
                 $stat = '-';
             }
-            $tcreds += $x['credits'];
-            $bucks = number_format($x['credits'], 0, ',', '.');
+            $tcreds += $x['cryptocoins'];
+            $bucks = number_format($x['cryptocoins'], 0, ',', '.');
             $x['name'] = safeentities($x['name']);
 
             if (isavailh('rh', $x) === true) {
@@ -974,7 +974,7 @@ createlayout_bottom();*/
 <td class="name"><a href="game.php?m=selpc&amp;sid='.$sid.'&amp;pcid='.$x['id'].'">'.$x['name'].'</a>'.$mmstat.'</td>
 <td class="ip">10.47.'.$x['ip'].' ('.$country['name'].')</td>
 <td class="points">'.$x['points'].'</td>
-<td class="credits">'.$bucks.' Credits</td>';
+<td class="cryptocoins">'.$bucks.' CryptoCoins</td>';
             if ($ext) {
                 echo '<td class="upgrade"><a href="upgradelist.php?sid='.$sid.'&amp;xpc='.$x['id'].'">'.$stat.'</a></td>
 <td class="attack">'.$attack.'</td>';
@@ -991,7 +991,7 @@ createlayout_bottom();*/
 
         echo '
 </table>
-<p><strong>Insgesamt '.$tcreds.' Credits!</strong></p>
+<p><strong>Insgesamt '.$tcreds.' CryptoCoins!</strong></p>
 </div>
 </div>
 ';
@@ -1075,11 +1075,11 @@ createlayout_bottom();
             exit;
         }
         $type = $_POST['reciptype'];
-        $credits = (int)$_POST['credits'];
+        $cryptocoins = (int)$_POST['cryptocoins'];
 
         $e = '';
-        if ($credits > $pc['credits']) {
-            $e = 'Nicht gen&uuml;gend Credits f&uuml;r &Uuml;berweisung vorhanden!';
+        if ($cryptocoins > $pc['cryptocoins']) {
+            $e = 'Nicht gen&uuml;gend CryptoCoins f&uuml;r &Uuml;berweisung vorhanden!';
         }
         switch ($type) {
             case 'user':
@@ -1100,8 +1100,8 @@ createlayout_bottom();
                 break;
         }
 
-        if ($credits < 100) {
-            $e = 'Der Mindestbetrag f&uuml;r eine &Uuml;berweisung sind 100 Credits!';
+        if ($cryptocoins < 100) {
+            $e = 'Der Mindestbetrag f&uuml;r eine &Uuml;berweisung sind 100 CryptoCoins!';
         }
 
         if ($e == '') {
@@ -1130,11 +1130,11 @@ createlayout_bottom();
                     } else {
                         $ownerinfo = '<a class=il href="user.php?m=info&user='.$recip['owner'].'&sid='.$sid.'" target="_blank">'.$recip_usr['name'].'</a>';
                     }
-                    $text .= '<b>Hiermit werden '.$credits.' Credits an den Rechner 10.47.'.$recip['ip'].', der '.$ownerinfo.' geh&ouml;rt, &uuml;berwiesen.</b><br /><br />';
+                    $text .= '<b>Hiermit werden '.$cryptocoins.' CryptoCoins an den Rechner 10.47.'.$recip['ip'].', der '.$ownerinfo.' geh&ouml;rt, &uuml;berwiesen.</b><br /><br />';
                     if ($pc['country'] == $recip['country']) {
-                        $rest = $credits;
-                        $fin = $credits;
-                        $text .= 'Da dein Rechner im selben Land steht, wie der Ziel-Rechner, fallen keine Geb&uuml;hren an. Der User erh&auml;lt <b>'.$rest.' Credits</b>.';
+                        $rest = $cryptocoins;
+                        $fin = $cryptocoins;
+                        $text .= 'Da dein Rechner im selben Land steht, wie der Ziel-Rechner, fallen keine Geb&uuml;hren an. Der User erh&auml;lt <b>'.$rest.' CryptoCoins</b>.';
                     } else {
                         $c = GetCountry('id', $pc['country']);
                         $country = $c['name'];
@@ -1142,22 +1142,22 @@ createlayout_bottom();
                         $c = GetCountry('id', $recip['country']);
                         $country2 = $c['name'];
                         $in = $c['in'];
-                        $rest = $credits - ($in + $out);
+                        $rest = $cryptocoins - ($in + $out);
                         if ($rest > 0) {
                             $fin = $rest;
-                            $text .= 'Von diesem Betrag werden noch '.$out.' Credits Geb&uuml;hren als Ausfuhr aus '.$country.' und '.$in.' Credits Geb&uuml;hren als Einfuhr nach '.$country2.', dem Standort von 10.47.'.$recip['ip'].' abgezogen. '.$recip_usr['name'].' erh&auml;lt also noch <b>'.$rest.' Credits</b>.';
+                            $text .= 'Von diesem Betrag werden noch '.$out.' CryptoCoins Geb&uuml;hren als Ausfuhr aus '.$country.' und '.$in.' CryptoCoins Geb&uuml;hren als Einfuhr nach '.$country2.', dem Standort von 10.47.'.$recip['ip'].' abgezogen. '.$recip_usr['name'].' erh&auml;lt also noch <b>'.$rest.' CryptoCoins</b>.';
                         } else {
-                            $text .= 'Da der Betrag sehr gering ist, werden keine Geb&uuml;hren erhoben. '.$recip_usr['name'].' erh&auml;lt <b>'.$credits.' Credits</b>.';
-                            $fin = $credits;
+                            $text .= 'Da der Betrag sehr gering ist, werden keine Geb&uuml;hren erhoben. '.$recip_usr['name'].' erh&auml;lt <b>'.$cryptocoins.' CryptoCoins</b>.';
+                            $fin = $cryptocoins;
                         }
 
                     }
                     $max = getmaxbb($recip);
-                    if ($recip['credits'] + $fin > $max) {
-                        $rest = $max - $recip['credits'];
+                    if ($recip['cryptocoins'] + $fin > $max) {
+                        $rest = $max - $recip['cryptocoins'];
                         $fin = $rest;
-                        $credits = $rest;
-                        $text .= '<br /><br />Da '.$recip_usr['name'].' seinen BucksBunker nicht weit genug ausgebaut hat, um das Geld zu Empfangen, werden nur <b>'.$rest.' Credits</b> (inklusive Geb&uuml;hren) &uuml;berwiesen!';
+                        $cryptocoins = $rest;
+                        $text .= '<br /><br />Da '.$recip_usr['name'].' seinen BucksBunker nicht weit genug ausgebaut hat, um das Geld zu Empfangen, werden nur <b>'.$rest.' CryptoCoins</b> (inklusive Geb&uuml;hren) &uuml;berwiesen!';
                         if ($rest < 1) {
                             echo '<div class="error"><h3>BucksBunker voll</h3><p>Der BucksBunker von '.$recip_usr['name'].' ist voll! &Uuml;berweisung wird abgebrochen!</p></div>';
                             ?>
@@ -1172,17 +1172,17 @@ createlayout_bottom();
                     break;
 
                 case 'cluster':
-                    echo '<b>Hiermit werden '.$credits.' Credits an den Cluster '.$recip['code'].' ('.$recip['name'].') &uuml;berwiesen.</b><br />';
+                    echo '<b>Hiermit werden '.$cryptocoins.' CryptoCoins an den Cluster '.$recip['code'].' ('.$recip['name'].') &uuml;berwiesen.</b><br />';
                     $c = GetCountry('id', $pc['country']);
                     $country = $c['name'];
                     $out = $c['out'];
-                    $rest = $credits - $out;
+                    $rest = $cryptocoins - $out;
                     if ($rest > 0) {
                         $fin = $rest;
-                        echo 'Davon werden noch '.$out.' Credits als Ausfuhr-Geb&uuml;hr f&uuml;r '.$country.' abgezogen. Der Cluster '.$recip['code'].' erh&auml;lt also noch <b>'.$rest.' Credits</b>';
+                        echo 'Davon werden noch '.$out.' CryptoCoins als Ausfuhr-Geb&uuml;hr f&uuml;r '.$country.' abgezogen. Der Cluster '.$recip['code'].' erh&auml;lt also noch <b>'.$rest.' CryptoCoins</b>';
                     } else {
-                        echo 'Da der Betrag sehr gering ist, werden keine Geb&uuml;hren erhoben. Der Cluster '.$recip['code'].' erh&auml;lt <b>'.$credits.' Credits</b>.';
-                        $fin = $credits;
+                        echo 'Da der Betrag sehr gering ist, werden keine Geb&uuml;hren erhoben. Der Cluster '.$recip['code'].' erh&auml;lt <b>'.$cryptocoins.' CryptoCoins</b>.';
+                        $fin = $cryptocoins;
                     }
                     break;
             }
@@ -1195,7 +1195,7 @@ createlayout_bottom();
 <!-- /ZDE theme inject -->
 <?php
 createlayout_bottom();
-            file_put($DATADIR.'/tmp/transfer_'.$tcode.'.txt', $type.'|'.$recip['id'].'|'.$credits.'|'.$fin);
+            file_put($DATADIR.'/tmp/transfer_'.$tcode.'.txt', $type.'|'.$recip['id'].'|'.$cryptocoins.'|'.$fin);
             db_query(
                 'UPDATE users SET tcode=\''.mysql_escape_string($tcode).'\' WHERE id=\''.mysql_escape_string(
                     $usrid
@@ -1218,24 +1218,24 @@ createlayout_bottom();
         $dat = explode('|', file_get($fn));
         @unlink($fn);
         if (count($dat) == 4) {
-            $pc['credits'] -= $dat[2];
+            $pc['cryptocoins'] -= $dat[2];
 #print_r($dat);
             db_query(
-                'UPDATE pcs SET credits=\''.mysql_escape_string($pc['credits']).'\' WHERE id='.mysql_escape_string(
+                'UPDATE pcs SET cryptocoins=\''.mysql_escape_string($pc['cryptocoins']).'\' WHERE id='.mysql_escape_string(
                     $pcid
                 )
             );
             if ($dat[0] == 'user') {
                 $recip = getpc($dat[1]);
-                $recip['credits'] += $dat[3];
+                $recip['cryptocoins'] += $dat[3];
                 db_query(
-                    'UPDATE pcs SET credits=credits+'.mysql_escape_string($dat[3]).' WHERE id=\''.mysql_escape_string(
+                    'UPDATE pcs SET cryptocoins=cryptocoins+'.mysql_escape_string($dat[3]).' WHERE id=\''.mysql_escape_string(
                         $recip['id']
                     ).'\';'
                 );
-                $s = '[usr='.$usrid.']'.$usr['name'].'[/usr] hat dir '.$dat[2].' Credits auf deinen PC 10.47.'.$recip['ip'].' ('.$recip['name'].') &uuml;berwiesen.';
+                $s = '[usr='.$usrid.']'.$usr['name'].'[/usr] hat dir '.$dat[2].' CryptoCoins auf deinen PC 10.47.'.$recip['ip'].' ('.$recip['name'].') &uuml;berwiesen.';
                 if ($dat[2] != $dat[3]) {
-                    $s .= ' Abz&uuml;glich der Geb&uuml;hren hast du '.$dat[3].' Credits erhalten!';
+                    $s .= ' Abz&uuml;glich der Geb&uuml;hren hast du '.$dat[3].' CryptoCoins erhalten!';
                 }
                 if ($recip['owner'] != $usrid) {
                     addsysmsg($recip['owner'], $s);
@@ -1245,13 +1245,13 @@ createlayout_bottom();
                 $c = getcluster($dat[1]);
                 $c['money'] += $dat[3];
                 $c['events'] = nicetime4(
-                    ).' [usr='.$usrid.']'.$usr['name'].'[/usr] spendet dem Cluster '.$dat[3].' Credits.'.LF.$c['events'];
+                    ).' [usr='.$usrid.']'.$usr['name'].'[/usr] spendet dem Cluster '.$dat[3].' CryptoCoins.'.LF.$c['events'];
                 db_query(
                     'UPDATE clusters SET money=\''.mysql_escape_string($c['money']).'\',events=\''.mysql_escape_string(
                         $c['events']
                     ).'\' WHERE id='.mysql_escape_string($c['id'])
                 );
-                $msg = 'Dem Cluster '.$c['code'].' wurden '.$dat['2'].' Credits &uuml;berwiesen!';
+                $msg = 'Dem Cluster '.$c['code'].' wurden '.$dat['2'].' CryptoCoins &uuml;berwiesen!';
             }
             db_query(
                 'INSERT INTO transfers VALUES(\''.mysql_escape_string($pcid).'\', \'user\', \''.mysql_escape_string(
