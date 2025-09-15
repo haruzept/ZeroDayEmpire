@@ -104,7 +104,7 @@ echo '<header class="page-head"><h1>Dein Server</h1></header>';
 
 $now = time();
 $runningRows = [];
-$r = db_query('SELECT * FROM `upgrades` WHERE `pc`=\''.mysql_escape_string($pcid).'\' AND `end`>\''.mysql_escape_string($now).'\' ORDER BY `start` ASC');
+$r = db_query('SELECT * FROM `upgrades` WHERE `server`=\''.mysql_escape_string($pcid).'\' AND `end`>\''.mysql_escape_string($now).'\' ORDER BY `start` ASC');
 while ($row = mysql_fetch_assoc($r)) { $runningRows[] = $row; }
 $running = count($runningRows);
 $credits = (int)$pc['credits'];

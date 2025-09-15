@@ -929,7 +929,7 @@ function processupgrades(&$pc, $savepc = true)
 
     # Upgrade-Vorgänge verarbeiten
     $r = db_query(
-        'SELECT * FROM `upgrades` WHERE `pc`=\''.mysql_escape_string($pcid).'\' AND `end`<=\''.time(
+        'SELECT * FROM `upgrades` WHERE `server`=\''.mysql_escape_string($pcid).'\' AND `end`<=\''.time(
         ).'\' ORDER BY `start` ASC;'
     );
     $cnt = @mysql_num_rows($r);
