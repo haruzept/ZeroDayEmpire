@@ -77,7 +77,10 @@ function createlayout_top($title = 'ZeroDayEmpire', $nomenu = false)
             echo '<a href="login.php?a=logout' . $sid . '">Abmelden</a>';
         } else {
             echo '<a href="pub.php?a=register" id="registerLink">Registrieren</a>';
-            echo '<a href="pub.php" id="loginLink">Anmelden</a>';
+            echo '<a href="dashboard.html" id="dashboardLink" style="display:none">Dashboard</a>';
+            echo '<a href="#" id="logoutLink" style="display:none" onclick="logout()">Abmelden</a>';
+            echo '<a href="config.html" id="configLink" style="display:none">Config</a>';
+            echo '<a class="btn play-link" href="pub.php">Jetzt spielen</a>';
         }
         echo '</nav>';
     }
@@ -98,9 +101,24 @@ function createlayout_bottom()
     echo '<div>© <span id="year"></span> ZeroDayEmpire</div>';
     echo '<div class="links"><a href="impressum.php' . $sid . '">Impressum</a><a href="legal.php' . $sid . '">Legal</a><a href="rules.php' . $sid . '">Spielregeln</a></div>';
     echo '</div></footer>';
-    echo '<script>(function(){const nav=document.getElementById("nav");const btn=document.getElementById("menuBtn");if(btn){btn.addEventListener("click",()=>{const open=nav.classList.toggle("open");btn.setAttribute("aria-expanded",String(open));});}})();';
+    echo '<script>';
+    echo '(function(){';
+    echo 'let token=localStorage.getItem("token")||sessionStorage.getItem("token")||(document.cookie.match(/token=([^;]+)/)||[])[1];';
+    echo 'if(token && !localStorage.getItem("token") && !sessionStorage.getItem("token")){localStorage.setItem("token",token);}';
+    echo 'const role=localStorage.getItem("role")||sessionStorage.getItem("role");';
+    echo 'const reg=document.getElementById("registerLink");';
+    echo 'const dash=document.getElementById("dashboardLink");';
+    echo 'const logout=document.getElementById("logoutLink");';
+    echo 'const cfg=document.getElementById("configLink");';
+    echo 'const playLinks=document.querySelectorAll(".play-link");';
+    echo 'window.logout=function(){localStorage.removeItem("token");localStorage.removeItem("role");sessionStorage.removeItem("token");sessionStorage.removeItem("role");document.cookie="token=; Max-Age=0; path=/";fetch("/logout",{method:"POST",headers:{"Authorization":token}});window.location.href="index.php";};';
+    echo 'if(token){if(reg) reg.style.display="none";if(dash) dash.style.display="inline-flex";if(logout) logout.style.display="inline-flex";playLinks.forEach(a=>a.href="dashboard.html");}else{playLinks.forEach(a=>a.href="pub.php");}';
+    echo 'if(role==="admin"&&cfg){cfg.style.display="inline-flex";}';
+    echo '})();';
+    echo '(function(){const nav=document.getElementById("nav");const btn=document.getElementById("menuBtn");if(btn){btn.addEventListener("click",()=>{const open=nav.classList.toggle("open");btn.setAttribute("aria-expanded",String(open));});}})();';
     echo 'window.addEventListener("pointermove",e=>{const x=e.clientX/window.innerWidth*100;const y=e.clientY/window.innerHeight*100;document.documentElement.style.setProperty("--mx",x+"%");document.documentElement.style.setProperty("--my",y+"%");},{passive:true});';
-    echo 'document.getElementById("year").textContent=new Date().getFullYear();</script>';
+    echo 'document.getElementById("year").textContent=new Date().getFullYear();';
+    echo '</script>';
     basicfooter();
 }
 
