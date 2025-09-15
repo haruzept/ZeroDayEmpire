@@ -46,13 +46,13 @@ function server_update_points($server)
             file_put('data/calc-stat.dat', 'Berechnung von Server '.$server.' ... '.$current.' / '.$total);
         }
 
-        $pc_result = db_query('SELECT * FROM pcs WHERE owner=\''.mysql_escape_string($user['id']).'\';');
+        $pc_result = db_query('SELECT * FROM servers WHERE owner=\''.mysql_escape_string($user['id']).'\';');
         $pc_cnt = mysql_num_rows($pc_result);
         while ($pc = mysql_fetch_assoc($pc_result)) {
             processupgrades($pc);
             $pcpoints = getpcpoints($pc, 'bydata');
             db_query(
-                'UPDATE pcs SET points=\''.mysql_escape_string($pcpoints).'\' WHERE id=\''.mysql_escape_string(
+                'UPDATE servers SET points=\''.mysql_escape_string($pcpoints).'\' WHERE id=\''.mysql_escape_string(
                     $pc['id']
                 ).'\';'
             );

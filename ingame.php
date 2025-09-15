@@ -94,7 +94,7 @@ if ($usr['sid'] != $sid) {
 }*/
 
 if ($FILE_REQUIRES_PC == true) {
-    $pc = @mysql_fetch_assoc(db_query('SELECT * FROM pcs WHERE id=\''.mysql_escape_string($pcid).'\' LIMIT 1'));
+    $pc = @mysql_fetch_assoc(db_query('SELECT * FROM servers WHERE id=\''.mysql_escape_string($pcid).'\' LIMIT 1'));
     if ($pc['owner'] != $usrid) {
         badsession('Das ist nicht dein PC!');
     }
@@ -200,7 +200,7 @@ function SavePC($pcid, $pc)
     }
     $s = trim($s, ',');
     if ($s != '') {
-        db_query('UPDATE pcs SET '.$s.' WHERE id=\''.mysql_escape_string($pcid).'\'');
+        db_query('UPDATE servers SET '.$s.' WHERE id=\''.mysql_escape_string($pcid).'\'');
     }
 }
 
@@ -402,12 +402,12 @@ function isattackallowed(&$ret, &$ret2)
 function write_pc_list($usrid)
 { //---------------- WRITE PC LIST ----------------
     $s = '';
-    $r = db_query('SELECT id FROM pcs WHERE owner=\''.mysql_escape_string($usrid).'\';');
+    $r = db_query('SELECT id FROM servers WHERE owner=\''.mysql_escape_string($usrid).'\';');
     while ($x = mysql_fetch_assoc($r)):
         $s .= $x['id'].',';
     endwhile;
     $s = trim($s, ',');
-    db_query('UPDATE users SET pcs=\''.mysql_escape_string($s).'\' WHERE id=\''.mysql_escape_string($usrid).'\';');
+    db_query('UPDATE users SET servers=\''.mysql_escape_string($s).'\' WHERE id=\''.mysql_escape_string($usrid).'\';');
 }
 
 

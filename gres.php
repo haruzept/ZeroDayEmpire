@@ -558,7 +558,7 @@ function GetUser($val, $by = 'id')
 
 function GetPC($id, $by = 'id')
 {
-    $r = db_query('SELECT * FROM pcs WHERE '.mysql_escape_string($by).' LIKE \''.mysql_escape_string($id).'\' LIMIT 1');
+    $r = db_query('SELECT * FROM servers WHERE '.mysql_escape_string($by).' LIKE \''.mysql_escape_string($id).'\' LIMIT 1');
 
     return ((int)@mysql_num_rows($r) > 0 ? mysql_fetch_assoc($r) : false);
 }
@@ -630,7 +630,7 @@ function getPCPoints($pc, $mode = 'byid')
     global $REMOTE_FILES_DIR, $DATADIR;
     global $cpu_levels, $ram_levels;
     if ($mode == 'byid') {
-        $pcdat = @mysql_fetch_assoc(db_query('SELECT * FROM pcs WHERE id=\''.mysql_escape_string($pc).'\''));
+        $pcdat = @mysql_fetch_assoc(db_query('SELECT * FROM servers WHERE id=\''.mysql_escape_string($pc).'\''));
     } else {
         $pcdat = $pc;
     }
@@ -688,7 +688,7 @@ function addpc($country, $usrid, $byid = true)
         $subnet = $country;
     }
 
-    $r = db_query('SELECT * FROM pcs WHERE ip LIKE \''.mysql_escape_string($subnet).'.%\'');
+    $r = db_query('SELECT * FROM servers WHERE ip LIKE \''.mysql_escape_string($subnet).'.%\'');
     $cnt = mysql_num_rows($r);
     $xip = $cnt + 1;
 
@@ -697,7 +697,7 @@ function addpc($country, $usrid, $byid = true)
 
         $ts = time();
         db_query(
-            'INSERT INTO pcs(id, name,     ip,    owner,  cpu, ram, lan, mm, bb, ads, dialer, auctions, bankhack, fw, mk, av, ids, ips, rh, sdk, trojan, credits, lmupd, country, points, la, di, dt, lrh) VALUES('
+            'INSERT INTO servers(id, name,     ip,    owner,  cpu, ram, lan, mm, bb, ads, dialer, auctions, bankhack, fw, mk, av, ids, ips, rh, sdk, trojan, credits, lmupd, country, points, la, di, dt, lrh) VALUES('
             .'0, \'NoName\', \''.mysql_escape_string($ip).'\', \''.mysql_escape_string(
                 $usrid
             ).'\', 0, 0,   1,   1,  1,  1,   0,      0,        0,        0,  0,  0,  0,   0,   0,  0,   0,      1000,    \''.mysql_escape_string(
@@ -934,7 +934,7 @@ function processupgrades(&$pc, $savepc = true)
     );
     $cnt = @mysql_num_rows($r);
     if ($cnt > 0) {
-        $sql = 'UPDATE `pcs` SET ';
+        $sql = 'UPDATE `servers` SET ';
         $sql2 = 'DELETE FROM `upgrades` WHERE id IN(';
         $i = 0;
         while ($data = mysql_fetch_assoc($r)) {
@@ -954,7 +954,7 @@ function processupgrades(&$pc, $savepc = true)
         }
         $sql = $sql.' WHERE `id`=\''.mysql_escape_string($pc['id']).'\' LIMIT 1;';
         $sql2 .= ');';
-        if ($savepc && strlen($sql) > strlen('UPDATE `pcs` SET  WHERE `id`=\'1\' LIMIT 1;')) {
+        if ($savepc && strlen($sql) > strlen('UPDATE `servers` SET  WHERE `id`=\'1\' LIMIT 1;')) {
             db_query($sql);
         }
         if (strlen($sql2) > strlen('DELETE FROM `upgrades` WHERE id IN();')) {
@@ -982,7 +982,7 @@ function processupgrades(&$pc, $savepc = true)
             $pc['credits'] = $max;
         }
         db_query(
-            'UPDATE pcs SET credits=\''.mysql_escape_string($pc['credits']).'\', lmupd=\''.time(
+            'UPDATE servers SET credits=\''.mysql_escape_string($pc['credits']).'\', lmupd=\''.time(
             ).'\' WHERE id=\''.mysql_escape_string($pcid).'\''
         );
     }

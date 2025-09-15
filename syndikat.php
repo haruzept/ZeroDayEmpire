@@ -1664,7 +1664,7 @@ createlayout_bottom();
                     $recip = getpc($dat[1]);
                     $recip['credits'] += $dat[3];
                     db_query(
-                        'UPDATE pcs SET credits=\''.mysql_escape_string(
+                        'UPDATE servers SET credits=\''.mysql_escape_string(
                             $recip['credits']
                         ).'\' WHERE id='.mysql_escape_string($dat[1])
                     );

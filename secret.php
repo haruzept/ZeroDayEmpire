@@ -394,18 +394,18 @@ alert(\'Bitte Zahl eingeben!\');
         $gcnt = 0;
         foreach ($countrys as $bez => $item):
             $r = db_query(
-                'SELECT pcs.id AS pcs_id, pcs.ip AS pcs_ip, pcs.name AS pcs_name, pcs.points AS pcs_points, users.id AS users_id, users.name AS users_name, users.points AS users_points, syndikate.id AS syndikate_id, syndikate.name AS syndikate_name FROM (syndikate RIGHT JOIN users ON syndikate.id = users.syndikat) RIGHT JOIN pcs ON users.id = pcs.owner WHERE pcs.country LIKE \''.mysql_escape_string(
+                'SELECT servers.id AS pcs_id, servers.ip AS pcs_ip, servers.name AS pcs_name, servers.points AS pcs_points, users.id AS users_id, users.name AS users_name, users.points AS users_points, syndikate.id AS syndikate_id, syndikate.name AS syndikate_name FROM (syndikate RIGHT JOIN users ON syndikate.id = users.syndikat) RIGHT JOIN servers ON users.id = servers.owner WHERE servers.country LIKE \''.mysql_escape_string(
                     $item['id']
-                ).'\' AND pcs.points<\'50\' ORDER BY pcs.id ASC;'
+                ).'\' AND servers.points<\'50\' ORDER BY servers.id ASC;'
             );
-            #$r=db_query('SELECT id FROM pcs WHERE country=\''.mysql_escape_string($item['id']).'\' AND owner_name=\'\';');
-            $r2 = db_query('SELECT id FROM pcs WHERE country=\''.mysql_escape_string($item['id']).'\';');
+            #$r=db_query('SELECT id FROM servers WHERE country=\''.mysql_escape_string($item['id']).'\' AND owner_name=\'\';');
+            $r2 = db_query('SELECT id FROM servers WHERE country=\''.mysql_escape_string($item['id']).'\';');
             echo 'ohneowner: '.mysql_num_rows($r).' gesamt: '.mysql_num_rows($r2).'<br>\n';
 
             #$r=db_query('SELECT users.name FROM pcs RIGHT JOIN users ON pcs.owner=users.id WHERE pcs.country=\''.mysql_escape_string($item['id']).'\';');
             /*
                 $cnt=0;
-                $sql='DELETE FROM pcs WHERE id IN(';
+                $sql='DELETE FROM servers WHERE id IN(';
                 while($data=mysql_fetch_assoc($r)) {
                   if($data['users_name']===NULL) { $cnt++; $sql.=$data['pcs_id'].","; }
                 }
@@ -417,10 +417,10 @@ alert(\'Bitte Zahl eingeben!\');
                 db_query($sql);
 
                 $i=0;
-                $r=db_query('SELECT id FROM pcs WHERE country=\''.mysql_escape_string($item['id']).'\' ORDER BY id ASC;');
+                $r=db_query('SELECT id FROM servers WHERE country=\''.mysql_escape_string($item['id']).'\' ORDER BY id ASC;');
                 while($data=mysql_fetch_assoc($r)):
                   $i++;
-                  db_query('UPDATE pcs SET ip=\''.mysql_escape_string($item['subnet'].'.'.$i).'\' WHERE id='.mysql_escape_string($data['id']).';');
+                  db_query('UPDATE servers SET ip=\''.mysql_escape_string($item['subnet'].'.'.$i).'\' WHERE id='.mysql_escape_string($data['id']).';');
                   echo '$i ';
                 endwhile;
             */

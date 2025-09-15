@@ -537,7 +537,7 @@ createlayout_bottom();
             }
 
             $spcs = '';
-            $sql = db_query('SELECT * FROM pcs WHERE owner='.mysql_escape_string($a['id']).' ORDER BY name ASC;');
+            $sql = db_query('SELECT * FROM servers WHERE owner='.mysql_escape_string($a['id']).' ORDER BY name ASC;');
             $pccnt = mysql_num_rows($sql);
 #$attackallowed=false;
             while ($xpc = mysql_fetch_assoc($sql)) {

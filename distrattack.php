@@ -254,7 +254,7 @@ Diese werden schon jetzt vom Konto deines PCs 10.47.'.$pc['ip'].' ('.$pc['name']
 #echo mysql_error();
         $pc['credits'] -= $credits;
         db_query(
-            'UPDATE pcs SET credits='.mysql_escape_string($pc['credits']).' WHERE id='.mysql_escape_string($pcid).';'
+            'UPDATE servers SET credits='.mysql_escape_string($pc['credits']).' WHERE id='.mysql_escape_string($pcid).';'
         );
 
         break;
@@ -271,7 +271,7 @@ Diese werden schon jetzt vom Konto deines PCs 10.47.'.$pc['ip'].' ('.$pc['name']
             echo '<form action="distrattack.php?sid='.$sid.'&amp;da='.$a['id'].'&amp;page=join2" method="post">'."\n";
             echo '<table>';
             $gcnt = 0;
-            $sql = db_query('SELECT * FROM pcs WHERE owner='.mysql_escape_string($usr['id']).' ORDER BY points DESC;');
+            $sql = db_query('SELECT * FROM servers WHERE owner='.mysql_escape_string($usr['id']).' ORDER BY points DESC;');
             while ($x = mysql_fetch_assoc($sql)) {
                 if (isavailh('da', $x) != true) {
                     continue;
@@ -295,7 +295,7 @@ Diese werden schon jetzt vom Konto deines PCs 10.47.'.$pc['ip'].' ('.$pc['name']
                         $x['credits'] = $max;
                     }
                     db_query(
-                        'UPDATE pcs SET lmupd=\''.$x['lmupd'].'\', credits=\''.$x['credits'].'\' WHERE id='.mysql_escape_string(
+                        'UPDATE servers SET lmupd=\''.$x['lmupd'].'\', credits=\''.$x['credits'].'\' WHERE id='.mysql_escape_string(
                             $x['id']
                         ).';'
                     );
@@ -342,7 +342,7 @@ Diese werden schon jetzt vom Konto deines PCs 10.47.'.$pc['ip'].' ('.$pc['name']
         $a = @mysql_fetch_assoc(db_query('SELECT * FROM distr_attacks WHERE id='.mysql_escape_string($i).' LIMIT 1;'));
         if (isset($a['id']) == true && $a['syndikat'] == $syndikatid) {
 
-            $sql = db_query('SELECT * FROM pcs WHERE owner='.$usr['id'].';');
+            $sql = db_query('SELECT * FROM servers WHERE owner='.$usr['id'].';');
             while ($xpc = mysql_fetch_assoc($sql)) {
                 if ($_POST['server'.$xpc['id']] != 1) {
                     continue;
@@ -361,7 +361,7 @@ Diese werden schon jetzt vom Konto deines PCs 10.47.'.$pc['ip'].' ('.$pc['name']
                 }
                 $creds -= 1000;
                 db_query(
-                    'UPDATE pcs SET credits=\''.mysql_escape_string($creds).'\' WHERE id=\''.mysql_escape_string(
+                    'UPDATE servers SET credits=\''.mysql_escape_string($creds).'\' WHERE id=\''.mysql_escape_string(
                         $xpc['id']
                     ).'\';'
                 );
@@ -399,7 +399,7 @@ Es werden nur PCs angezeigt, auf denen die DA und gen&uuml;gend Geld vorhanden i
 <table>';
 
         $gcnt = 0;
-        $sql = db_query('SELECT * FROM pcs WHERE owner='.mysql_escape_string($usr['id']).';');
+        $sql = db_query('SELECT * FROM servers WHERE owner='.mysql_escape_string($usr['id']).';');
         while ($x = mysql_fetch_assoc($sql)):
             if (isavailh('da', $x) != true) {
                 continue;
@@ -415,7 +415,7 @@ Es werden nur PCs angezeigt, auf denen die DA und gen&uuml;gend Geld vorhanden i
                     $x['credits'] = $max;
                 }
                 db_query(
-                    'UPDATE pcs SET lmupd=\''.mysql_escape_string($x['lmupd']).'\', credits=\''.mysql_escape_string(
+                    'UPDATE servers SET lmupd=\''.mysql_escape_string($x['lmupd']).'\', credits=\''.mysql_escape_string(
                         $x['credits']
                     ).'\' WHERE id='.mysql_escape_string($x['id']).';'
                 );
@@ -461,7 +461,7 @@ Es werden nur PCs angezeigt, auf denen die DA und gen&uuml;gend Geld vorhanden i
         $r = db_query('SELECT id FROM distr_attacks WHERE syndikat='.mysql_escape_string($syndikatid).';');
 
         while ($a = mysql_fetch_assoc($r)) {
-            $sql = db_query('SELECT * FROM pcs WHERE owner='.mysql_escape_string($usr['id']).';');
+            $sql = db_query('SELECT * FROM servers WHERE owner='.mysql_escape_string($usr['id']).';');
             while ($xpc = mysql_fetch_assoc($sql)):
                 if ($_POST['server'.$xpc['id']] != 1) {
                     continue;
@@ -480,7 +480,7 @@ Es werden nur PCs angezeigt, auf denen die DA und gen&uuml;gend Geld vorhanden i
                 }
                 $creds -= 1000;
                 db_query(
-                    'UPDATE pcs SET credits=\''.mysql_escape_string($creds).'\' WHERE id=\''.mysql_escape_string(
+                    'UPDATE servers SET credits=\''.mysql_escape_string($creds).'\' WHERE id=\''.mysql_escape_string(
                         $xpc['id']
                     ).'\';'
                 );
