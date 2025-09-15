@@ -355,7 +355,7 @@ createlayout_bottom();
 
             $usrimg_fmt = $_POST['usrimg_fmt'] ?? $usr['usrimg_fmt'];
 
-            $pcs = explode(',', $usr['pcs']);
+            $pcs = explode(',', $usr['servers']);
 
             $e = false;
             $error = '';
@@ -621,7 +621,7 @@ createlayout_bottom();
 <tr>
 <th>Syndikat</th><td>'.$ssyndikat.'</td></tr>
 <tr>
-<th>Computer ('.$pccnt.')</th>
+<th>Server ('.$pccnt.')</th>
 <td><ul>'.$spcs.'</ul>'.$pchw.'</td>
 </tr>
 <tr>

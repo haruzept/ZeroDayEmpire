@@ -125,7 +125,7 @@ function research_process($now = null)
     if ($now === null) { $now = time(); }
     $r = db_query('SELECT * FROM research WHERE `end`<=\''.mysql_escape_string($now).'\' ORDER BY `start` ASC');
     while ($row = mysql_fetch_assoc($r)) {
-        db_query('INSERT INTO research_state SET pc=\''.mysql_escape_string($row['pc']).'\', track=\''.mysql_escape_string($row['track']).'\', level=\''.mysql_escape_string($row['target_level']).'\' ON DUPLICATE KEY UPDATE level=VALUES(level)');
+        db_query('INSERT INTO research_state SET pc=\''.mysql_escape_string($row['server']).'\', track=\''.mysql_escape_string($row['track']).'\', level=\''.mysql_escape_string($row['target_level']).'\' ON DUPLICATE KEY UPDATE level=VALUES(level)');
         db_query('DELETE FROM research WHERE id=\''.mysql_escape_string($row['id']).'\'');
     }
 }

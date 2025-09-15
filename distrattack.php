@@ -138,7 +138,7 @@ Sobald du es bestimmst, wird der Feind mit der gesammelten Power aller Teilnehme
 <form action="distrattack.php?page=create_submit&amp;sid='.$sid.'" method="post">
 <table>
 <tr id="syndikat-create-distributed-attack-ip">
-<th>Ziel-Computer:</th>
+<th>Ziel-Server:</th>
 <td><input type="text" name="ip" value="10.47." /></td>
 </tr>
 <tr id="syndikat-create-distributed-attack-target">
@@ -344,7 +344,7 @@ Diese werden schon jetzt vom Konto deines PCs 10.47.'.$pc['ip'].' ('.$pc['name']
 
             $sql = db_query('SELECT * FROM pcs WHERE owner='.$usr['id'].';');
             while ($xpc = mysql_fetch_assoc($sql)) {
-                if ($_POST['pc'.$xpc['id']] != 1) {
+                if ($_POST['server'.$xpc['id']] != 1) {
                     continue;
                 }
                 $creds = $xpc['credits'];
@@ -463,7 +463,7 @@ Es werden nur PCs angezeigt, auf denen die DA und gen&uuml;gend Geld vorhanden i
         while ($a = mysql_fetch_assoc($r)) {
             $sql = db_query('SELECT * FROM pcs WHERE owner='.mysql_escape_string($usr['id']).';');
             while ($xpc = mysql_fetch_assoc($sql)):
-                if ($_POST['pc'.$xpc['id']] != 1) {
+                if ($_POST['server'.$xpc['id']] != 1) {
                     continue;
                 }
                 $creds = $xpc['credits'];
@@ -539,7 +539,7 @@ Es werden nur PCs angezeigt, auf denen die DA und gen&uuml;gend Geld vorhanden i
             if ($total > 1) {
                 $attack = 0;
                 while ($b = mysql_fetch_assoc($result)) {
-                    $p = getpc($b['pc']);
+                    $p = getpc($b['server']);
                     $attack += $p['cpu'] + $p['ips'] * 2 + $p['mk'] * 2 + $p['sdk'] + $p['lan'] / 2 + mt_rand(0, 5);
                 }
                 $remote = getpc($a['target']);
@@ -549,7 +549,7 @@ Es werden nur PCs angezeigt, auf denen die DA und gen&uuml;gend Geld vorhanden i
                 $xdefence = $remote['fw'] + $remote['av'] + $remote['ids'] / 2;
                 $rscan = (int)(isavailh('scan', $remote));
 
-                if (count(explode(',', $owner['pcs'])) < 2 && (
+                if (count(explode(',', $owner['servers'])) < 2 && (
                     ($xdefence <= MIN_ATTACK_XDEFENCE && $rscan == 0)
                     )
                 ) {

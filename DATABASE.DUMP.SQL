@@ -37,10 +37,10 @@ CREATE TABLE `abooks` (
 #
 
 CREATE TABLE `attacks` (
-  `from_pc` smallint(6) default '0',
+  `from_server` smallint(6) default '0',
   `from_usr` smallint(6) default '0',
   `from_syndikat` int(11) default '0',
-  `to_pc` smallint(6) default '0',
+  `to_server` smallint(6) default '0',
   `to_usr` smallint(6) default '0',
   `to_syndikat` int(11) default '0',
   `type` enum('block','hijack','scan','smash','trojan') NOT NULL default 'block',
@@ -159,7 +159,7 @@ INSERT INTO `syndikate` VALUES (2, 'Administratoren', '::root::', '24.08. um 00:
 
 CREATE TABLE `da_participants` (
   `relative` int(11) NOT NULL default '0',
-  `pc` smallint(6) NOT NULL default '0',
+  `server` smallint(6) NOT NULL default '0',
   `ip` varchar(7) NOT NULL default '',
   `owner` smallint(6) NOT NULL default '0',
   `owner_name` varchar(40) NOT NULL default ''
@@ -235,7 +235,7 @@ INSERT INTO `logins` VALUES (17, '127.0.0.1', 1, 1094132687);
 
 CREATE TABLE `logs` (
   `id` bigint(20) NOT NULL auto_increment,
-  `type` enum('other','worm_clmoney','worm_blockpc','worm_pcsendmoney','delsyndikat','deluser','lockuser','badlogin','chclinfo') NOT NULL default 'other',
+  `type` enum('other','worm_clmoney','worm_blockserver','worm_serversendmoney','delsyndikat','deluser','lockuser','badlogin','chclinfo') NOT NULL default 'other',
   `usr_id` smallint(6) NOT NULL default '0',
   `payload` tinytext NOT NULL,
   PRIMARY KEY  (`id`)
@@ -274,10 +274,10 @@ CREATE TABLE `mails` (
 # --------------------------------------------------------
 
 #
-# Tabellenstruktur für Tabelle `pcs`
+# Tabellenstruktur für Tabelle `servers`
 #
 
-CREATE TABLE `pcs` (
+CREATE TABLE `servers` (
   `id` smallint(6) NOT NULL auto_increment,
   `name` tinytext,
   `ip` varchar(7) default NULL,
@@ -317,12 +317,12 @@ CREATE TABLE `pcs` (
 ) ENGINE=MyISAM AUTO_INCREMENT=4  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 #
-# Daten für Tabelle `pcs`
+# Daten für Tabelle `servers`
 #
 
-INSERT INTO `pcs` VALUES (1, 'NoName', '102.1', 1, 'Administrator', 0, 0, '', '21', 9, '10', '10', '10', '9', '9', '9', '9', '20', '10', '10', '20', '10', '10', '5', '5', 2000000000, '2000000000', 'usa', 6518, '', '', '', '', '', '');
-INSERT INTO `pcs` VALUES (2, 'NoName', '47.1', 2, 'Administrator2', 0, 0, '', '21', 9, '10', '10', '10', '9', '9', '9', '9', '20', '10', '10', '20', '10', '10', '5', '5', 2000000000, '2000000000', 'deutschland', 6518, '', '', '', '', '', '');
-INSERT INTO `pcs` VALUES (3, 'NoName', '80.1', 3, 'TestUser', 0, 0, '', '1', 2, '1', '1', '1', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 6716, '1094132685', 'russland', 30, '', NULL, '', '', '', NULL);
+INSERT INTO `servers` VALUES (1, 'NoName', '102.1', 1, 'Administrator', 0, 0, '', '21', 9, '10', '10', '10', '9', '9', '9', '9', '20', '10', '10', '20', '10', '10', '5', '5', 2000000000, '2000000000', 'usa', 6518, '', '', '', '', '', '');
+INSERT INTO `servers` VALUES (2, 'NoName', '47.1', 2, 'Administrator2', 0, 0, '', '21', 9, '10', '10', '10', '9', '9', '9', '9', '20', '10', '10', '20', '10', '10', '5', '5', 2000000000, '2000000000', 'deutschland', 6518, '', '', '', '', '', '');
+INSERT INTO `servers` VALUES (3, 'NoName', '80.1', 3, 'TestUser', 0, 0, '', '1', 2, '1', '1', '1', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 6716, '1094132685', 'russland', 30, '', NULL, '', '', '', NULL);
 
 # --------------------------------------------------------
 
@@ -336,8 +336,8 @@ CREATE TABLE `rank_syndikate` (
   `members` tinyint(4) default '0',
   `points` int(11) default '0',
   `av_points` float default '0',
-  `pcs` mediumint(9) default '0',
-  `av_pcs` float default '0',
+  `servers` mediumint(9) default '0',
+  `av_servers` float default '0',
   `success_rate` float default '0',
   PRIMARY KEY  (`platz`)
 ) ENGINE=MyISAM AUTO_INCREMENT=2  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -414,7 +414,7 @@ CREATE TABLE `transfers` (
 
 CREATE TABLE `upgrades` (
   `id` bigint(20) NOT NULL auto_increment,
-  `pc` smallint(6) NOT NULL default '0',
+  `server` smallint(6) NOT NULL default '0',
   `start` int(11) NOT NULL default '0',
   `end` int(11) NOT NULL default '0',
   `item` varchar(10) NOT NULL default '',
@@ -437,7 +437,7 @@ CREATE TABLE `users` (
   `name` varchar(40) default NULL,
   `email` varchar(50) default NULL,
   `password` tinytext,
-  `pcs` text,
+  `servers` text,
   `gender` enum('m','w','x') NOT NULL default 'x',
   `birthday` varchar(10) default '0.0.0',
   `stat` smallint(6) default '1',
@@ -472,7 +472,7 @@ CREATE TABLE `users` (
   `da_avail` enum('no','yes') NOT NULL default 'no',
   `acode` varchar(16) default NULL,
   `tcode` varchar(16) default NULL,
-  `pcview_ext` enum('yes','no') NOT NULL default 'yes',
+  `serverview_ext` enum('yes','no') NOT NULL default 'yes',
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=4  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 

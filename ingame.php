@@ -479,7 +479,7 @@ function is_pc_attackable($pcdat) //---------------- IS PC ATTACKABLE ? --------
     $rscan = (int)(isavailh('scan', $pcdat));
     # ^^ 0 <= $xdefence <= 25 ^^
     #echo '<br />xdefence='.$xdefence.' min='.MIN_ATTACK_XDEFENCE.' scan='.(int)(isavailh('scan',$pcdat));
-    $ownerPcCount = ($owner !== false ? count(explode(',', $owner['pcs'])) : 0);
+    $ownerPcCount = ($owner !== false ? count(explode(',', $owner['servers'])) : 0);
     if ($ownerPcCount < 2 && (
         ($xdefence <= MIN_ATTACK_XDEFENCE && isavailh('scan', $pcdat) == false)
         )

@@ -38,7 +38,7 @@ switch ($action) {
                 $type = 'user';
                 break;
             default:
-                $type = 'pc';
+                $type = 'server';
                 break;
         }
         $javascript = '<script language="JavaScript" type="text/javascript">
@@ -79,7 +79,7 @@ function choose(s) {
                     }
                     echo '<tr><td><a href="user.php?a=info&sid='.$sid.'&user='.$item.'">'.$user['name'].'</a></td>';
                     echo '<td><table class="nomargin">';
-                    $pcs = explode(',', $user['pcs']);
+                    $pcs = explode(',', $user['servers']);
                     foreach ($pcs as $xpc) {
                         $xpc = getpc($xpc);
                         echo '<tr><td><b>10.47.'.$xpc['ip'].'</b></td><td>'.$xpc['name'].'</td>';

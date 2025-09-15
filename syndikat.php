@@ -1005,7 +1005,7 @@ createlayout_bottom();
                 setuserval('syndikat', $id);
                 setuserval('syndikatetat', CS_ADMIN);
 
-                $pcs = count(explode(',', $usr['pcs']));
+                $pcs = count(explode(',', $usr['servers']));
                 db_query(
                     'INSERT INTO rank_syndikate VALUES(0,'.mysql_escape_string($id).',1,'.mysql_escape_string(
                         $usr['points']
@@ -1330,13 +1330,13 @@ createlayout_bottom();
                     echo '<td>'.nicetime2($data['time']).'</td>'."\n";
 
                     if ($dir == 'out' || $data['noticed'] == 1) {
-                        xpcinfo($data, $data['from_usr'], $data['from_pc']);
+                        xpcinfo($data, $data['from_usr'], $data['from_server']);
                     } else {
                         echo '<td>?</td>'."\n";
                     }
 
                     #if($dir=='in') {
-                    xpcinfo($data, $data['to_usr'], $data['to_pc']);
+                    xpcinfo($data, $data['to_usr'], $data['to_server']);
                     #} else echo '<td>?</td><td>?</td><td>?</td>';
 
                     $ia = array(
@@ -1536,7 +1536,7 @@ createlayout_bottom();
                 case 'user':
                     $recip = GetPC($_POST['pcip'], 'ip');
                     if ($recip === false) {
-                        $e = 'Ein Computer mit dieser IP existiert nicht!';
+                        $e = 'Ein Server mit dieser IP existiert nicht!';
                     }
                     if ($recip['owner'] == $usrid) {
                         $e = 'Du kannst dir selber kein Geld &uuml;berweisen!';

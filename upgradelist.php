@@ -7,7 +7,7 @@ $bucks = number_format($pc['credits'], 0, ',', '.');
 
 if (isset($_REQUEST['xpc'])) {
     $pci = $_REQUEST['xpc'];
-    $a = explode(',', $usr['pcs']);
+    $a = explode(',', $usr['servers']);
     $found = false;
     for ($i = 0; $i < count($a); $i++) {
         if ($a[$i] == $pci) {
@@ -98,9 +98,9 @@ function item_tooltip_text($item)
 }
 
 
-createlayout_top('ZeroDayEmpire - Dein Computer');
+createlayout_top('ZeroDayEmpire - Dein Server');
 
-echo '<header class="page-head"><h1>Dein Computer</h1></header>';
+echo '<header class="page-head"><h1>Dein Server</h1></header>';
 
 $now = time();
 $runningRows = [];

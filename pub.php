@@ -404,7 +404,7 @@ createlayout_bottom();
 <h2>Registrierung</h2>
 <div id="register-step2">
 <h3>Schritt 2: Land auswählen</h3>
-<p>Bitte w&auml;hle jetzt, in welchem Land der Erde dein Computer stehen soll. Nat&uuml;rlich nur im Spiel und nicht in echt...</p>
+<p>Bitte w&auml;hle jetzt, in welchem Land der Erde dein Server stehen soll. Nat&uuml;rlich nur im Spiel und nicht in echt...</p>
 <form action="pub.php?a=regsubmit2" method="post" name="coolform">
 <input type="hidden" name="code" value="'.$tmpfnx.'" />
 <input type="hidden" name="country" value="" />
@@ -645,7 +645,7 @@ createlayout_bottom();
             if (mysql_select_db(dbname($server))) {
 
                 $uinfo = gettableinfo('users', dbname($server));
-                $pcinfo = gettableinfo('pcs', dbname($server));
+                $pcinfo = gettableinfo('servers', dbname($server));
 
                 $cnt1 = $uinfo['Rows'];
                 $cnt2 = $pcinfo['Rows'];
@@ -661,7 +661,7 @@ createlayout_bottom();
 <td>'.$cnt1.'</td>
 </tr>
 <tr>
-<th>Computer:</th>
+<th>Server:</th>
 <td>'.$cnt2.'</td>
 </tr>
 <tr>
