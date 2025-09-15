@@ -3,7 +3,6 @@ define('IN_ZDE', 1);
 $FILE_REQUIRES_PC = true;
 include('ingame.php');
 
-$bucks = number_format($pc['cryptocoins'], 0, ',', '.');
 
 if (isset($_REQUEST['xpc'])) {
     $pci = $_REQUEST['xpc'];
