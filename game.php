@@ -201,7 +201,7 @@ switch ($action) {
   <article class="card span-6" id="servers">
       <h3>Server</h3>
       <ul class="muted" style="list-style:none; padding-left:0; margin:10px 0 0 0">
-        <li><a href="game.php?m=pc&amp;sid=<?php echo $sid; ?>"><strong><?php echo safeentities($pc['name']); ?></strong> (10.47.<?php echo $pc['ip']; ?>)</a></li>
+        <li><a href="game.php?m=server&amp;sid=<?php echo $sid; ?>"><strong><?php echo safeentities($pc['name']); ?></strong> (10.47.<?php echo $pc['ip']; ?>)</a></li>
         <li data-item="cpu"><?php echo idtoname('cpu'); ?>: <?php echo formatitemlevel('cpu',$pc['cpu']); ?><?php echo overview_upgrade_link('cpu'); ?><div class="tip"></div></li>
         <li data-item="ram"><?php echo idtoname('ram'); ?>: <?php echo formatitemlevel('ram',$pc['ram']); ?><?php echo overview_upgrade_link('ram'); ?><div class="tip"></div></li>
         <li data-item="lan"><?php echo idtoname('lan'); ?>: Level <?php echo $pc['lan']; ?><?php echo overview_upgrade_link('lan'); ?><div class="tip"></div></li>
@@ -348,7 +348,7 @@ createlayout_bottom();
 
         break;
 
-    case 'server': // ---------------------------- PC -------------------------------
+    case 'server': // ---------------------------- Server -------------------------------
 
         processupgrades($pc);
 
@@ -356,14 +356,14 @@ createlayout_bottom();
         echo '<header class="page-head"><h1>Dein Server</h1></header>';
 
         if ($pc['blocked'] > time()) {
-            echo '<section class="card"><h2>Fehler</h2><p>Dieser PC ist blockiert bis '.nicetime2($pc['blocked'], true).'!</p></section>';
+            echo '<section class="card"><h2>Fehler</h2><p>Dieser Server ist blockiert bis '.nicetime2($pc['blocked'], true).'!</p></section>';
             createlayout_bottom();
             exit;
         }
 
         $attackable_bool = is_pc_attackable($pc) && is_noranKINGuser($usrid) == false;
         $attackable = $attackable_bool ? 'ja' : 'nein';
-        $attack_title = $attackable_bool ? 'Dieser PC kann angegriffen werden' : 'Dieser PC kann nicht angegriffen werden';
+        $attack_title = $attackable_bool ? 'Dieser Server kann angegriffen werden' : 'Dieser Server kann nicht angegriffen werden';
         $attack_icon = '<svg class="icon" viewBox="0 0 24 24" aria-hidden="true" width="50" height="50"><path d="M12 2l8 4v5c0 5-3 9-8 10-5-1-8-5-8-10V6l8-4z" fill="none" stroke="rgb(var(--accent))" stroke-width="2"/><path d="M14 3l7 7-1.5 1.5-2-2-4.5 4.5V20l-2 2-2-2 2-2v-4.5l4.5-4.5-2-2z" fill="none" stroke="rgb(var(--accent))" stroke-width="2"/></svg>';
         echo '<div class="strip">';
         echo '<div class="kpi kpi-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" width="50" height="50"><path d="M3 12h18M12 3v18" stroke="rgb(var(--accent))" stroke-width="2" fill="none"/></svg><div class="stat"><h3 class="value small">Punkte: '.$pc['points'].'</h3></div></div>';
@@ -809,18 +809,18 @@ createlayout_bottom();*/
 
         break;
 
-    case 'selpc': // -------------------------------- Select PC --------------------------------
+    case 'selserver': // -------------------------------- Select Server --------------------------------
         $id = (int)$_REQUEST['pcid'];
 
         $pc = getpc($id);
         if ($pc['owner'] == $usrid) {
             $pcid = $id;
             write_session_data();
-            header('Location: game.php?m=pc&sid='.$sid);
+            header('Location: game.php?m=server&sid='.$sid);
         }
         break;
 
-    case 'servers': // -------------------------------- PCs --------------------------------
+    case 'servers': // -------------------------------- Servers --------------------------------
 
         if ($usr['serverview_ext'] == 'yes') {
             $ext = true;
@@ -971,7 +971,7 @@ createlayout_bottom();*/
 
             echo '<tr>
 <td class="number">'.$number.'</td>
-<td class="name"><a href="game.php?m=selpc&amp;sid='.$sid.'&amp;pcid='.$x['id'].'">'.$x['name'].'</a>'.$mmstat.'</td>
+<td class="name"><a href="game.php?m=selserver&amp;sid='.$sid.'&amp;pcid='.$x['id'].'">'.$x['name'].'</a>'.$mmstat.'</td>
 <td class="ip">10.47.'.$x['ip'].' ('.$country['name'].')</td>
 <td class="points">'.$x['points'].'</td>
 <td class="credits">'.$bucks.' Credits</td>';
@@ -1002,7 +1002,7 @@ createlayout_bottom();*/
 createlayout_bottom();
         break;
 
-    case 'renamepclist': // ------------------------- Rename PC List ------------------------
+    case 'renamepclist': // ------------------------- Rename Server List ------------------------
         createlayout_top('ZeroDayEmpire - Deine Server');
 ?>
 <!-- ZDE theme inject -->
@@ -1049,7 +1049,7 @@ createlayout_bottom();
 createlayout_bottom();
         break;
 
-    case 'renamepcs': // ------------------------- Rename PCs ------------------------
+    case 'renamepcs': // ------------------------- Rename Servers ------------------------
         $a = explode(',', $usr['servers']);
         for ($i = 0; $i < count($a); $i++) {
             if (trim($_POST['server'.$a[$i]]) != '') {
