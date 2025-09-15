@@ -107,6 +107,8 @@ $runningRows = [];
 $r = db_query('SELECT * FROM `upgrades` WHERE `server`=\''.mysql_escape_string($pcid).'\' AND `end`>\''.mysql_escape_string($now).'\' ORDER BY `start` ASC');
 while ($row = mysql_fetch_assoc($r)) { $runningRows[] = $row; }
 $running = count($runningRows);
+$runningItems = [];
+foreach ($runningRows as $row) { $runningItems[$row['item']] = true; }
 $credits = (int)$pc['credits'];
 
 $queueLabel = 'Kein Upgrade aktiv';
@@ -171,11 +173,16 @@ foreach ($items as $item) {
     $dep_ok = isavailb($item, $pc);
     $slotFree = ($running < UPGRADE_QUEUE_LENGTH);
     $creditOK = ($credits >= $inf['c']);
+    $runningThis = isset($runningItems[$item]);
     echo '<td>'.$timeStr.'</td><td>'.format_credits($inf['c']).'</td>';
-    $depTooltip = dependency_tooltip_text($item);
-    $depTooltip = $depTooltip ? str_replace("\n", '&#10;', htmlspecialchars($depTooltip, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8')) : '';
-    echo '<td'.($depTooltip ? ' class="tooltip" data-tooltip="'.$depTooltip.'"' : '').'>'.dependency_badge($dep_ok).'</td>';
-    $can = $dep_ok && $slotFree && $creditOK;
+    if ($runningThis) {
+        echo '<td>Upgrade l&auml;uft</td>';
+    } else {
+        $depTooltip = dependency_tooltip_text($item);
+        $depTooltip = $depTooltip ? str_replace("\n", '&#10;', htmlspecialchars($depTooltip, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8')) : '';
+        echo '<td'.($depTooltip ? ' class="tooltip" data-tooltip="'.$depTooltip.'"' : '').'>'.dependency_badge($dep_ok).'</td>';
+    }
+    $can = $dep_ok && $slotFree && $creditOK && !$runningThis;
     $encrid = crypt($item, $SALT);
     if ($can) {
         echo '<td><a class="btn sm" href="game.php?m=upgrade&amp;'.$idparam.'='.$encrid.'&amp;sid='.$sid.'">Upgrade</a></td></tr>';
@@ -183,6 +190,7 @@ foreach ($items as $item) {
         $tooltip = '';
         if (!$slotFree) { $tooltip = 'Alle Upgrade-Slots belegt'; }
         elseif (!$creditOK) { $tooltip = 'Zu wenig Credits'; }
+        elseif ($runningThis) { $tooltip = 'Upgrade l&auml;uft'; }
         $btnHtml = '<span class="btn sm" style="background-color:#888;color:#ccc;" aria-disabled="true">Upgrade</span>';
         if ($tooltip) { $btnHtml = '<span class="tooltip" data-tooltip="'.$tooltip.'">'.$btnHtml.'</span>'; }
         echo '<td>'.$btnHtml.'</td></tr>';
