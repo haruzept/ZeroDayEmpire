@@ -138,7 +138,7 @@ Sobald du es bestimmst, wird der Feind mit der gesammelten Power aller Teilnehme
 <form action="distrattack.php?page=create_submit&amp;sid='.$sid.'" method="post">
 <table>
 <tr id="cluster-create-distributed-attack-ip">
-<th>Ziel-Computer:</th>
+<th>Ziel-Server:</th>
 <td><input type="text" name="ip" value="10.47." /></td>
 </tr>
 <tr id="cluster-create-distributed-attack-target">

@@ -1536,7 +1536,7 @@ createlayout_bottom();
                 case 'user':
                     $recip = GetPC($_POST['pcip'], 'ip');
                     if ($recip === false) {
-                        $e = 'Ein Computer mit dieser IP existiert nicht!';
+                        $e = 'Ein Server mit dieser IP existiert nicht!';
                     }
                     if ($recip['owner'] == $usrid) {
                         $e = 'Du kannst dir selber kein Geld &uuml;berweisen!';

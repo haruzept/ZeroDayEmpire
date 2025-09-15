@@ -621,7 +621,7 @@ createlayout_bottom();
 <tr>
 <th>Cluster</th><td>'.$scluster.'</td></tr>
 <tr>
-<th>Computer ('.$pccnt.')</th>
+<th>Server ('.$pccnt.')</th>
 <td><ul>'.$spcs.'</ul>'.$pchw.'</td>
 </tr>
 <tr>

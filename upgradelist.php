@@ -98,9 +98,9 @@ function item_tooltip_text($item)
 }
 
 
-createlayout_top('ZeroDayEmpire - Dein Computer');
+createlayout_top('ZeroDayEmpire - Dein Server');
 
-echo '<header class="page-head"><h1>Dein Computer</h1></header>';
+echo '<header class="page-head"><h1>Dein Server</h1></header>';
 
 $now = time();
 $runningRows = [];

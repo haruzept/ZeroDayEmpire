@@ -99,11 +99,11 @@ function fill(s) {
     </td><td>Zerst&ouml;rt Prozessor (CPU), Firewall (FIREWALL) oder SDK (SDK) von fremden Rechnern</td><td>Waffe</td></tr>';
         }
         if (isavailh('block', $pc) == true) {
-            $weapons .= '<tr class="greytr2"><td nowrap="nowrap">REMOTE BLOCK</td><td><tt>REMOTE BLOCK</tt></td><td>Blockiert Computer f&uuml;r dessen Besitzer</td><td>Waffe</td></tr>';
+            $weapons .= '<tr class="greytr2"><td nowrap="nowrap">REMOTE BLOCK</td><td><tt>REMOTE BLOCK</tt></td><td>Blockiert Server f&uuml;r dessen Besitzer</td><td>Waffe</td></tr>';
         }
 
         if (isavailh('rh', $pc) == true) {
-            $weapons .= '<tr class="greytr2"><td nowrap="nowrap">REMOTE HIJACK</td><td><tt>REMOTE HIJACK</tt></td><td>Versucht, den Computer des Gegners zu &uuml;bernehmen</td><td>Waffe</td></tr>';
+            $weapons .= '<tr class="greytr2"><td nowrap="nowrap">REMOTE HIJACK</td><td><tt>REMOTE HIJACK</tt></td><td>Versucht, den Server des Gegners zu &uuml;bernehmen</td><td>Waffe</td></tr>';
         }
 
 #  <tr><td colspan="4"><sup>1)</sup> Diese Waffe kann entweder alleine oder zusammen mit dem Scan eingesetzt werden.
@@ -1088,7 +1088,7 @@ location.replace(\'battle.php?m=opc&sid='.$sid.'\');
             echo '<p>';
             if ($success == 1) {
                 $ts = time() + $t * 60;
-                $s = 'Dein Computer 10.47.'.$remote['ip'].' ('.$remote['name'].') wurde bis '.nicetime(
+                $s = 'Dein Server 10.47.'.$remote['ip'].' ('.$remote['name'].') wurde bis '.nicetime(
                         $ts
                     ).' durch einen feindlichen Angriff blockiert!<br />';
                 echo '<span style="color:green;font-weight:bold;">Angriff erfolgreich!</span><br />Der feindliche PC ist blockiert bis '.nicetime(
@@ -1097,7 +1097,7 @@ location.replace(\'battle.php?m=opc&sid='.$sid.'\');
                 $remote2['blocked'] = $ts;
                 savepc($target, $remote2);
             } else {
-                $s = 'Es wurde versucht, deinen Computer 10.47.'.$remote['ip'].' ('.$remote['name'].') zu blockieren!<br />';
+                $s = 'Es wurde versucht, deinen Server 10.47.'.$remote['ip'].' ('.$remote['name'].') zu blockieren!<br />';
                 echo '<span style="color:red;font-weight:bold;">Angriff NICHT erfolgreich!</span><br /><br />';
             }
             if ($noticed == 1) {

@@ -461,7 +461,7 @@ function idtotext($id)
         'cluster' => 'Cluster-ID',
         'newmail' => 'Neue Messages',
         'liu' => 'Letztes Post-Update',
-        'pcs' => 'Computer',
+        'pcs' => 'Server',
         'stat' => 'Status (1000=king)',
         'cm' => 'Cluster-Geld-&Uuml;berweisung',
         'homepage' => 'Homepage',

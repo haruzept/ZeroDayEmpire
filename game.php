@@ -90,10 +90,10 @@ switch ($action) {
 ?>
 <!-- ZDE theme inject -->
 <style>
-#computers li,#software li{position:relative}
-#computers li .tip,#software li .tip{display:none;position:absolute;top:100%;left:0;background:#222;color:#fff;padding:4px;border-radius:3px;max-width:240px;font-size:12px;z-index:10}
-#computers li:hover .tip,#software li:hover .tip{display:block}
-#computers li a:hover + .tip,#software li a:hover + .tip{display:none}
+#servers li,#software li{position:relative}
+#servers li .tip,#software li .tip{display:none;position:absolute;top:100%;left:0;background:#222;color:#fff;padding:4px;border-radius:3px;max-width:240px;font-size:12px;z-index:10}
+#servers li:hover .tip,#software li:hover .tip{display:block}
+#servers li a:hover + .tip,#software li a:hover + .tip{display:none}
 </style>
 <div class="container">
 <?php // /ZDE theme inject start
@@ -198,8 +198,8 @@ switch ($action) {
     </div>
   </article>
 
-  <article class="card span-6" id="computers">
-      <h3>Computer</h3>
+  <article class="card span-6" id="servers">
+      <h3>Server</h3>
       <ul class="muted" style="list-style:none; padding-left:0; margin:10px 0 0 0">
         <li><a href="game.php?m=pc&amp;sid=<?php echo $sid; ?>"><strong><?php echo safeentities($pc['name']); ?></strong> (10.47.<?php echo $pc['ip']; ?>)</a></li>
         <li data-item="cpu"><?php echo idtoname('cpu'); ?>: <?php echo formatitemlevel('cpu',$pc['cpu']); ?><?php echo overview_upgrade_link('cpu'); ?><div class="tip"></div></li>
@@ -307,7 +307,7 @@ switch ($action) {
 </section>
 
 <script>
-document.querySelectorAll('#computers li[data-item], #software li[data-item]').forEach(li => {
+document.querySelectorAll('#servers li[data-item], #software li[data-item]').forEach(li => {
   li.addEventListener('mouseenter', async () => {
     if (li.dataset.loaded) return;
     const item = li.getAttribute('data-item');
@@ -317,7 +317,7 @@ document.querySelectorAll('#computers li[data-item], #software li[data-item]').f
       const html = await res.text();
       const div = document.createElement('div');
       div.innerHTML = html;
-      const content = div.querySelector('#computer-item');
+      const content = div.querySelector('#server-item');
       let text = '';
       if (content) {
         const ps = content.querySelectorAll('p');
@@ -352,8 +352,8 @@ createlayout_bottom();
 
         processupgrades($pc);
 
-        createlayout_top('ZeroDayEmpire - Deine Computer');
-        echo '<header class="page-head"><h1>Dein Computer</h1></header>';
+        createlayout_top('ZeroDayEmpire - Deine Server');
+        echo '<header class="page-head"><h1>Dein Server</h1></header>';
 
         if ($pc['blocked'] > time()) {
             echo '<section class="card"><h2>Fehler</h2><p>Dieser PC ist blockiert bis '.nicetime2($pc['blocked'], true).'!</p></section>';
@@ -412,12 +412,12 @@ createlayout_bottom();
             echo $notif;
         }
 
-        echo '<section class="features" aria-label="Computer">';
+        echo '<section class="features" aria-label="Server">';
 
-        echo '<article class="card span-6" id="computer-properties">';
+        echo '<article class="card span-6" id="server-properties">';
         echo '<h3>Eigenschaften</h3>';
         echo '<ul class="muted" style="list-style:none; padding-left:0; margin:10px 0 0 0">';
-        echo '<li><a href="game.php?a=renamepclist&amp;sid='.$sid.'">Computer umbenennen</a></li>';
+        echo '<li><a href="game.php?a=renamepclist&amp;sid='.$sid.'">Server umbenennen</a></li>';
         echo '<li>Name: '.$pc['name'].'</li>';
         echo '<li>IP: 10.47.'.$pc['ip'].'</li>';
         echo '<li>Punkte: '.$pc['points'].'</li>';
@@ -428,7 +428,7 @@ createlayout_bottom();
         echo '</ul>';
         echo '</article>';
 
-        echo '<article class="card span-6" id="computer-essentials"><h3>Essentials</h3><ul class="muted" style="list-style:none; padding-left:0; margin:10px 0 0 0">';
+        echo '<article class="card span-6" id="server-essentials"><h3>Essentials</h3><ul class="muted" style="list-style:none; padding-left:0; margin:10px 0 0 0">';
         showinfo('cpu', '%v');
         showinfo('ram', '%v MB RAM');
         showinfo('lan', 'Level %v');
@@ -436,19 +436,19 @@ createlayout_bottom();
         showinfo('bb', 'Version %v');
         echo '</ul></article>';
 
-        echo '<article class="card span-6" id="computer-software"><h3>Software</h3><ul class="muted" style="list-style:none; padding-left:0; margin:10px 0 0 0">';
+        echo '<article class="card span-6" id="server-software"><h3>Software</h3><ul class="muted" style="list-style:none; padding-left:0; margin:10px 0 0 0">';
         showinfo('sdk', 'Version %v');
         showinfo('mk', 'Version %v');
         showinfo('ips', 'Level %v');
         echo '</ul></article>';
 
-        echo '<article class="card span-6" id="computer-security"><h3>Sicherheit</h3><ul class="muted" style="list-style:none; padding-left:0; margin:10px 0 0 0">';
+        echo '<article class="card span-6" id="server-security"><h3>Sicherheit</h3><ul class="muted" style="list-style:none; padding-left:0; margin:10px 0 0 0">';
         showinfo('fw', 'Version %v');
         showinfo('av', 'Version %v');
         showinfo('ids', 'Level %v');
         echo '</ul></article>';
 
-        echo '<article class="card span-6" id="computer-attack"><h3>Angriff</h3><ul class="muted" style="list-style:none; padding-left:0; margin:10px 0 0 0">';
+        echo '<article class="card span-6" id="server-attack"><h3>Angriff</h3><ul class="muted" style="list-style:none; padding-left:0; margin:10px 0 0 0">';
         showinfo('trojan', 'Level %v');
         showinfo('rh', 'Level %v');
         if (isavailh('da', $pc) === true) {
@@ -470,14 +470,14 @@ createlayout_bottom();
         $pcItemValue = $pc[$item] ?? null;
         if ($pcItemValue === null || (isavailh($item, $pc) != true && $pcItemValue < 1)) {
             http_response_code(404);
-            createlayout_top('ZeroDayEmpire - Deine Computer');
+            createlayout_top('ZeroDayEmpire - Deine Server');
 ?>
 <!-- ZDE theme inject -->
 <div class="container">
 <?php // /ZDE theme inject start
 
 
-            echo '<div class="content" id="computer">'.LF.'<h2>Deine Computer</h2>'.LF.'<div class="error">'.LF.'<h3>Fehler</h3>'.LF.'<p>Dieses Item wurde nicht gefunden.</p>'.LF.'</div>'.LF.'</div>'."\n";
+            echo '<div class="content" id="server">'.LF.'<h2>Deine Server</h2>'.LF.'<div class="error">'.LF.'<h3>Fehler</h3>'.LF.'<p>Dieses Item wurde nicht gefunden.</p>'.LF.'</div>'.LF.'</div>'."\n";
             ?>
 </div>
 <!-- /ZDE theme inject -->
@@ -485,7 +485,7 @@ createlayout_bottom();
 createlayout_bottom();
             break;
         }
-        createlayout_top('ZeroDayEmpire - Deine Computer');
+        createlayout_top('ZeroDayEmpire - Deine Server');
 ?>
 <!-- ZDE theme inject -->
 <div class="container">
@@ -503,8 +503,8 @@ createlayout_bottom();
             $cssid = 'attack';
         }
 
-        echo '<div class="content" id="computer"><h2>Deine Computer</h2><div id="computer-item">';
-        echo '<h3 id="computer-item-'.$cssid.'">'.idtoname($item).' '.$val.'</h3>';
+        echo '<div class="content" id="server"><h2>Deine Server</h2><div id="server-item">';
+        echo '<h3 id="server-item-'.$cssid.'">'.idtoname($item).' '.$val.'</h3>';
         echo '<p><strong>Geld: '.$bucks.' Credits</strong></p><br />';
         echo '<p>'.file_get('data/info/'.$item.'.txt').'</p>'."\n";
 
@@ -545,7 +545,7 @@ createlayout_bottom();
                 mmitem('Online-Banking-Hack', 'bankhack', 10, DPH_BANKHACK);
                 echo '</table>'."\n";
                 echo '</div>'."\n";
-                echo '<div id="computer-profit">'."\n";
+                echo '<div id="server-profit">'."\n";
                 echo '<h3>Einkommen</h3>'."\n";
                 echo '<p>'.get_gdph().' Credits/Stunde<br />'.number_format(
                         (get_gdph() / 60),
@@ -563,7 +563,7 @@ createlayout_bottom();
 
                 $v = $pc['mk'];
                 echo '</div>
-<div id="computer-weapons">
+<div id="server-weapons">
 <h3>Zur Verf&uuml;gung stehende Waffen:</h3>
 <table>
 ';
@@ -571,13 +571,13 @@ createlayout_bottom();
                     echo '<tr>'.LF.'<th>Remote Scan:</th>'.LF.'<td>Spioniert fremde Rechner aus.</td>'.LF.'</tr>'."\n";
                 }
                 if (isavailh('trojan', $pc)) {
-                    echo '<tr>'.LF.'<th>Trojaner:</th>'.LF.'<td>Sabotiert fremde Computer.</td>'.LF.'</tr>'."\n";
+                    echo '<tr>'.LF.'<th>Trojaner:</th>'.LF.'<td>Sabotiert fremde Server.</td>'.LF.'</tr>'."\n";
                 }
                 if (isavailh('smash', $pc)) {
                     echo '<tr>'.LF.'<th>Remote Smash:</th>'.LF.'<td>Zerst&ouml;rt Prozessor, Firewall oder SDK von fremden Rechnern.</td>'.LF.'</tr>'."\n";
                 }
                 if (isavailh('block', $pc)) {
-                    echo '<tr>'.LF.'<th>Remote Block:</th>'.LF.'<td>Blockiert Computer f&uuml;r dessen Besitzer.</td>'.LF.'</tr>'."\n";
+                    echo '<tr>'.LF.'<th>Remote Block:</th>'.LF.'<td>Blockiert Server f&uuml;r dessen Besitzer.</td>'.LF.'</tr>'."\n";
                 }
                 if (isavailh('rh', $pc)) {
                     echo '<tr>'.LF.'<th>Remote Hijack:</th>'.LF.'<td>Versucht, den feinlichen Rechner zu klauen.</td>'.LF.'</tr>'."\n";
@@ -749,16 +749,16 @@ createlayout_bottom();
                         ).'&sid='.$sid
                     );
 
-                    /*createlayout_top('ZeroDayEmpire - Dein Computer - Upgrade');
+                    /*createlayout_top('ZeroDayEmpire - Dein Server - Upgrade');
 ?>
 <!-- ZDE theme inject -->
 <div class="container">
 <?php // /ZDE theme inject start
 
 
-                    echo '<div id="computer" class="content">'."\n";
-                    echo '<h2>Dein Computer</h2>'."\n";
-                    echo '<div id="computer-upgrade-done">';
+                    echo '<div id="server" class="content">'."\n";
+                    echo '<h2>Dein Server</h2>'."\n";
+                    echo '<div id="server-upgrade-done">';
                     echo '<h3>Upgrade l&auml;uft!</h3>';
                     echo '<p><img src="images/pbar.gif"><br /><br /><strong>Fertigstellung:</strong>&nbsp;';
                     echo nicetime($ftime);
@@ -835,7 +835,7 @@ createlayout_bottom();*/
         $extv = (int)(!$ext);
         $extt = ($ext ? 'kompakte Ansicht' : 'erweiterte Ansicht');
 
-        createlayout_top('Deine Computer');
+        createlayout_top('Deine Server');
 ?>
 <!-- ZDE theme inject -->
 <div class="container">
@@ -843,13 +843,13 @@ createlayout_bottom();*/
 
 
 
-        echo '<div class="content" id="computer">
-<h2>Deine Computer</h2>
+        echo '<div class="content" id="server">
+<h2>Deine Server</h2>
 <div class="submenu">
-<p><a href="game.php?a=renamepclist&amp;sid='.$sid.'">Computer umbenennen</a></p>
+<p><a href="game.php?a=renamepclist&amp;sid='.$sid.'">Server umbenennen</a></p>
 </div>
-<div id="computer-list">
-<h3>Liste aller Computer</h3>
+<div id="server-list">
+<h3>Liste aller Server</h3>
 <form action="game.php?page=pcs&amp;sid='.$sid.'" method="post">
 <p>Ordnen nach: <select name="sorttype" onchange="this.form.submit()"><option value="">Nicht ordnen</option>
 <option value="name ASC">Name</option>
@@ -862,7 +862,7 @@ createlayout_bottom();*/
 <table>
 <tr>
 <th class="number">Nummer</th>
-<th class="name">Computername</th>
+<th class="name">Servername</th>
 <th class="ip">IP-Adresse</th>
 <th class="points">Punkte</th>
 <th class="credits">Geld</th>';
@@ -1003,17 +1003,17 @@ createlayout_bottom();
         break;
 
     case 'renamepclist': // ------------------------- Rename PC List ------------------------
-        createlayout_top('ZeroDayEmpire - Deine Computer');
+        createlayout_top('ZeroDayEmpire - Deine Server');
 ?>
 <!-- ZDE theme inject -->
 <div class="container">
 <?php // /ZDE theme inject start
 
 
-        echo '<div class="content" id="computer">
-<h2>Deine Computer</h2>
-'.$notif.'<div id="computer-rename">
-<h3>Computer umbenennen</h3>
+        echo '<div class="content" id="server">
+<h2>Deine Server</h2>
+'.$notif.'<div id="server-rename">
+<h3>Server umbenennen</h3>
 <form action="game.php?a=renamepcs&amp;sid='.$sid.'" method="post">
 <table>
 <tr>
@@ -1034,7 +1034,7 @@ createlayout_bottom();
 </tr>
 ';
         }
-        echo '<tr id="computer-rename-confirm">
+        echo '<tr id="server-rename-confirm">
 <td colspan="3"><input type="submit" value="Speichern" /></td>
 </tr>
 </table>
@@ -1085,7 +1085,7 @@ createlayout_bottom();
             case 'user':
                 $recip = GetPC($_POST['pcip'], 'ip');
                 if ($recip === false) {
-                    $e = 'Ein Computer mit dieser IP existiert nicht!';
+                    $e = 'Ein Server mit dieser IP existiert nicht!';
                 }
                 break;
             case 'cluster':
