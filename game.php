@@ -193,7 +193,7 @@ switch ($action) {
   <article class="card span-6">
     <h3>&Uuml;bersicht</h3>
     <div class="strip" style="margin-top:10px; grid-template-columns:repeat(auto-fit,minmax(140px,1fr))">
-      <div class="kpi"><div class="label"><strong>Guthaben:</strong></div><div><span><?php echo $bucks; ?></span> <span class="unit">CR</span></div></div>
+      <div class="kpi"><div class="label"><strong>Guthaben:</strong></div><div><span><?php echo $bucks; ?></span> <span class="unit">CC</span></div></div>
       <div class="kpi"><div class="label"><strong>Punkte:</strong></div><div><span><?php echo $usr['points']; ?></span> <span class="unit">Punkte</span></div></div>
     </div>
   </article>
