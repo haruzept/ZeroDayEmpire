@@ -26,7 +26,7 @@ switch ($action) {
     case 'start': // -------------------- START -----------------------
 
         /*if($usrid==1) {
-            $r=db_query('SELECT id,buildstat FROM pcs WHERE buildstat!='';');
+            $r=db_query('SELECT id,buildstat FROM servers WHERE buildstat!='';');
             while($data=mysql_fetch_assoc($r)):
               $a=explode('/', $data['buildstat']);
               db_query('INSERT INTO upgrades SET pc=\''.mysql_escape_string($data['id']).'\', end=\''.mysql_escape_string($a[0]).'\', item=\''.mysql_escape_string($a[1]).'\';');
@@ -107,7 +107,7 @@ switch ($action) {
                 $pc['credits'] -= $syndikat['tax'];
                 if ($pc['credits'] > 0) {
                     db_query(
-                        'UPDATE pcs SET credits='.mysql_escape_string(
+                        'UPDATE servers SET credits='.mysql_escape_string(
                             $pc['credits']
                         ).' WHERE id=\''.mysql_escape_string($pcid).'\';'
                     );
@@ -168,7 +168,7 @@ switch ($action) {
         }
 
         $da = false;
-        $sql = db_query('SELECT * FROM pcs WHERE owner='.mysql_escape_string($usr['id']).';');
+        $sql = db_query('SELECT * FROM servers WHERE owner='.mysql_escape_string($usr['id']).';');
         while ($x = mysql_fetch_assoc($sql)) {
             if ($x['points'] < 1024) {
                 processupgrades($x);
@@ -658,7 +658,7 @@ createlayout_bottom();
                 $pc[$id] += 1;
                 $pc['credits'] -= $c;
                 db_query(
-                    'UPDATE pcs SET '.mysql_escape_string($id).'='.mysql_escape_string(
+                    'UPDATE servers SET '.mysql_escape_string($id).'='.mysql_escape_string(
                         $pc[$id]
                     ).', credits='.mysql_escape_string($pc['credits']).' WHERE id=\''.mysql_escape_string($pcid).'\''
                 );
@@ -734,7 +734,7 @@ createlayout_bottom();
                     $lastend = ($cnt1 < 1 ? time() : mysql_result($r1, $cnt1 - 1, 'end'));
                     $ftime = $lastend + (int)($inf['d'] * 60);
                     db_query(
-                        'UPDATE `pcs` SET `credits`=`credits`-'.mysql_escape_string(
+                        'UPDATE `servers` SET `credits`=`credits`-'.mysql_escape_string(
                             $inf['c']
                         ).' WHERE `id`=\''.mysql_escape_string($pcid).'\''
                     );
@@ -895,10 +895,10 @@ createlayout_bottom();*/
 #$list='';
         $tcreds = 0;
         if ($ext) {
-            $sql = db_query('SELECT * FROM pcs WHERE owner='.mysql_escape_string($usr['id']).$ord.';');
+            $sql = db_query('SELECT * FROM servers WHERE owner='.mysql_escape_string($usr['id']).$ord.';');
         } else {
             $sql = db_query(
-                'SELECT id,name,ip,country,points,credits,rh,lrh FROM pcs WHERE owner='.mysql_escape_string(
+                'SELECT id,name,ip,country,points,credits,rh,lrh FROM servers WHERE owner='.mysql_escape_string(
                     $usr['id']
                 ).$ord.';'
             );
@@ -1221,7 +1221,7 @@ createlayout_bottom();
             $pc['credits'] -= $dat[2];
 #print_r($dat);
             db_query(
-                'UPDATE pcs SET credits=\''.mysql_escape_string($pc['credits']).'\' WHERE id='.mysql_escape_string(
+                'UPDATE servers SET credits=\''.mysql_escape_string($pc['credits']).'\' WHERE id='.mysql_escape_string(
                     $pcid
                 )
             );
@@ -1229,7 +1229,7 @@ createlayout_bottom();
                 $recip = getpc($dat[1]);
                 $recip['credits'] += $dat[3];
                 db_query(
-                    'UPDATE pcs SET credits=credits+'.mysql_escape_string($dat[3]).' WHERE id=\''.mysql_escape_string(
+                    'UPDATE servers SET credits=credits+'.mysql_escape_string($dat[3]).' WHERE id=\''.mysql_escape_string(
                         $recip['id']
                     ).'\';'
                 );
@@ -1313,9 +1313,9 @@ createlayout_bottom();
             $listpage = 1;
         }
         $r = db_query(
-            'SELECT pcs.id AS pcs_id, pcs.ip AS pcs_ip, pcs.name AS pcs_name, pcs.points AS pcs_points, users.id AS users_id, users.name AS users_name, users.points AS users_points, syndikate.id AS syndikate_id, syndikate.name AS syndikate_name FROM (syndikate RIGHT JOIN users ON syndikate.id = users.syndikat) RIGHT JOIN pcs ON users.id = pcs.owner WHERE country LIKE \''.mysql_escape_string(
+            'SELECT servers.id AS pcs_id, servers.ip AS pcs_ip, servers.name AS pcs_name, servers.points AS pcs_points, users.id AS users_id, users.name AS users_name, users.points AS users_points, syndikate.id AS syndikate_id, syndikate.name AS syndikate_name FROM (syndikate RIGHT JOIN users ON syndikate.id = users.syndikat) RIGHT JOIN servers ON users.id = servers.owner WHERE country LIKE \''.mysql_escape_string(
                 $c['id']
-            ).'\' ORDER BY pcs.id ASC;'
+            ).'\' ORDER BY servers.id ASC;'
         );
         $anz = mysql_num_rows($r);
         $pages = ceil($anz * (4 / 256));

@@ -153,7 +153,7 @@ du die genauen Gr&uuml;nde wissen willst, schick eine Email an <a href="mailto:k
             }
             $usrid = $usr['id'];
             $pcid = mysql_result(
-                db_query('SELECT id FROM pcs WHERE owner=\''.mysql_escape_string($usrid).'\' LIMIT 1'),
+                db_query('SELECT id FROM servers WHERE owner=\''.mysql_escape_string($usrid).'\' LIMIT 1'),
                 'id'
             );
             write_session_data();

@@ -50,19 +50,19 @@ switch ($action) {
         }
         #echo '<br>id='.$victim['id'];
         $vpc = @mysqli_fetch_assoc(
-            db_query('SELECT id,ip,name FROM pcs WHERE owner=' . $victim['id'] . ' ORDER BY RAND() LIMIT 1;')
+            db_query('SELECT id,ip,name FROM servers WHERE owner=' . $victim['id'] . ' ORDER BY RAND() LIMIT 1;')
         );
         $blocked = time() + 6 * 60 * 60;
-        db_query('UPDATE pcs SET blocked=\'' . mysqli_real_escape_string($dbcon, $blocked) . '\' WHERE id=' . $vpc['id'] . ';');
+        db_query('UPDATE servers SET blocked=\'' . mysqli_real_escape_string($dbcon, $blocked) . '\' WHERE id=' . $vpc['id'] . ';');
         addsysmsg(
             $victim['id'],
             'Dein PC 10.47.'.$vpc['ip'].' ('.$vpc['name'].') wurde durch einen b&ouml;sartigen Wurm, der im Moment im Netz kursiert,
   bis '.nicetime($blocked).' blockiert!'
         );
         db_query(
-            'INSERT INTO logs SET type=\'worm_blockpc\', usr_id=\'' .
+            'INSERT INTO logs SET type=\'worm_blockserver\', usr_id=\'' .
             mysqli_real_escape_string($dbcon, $victim['id']) .
-            '\', payload=\'blocked pc ' . $vpc['id'] . '\';'
+            '\', payload=\'blocked server ' . $vpc['id'] . '\';'
         );
         break;
 
@@ -81,12 +81,12 @@ switch ($action) {
         }
         #echo '<br>id='.$victim['id'];
         $vpc = @mysqli_fetch_assoc(
-            db_query('SELECT id,ip,name,credits FROM pcs WHERE owner=' . $victim['id'] . ' ORDER BY RAND() LIMIT 1;')
+            db_query('SELECT id,ip,name,credits FROM servers WHERE owner=' . $victim['id'] . ' ORDER BY RAND() LIMIT 1;')
         );
         $plus = mt_rand(2000, 10000);
         $creds = $vpc['credits'] + $plus;
         db_query(
-            'UPDATE pcs SET credits=\'' . mysqli_real_escape_string($dbcon, $creds) . '\' WHERE id=' . mysqli_real_escape_string($dbcon, $vpc['id']) . ';'
+            'UPDATE servers SET credits=\'' . mysqli_real_escape_string($dbcon, $creds) . '\' WHERE id=' . mysqli_real_escape_string($dbcon, $vpc['id']) . ';'
         );
         addsysmsg(
             $victim['id'],
@@ -94,10 +94,10 @@ switch ($action) {
   die Summe von '.$plus.' Credits &uuml;berwiesen!'
         );
         db_query(
-            'INSERT INTO logs SET type=\'worm_pcsendmoney\', usr_id=\'' .
+            'INSERT INTO logs SET type=\'worm_serversendmoney\', usr_id=\'' .
             mysqli_real_escape_string($dbcon, $victim['id']) .
             '\', payload=\'gave ' . mysqli_real_escape_string($dbcon, $plus) .
-            ' credits to pc ' . mysqli_real_escape_string($dbcon, $vpc['id']) . '\';'
+            ' credits to server ' . mysqli_real_escape_string($dbcon, $vpc['id']) . '\';'
         );
         break;
 

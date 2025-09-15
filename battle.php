@@ -560,7 +560,7 @@ function fill(s) {
 
         if ($cost > 0):
             $pc['credits'] -= $cost;
-            db_query('UPDATE pcs SET credits='.$pc['credits'].' WHERE id='.$pcid.';');
+            db_query('UPDATE servers SET credits='.$pc['credits'].' WHERE id='.$pcid.';');
         endif;
 
         $delay = 110 - ((int)$pc['lan'] * 10);
@@ -632,7 +632,7 @@ location.replace(\'battle.php?m=opc&sid='.$sid.'\');
         }
 
         $ts = time();
-        db_query('UPDATE pcs SET la=\''.mysql_escape_string($ts).'\' WHERE id='.mysql_escape_string($pcid));
+        db_query('UPDATE servers SET la=\''.mysql_escape_string($ts).'\' WHERE id='.mysql_escape_string($pcid));
         db_query('UPDATE users SET la=\''.mysql_escape_string($ts).'\' WHERE id='.$usrid);
         $pc['la'] = $ts;
         $usr['la'] = $ts;
@@ -800,7 +800,7 @@ location.replace(\'battle.php?m=opc&sid='.$sid.'\');
                         ).' ist blockiert bis '.nicetime($t).'!<br />';
                     #$remote2['di']=$key; $remote2['dt']=$t;
                     db_query(
-                        'UPDATE pcs SET di=\''.mysql_escape_string($key).'\', dt=\''.mysql_escape_string(
+                        'UPDATE servers SET di=\''.mysql_escape_string($key).'\', dt=\''.mysql_escape_string(
                             $t
                         ).'\' WHERE id='.mysql_escape_string($remote['id']).';'
                     );
@@ -900,7 +900,7 @@ location.replace(\'battle.php?m=opc&sid='.$sid.'\');
                             $remote2['credits'] = $max;
                         }
                         db_query(
-                            'UPDATE pcs SET lmupd=\''.mysql_escape_string(
+                            'UPDATE servers SET lmupd=\''.mysql_escape_string(
                                 $remote2['lmupd']
                             ).'\', credits=\''.mysql_escape_string(
                                 $remote2['credits']
@@ -935,12 +935,12 @@ location.replace(\'battle.php?m=opc&sid='.$sid.'\');
                         $local['credits'] += $credits;
                         if ($local['credits'] > 0 && $remote2['credits'] > 0) {
                             db_query(
-                                'UPDATE pcs SET credits=\''.mysql_escape_string(
+                                'UPDATE servers SET credits=\''.mysql_escape_string(
                                     $remote2['credits']
                                 ).'\' WHERE id='.mysql_escape_string($remote2['id']).';'
                             );
                             db_query(
-                                'UPDATE pcs SET credits=\''.mysql_escape_string(
+                                'UPDATE servers SET credits=\''.mysql_escape_string(
                                     $local['credits']
                                 ).'\' WHERE id='.mysql_escape_string($local['id']).';'
                             );
@@ -1117,7 +1117,7 @@ location.replace(\'battle.php?m=opc&sid='.$sid.'\');
             $local['lrh'] = $ts;
             $local2['lrh'] = $ts;
             db_query(
-                'UPDATE pcs SET lrh=\''.mysql_escape_string($ts).'\' WHERE id='.mysql_escape_string($pc['id']).';'
+                'UPDATE servers SET lrh=\''.mysql_escape_string($ts).'\' WHERE id='.mysql_escape_string($pc['id']).';'
             );
 
             $defend = getDefend(
@@ -1162,7 +1162,7 @@ location.replace(\'battle.php?m=opc&sid='.$sid.'\');
                 $rem_own = getuser($remote2['owner']);
                 if ($rem_own != false) {
                     $rem_own_pc_cnt = (int)@mysql_num_rows(
-                        db_query('SELECT id FROM pcs WHERE owner='.$rem_own['id'].' AND id<>'.$remote2['id'].';')
+                        db_query('SELECT id FROM servers WHERE owner='.$rem_own['id'].' AND id<>'.$remote2['id'].';')
                     );
                     #echo mysql_error();
                     if ($rem_own_pc_cnt == 0) {
@@ -1210,7 +1210,7 @@ location.replace(\'battle.php?m=opc&sid='.$sid.'\');
                     write_pc_list($rem_own['id']);
                 }
             }
-            db_query('UPDATE pcs SET lrh=\''.time().'\' WHERE id='.mysql_escape_string($pc['id']).';');
+            db_query('UPDATE servers SET lrh=\''.time().'\' WHERE id='.mysql_escape_string($pc['id']).';');
             echo mysql_error();
 
             if ($noticed == 1) {

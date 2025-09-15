@@ -109,7 +109,7 @@ function research_start($pcid,$track)
     if ($pc['credits'] < $calc['cost']) {
         return array('error'=>'Nicht genügend Credits');
     }
-    db_query('UPDATE pcs SET credits=credits-'.mysql_escape_string($calc['cost']).' WHERE id=\''.mysql_escape_string($pcid).'\' AND credits>='.mysql_escape_string($calc['cost']).'');
+    db_query('UPDATE servers SET credits=credits-'.mysql_escape_string($calc['cost']).' WHERE id=\''.mysql_escape_string($pcid).'\' AND credits>='.mysql_escape_string($calc['cost']).'');
     if (mysql_affected_rows() < 1) {
         return array('error'=>'Nicht genügend Credits');
     }
