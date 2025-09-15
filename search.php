@@ -29,7 +29,7 @@ function showform()
 <h4>Listen</h4>
 <p>
 <a href="search.php?m=list&amp;sid='.$sid.'&amp;type=user">Spieler</a> |
-<a href="search.php?m=list&amp;sid='.$sid.'&amp;type=pcs">Computer</a> |
+<a href="search.php?m=list&amp;sid='.$sid.'&amp;type=pcs">Server</a> |
 <a href="search.php?m=list&amp;sid='.$sid.'&amp;type=syndikat">Syndikat</a>
 </p>
 //-->
@@ -38,8 +38,8 @@ function showform()
 <p>
 <input type="radio" name="for" value="user" id="search_for_user" checked="checked" onclick="showpan(this)" />
 <label for="search_for_user">Spielern</label>
-<input type="radio" name="for" value="pcs" id="search_for_pcs" onclick="showpan(this)" />
-<label for="search_for_pcs">Computern</label>
+<input type="radio" name="for" value="servers" id="search_for_pcs" onclick="showpan(this)" />
+<label for="search_for_pcs">Servern</label>
 <input type="radio" name="for" value="syndikat" id="search_for_syndikat" onclick="showpan(this)" />
 <label for="search_for_syndikat">Syndikatn</label>
 </p>
@@ -107,7 +107,7 @@ function showform()
 </div>
 
 <div id="search-form-pcs" style="display:none;">
-<h4>Suche nach Computern</h4>
+<h4>Suche nach Servern</h4>
 <p>Das H&auml;cken entfernen um beliebige Werte zuzulassen.</p>
 
 <table>

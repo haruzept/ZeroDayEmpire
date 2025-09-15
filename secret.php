@@ -27,7 +27,7 @@ switch ($action) {
     case 'file':  // ----------------------------------- FILE --------------------------------
 
         switch ($_REQUEST['type']) {
-            case 'pc':
+            case 'server':
                 $dat = getpc($_REQUEST['id']);
                 break;
             case 'user':
@@ -135,7 +135,7 @@ alert(\'Bitte Zahl eingeben!\');
             simple_message('Das darf nur der KING!');
         }
         switch ($_REQUEST['type']) {
-            case 'pc':
+            case 'server':
                 savepc($_REQUEST['id'], $_POST);
                 break;
             case 'user':
@@ -461,7 +461,7 @@ function idtotext($id)
         'syndikat' => 'Syndikat-ID',
         'newmail' => 'Neue Messages',
         'liu' => 'Letztes Post-Update',
-        'pcs' => 'Computer',
+        'servers' => 'Server',
         'stat' => 'Status (1000=king)',
         'cm' => 'Syndikat-Geld-&Uuml;berweisung',
         'homepage' => 'Homepage',

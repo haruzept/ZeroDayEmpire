@@ -76,7 +76,7 @@ function server_update_points($server)
             #if(mysql_num_rows($r)>0) {
             $syndikate['c'.$c]['points'] += $upoints;
             $syndikate['c'.$c]['members'] += 1;
-            $syndikate['c'.$c]['pcs'] += $pc_cnt;
+            $syndikate['c'.$c]['servers'] += $pc_cnt;
             #}
         }
 
@@ -91,7 +91,7 @@ function server_update_points($server)
         }
     }
 
-#$pcinfo=gettableinfo('pcs',dbname($server));
+#$pcinfo=gettableinfo('servers',dbname($server));
 #file_put('data/_server'.$server.'/pc-count.dat', $pcinfo['Rows']);
     file_put('data/_server'.$server.'/user-count.dat', mysql_num_rows($u_result));
 
@@ -132,14 +132,14 @@ function server_update_points($server)
     $c = array();
     foreach ($b as $bez => $val) {
         $c[$bez]['points'] = $val;
-        $c[$bez]['pcs'] = $syndikate[$bez]['pcs'];
+        $c[$bez]['servers'] = $syndikate[$bez]['servers'];
         $c[$bez]['members'] = $syndikate[$bez]['members'];
     }
 
     foreach ($c as $bez => $dat) {
         $bez = substr($bez, 1);
         $av_p = round($dat['points'] / $dat['members'], 2);
-        $av_pcs = round($dat['pcs'] / $dat['members'], 2);
+        $av_pcs = round($dat['servers'] / $dat['members'], 2);
 
         // SUCCESS RATE CALCULATION START
         $syndikat = getsyndikat($bez);
@@ -166,7 +166,7 @@ function server_update_points($server)
                     $dat['members']
                 ).'\',\''.mysql_escape_string($dat['points']).'\',\''.mysql_escape_string(
                     $av_p
-                ).'\',\''.mysql_escape_string($dat['pcs']).'\',\''.mysql_escape_string(
+                ).'\',\''.mysql_escape_string($dat['servers']).'\',\''.mysql_escape_string(
                     $av_pcs
                 ).'\',\''.mysql_escape_string($srate).'\');'
             );

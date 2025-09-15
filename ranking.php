@@ -187,7 +187,7 @@ Das n&auml;chste Mal passiert das um '.$updtime.'.</p>
                 $cid = (int)$usr['syndikat'];
             }
 
-            $sts = array('points', 'av_points', 'pcs', 'av_pcs', 'success_rate', 'members');
+            $sts = array('points', 'av_points', 'servers', 'av_servers', 'success_rate', 'members');
             $prec = array(0, 2, 0, 2, 1, 0);
             $r = db_query('SELECT * FROM `rank_syndikate` ORDER BY `'.mysql_escape_string($sts[$sorttype]).'` DESC;');
             $total = mysql_num_rows($r);
