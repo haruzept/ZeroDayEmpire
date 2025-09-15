@@ -107,15 +107,26 @@ function check_dependencies(int $pc, string $code, int $targetLevel): array {
     $deps = db_fetch_deps($code);
     $missing = [];
     foreach ($deps as $dep) {
-        if ($dep['dep_type'] === 'unlock' && $targetLevel === 1) {
-            $ok = check_single_dep($pc, $dep);
-            if (!$ok) $missing[] = $dep['req_key'];
-        } elseif ($dep['dep_type'] === 'level_gate' && $targetLevel >= $dep['gate_level']) {
-            $ok = check_single_dep($pc, $dep);
-            if (!$ok) $missing[] = $dep['req_key'];
+        $needsCheck = ($dep['dep_type'] === 'unlock' && $targetLevel === 1)
+            || ($dep['dep_type'] === 'level_gate' && $targetLevel >= $dep['gate_level']);
+        if (!$needsCheck) { continue; }
+        $ok = check_single_dep($pc, $dep);
+        if (!$ok) {
+            $missing[] = dep_human_label($dep);
         }
     }
     return ['ok' => empty($missing), 'missing' => $missing];
+}
+
+function dep_human_label(array $dep): string {
+    if ($dep['req_kind'] === 'research') {
+        $key = mysql_escape_string($dep['req_key']);
+        $r = mysql_query("SELECT name FROM research_tracks WHERE track='$key' LIMIT 1");
+        $name = ($r && $row = mysql_fetch_assoc($r)) ? $row['name'] : $dep['req_key'];
+        return $name.' Stufe '.$dep['req_level'];
+    }
+    $name = function_exists('idtoname') ? idtoname($dep['req_key']) : $dep['req_key'];
+    return $name.' Stufe '.$dep['req_level'];
 }
 
 function check_single_dep(int $pc, array $dep): bool {
