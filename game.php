@@ -100,29 +100,29 @@ switch ($action) {
 
 
 
-# Cluster-Mitgliedsbeitrag bezahlen:
-        $cluster = getcluster($usr['cluster']);
-        if ($cluster !== false && $usr['cm'] != strftime('%d.%m.')) {
-            if ($cluster['tax'] > 0) {
-                $pc['credits'] -= $cluster['tax'];
+# Syndikat-Mitgliedsbeitrag bezahlen:
+        $syndikat = getsyndikat($usr['syndikat']);
+        if ($syndikat !== false && $usr['cm'] != strftime('%d.%m.')) {
+            if ($syndikat['tax'] > 0) {
+                $pc['credits'] -= $syndikat['tax'];
                 if ($pc['credits'] > 0) {
                     db_query(
                         'UPDATE pcs SET credits='.mysql_escape_string(
                             $pc['credits']
                         ).' WHERE id=\''.mysql_escape_string($pcid).'\';'
                     );
-                    $cluster['money'] += $cluster['tax'];
+                    $syndikat['money'] += $syndikat['tax'];
                     db_query(
-                        'UPDATE clusters SET money='.mysql_escape_string(
-                            $cluster['money']
-                        ).' WHERE id=\''.mysql_escape_string($usr['cluster']).'\';'
+                        'UPDATE syndikate SET money='.mysql_escape_string(
+                            $syndikat['money']
+                        ).' WHERE id=\''.mysql_escape_string($usr['syndikat']).'\';'
                     );
                     $bucks = number_format($pc['credits'], 0, ',', '.');
                 } else {
                     $info .= infobox(
                         'Fehler',
                         'important',
-                        'Du hast auf deinem ersten PC 10.47.'.$pc['ip'].' ('.$pc['name'].') nicht mehr gen&uuml;gend Credits um den Cluster-Mitgliedsbeitrag von '.$cluster['tax'].' Credits zu bezahlen.'
+                        'Du hast auf deinem ersten PC 10.47.'.$pc['ip'].' ('.$pc['name'].') nicht mehr gen&uuml;gend Credits um den Syndikat-Mitgliedsbeitrag von '.$syndikat['tax'].' Credits zu bezahlen.'
                     );
                     # hmmm doppelte ID 'important'
                 }
@@ -291,17 +291,17 @@ switch ($action) {
     ?>
   </article>
 
-  <article class="card span-6" id="cluster">
-    <h3>Cluster</h3>
-    <?php if ($cluster !== false) { ?>
+  <article class="card span-6" id="syndikat">
+    <h3>Syndikat</h3>
+    <?php if ($syndikat !== false) { ?>
       <ul class="muted" style="list-style:none; padding-left:0; margin:10px 0 0 0">
-        <li><strong><a href="cluster.php?a=start&amp;sid=<?php echo $sid; ?>"><?php echo safeentities($cluster['name']); ?></a></strong></li>
-        <li>Punkte: <?php echo number_format($cluster['points'],0,',','.'); ?></li>
-        <li>Mitglieder: <?php echo $cluster['members'] ?? 0; ?></li>
-        <li>Geld: <?php echo number_format($cluster['money'],0,',','.'); ?> CR</li>
+        <li><strong><a href="syndikat.php?a=start&amp;sid=<?php echo $sid; ?>"><?php echo safeentities($syndikat['name']); ?></a></strong></li>
+        <li>Punkte: <?php echo number_format($syndikat['points'],0,',','.'); ?></li>
+        <li>Mitglieder: <?php echo $syndikat['members'] ?? 0; ?></li>
+        <li>Geld: <?php echo number_format($syndikat['money'],0,',','.'); ?> CR</li>
       </ul>
     <?php } else { ?>
-      <p class="muted">Du bist in keinem Cluster.</p>
+      <p class="muted">Du bist in keinem Syndikat.</p>
     <?php } ?>
   </article>
 </section>
@@ -1088,11 +1088,11 @@ createlayout_bottom();
                     $e = 'Ein Computer mit dieser IP existiert nicht!';
                 }
                 break;
-            case 'cluster':
-                $recip = $_POST['clustercode'];
-                $recip = GetCluster($recip, 'code');
+            case 'syndikat':
+                $recip = $_POST['syndikatcode'];
+                $recip = GetSyndikat($recip, 'code');
                 if ($recip === false) {
-                    $e = 'Ein Cluster mit diesem Code existiert nicht!';
+                    $e = 'Ein Syndikat mit diesem Code existiert nicht!';
                 }
                 break;
             default:
@@ -1171,17 +1171,17 @@ createlayout_bottom();
                     echo $text;
                     break;
 
-                case 'cluster':
-                    echo '<b>Hiermit werden '.$credits.' Credits an den Cluster '.$recip['code'].' ('.$recip['name'].') &uuml;berwiesen.</b><br />';
+                case 'syndikat':
+                    echo '<b>Hiermit werden '.$credits.' Credits an den Syndikat '.$recip['code'].' ('.$recip['name'].') &uuml;berwiesen.</b><br />';
                     $c = GetCountry('id', $pc['country']);
                     $country = $c['name'];
                     $out = $c['out'];
                     $rest = $credits - $out;
                     if ($rest > 0) {
                         $fin = $rest;
-                        echo 'Davon werden noch '.$out.' Credits als Ausfuhr-Geb&uuml;hr f&uuml;r '.$country.' abgezogen. Der Cluster '.$recip['code'].' erh&auml;lt also noch <b>'.$rest.' Credits</b>';
+                        echo 'Davon werden noch '.$out.' Credits als Ausfuhr-Geb&uuml;hr f&uuml;r '.$country.' abgezogen. Der Syndikat '.$recip['code'].' erh&auml;lt also noch <b>'.$rest.' Credits</b>';
                     } else {
-                        echo 'Da der Betrag sehr gering ist, werden keine Geb&uuml;hren erhoben. Der Cluster '.$recip['code'].' erh&auml;lt <b>'.$credits.' Credits</b>.';
+                        echo 'Da der Betrag sehr gering ist, werden keine Geb&uuml;hren erhoben. Der Syndikat '.$recip['code'].' erh&auml;lt <b>'.$credits.' Credits</b>.';
                         $fin = $credits;
                     }
                     break;
@@ -1241,17 +1241,17 @@ createlayout_bottom();
                     addsysmsg($recip['owner'], $s);
                 }
                 $msg = '&Uuml;berweisung an 10.47.'.$recip['ip'].' ('.$recip['name'].') ausgef&uuml;hrt!';
-            } elseif ($dat[0] == 'cluster') {
-                $c = getcluster($dat[1]);
+            } elseif ($dat[0] == 'syndikat') {
+                $c = getsyndikat($dat[1]);
                 $c['money'] += $dat[3];
                 $c['events'] = nicetime4(
-                    ).' [usr='.$usrid.']'.$usr['name'].'[/usr] spendet dem Cluster '.$dat[3].' Credits.'.LF.$c['events'];
+                    ).' [usr='.$usrid.']'.$usr['name'].'[/usr] spendet dem Syndikat '.$dat[3].' Credits.'.LF.$c['events'];
                 db_query(
-                    'UPDATE clusters SET money=\''.mysql_escape_string($c['money']).'\',events=\''.mysql_escape_string(
+                    'UPDATE syndikate SET money=\''.mysql_escape_string($c['money']).'\',events=\''.mysql_escape_string(
                         $c['events']
                     ).'\' WHERE id='.mysql_escape_string($c['id'])
                 );
-                $msg = 'Dem Cluster '.$c['code'].' wurden '.$dat['2'].' Credits &uuml;berwiesen!';
+                $msg = 'Dem Syndikat '.$c['code'].' wurden '.$dat['2'].' Credits &uuml;berwiesen!';
             }
             db_query(
                 'INSERT INTO transfers VALUES(\''.mysql_escape_string($pcid).'\', \'user\', \''.mysql_escape_string(
@@ -1313,7 +1313,7 @@ createlayout_bottom();
             $listpage = 1;
         }
         $r = db_query(
-            'SELECT pcs.id AS pcs_id, pcs.ip AS pcs_ip, pcs.name AS pcs_name, pcs.points AS pcs_points, users.id AS users_id, users.name AS users_name, users.points AS users_points, clusters.id AS clusters_id, clusters.name AS clusters_name FROM (clusters RIGHT JOIN users ON clusters.id = users.cluster) RIGHT JOIN pcs ON users.id = pcs.owner WHERE country LIKE \''.mysql_escape_string(
+            'SELECT pcs.id AS pcs_id, pcs.ip AS pcs_ip, pcs.name AS pcs_name, pcs.points AS pcs_points, users.id AS users_id, users.name AS users_name, users.points AS users_points, syndikate.id AS syndikate_id, syndikate.name AS syndikate_name FROM (syndikate RIGHT JOIN users ON syndikate.id = users.syndikat) RIGHT JOIN pcs ON users.id = pcs.owner WHERE country LIKE \''.mysql_escape_string(
                 $c['id']
             ).'\' ORDER BY pcs.id ASC;'
         );
@@ -1372,7 +1372,7 @@ location.href=\'../game.php?mode=subnet&sid='.$sid.'&subnet=\'+s;
 <th class="name">Name</th>
 <th class="points">Punkte</th>
 <th class="owner">Besitzer</th>
-<th class="cluster">Cluster</th>
+<th class="syndikat">Syndikat</th>
 </tr>';
 
         switch ($listpage) {
@@ -1412,12 +1412,12 @@ location.href=\'../game.php?mode=subnet&sid='.$sid.'&subnet=\'+s;
                 $userinfo = '';
             }
 
-            if ($data['clusters_name'] != '') {
-                $clusterclass = 'cluster';
-                $clusterinfo = '<a href="cluster.php?a=info&amp;cluster='.$data['clusters_id'].'&amp;sid='.$sid.'">'.$data['clusters_name'].'</a>';
+            if ($data['syndikate_name'] != '') {
+                $syndikatclass = 'syndikat';
+                $syndikatinfo = '<a href="syndikat.php?a=info&amp;syndikat='.$data['syndikate_id'].'&amp;sid='.$sid.'">'.$data['syndikate_name'].'</a>';
             } else {
-                $clusterclass = 'no-cluster';
-                $clusterinfo = '';
+                $syndikatclass = 'no-syndikat';
+                $syndikatinfo = '';
             }
 
             echo '<tr>
@@ -1425,7 +1425,7 @@ location.href=\'../game.php?mode=subnet&sid='.$sid.'&subnet=\'+s;
 <td class="name">'.$data['pcs_name'].'</td>
 <td class="points">'.$data['pcs_points'].'</td>
 <td class="'.$userclass.'">'.$userinfo.'</td>
-<td class="'.$clusterclass.'">'.$clusterinfo.'</td>
+<td class="'.$syndikatclass.'">'.$syndikatinfo.'</td>
 </tr>
 ';
 

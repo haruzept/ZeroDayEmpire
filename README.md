@@ -162,7 +162,7 @@ Der obige Eintrag berechnet alle drei Stunden die Punkte neu. `run_calc_points.s
   - Bugfixes in .htaccess und login.php (kritischer Fehler behoben)
   - kleinere Darstellungsfehler in mehreren Dateien entfernt
 - **2.0‑RC4 (04.09.2004)**
-  - Diverse Bugfixes: cboard.php („s“-User gefixt), cluster.php (\\n entfernt)
+  - Diverse Bugfixes: cboard.php („s“-User gefixt), syndikat.php (\\n entfernt)
   - game.php: Anzeige des Hijack‑Levels in PC‑Übersicht hinzugefügt
   - mail.php: Bug mit \\s gefixt
   - user.php: Passwort ändern für Admins gefixt

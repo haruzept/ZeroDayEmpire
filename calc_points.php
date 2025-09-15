@@ -24,17 +24,17 @@ chmod('data/upgr_SALT.dat', 0777);
 function server_update_points($server)
 {
 
-    global $no_ranking_clusters;
+    global $no_ranking_syndikate;
 
     mysql_select_db(dbname($server));
     file_put('data/calc-stat.dat', 'Berechnung von Server $server ...');
 
     ignore_user_abort(0);
-    $clusters = array();
+    $syndikate = array();
 
 // Alle Datens&auml;tze zurcksetzen,
 // damit es bei herrenlosen PCs keine falschen Anzeigen gibt:
-#db_query('UPDATE pcs SET owner_name=\'\', owner_points=0, owner_cluster=0, owner_cluster_code=\'\';');
+#db_query('UPDATE pcs SET owner_name=\'\', owner_points=0, owner_syndikat=0, owner_syndikat_code=\'\';');
 
     $current = 0;
     $u_result = db_query('SELECT * FROM users');
@@ -62,26 +62,26 @@ function server_update_points($server)
         #reset($pcs);
         #foreach($pcs As $pcid):
         #$sql='UPDATE pcs SET owner_points=$upoints,owner_name=\''.mysql_escape_string($user['name']).'\' ';
-        #$cluster=getcluster($user['cluster']);
-        #if($cluster!==false) {
-        #  $sql.=',owner_cluster='.mysql_escape_string($cluster['id']).', owner_cluster_code=\''.mysql_escape_string($cluster['code']).'\' ';
+        #$syndikat=getsyndikat($user['syndikat']);
+        #if($syndikat!==false) {
+        #  $sql.=',owner_syndikat='.mysql_escape_string($syndikat['id']).', owner_syndikat_code=\''.mysql_escape_string($syndikat['code']).'\' ';
         #}
         #$sql.='WHERE id=\''.mysql_escape_string($pcid).'\'';
         #db_query($sql);
         #endforeach;
 
-        $c = $user['cluster'];
+        $c = $user['syndikat'];
         if ($c != '' && $c != 0) {
-            #$r=db_query('SELECT id FROM clusters WHERE id=\''.mysql_escape_string($c).'\' LIMIT 1');
+            #$r=db_query('SELECT id FROM syndikate WHERE id=\''.mysql_escape_string($c).'\' LIMIT 1');
             #if(mysql_num_rows($r)>0) {
-            $clusters['c'.$c]['points'] += $upoints;
-            $clusters['c'.$c]['members'] += 1;
-            $clusters['c'.$c]['pcs'] += $pc_cnt;
+            $syndikate['c'.$c]['points'] += $upoints;
+            $syndikate['c'.$c]['members'] += 1;
+            $syndikate['c'.$c]['pcs'] += $pc_cnt;
             #}
         }
 
         if (is_noranKINGuser($user['id']) == false && $user['id'] != 6249 && $user['id'] != 19061) {
-            $rank[$user['id'].';'.$user['name'].';'.$user['cluster']] = $upoints;
+            $rank[$user['id'].';'.$user['name'].';'.$user['syndikat']] = $upoints;
         } else {
             db_query(
                 'UPDATE users SET points=\''.mysql_escape_string(
@@ -121,10 +121,10 @@ function server_update_points($server)
 
 #file_put('data/_server'.$server.'/rank-user-count.dat', count($rank));
 
-    db_query('TRUNCATE TABLE rank_clusters'); # Tabelle leeren
+    db_query('TRUNCATE TABLE rank_syndikate'); # Tabelle leeren
 
     $b = array();
-    foreach ($clusters as $bez => $val) {
+    foreach ($syndikate as $bez => $val) {
         $b[$bez] = $val['points'];
     }
 
@@ -132,8 +132,8 @@ function server_update_points($server)
     $c = array();
     foreach ($b as $bez => $val) {
         $c[$bez]['points'] = $val;
-        $c[$bez]['pcs'] = $clusters[$bez]['pcs'];
-        $c[$bez]['members'] = $clusters[$bez]['members'];
+        $c[$bez]['pcs'] = $syndikate[$bez]['pcs'];
+        $c[$bez]['members'] = $syndikate[$bez]['members'];
     }
 
     foreach ($c as $bez => $dat) {
@@ -142,11 +142,11 @@ function server_update_points($server)
         $av_pcs = round($dat['pcs'] / $dat['members'], 2);
 
         // SUCCESS RATE CALCULATION START
-        $cluster = getcluster($bez);
+        $syndikat = getsyndikat($bez);
 
-        $total = $cluster['srate_total_cnt'];
-        $scnt = $cluster['srate_success_cnt'];
-        $ncnt = $cluster['srate_noticed_cnt'];
+        $total = $syndikat['srate_total_cnt'];
+        $scnt = $syndikat['srate_success_cnt'];
+        $ncnt = $syndikat['srate_noticed_cnt'];
         if ($total > 0) {
 
             $psucceeded = $scnt * 100 / $total;
@@ -160,9 +160,9 @@ function server_update_points($server)
         }
         // SUCCESS RATE CALCULATION END
 
-        if ($bez != $no_ranking_clusters) {
+        if ($bez != $no_ranking_syndikate) {
             db_query(
-                'INSERT INTO rank_clusters VALUES(0,\''.mysql_escape_string($bez).'\',\''.mysql_escape_string(
+                'INSERT INTO rank_syndikate VALUES(0,\''.mysql_escape_string($bez).'\',\''.mysql_escape_string(
                     $dat['members']
                 ).'\',\''.mysql_escape_string($dat['points']).'\',\''.mysql_escape_string(
                     $av_p
@@ -172,7 +172,7 @@ function server_update_points($server)
             );
         }
         db_query(
-            'UPDATE clusters SET points=\''.mysql_escape_string($dat['points']).'\',rank=\''.mysql_insert_id(
+            'UPDATE syndikate SET points=\''.mysql_escape_string($dat['points']).'\',rank=\''.mysql_insert_id(
             ).'\' WHERE id=\''.mysql_escape_string($bez).'\' LIMIT 1;'
         );
     }

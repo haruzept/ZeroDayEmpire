@@ -30,7 +30,7 @@ function showform()
 <p>
 <a href="search.php?m=list&amp;sid='.$sid.'&amp;type=user">Spieler</a> |
 <a href="search.php?m=list&amp;sid='.$sid.'&amp;type=pcs">Computer</a> |
-<a href="search.php?m=list&amp;sid='.$sid.'&amp;type=cluster">Cluster</a>
+<a href="search.php?m=list&amp;sid='.$sid.'&amp;type=syndikat">Syndikat</a>
 </p>
 //-->
 <form action="search.php?sid='.$sid.'&amp;a=exec" method="post">
@@ -40,8 +40,8 @@ function showform()
 <label for="search_for_user">Spielern</label>
 <input type="radio" name="for" value="pcs" id="search_for_pcs" onclick="showpan(this)" />
 <label for="search_for_pcs">Computern</label>
-<input type="radio" name="for" value="cluster" id="search_for_cluster" onclick="showpan(this)" />
-<label for="search_for_cluster">Clustern</label>
+<input type="radio" name="for" value="syndikat" id="search_for_syndikat" onclick="showpan(this)" />
+<label for="search_for_syndikat">Syndikatn</label>
 </p>
 
 <div id="search-form-user" style="display:block;">
@@ -80,25 +80,25 @@ function showform()
 </tr>
 
 <tr>
-<th>Cluster-Name:</th>
-<td><input type="checkbox" name="user_use_cluster_name" value="yes" checked="checked" title="Wert beachten" /></td>
+<th>Syndikat-Name:</th>
+<td><input type="checkbox" name="user_use_syndikat_name" value="yes" checked="checked" title="Wert beachten" /></td>
 <td>
-  <select name="user_cluster_name_opt">
+  <select name="user_syndikat_name_opt">
   <option value="exact">stimmt genau &uuml;berein</option>
   <option value="contains">enth&auml;lt</option>
   </select>
 </td>
 <td>
-  <input type="text" name="user_cluster_name" />
+  <input type="text" name="user_syndikat_name" />
 </td>
 </tr>
 
 <tr>
-<th>Cluster-Code:</th>
-<td><input type="checkbox" name="user_use_cluster_code" value="yes" checked="checked" title="Wert beachten" /></td>
+<th>Syndikat-Code:</th>
+<td><input type="checkbox" name="user_use_syndikat_code" value="yes" checked="checked" title="Wert beachten" /></td>
 <td>&nbsp;</td>
 <td>
-  <input type="text" name="user_cluster_code" />
+  <input type="text" name="user_syndikat_code" />
 </td>
 </tr>
 
@@ -155,8 +155,8 @@ function showform()
 
 </div>
 
-<div id="search-form-cluster" style="display:none;">
-<h4>Suche nach Clustern</h4>
+<div id="search-form-syndikat" style="display:none;">
+<h4>Suche nach Syndikatn</h4>
 <p>Das H&auml;cken entfernen um beliebige Werte zuzulassen.</p>
 
 </div>
@@ -173,7 +173,7 @@ function showpan(obj) {
 var pan=getLay(\'search-form-\'+obj.value);
 getLay(\'search-form-user\').style.display=\'none\';
 getLay(\'search-form-pcs\').style.display=\'none\';
-getLay(\'search-form-cluster\').style.display=\'none\';
+getLay(\'search-form-syndikat\').style.display=\'none\';
 pan.style.display=\'block\';
 }
 </script>

@@ -369,8 +369,8 @@ function fill(s) {
             }
 
             $owner = @getuser($target['owner']);
-            if ($owner !== false && $owner['cluster'] == $no_ranking_clusters) {
-                $e .= 'Mitglieder dieses Clusters können nicht angegriffen werden!';
+            if ($owner !== false && $owner['syndikat'] == $no_ranking_syndikate) {
+                $e .= 'Mitglieder dieses Syndikate können nicht angegriffen werden!';
             }
 
             if ($owner !== false && $owner['login_time'] + MIN_INACTIVE_TIME > time() && substr_count(
@@ -1196,13 +1196,13 @@ location.replace(\'battle.php?m=opc&sid='.$sid.'\');
                 $remote = $remote2;
                 $local = $local2;
                 $c = mysql_fetch_assoc(
-                    db_query('SELECT code FROM clusters WHERE id=\''.mysql_escape_string($usr['cluster']).'\';')
+                    db_query('SELECT code FROM syndikate WHERE id=\''.mysql_escape_string($usr['syndikat']).'\';')
                 );
                 $remote['owner'] = $usrid;
                 $remote['owner_name'] = $usr['name'];
                 $remote['owner_points'] = $usr['points'];
-                $remote['owner_cluster'] = $usr['cluster'];
-                $remote['owner_cluster_code'] = $c['code'];
+                $remote['owner_syndikat'] = $usr['syndikat'];
+                $remote['owner_syndikat_code'] = $c['code'];
                 savepc($remote['id'], $remote);
                 saveuserdata();
                 write_pc_list($usrid);
@@ -1246,17 +1246,17 @@ location.replace(\'battle.php?m=opc&sid='.$sid.'\');
 
             $ts = time();
             $rem_own = getuser($remote2['owner']);
-            $sql = 'INSERT INTO attacks VALUES('.$pcid.', '.$usrid.', '.(int)$usr['cluster'].', '.(int)$remote2['id'].', '.(int)$rem_own['id'].', '.(int)$rem_own['cluster'].', \''.mysql_escape_string(
+            $sql = 'INSERT INTO attacks VALUES('.$pcid.', '.$usrid.', '.(int)$usr['syndikat'].', '.(int)$remote2['id'].', '.(int)$rem_own['id'].', '.(int)$rem_own['syndikat'].', \''.mysql_escape_string(
                     $t
                 ).'\', \''.mysql_escape_string($opt).'\', '.mysql_escape_string($success).', '.mysql_escape_string(
                     $noticed
                 ).', \''.mysql_escape_string($ts).'\');';
             db_query($sql);
-            $cluster = getcluster($usr['cluster']);
-            if ($cluster !== false) {
-                $acnt = (int)$cluster['srate_total_cnt'];
-                $scnt = (int)$cluster['srate_success_cnt'];
-                $ncnt = (int)$cluster['srate_noticed_cnt'];
+            $syndikat = getsyndikat($usr['syndikat']);
+            if ($syndikat !== false) {
+                $acnt = (int)$syndikat['srate_total_cnt'];
+                $scnt = (int)$syndikat['srate_success_cnt'];
+                $ncnt = (int)$syndikat['srate_noticed_cnt'];
 #    echo 'acnt='.$acnt.' scnt='.$scnt.' ncnt='.$ncnt.'<br>';
                 $acnt++;
                 if ($success == 1) {
@@ -1266,14 +1266,14 @@ location.replace(\'battle.php?m=opc&sid='.$sid.'\');
                     $ncnt++;
                 }
                 db_query(
-                    'UPDATE clusters SET srate_total_cnt='.mysql_escape_string(
+                    'UPDATE syndikate SET srate_total_cnt='.mysql_escape_string(
                         $acnt
                     ).', srate_success_cnt='.mysql_escape_string($scnt).', srate_noticed_cnt='.mysql_escape_string(
                         $ncnt
-                    ).' WHERE id='.mysql_escape_string($cluster['id']).';'
+                    ).' WHERE id='.mysql_escape_string($syndikat['id']).';'
                 );
 #  echo mysql_error();
-#echo '<br>UPDATE clusters SET srate_total_cnt='.mysql_escape_string($acnt).', srate_success_cnt='.mysql_escape_string($scnt).', srate_noticed_cnt='.mysql_escape_string($ncnt).' WHERE id='.mysql_escape_string($cluster['id']).';';
+#echo '<br>UPDATE syndikate SET srate_total_cnt='.mysql_escape_string($acnt).', srate_success_cnt='.mysql_escape_string($scnt).', srate_noticed_cnt='.mysql_escape_string($ncnt).' WHERE id='.mysql_escape_string($syndikat['id']).';';
             }
 
             #$r=db_query('SELECT time FROM attacks WHERE from_pc='.mysql_escape_string($pcid).' ORDER BY time ASC;');

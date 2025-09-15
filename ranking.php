@@ -14,7 +14,7 @@ switch ($action) {
     case 'ranking': // ----------------------------------- Ranking --------------------------------
 
         $type = $_REQUEST['type'] ?? 'user';
-        if ($type != 'user' && $type != 'cluster') {
+        if ($type != 'user' && $type != 'syndikat') {
             $type = 'user';
         }
 
@@ -25,7 +25,7 @@ switch ($action) {
         if ($type == 'user') {
             $javascript .= 'function fill(s) { document.forms[0].user.value=s; }';
         } else {
-            $javascript .= 'function sorttype_go(obj,id) { location.href=\'ranking.php?a=ranking&sid='.$sid.'&type=cluster&sorttype=\'+obj.selectedIndex+\'&id=\'+id+\'#rank-table\'; }';
+            $javascript .= 'function sorttype_go(obj,id) { location.href=\'ranking.php?a=ranking&sid='.$sid.'&type=syndikat&sorttype=\'+obj.selectedIndex+\'&id=\'+id+\'#rank-table\'; }';
         }
         $javascript .= "\n".'</script>';
 
@@ -42,7 +42,7 @@ switch ($action) {
         echo '<div class="content" id="ranking">
 <h2>Rangliste</h2>
 <div class="submenu">
-<p><a href="ranking.php?m=ranking&amp;sid='.$sid.'&amp;type=user">Spieler</a> | <a href="ranking.php?m=ranking&amp;sid='.$sid.'&amp;type=cluster">Cluster</a></p>
+<p><a href="ranking.php?m=ranking&amp;sid='.$sid.'&amp;type=user">Spieler</a> | <a href="ranking.php?m=ranking&amp;sid='.$sid.'&amp;type=syndikat">Syndikat</a></p>
 </div>
 <div class="important">
 <h3>Wichtig</h3>
@@ -59,7 +59,7 @@ Das n&auml;chste Mal passiert das um '.$updtime.'.</p>
 <tr>
 <th class="number">Platz</th>
 <th class="name">Name</th>
-<th class="cluster">Cluster</th>
+<th class="syndikat">Syndikat</th>
 <th class="points">Punkte</th>
 </tr>
 ';
@@ -91,25 +91,25 @@ Das n&auml;chste Mal passiert das um '.$updtime.'.</p>
                 ).'+10;'
             );
 
-            $cluster_cache = [];
+            $syndikat_cache = [];
             while ($data = mysql_fetch_assoc($r)) {
                 $platz = $data['platz'];
                 $uid = $data['id'];
                 $uname = $data['name'];
-                $c = $data['cluster'];
+                $c = $data['syndikat'];
                 $points = $data['points'];
                 if ($c !== '') {
-                    if (!isset($cluster_cache[$c])) {
-                        $cluster_cache[$c] = getcluster($c);
+                    if (!isset($syndikat_cache[$c])) {
+                        $syndikat_cache[$c] = getsyndikat($c);
                     }
-                    $c = $cluster_cache[$c];
+                    $c = $syndikat_cache[$c];
                 } else {
                     $c = false;
                 }
 
                 if ($c !== false) {
-                    $cclass = 'cluster';
-                    $cinfo = '<a href="cluster.php?a=info&amp;sid='.$sid.'&amp;cluster='.$c['id'].'">'.$c['code'].'</a>';
+                    $cclass = 'syndikat';
+                    $cinfo = '<a href="syndikat.php?a=info&amp;sid='.$sid.'&amp;syndikat='.$c['id'].'">'.$c['code'].'</a>';
                 } else {
                     $cinfo = '&nbsp;';
                     $cclass = '';
@@ -170,8 +170,8 @@ Das n&auml;chste Mal passiert das um '.$updtime.'.</p>
                 'Mitglieder',
             );
             echo '
-<div id="ranking-cluster">
-<h3>Cluster-Rangliste</h3>
+<div id="ranking-syndikat">
+<h3>Syndikat-Rangliste</h3>
 <form action="ranking.php?m=search&amp;sid='.$sid.'&amp;type='.$type.'" method="post">
 <table id="rank-table">
 <tr>
@@ -184,12 +184,12 @@ Das n&auml;chste Mal passiert das um '.$updtime.'.</p>
             $start = (int)($_REQUEST['start'] ?? 0);
             $cid = (int)($_REQUEST['id'] ?? 0);
             if ($cid == 0) {
-                $cid = (int)$usr['cluster'];
+                $cid = (int)$usr['syndikat'];
             }
 
             $sts = array('points', 'av_points', 'pcs', 'av_pcs', 'success_rate', 'members');
             $prec = array(0, 2, 0, 2, 1, 0);
-            $r = db_query('SELECT * FROM `rank_clusters` ORDER BY `'.mysql_escape_string($sts[$sorttype]).'` DESC;');
+            $r = db_query('SELECT * FROM `rank_syndikate` ORDER BY `'.mysql_escape_string($sts[$sorttype]).'` DESC;');
             $total = mysql_num_rows($r);
             #echo $cid;
 
@@ -206,7 +206,7 @@ createlayout_bottom();
             if ($start < 1) {
                 $i = 0;
                 while (true) {
-                    $dat = mysql_result($r, $i, 'cluster');
+                    $dat = mysql_result($r, $i, 'syndikat');
                     #echo $dat.' ';
                     if ($dat == $cid) {
                         $start = $i - 4;
@@ -225,9 +225,9 @@ createlayout_bottom();
             $i = $start - 1;
             mysql_data_seek($r, $start - 1);
             while ($dat = mysql_fetch_assoc($r)) {
-                $c = getcluster($dat['cluster']);
+                $c = getsyndikat($dat['syndikat']);
                 if ($c !== false) {
-                    $zeile[0] = $dat['cluster'];
+                    $zeile[0] = $dat['syndikat'];
                     $zeile[1] = htmlspecialchars($c['code']);
                     $zeile[2] = number_format($dat[$sts[$sorttype]], $prec[$sorttype], ',', '.');
                     if ($sorttype == 4) {
@@ -243,7 +243,7 @@ createlayout_bottom();
                     }
                     echo '<tr>
 <td class="number">'.$platz.'</td>
-<td class="name"><a href="cluster.php?a=info&amp;cluster='.$zeile[0].'&amp;sid='.$sid.'">'.$zeile[1].'</a> ('.$zeile[3].')</td>
+<td class="name"><a href="syndikat.php?a=info&amp;syndikat='.$zeile[0].'&amp;sid='.$sid.'">'.$zeile[1].'</a> ('.$zeile[3].')</td>
 <td class="points">'.$zeile[2].'</td>
 </tr>
 ';
@@ -262,7 +262,7 @@ createlayout_bottom();
                 $x = 1;
             }
             if ($x > 0) {
-                $forwards = '<a href="ranking.php?a=ranking&amp;type=cluster&amp;start=1&amp;sid='.$sid.'&amp;sorttype='.$sorttype.'#rank-table">Platz 1</a> | <a href="ranking.php?a=ranking&amp;type=cluster&amp;start='.$x.'&amp;sid='.$sid.'&amp;sorttype='.$sorttype.'&amp;id='.$cid.'#rank-table">&laquo; Besser</a>';
+                $forwards = '<a href="ranking.php?a=ranking&amp;type=syndikat&amp;start=1&amp;sid='.$sid.'&amp;sorttype='.$sorttype.'#rank-table">Platz 1</a> | <a href="ranking.php?a=ranking&amp;type=syndikat&amp;start='.$x.'&amp;sid='.$sid.'&amp;sorttype='.$sorttype.'&amp;id='.$cid.'#rank-table">&laquo; Besser</a>';
             }
             if ($start + 10 <= $total) {
                 $x = $start + 10;
@@ -272,7 +272,7 @@ createlayout_bottom();
                 $start = $total;
             }
             if ($x <= $total) {
-                $backwards = '<a href="ranking.php?a=ranking&amp;type=cluster&amp;start='.$x.'&amp;sid='.$sid.'&amp;sorttype='.$sorttype.'&amp;id='.$cid.'#rank-table">Schlechter &raquo;</a> | <a href="ranking.php?a=ranking&amp;type=cluster&amp;start='.($total - 5).'&amp;sid='.$sid.'&amp;sorttype='.$sorttype.'#rank-table">Letzter Platz</a>';
+                $backwards = '<a href="ranking.php?a=ranking&amp;type=syndikat&amp;start='.$x.'&amp;sid='.$sid.'&amp;sorttype='.$sorttype.'&amp;id='.$cid.'#rank-table">Schlechter &raquo;</a> | <a href="ranking.php?a=ranking&amp;type=syndikat&amp;start='.($total - 5).'&amp;sid='.$sid.'&amp;sorttype='.$sorttype.'#rank-table">Letzter Platz</a>';
             }
             if ($forwards != '' && $backwards != '') {
                 $forwards .= ' | ';
@@ -289,7 +289,7 @@ createlayout_bottom();
                 $xxx = ' <a href="javascript:show_abook(\'user\')">Adressbuch</a> ';
             }
         } else {
-            $st = 'Cluster';
+            $st = 'Syndikat';
             eval('$ch'.$sorttype.'=\' selected="selected"\';');
             $xxx = '<select onchange="sorttype_go(this,\''.$cid.'\')"><option'.$ch0.'>Punkte</option><option'.$ch1.'>Durchschnittspunkte pro Mitglied</option><option'.$ch2.'>Anzahl von PCs aller Mitglieder</option><option'.$ch3.'>Durchschnittliche Anzahl PCs pro Mitglied</option><option'.$ch4.'>Angriffs-Erfolgsrate</option><option'.$ch5.'>Mitglieder</option></select>';
             $hf = '<input type="hidden" value="'.$sorttype.'" name="sorttype" />';
@@ -328,14 +328,14 @@ createlayout_bottom();
                 }
                 break;
 
-            case 'cluster':
-                $c = getcluster(trim($_REQUEST['cluster'] ?? ''), 'code');
+            case 'syndikat':
+                $c = getsyndikat(trim($_REQUEST['syndikat'] ?? ''), 'code');
 
                 $st = (int)($_REQUEST['sorttype'] ?? 0);
                 if ($c !== false) {
-                    header('Location: ranking.php?a=ranking&sid='.$sid.'&type=cluster&id='.$c['id'].'&sorttype='.$st);
+                    header('Location: ranking.php?a=ranking&sid='.$sid.'&type=syndikat&id='.$c['id'].'&sorttype='.$st);
                 } else {
-                    simple_message('Einen Cluster mit diesem Code gibt es nicht!');
+                    simple_message('Einen Syndikat mit diesem Code gibt es nicht!');
                 }
                 break;
 

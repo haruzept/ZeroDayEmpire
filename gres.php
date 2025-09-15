@@ -218,8 +218,8 @@ function gFormatText(&$s)
 
     $dat[0]['pattern'] = '/\\[usr\\=(.*?)\\](.*?)\\[\\/usr\\]/is';
     $dat[0]['replace'] = '<a href="user.php?a=info&amp;sid='.$sid.'&amp;user=\\1">\\2</a>';
-    $dat[1]['pattern'] = '/\\[cluster\\=(.*?)\\](.*?)\\[\\/cluster\\]/is';
-    $dat[1]['replace'] = '<a href="cluster.php?a=info&amp;sid='.$sid.'&amp;cluster=\\1">\\2</a>';
+    $dat[1]['pattern'] = '/\\[syndikat\\=(.*?)\\](.*?)\\[\\/syndikat\\]/is';
+    $dat[1]['replace'] = '<a href="syndikat.php?a=info&amp;sid='.$sid.'&amp;syndikat=\\1">\\2</a>';
 
     foreach ($dat as $item):
         $s = preg_replace($item['pattern'], $item['replace'], $s);
@@ -538,10 +538,10 @@ function joinex($a, $trenn, $unique = true, $rtrim = false)
     }
 }
 
-function GetCluster($val, $by = 'id')
+function GetSyndikat($val, $by = 'id')
 {
     $r = db_query(
-        'SELECT * FROM clusters WHERE '.mysql_escape_string($by).' LIKE \''.mysql_escape_string($val).'\' LIMIT 1'
+        'SELECT * FROM syndikate WHERE '.mysql_escape_string($by).' LIKE \''.mysql_escape_string($val).'\' LIMIT 1'
     );
 
     return ((int)@mysql_num_rows($r) > 0 ? mysql_fetch_assoc($r) : false);
@@ -809,21 +809,21 @@ function delete_account($usrid)
 { // ------------------ DELETE ACCOUNT ---------------
     $usr = @getuser($usrid);
     if ($usr !== false) {
-        $c = $usr['cluster'];
+        $c = $usr['syndikat'];
         if ($c != '') {
-            $c = @mysql_num_rows(@db_query('SELECT * FROM users WHERE cluster='.mysql_escape_string($c)));
+            $c = @mysql_num_rows(@db_query('SELECT * FROM users WHERE syndikat='.mysql_escape_string($c)));
             if ($c < 2) {
-                deletecluster($c, true);
+                deletesyndikat($c, true);
             } else {
                 $r = db_query(
-                    'SELECT id FROM users WHERE cluster='.mysql_escape_string(
-                        $usr['cluster']
-                    ).' AND clusterstat='.(CS_ADMIN).';'
+                    'SELECT id FROM users WHERE syndikat='.mysql_escape_string(
+                        $usr['syndikat']
+                    ).' AND syndikatetat='.(CS_ADMIN).';'
                 );
                 $admins = @mysql_num_rows($r);
-                if ($usr['clusterstat'] == CS_ADMIN && $admins < 2) {
-                    $r = db_query('SELECT * FROM users WHERE cluster='.mysql_escape_string($usr['cluster']).';');
-                    db_query('UPDATE users SET clusterstat='.(CS_ADMIN).' WHERE id='.mysql_result($r, 0, 'id').';');
+                if ($usr['syndikatetat'] == CS_ADMIN && $admins < 2) {
+                    $r = db_query('SELECT * FROM users WHERE syndikat='.mysql_escape_string($usr['syndikat']).';');
+                    db_query('UPDATE users SET syndikatetat='.(CS_ADMIN).' WHERE id='.mysql_result($r, 0, 'id').';');
                 }
             }
         }
@@ -838,18 +838,18 @@ function delete_account($usrid)
     }
 }
 
-function deletecluster($cid, $silent = false)
-{ // ------- DELETE CLUSTER ---------
+function deletesyndikat($cid, $silent = false)
+{ // ------- DELETE SYNDIKAT ---------
     global $sid;
 
-    db_query('DELETE FROM clusters WHERE id=\''.mysql_escape_string($cid).'\' LIMIT 1');
-    db_query('DELETE FROM cboards WHERE cluster=\''.mysql_escape_string($cid).'\'');
-    db_query('DELETE FROM cl_reqs WHERE cluster=\''.mysql_escape_string($cid).'\'');
-    db_query('UPDATE users SET clusterstat=0, cm=\'\', cluster=0 WHERE cluster=\''.mysql_escape_string($cid).'\'');
+    db_query('DELETE FROM syndikate WHERE id=\''.mysql_escape_string($cid).'\' LIMIT 1');
+    db_query('DELETE FROM cboards WHERE syndikat=\''.mysql_escape_string($cid).'\'');
+    db_query('DELETE FROM cl_reqs WHERE syndikat=\''.mysql_escape_string($cid).'\'');
+    db_query('UPDATE users SET syndikatetat=0, cm=\'\', syndikat=0 WHERE syndikat=\''.mysql_escape_string($cid).'\'');
 
     if ($silent === false) {
         simple_message(
-            'Der Cluster '.$cid.' wurde gel&ouml;scht.<br /><a href="cluster.php?mode=start&sid='.$sid.'">Weiter</a>'
+            'Der Syndikat '.$cid.' wurde gel&ouml;scht.<br /><a href="syndikat.php?mode=start&sid='.$sid.'">Weiter</a>'
         );
     }
 }
@@ -968,13 +968,13 @@ function processupgrades(&$pc, $savepc = true)
         $pc['credits'] += $plus;
         $max = getmaxbb($pc);
         if ($pc['credits'] > $max) {
-            if (isset($usr['cluster'])) {
-                $c = getcluster($usr['cluster']);
+            if (isset($usr['syndikat'])) {
+                $c = getsyndikat($usr['syndikat']);
                 if ($c !== false) {
                     $credits = $c['money'] + ($pc['credits'] - $max);
                     db_query(
-                        'UPDATE clusters SET money='.mysql_escape_string($credits).' WHERE id=\''.mysql_escape_string(
-                            $usr['cluster']
+                        'UPDATE syndikate SET money='.mysql_escape_string($credits).' WHERE id=\''.mysql_escape_string(
+                            $usr['syndikat']
                         ).'\''
                     );
                 }

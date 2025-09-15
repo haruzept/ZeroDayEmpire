@@ -38,8 +38,8 @@ if (file_exists($imgfile) != true) {
     if (stristr($option, 'ranking') != false) {
         $w[2] = imagefontwidth(2) * strlen('Platz '.$usr['rank']);
     }
-    if (stristr($option, 'cluster') != false) {
-        $c = getcluster($usr['cluster']);
+    if (stristr($option, 'syndikat') != false) {
+        $c = getsyndikat($usr['syndikat']);
         if ($c !== false) {
             $w[3] = imagefontwidth(2) * strlen($c['code']);
         }
@@ -58,7 +58,7 @@ if (file_exists($imgfile) != true) {
     imagestring($hImg, 3, 20, 2, $usr['name'], $black);
     imagestring($hImg, 1, 20, 15, 'Server '.$server, $black);
     $currenty = 24;
-    if (stristr($option, 'cluster') != false) {
+    if (stristr($option, 'syndikat') != false) {
         imagestring($hImg, 2, 20, $currenty, $c['code'], $black);
         $currenty += 12;
     }

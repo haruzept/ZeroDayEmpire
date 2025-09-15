@@ -500,7 +500,7 @@ createlayout_bottom();
 
                 $ts = time();
                 db_query(
-                    'INSERT INTO users(id, name, email,   password, pcs, liu, lic,  clusterstat, login_time)'
+                    'INSERT INTO users(id, name, email,   password, pcs, liu, lic,  syndikatetat, login_time)'
                     .'          VALUES(0, \''.mysql_escape_string($nick).'\',\''.mysql_escape_string(
                         $email
                     ).'\',\''.md5($pwd).'\', \''.mysql_escape_string($r).'\', \''.mysql_escape_string(
@@ -512,7 +512,7 @@ createlayout_bottom();
                 db_query(
                     'UPDATE pcs SET owner=\''.mysql_escape_string($ownerid).'\', owner_name=\''.mysql_escape_string(
                         $nick
-                    ).'\', owner_points=0, owner_cluster=0, owner_cluster_code=\'\' WHERE id='.mysql_escape_string($r)
+                    ).'\', owner_points=0, owner_syndikat=0, owner_syndikat_code=\'\' WHERE id='.mysql_escape_string($r)
                 );
 
                 db_query(

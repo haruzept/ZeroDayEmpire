@@ -39,10 +39,10 @@ CREATE TABLE `abooks` (
 CREATE TABLE `attacks` (
   `from_pc` smallint(6) default '0',
   `from_usr` smallint(6) default '0',
-  `from_cluster` int(11) default '0',
+  `from_syndikat` int(11) default '0',
   `to_pc` smallint(6) default '0',
   `to_usr` smallint(6) default '0',
-  `to_cluster` int(11) default '0',
+  `to_syndikat` int(11) default '0',
   `type` enum('block','hijack','scan','smash','trojan') NOT NULL default 'block',
   `option` enum('cpu','deactivate','defacement','firewall','sdk','transfer') NOT NULL default 'cpu',
   `success` tinyint(1) default '0',
@@ -62,7 +62,7 @@ CREATE TABLE `attacks` (
 #
 
 CREATE TABLE `cboards` (
-  `cluster` smallint(6) default NULL,
+  `syndikat` smallint(6) default NULL,
   `thread` int(9) NOT NULL auto_increment,
   `relative` int(9) default NULL,
   `user` smallint(6) default NULL,
@@ -87,7 +87,7 @@ CREATE TABLE `cboards` (
 #
 
 CREATE TABLE `cl_pacts` (
-  `cluster` smallint(6) default NULL,
+  `syndikat` smallint(6) default NULL,
   `convent` tinyint(4) default NULL,
   `partner` smallint(6) default NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -105,7 +105,7 @@ CREATE TABLE `cl_pacts` (
 
 CREATE TABLE `cl_reqs` (
   `user` smallint(6) default NULL,
-  `cluster` smallint(6) default NULL,
+  `syndikat` smallint(6) default NULL,
   `comment` text,
   `dealed` char(3) default 'no'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -118,10 +118,10 @@ CREATE TABLE `cl_reqs` (
 # --------------------------------------------------------
 
 #
-# Tabellenstruktur für Tabelle `clusters`
+# Tabellenstruktur für Tabelle `syndikate`
 #
 
-CREATE TABLE `clusters` (
+CREATE TABLE `syndikate` (
   `id` int(6) NOT NULL auto_increment,
   `name` varchar(50) default NULL,
   `code` varchar(16) default NULL,
@@ -145,11 +145,11 @@ CREATE TABLE `clusters` (
 ) ENGINE=MyISAM AUTO_INCREMENT=3  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 #
-# Daten für Tabelle `clusters`
+# Daten für Tabelle `syndikate`
 #
 
-INSERT INTO `clusters` VALUES (1, 'TestCluster', '=ZDETC=', ' 00:11 Der Cluster wird durch TestUser gegr&uuml;ndet!', 1, 1, NULL, 30, NULL, NULL, 'Wichtig', 'Allgemein', 'Alte Beiträge', 'yes', 1, NULL, 0, 0, 0);
-INSERT INTO `clusters` VALUES (2, 'Administratoren', '::root::', '24.08. um 00:13 [usr=2]Administrator2[/usr] erh&auml;lt durch [usr=1]Administrator[/usr] den Status LiteAdmin.\n24.08. um 00:13 [usr=2]Administrator2[/usr] tritt dem Cluster bei.\n 00:12 Der Cluster wird durch Administrator gegr&uuml;ndet!', 1, 2, NULL, 13036, NULL, NULL, 'Wichtig', 'Allgemein', 'Alte Beiträge', 'yes', 0, NULL, 0, 0, 0);
+INSERT INTO `syndikate` VALUES (1, 'TestSyndikat', '=ZDETC=', ' 00:11 Der Syndikat wird durch TestUser gegr&uuml;ndet!', 1, 1, NULL, 30, NULL, NULL, 'Wichtig', 'Allgemein', 'Alte Beiträge', 'yes', 1, NULL, 0, 0, 0);
+INSERT INTO `syndikate` VALUES (2, 'Administratoren', '::root::', '24.08. um 00:13 [usr=2]Administrator2[/usr] erh&auml;lt durch [usr=1]Administrator[/usr] den Status LiteAdmin.\n24.08. um 00:13 [usr=2]Administrator2[/usr] tritt dem Syndikat bei.\n 00:12 Der Syndikat wird durch Administrator gegr&uuml;ndet!', 1, 2, NULL, 13036, NULL, NULL, 'Wichtig', 'Allgemein', 'Alte Beiträge', 'yes', 0, NULL, 0, 0, 0);
 
 # --------------------------------------------------------
 
@@ -178,7 +178,7 @@ CREATE TABLE `da_participants` (
 
 CREATE TABLE `distr_attacks` (
   `id` smallint(6) NOT NULL auto_increment,
-  `cluster` smallint(6) default NULL,
+  `syndikat` smallint(6) default NULL,
   `initiator_pc` smallint(6) default NULL,
   `initiator_usr` smallint(6) default NULL,
   `target` smallint(6) default NULL,
@@ -235,7 +235,7 @@ INSERT INTO `logins` VALUES (17, '127.0.0.1', 1, 1094132687);
 
 CREATE TABLE `logs` (
   `id` bigint(20) NOT NULL auto_increment,
-  `type` enum('other','worm_clmoney','worm_blockpc','worm_pcsendmoney','delcluster','deluser','lockuser','badlogin','chclinfo') NOT NULL default 'other',
+  `type` enum('other','worm_clmoney','worm_blockpc','worm_pcsendmoney','delsyndikat','deluser','lockuser','badlogin','chclinfo') NOT NULL default 'other',
   `usr_id` smallint(6) NOT NULL default '0',
   `payload` tinytext NOT NULL,
   PRIMARY KEY  (`id`)
@@ -284,8 +284,8 @@ CREATE TABLE `pcs` (
   `owner` smallint(6) default NULL,
   `owner_name` tinytext,
   `owner_points` int(11) default NULL,
-  `owner_cluster` smallint(6) default NULL,
-  `owner_cluster_code` tinytext,
+  `owner_syndikat` smallint(6) default NULL,
+  `owner_syndikat_code` tinytext,
   `cpu` varchar(4) NOT NULL default '',
   `ram` tinyint(4) default NULL,
   `lan` varchar(4) default NULL,
@@ -327,12 +327,12 @@ INSERT INTO `pcs` VALUES (3, 'NoName', '80.1', 3, 'TestUser', 0, 0, '', '1', 2, 
 # --------------------------------------------------------
 
 #
-# Tabellenstruktur für Tabelle `rank_clusters`
+# Tabellenstruktur für Tabelle `rank_syndikate`
 #
 
-CREATE TABLE `rank_clusters` (
+CREATE TABLE `rank_syndikate` (
   `platz` smallint(6) NOT NULL auto_increment,
-  `cluster` smallint(6) default '0',
+  `syndikat` smallint(6) default '0',
   `members` tinyint(4) default '0',
   `points` int(11) default '0',
   `av_points` float default '0',
@@ -343,10 +343,10 @@ CREATE TABLE `rank_clusters` (
 ) ENGINE=MyISAM AUTO_INCREMENT=2  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 #
-# Daten für Tabelle `rank_clusters`
+# Daten für Tabelle `rank_syndikate`
 #
 
-INSERT INTO `rank_clusters` VALUES (1, 1, 1, 30, '30', 1, '1', '0');
+INSERT INTO `rank_syndikate` VALUES (1, 1, 1, 30, '30', 1, '1', '0');
 
 # --------------------------------------------------------
 
@@ -359,7 +359,7 @@ CREATE TABLE `rank_users` (
   `id` smallint(6) default NULL,
   `name` varchar(50) default NULL,
   `points` int(11) default '0',
-  `cluster` smallint(6) default NULL,
+  `syndikat` smallint(6) default NULL,
   PRIMARY KEY  (`platz`)
 ) ENGINE=MyISAM AUTO_INCREMENT=2  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -392,10 +392,10 @@ CREATE TABLE `sysmsgs` (
 
 CREATE TABLE `transfers` (
   `from_id` smallint(6) default '0',
-  `from_type` enum('cluster','user') NOT NULL default 'cluster',
+  `from_type` enum('syndikat','user') NOT NULL default 'syndikat',
   `from_usr` smallint(6) default NULL,
   `to_id` smallint(6) default '0',
-  `to_type` enum('cluster','user') NOT NULL default 'cluster',
+  `to_type` enum('syndikat','user') NOT NULL default 'syndikat',
   `to_usr` smallint(6) default NULL,
   `credits` bigint(11) default '0',
   `time` varchar(10) default NULL
@@ -443,7 +443,7 @@ CREATE TABLE `users` (
   `stat` smallint(6) default '1',
   `liu` varchar(10) default NULL,
   `lic` varchar(10) default NULL,
-  `clusterstat` smallint(6) default NULL,
+  `syndikatetat` smallint(6) default NULL,
   `homepage` tinytext,
   `infotext` text,
   `wohnort` tinytext,
@@ -452,14 +452,14 @@ CREATE TABLE `users` (
   `bigacc` enum('no','yes') NOT NULL default 'no',
   `usessl` enum('no','yes') NOT NULL default 'no',
   `enable_usrimg` enum('yes','no') NOT NULL default 'no',
-  `usrimg_fmt` enum('points','ranking','points ranking','cluster points','cluster ranking','cluster points ranking') NOT NULL default 'cluster points ranking',
+  `usrimg_fmt` enum('points','ranking','points ranking','syndikat points','syndikat ranking','syndikat points ranking') NOT NULL default 'syndikat points ranking',
   `noipcheck` enum('no','yes') NOT NULL default 'no',
   `newmail` tinyint(4) default '0',
   `lastmail` varchar(10) default NULL,
   `points` mediumint(9) default '0',
   `sig_mails` tinytext,
   `sig_board` tinytext,
-  `cluster` int(6) default NULL,
+  `syndikat` int(6) default NULL,
   `cm` varchar(6) default NULL,
   `login_time` int(11) NOT NULL default '0',
   `sid` tinytext,
@@ -480,9 +480,9 @@ CREATE TABLE `users` (
 # Daten für Tabelle `users`
 #
 
-INSERT INTO `users` VALUES (1, 'Administrator', 'admin@local.host', 'd41d8cd98f00b204e9800998ecf8427e', '1', 'x', '0.0.0', 1000, '1093129845', '1093129845', 1000, NULL, NULL, NULL, NULL, 'no', 'yes', 'no', 'no', 'cluster points ranking', 'no', 0, NULL, 6518, NULL, NULL, 2, '02.09.', 1094132687, '', '127.0.0.1', 'no', 'crystal', NULL, NULL, 0, 'yes', NULL, NULL, 'no');
-INSERT INTO `users` VALUES (2, 'Administrator2', 'admin2@local.host', 'd41d8cd98f00b204e9800998ecf8427e', '2', 'x', '0.0.0', 1, '1093173165', '1093299187', 900, NULL, NULL, NULL, NULL, 'no', 'yes', 'no', 'no', 'cluster points ranking', 'no', 0, NULL, 6518, NULL, NULL, 2, '', 1093299179, '', '127.0.0.1', 'no', 'crystal', NULL, NULL, 0, 'no', NULL, NULL, 'yes');
-INSERT INTO `users` VALUES (3, 'TestUser', 'test@local.host', 'd41d8cd98f00b204e9800998ecf8427e', '3', 'x', '0.0.0', 1, '1093173180', '1093173180', 1000, NULL, NULL, NULL, NULL, 'no', 'yes', 'no', 'no', 'cluster points ranking', 'no', 0, NULL, 30, NULL, NULL, 1, '24.08.', 1093299090, '', '127.0.0.1', 'no', 'crystal', NULL, NULL, 1, 'no', NULL, NULL, 'yes');
+INSERT INTO `users` VALUES (1, 'Administrator', 'admin@local.host', 'd41d8cd98f00b204e9800998ecf8427e', '1', 'x', '0.0.0', 1000, '1093129845', '1093129845', 1000, NULL, NULL, NULL, NULL, 'no', 'yes', 'no', 'no', 'syndikat points ranking', 'no', 0, NULL, 6518, NULL, NULL, 2, '02.09.', 1094132687, '', '127.0.0.1', 'no', 'crystal', NULL, NULL, 0, 'yes', NULL, NULL, 'no');
+INSERT INTO `users` VALUES (2, 'Administrator2', 'admin2@local.host', 'd41d8cd98f00b204e9800998ecf8427e', '2', 'x', '0.0.0', 1, '1093173165', '1093299187', 900, NULL, NULL, NULL, NULL, 'no', 'yes', 'no', 'no', 'syndikat points ranking', 'no', 0, NULL, 6518, NULL, NULL, 2, '', 1093299179, '', '127.0.0.1', 'no', 'crystal', NULL, NULL, 0, 'no', NULL, NULL, 'yes');
+INSERT INTO `users` VALUES (3, 'TestUser', 'test@local.host', 'd41d8cd98f00b204e9800998ecf8427e', '3', 'x', '0.0.0', 1, '1093173180', '1093173180', 1000, NULL, NULL, NULL, NULL, 'no', 'yes', 'no', 'no', 'syndikat points ranking', 'no', 0, NULL, 30, NULL, NULL, 1, '24.08.', 1093299090, '', '127.0.0.1', 'no', 'crystal', NULL, NULL, 1, 'no', NULL, NULL, 'yes');
 
 -- Restore session variables
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;

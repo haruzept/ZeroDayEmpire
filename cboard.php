@@ -20,27 +20,27 @@ if ($action == '') {
     $action = $_REQUEST['m'];
 }
 
-$cix = $usr['cluster'];
-$cluster = getcluster($cix);
+$cix = $usr['syndikat'];
+$syndikat = getsyndikat($cix);
 
 
 switch ($action) {
 
     case 'board': // ------------------------ BOARD ---------------------------------
 
-        createlayout_top('ZeroDayEmpire - Cluster-Board');
-        echo '<div class="content" id="cluster-board">'.LF;
-        echo '<h2>Cluster-Board</h2>'.LF;
+        createlayout_top('ZeroDayEmpire - Syndikat-Board');
+        echo '<div class="content" id="syndikat-board">'.LF;
+        echo '<h2>Syndikat-Board</h2>'.LF;
         echo '<p><a href="cboard.php?sid='.$sid.'&amp;a=newthreadform">Neuen Beitrag erstellen</a></p>'."\n";
 
         function listboard($boxid)
         {
-            global $DATADIR, $sid, $usrid, $pcid, $cix, $usr, $cluster;
+            global $DATADIR, $sid, $usrid, $pcid, $cix, $usr, $syndikat;
 
-            $admin = ($usr['clusterstat'] == CS_ADMIN || $usr['clusterstat'] == CS_COADMIN);
+            $admin = ($usr['syndikatetat'] == CS_ADMIN || $usr['syndikatetat'] == CS_COADMIN);
 
             $result = db_query(
-                'SELECT * FROM cboards WHERE cluster LIKE \''.mysql_escape_string(
+                'SELECT * FROM cboards WHERE syndikat LIKE \''.mysql_escape_string(
                     $cix
                 ).'\' AND box LIKE \''.mysql_escape_string($boxid).'\' AND relative LIKE \'-1\' ORDER BY time ASC;'
             );
@@ -62,7 +62,7 @@ switch ($action) {
                 while ($data = mysql_fetch_assoc($result)) {
                     $tmp = '';
                     $r = db_query(
-                        'SELECT * FROM cboards WHERE cluster LIKE \''.mysql_escape_string(
+                        'SELECT * FROM cboards WHERE syndikat LIKE \''.mysql_escape_string(
                             $cix
                         ).'\' AND relative LIKE \''.mysql_escape_string($data['thread']).'\' ORDER BY time ASC;'
                     );
@@ -115,7 +115,7 @@ switch ($action) {
                 }
                 echo $output;
                 if ($admin) {
-                    echo '<tr id="cluster-board-folder'.($boxid + 1).'-confirm">'."\n";
+                    echo '<tr id="syndikat-board-folder'.($boxid + 1).'-confirm">'."\n";
                     echo '<td colspan="6"><select name="axion">';
                     echo '<option value="delete">Löschen</option>';
                     if ($boxid != 0) {
@@ -136,11 +136,11 @@ switch ($action) {
             }
         }
 
-        echo '<div id="cluster-board-folder1">'.LF.'<h3>Ordner 1 ('.$cluster['box1'].')</h3>';
+        echo '<div id="syndikat-board-folder1">'.LF.'<h3>Ordner 1 ('.$syndikat['box1'].')</h3>';
         listboard(0);
-        echo '</div>'.LF.'<div id="cluster-board-folder2">'.LF.'<h3>Ordner 2 ('.$cluster['box2'].')</h3>'."\n";
+        echo '</div>'.LF.'<div id="syndikat-board-folder2">'.LF.'<h3>Ordner 2 ('.$syndikat['box2'].')</h3>'."\n";
         listboard(1);
-        echo '</div>'.LF.'<div id="cluster-board-folder3">'.LF.'<h3>Ordner 3 ('.$cluster['box3'].')</h3>'."\n";
+        echo '</div>'.LF.'<div id="syndikat-board-folder3">'.LF.'<h3>Ordner 3 ('.$syndikat['box3'].')</h3>'."\n";
         listboard(2);
         echo '</div>'.LF.'</div>'."\n";
         createlayout_bottom();
@@ -149,7 +149,7 @@ switch ($action) {
 
     case 'admin': // ------------------------ ADMIN ---------------------------------
 
-        if ($usr['clusterstat'] != CS_ADMIN && $usr['clusterstat'] != CS_COADMIN) {
+        if ($usr['syndikatetat'] != CS_ADMIN && $usr['syndikatetat'] != CS_COADMIN) {
             no_('mt0');
             exit;
         }
@@ -157,7 +157,7 @@ switch ($action) {
         $box = (int)$_REQUEST['box'];
 
         $result = db_query(
-            'SELECT thread,box FROM cboards WHERE cluster LIKE \''.mysql_escape_string(
+            'SELECT thread,box FROM cboards WHERE syndikat LIKE \''.mysql_escape_string(
                 $cix
             ).'\' AND box LIKE \''.mysql_escape_string($box).'\' AND relative LIKE \'-1\''
         );
@@ -172,12 +172,12 @@ switch ($action) {
             switch ($_POST['axion']) {
                 case 'delete':
                     db_query(
-                        'DELETE FROM cboards WHERE cluster LIKE \''.mysql_escape_string(
+                        'DELETE FROM cboards WHERE syndikat LIKE \''.mysql_escape_string(
                             $cix
                         ).'\' AND thread LIKE \''.mysql_escape_string($id).'\' AND relative LIKE \'-1\''
                     );
                     db_query(
-                        'DELETE FROM cboards WHERE cluster LIKE \''.mysql_escape_string(
+                        'DELETE FROM cboards WHERE syndikat LIKE \''.mysql_escape_string(
                             $cix
                         ).'\' AND relative LIKE \''.mysql_escape_string($id).'\''
                     );
@@ -196,7 +196,7 @@ switch ($action) {
                 db_query(
                     'UPDATE cboards SET box=\''.mysql_escape_string(
                         $newbox
-                    ).'\' WHERE cluster LIKE \''.mysql_escape_string($cix).'\' AND thread LIKE \''.mysql_escape_string(
+                    ).'\' WHERE syndikat LIKE \''.mysql_escape_string($cix).'\' AND thread LIKE \''.mysql_escape_string(
                         $id
                     ).'\' AND relative LIKE \'-1\''
                 );
@@ -230,7 +230,7 @@ switch ($action) {
 
             $sql = 'INSERT INTO cboards VALUES (\''.$cix.'\', \'0\', \'-1\', \''.$usrid.'\', \''.mysql_escape_string(
                     $usr['name']
-                ).'\', \''.$usr['clusterstat'].'\', \''.$ts.'\', \''.mysql_escape_string(
+                ).'\', \''.$usr['syndikatetat'].'\', \''.$ts.'\', \''.mysql_escape_string(
                     $title
                 ).'\', \''.mysql_escape_string($text).'\', \''.mysql_escape_string($boxid).'\')';
             db_query($sql);
@@ -244,8 +244,8 @@ switch ($action) {
 
     case 'newthreadform': // ------------------------ NEW THREAD FORM ---------------------------------
 
-        createlayout_top('ZeroDayEmpire - Cluster-Board - Beitrag erstellen');
-        echo '<div class="content" id="cluster-board">'.LF.'<h2>Cluster-Board</h2>'.LF.'<div id="cluster-board-newthread">'.LF.'<h3>Beitrag erstellen</h3>'."\n";
+        createlayout_top('ZeroDayEmpire - Syndikat-Board - Beitrag erstellen');
+        echo '<div class="content" id="syndikat-board">'.LF.'<h2>Syndikat-Board</h2>'.LF.'<div id="syndikat-board-newthread">'.LF.'<h3>Beitrag erstellen</h3>'."\n";
         showform();
         echo '</div>'.LF.'</div>'."\n";
         createlayout_bottom();
@@ -274,7 +274,7 @@ switch ($action) {
                     $thread
                 ).'\', \''.mysql_escape_string($usrid).'\', \''.mysql_escape_string(
                     $usr['name']
-                ).'\', \''.mysql_escape_string($usr['clusterstat']).'\', \''.mysql_escape_string(
+                ).'\', \''.mysql_escape_string($usr['syndikatetat']).'\', \''.mysql_escape_string(
                     $ts
                 ).'\', \''.mysql_escape_string($title).'\', \''.mysql_escape_string($text).'\', \'-1\')';
             db_query($sql);
@@ -289,9 +289,9 @@ switch ($action) {
 
     case 'showthread': // ------------------------ SHOW THREAD ---------------------------------
 
-        createlayout_top('ZeroDayEmpire - Cluster-Board - Beitrag');
-        echo '<div class="content" id="cluster-board-post">'."\n";
-        echo '<h2>Cluster-Board</h2>'."\n";
+        createlayout_top('ZeroDayEmpire - Syndikat-Board - Beitrag');
+        echo '<div class="content" id="syndikat-board-post">'."\n";
+        echo '<h2>Syndikat-Board</h2>'."\n";
 
         $id = (double)$_REQUEST['threadid'];
 
@@ -314,7 +314,7 @@ switch ($action) {
         $result = db_query(
             'SELECT * FROM cboards WHERE thread LIKE \''.mysql_escape_string(
                 $id
-            ).'\' AND cluster LIKE \''.mysql_escape_string($cix).'\''
+            ).'\' AND syndikat LIKE \''.mysql_escape_string($cix).'\''
         );
         if (mysql_num_rows($result) > 0) {
             //settype($a,'array');
@@ -334,7 +334,7 @@ switch ($action) {
             exit;
         }
 
-        echo '<br /><br />'.LF.'<div id="cluster-board-post-reply">'.LF.'<h3>Antwort schreiben</h3>'."\n";
+        echo '<br /><br />'.LF.'<div id="syndikat-board-post-reply">'.LF.'<h3>Antwort schreiben</h3>'."\n";
         showform('addreply');
         echo '</div>';
         echo '<p><a href="cboard.php?sid='.$sid.'&m=board">Zurück</a></p>'."\n";
@@ -400,7 +400,7 @@ function formatText($s)
 function showform($action = 'addthread')
 {
     // ---------------------------- SHOW FORM -----------------------
-    global $REMOTE_FILES_DIR, $DATADIR, $sid, $usrid, $pcid, $usr, $cluster;
+    global $REMOTE_FILES_DIR, $DATADIR, $sid, $usrid, $pcid, $usr, $syndikat;
 
     if ($action == 'addreply') {
         $xval = 'Antwort';
@@ -415,7 +415,7 @@ function showform($action = 'addthread')
 </tr>
 ';
     if ($action == 'addthread') {
-        echo '<tr>'.LF.'<th>Ordner:</th>'.LF.'<td><select name="box"><option value="0">1 ('.$cluster['box1'].')</option><option value="1">2 ('.$cluster['box2'].')</option><option value="2">3 ('.$cluster['box3'].')</option></select></td></tr>';
+        echo '<tr>'.LF.'<th>Ordner:</th>'.LF.'<td><select name="box"><option value="0">1 ('.$syndikat['box1'].')</option><option value="1">2 ('.$syndikat['box2'].')</option><option value="2">3 ('.$syndikat['box3'].')</option></select></td></tr>';
     }
 
     echo '<tr><th>Dein Beitrag:</th>
@@ -436,7 +436,7 @@ function showform($action = 'addthread')
     }
 
     echo '</td></tr>
-<tr id="cluster-board-newthread-confirm">
+<tr id="syndikat-board-newthread-confirm">
 <td colspan="2"><input type="submit" value="Beitrag abschicken" /></td>
 </tr>
 </table>';

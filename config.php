@@ -12,7 +12,7 @@ $db_password = '';
 
 # KEINE MITSPIELER:
 $no_ranking_users = '1,2';
-$no_ranking_clusters = '2'; # Nur eine Angabe möglich
+$no_ranking_syndikate = '2'; # Nur eine Angabe möglich
 
 # KONSTANTEN
 define('UPDATE_INTERVAL', 10800, false); # Interval für Punkte-Updates in Sekunden

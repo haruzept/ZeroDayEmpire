@@ -138,7 +138,7 @@ input:focus{ border-color: var(--border); box-shadow: none }
 
 
 /* === Legacy pages theme bridge ===
-   Bring older PHP pages (pub.php, game.php, user.php, ranking.php, mail.php, cluster.php)
+   Bring older PHP pages (pub.php, game.php, user.php, ranking.php, mail.php, syndikat.php)
    visually in line with the new index.php design without changing their logic/markup.
    We style their generic wrappers (.content, .submenu, .menu, tables, .important/.ok/.error alerts).
 */
@@ -219,7 +219,7 @@ table tbody tr:last-child td{ border-bottom:none }
 
 /* Status labels often used in ranking/mail etc. */
 .number{ text-align:right; font-variant-numeric: tabular-nums }
-.name, .from, .title, .cluster{ font-weight:600 }
+.name, .from, .title, .syndikat{ font-weight:600 }
 .points{ font-weight:800 }
 .not-read{ font-weight:700 }
 
