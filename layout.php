@@ -67,7 +67,7 @@ function createlayout_top($title = 'ZeroDayEmpire', $nomenu = false)
         echo '<nav class="nav-links" id="navList" aria-label="Hauptnavigation">';
         if ($sid !== '') {
             echo '<a href="game.php?m=start' . $sid . '">Übersicht</a>';
-            echo '<a href="game.php?m=pc' . $sid . '">Server</a>';
+            echo '<a href="game.php?m=server' . $sid . '">Server</a>';
             echo '<a href="syndikat.php?a=start' . $sid . '">Syndikat</a>';
             echo '<a href="battle.php?m=opc&sid=' . $usr['sid'] . '">Operation Center</a>';
             echo '<a href="upgradelist.php?sid=' . $usr['sid'] . '">Upgrade</a>';
