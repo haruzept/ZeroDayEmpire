@@ -72,6 +72,7 @@ function createlayout_top($title = 'ZeroDayEmpire', $nomenu = false)
             echo '<a href="battle.php?m=opc&sid=' . $usr['sid'] . '">Operation Center</a>';
             echo '<a href="upgradelist.php?sid=' . $usr['sid'] . '">Upgrade</a>';
             echo '<a href="research.php?sid=' . $usr['sid'] . '">Forschung</a>';
+            echo '<a href="attacks.php?sid=' . $usr['sid'] . '">Angriffe</a>';
             echo '<a href="ranking.php?m=ranking' . $sid . '">Rangliste</a>';
             echo '<a href="user.php?a=config' . $sid . '">Optionen</a>';
             echo '<a href="login.php?a=logout' . $sid . '">Abmelden</a>';
