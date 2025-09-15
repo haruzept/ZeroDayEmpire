@@ -303,7 +303,7 @@ CREATE TABLE `servers` (
   `rh` varchar(4) default NULL,
   `sdk` varchar(4) default NULL,
   `trojan` varchar(4) default NULL,
-  `credits` int(11) default NULL,
+  `cryptocoins` int(11) default NULL,
   `lmupd` varchar(10) default NULL,
   `country` enum('afghanistan', 'antarktis', 'antigua', 'argentinien', 'australien', 'austria', 'brasilien', 'china', 'deutschland', 'egypt', 'england', 'finnland', 'frankreich', 'griechenland', 'groenland', 'indien', 'irak', 'iran', 'irland', 'island', 'italien', 'japan', 'kanada', 'kuba', 'lybien', 'madagaskar', 'mexico', 'monaco', 'namibia', 'neuseeland', 'nordkorea', 'pakistan', 'peru', 'portugal', 'quatar', 'russland', 'saudi-arabien', 'schweden', 'schweiz', 'sierraleone', 'spanien', 'suedafrika', 'thailand', 'tuerkei', 'usa', 'vanuatu', 'vietnam', 'marlboro', 'atlantis', 'myth') NOT NULL default 'myth',
   `points` smallint(6) default NULL,
@@ -397,7 +397,7 @@ CREATE TABLE `transfers` (
   `to_id` smallint(6) default '0',
   `to_type` enum('syndikat','user') NOT NULL default 'syndikat',
   `to_usr` smallint(6) default NULL,
-  `credits` bigint(11) default '0',
+  `cryptocoins` bigint(11) default '0',
   `time` varchar(10) default NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 

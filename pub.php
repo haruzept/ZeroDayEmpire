@@ -54,8 +54,8 @@ switch ($action) {
     case 'faq':
         showdoc('faq', 'FAQ');
         break;
-    case 'credits':
-        showdoc('credits', 'Team');
+    case 'cryptocoins':
+        showdoc('cryptocoins', 'Team');
         break;
     case 'newpwd':
         showdoc('newpwd', 'Neues Passwort anfordern');

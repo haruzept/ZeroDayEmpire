@@ -371,7 +371,7 @@ alert(\'Bitte Zahl eingeben!\');
         $r = db_query('SELECT * FROM `transfers` WHERE `from_id`=483 AND `from_type` LIKE \'syndikat\';');
         while ($data = mysql_fetch_assoc($r)):
             echo "\n".nicetime($data['time'])."\t";
-            echo $data['credits'].' Credits nach ';
+            echo $data['cryptocoins'].' CryptoCoins nach ';
             if ($data['to_type'] == 'user') {
                 $p = getpc($data['to_id']);
                 echo 'PC 10.47.'.$p['ip'].' von '.$p['owner_name']."\t";
@@ -441,7 +441,7 @@ function idtotext($id)
         'dialer' => '0900-Dialer',
         'auctions' => 'Auktionsbetrug',
         'bankhack' => 'Online-Banking',
-        'credits' => 'Credits',
+        'cryptocoins' => 'CryptoCoins',
         'owner' => 'Besitzer-Nummer',
         'ip' => 'IP-Adresse',
         'lmupd' => 'Zeit des letzten Geld-Updates',
@@ -479,7 +479,7 @@ function idtotext($id)
         'sig_mails' => 'Mail-Signatur',
         'sig_board' => 'Board-Signatur',
         'ref_pc' => 'PC f&uuml;r Geld aus Ref-Prog.',
-        'ref_mode' => 'Ref-Prog.-Modus (0=normal,1=credits)',
+        'ref_mode' => 'Ref-Prog.-Modus (0=normal,1=cryptocoins)',
         'ref_users' => 'geworbene User',
         'login_time' => 'letztes Login',
         'lrh' => 'letztes REMOTE HIJACK',

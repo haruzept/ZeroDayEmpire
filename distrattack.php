@@ -188,9 +188,9 @@ Sobald du es bestimmst, wird der Feind mit der gesammelten Power aller Teilnehme
 
         if ($e == '') {
             $country = getcountry('id', $target['country']);
-            $credits = $country['in'] * 20;
-            if ($pc['credits'] < $credits) {
-                $e .= 'Du hast nicht gen&uuml;gend Geld, um die Einfuhr-Geb&uuml;hr von '.$credits.' Credits nach '.$country['name'].', dem Standort von 10.47.'.$target['ip'].', zu bezahlen!';
+            $cryptocoins = $country['in'] * 20;
+            if ($pc['cryptocoins'] < $cryptocoins) {
+                $e .= 'Du hast nicht gen&uuml;gend Geld, um die Einfuhr-Geb&uuml;hr von '.$cryptocoins.' CryptoCoins nach '.$country['name'].', dem Standort von 10.47.'.$target['ip'].', zu bezahlen!';
             } else {
                 $code = randomx(10);
                 echo '<div id="syndikat-create-distributed-attack2">
@@ -207,7 +207,7 @@ Sobald du es bestimmst, wird der Feind mit der gesammelten Power aller Teilnehme
 </tr>
 <tr>
 <th>Kosten:</th>
-<td>F&uuml;r die Einfuhr nach '.$country['name'].' fallen '.$credits.' Credits an.<br />
+<td>F&uuml;r die Einfuhr nach '.$country['name'].' fallen '.$cryptocoins.' CryptoCoins an.<br />
 Diese werden schon jetzt vom Konto deines PCs 10.47.'.$pc['ip'].' ('.$pc['name'].') abgezogen.</td>
 </tr>
 <tr id="syndikat-create-distributed-attack2-confirm">
@@ -217,7 +217,7 @@ Diese werden schon jetzt vom Konto deines PCs 10.47.'.$pc['ip'].' ('.$pc['name']
 </form>
 </div>
 ';
-                file_put($DATADIR.'/tmp/da_'.$code.'.txt', $target['id'].'|'.$credits.'|'.$t);
+                file_put($DATADIR.'/tmp/da_'.$code.'.txt', $target['id'].'|'.$cryptocoins.'|'.$t);
             }
         }
 
@@ -234,7 +234,7 @@ Diese werden schon jetzt vom Konto deines PCs 10.47.'.$pc['ip'].' ('.$pc['name']
             exit;
         }
         echo '<div class="ok"><h3>Aktion ausgef&uuml;hrt</h3>'.LF.'<p>Die Distributed Attack wurde erstellt.</p>'.LF.'</div>'."\n";
-        list($target, $credits, $item) = explode('|', file_get($fn));
+        list($target, $cryptocoins, $item) = explode('|', file_get($fn));
         @unlink($fn);
         db_query(
             'INSERT INTO distr_attacks VALUES(\'0\', \''.mysql_escape_string($syndikatid).'\', \''.mysql_escape_string(
@@ -252,9 +252,9 @@ Diese werden schon jetzt vom Konto deines PCs 10.47.'.$pc['ip'].' ('.$pc['name']
             ).', owner_name=\''.mysql_escape_string($usr['name']).'\';'
         );
 #echo mysql_error();
-        $pc['credits'] -= $credits;
+        $pc['cryptocoins'] -= $cryptocoins;
         db_query(
-            'UPDATE servers SET credits='.mysql_escape_string($pc['credits']).' WHERE id='.mysql_escape_string($pcid).';'
+            'UPDATE servers SET cryptocoins='.mysql_escape_string($pc['cryptocoins']).' WHERE id='.mysql_escape_string($pcid).';'
         );
 
         break;
@@ -267,7 +267,7 @@ Diese werden schon jetzt vom Konto deines PCs 10.47.'.$pc['ip'].' ('.$pc['name']
             echo '<div id="syndikat-distributed-attack-join-start">'."\n";
             echo '<h3>Mitmachen</h3>'."\n";
             echo '<p><strong>W&auml;hle die PCs, mit denen du bei der DA mithelfen willst:</strong></p>'."\n";
-            echo '<p>Das Mitmachen kostet 1000 Credits pro PC. Nur PCs mit mindestens 1000 Credits im BucksBunker und solche, die noch nicht an der DA teilnehmen, werden angezeigt.</p>'."\n";
+            echo '<p>Das Mitmachen kostet 1000 CryptoCoins pro PC. Nur PCs mit mindestens 1000 CryptoCoins im BucksBunker und solche, die noch nicht an der DA teilnehmen, werden angezeigt.</p>'."\n";
             echo '<form action="distrattack.php?sid='.$sid.'&amp;da='.$a['id'].'&amp;page=join2" method="post">'."\n";
             echo '<table>';
             $gcnt = 0;
@@ -288,20 +288,20 @@ Diese werden schon jetzt vom Konto deines PCs 10.47.'.$pc['ip'].' ('.$pc['name']
                 # Geld updaten:
                 if ($x['lmupd'] + 60 <= time()) {
                     $plus = (int)round(get_gdph($x) * ((time() - $x['lmupd']) / 3600), 0);
-                    $x['credits'] += $plus;
+                    $x['cryptocoins'] += $plus;
                     $x['lmupd'] = time();
                     $max = getmaxbb($x);
-                    if ($x['credits'] > $max) {
-                        $x['credits'] = $max;
+                    if ($x['cryptocoins'] > $max) {
+                        $x['cryptocoins'] = $max;
                     }
                     db_query(
-                        'UPDATE servers SET lmupd=\''.$x['lmupd'].'\', credits=\''.$x['credits'].'\' WHERE id='.mysql_escape_string(
+                        'UPDATE servers SET lmupd=\''.$x['lmupd'].'\', cryptocoins=\''.$x['cryptocoins'].'\' WHERE id='.mysql_escape_string(
                             $x['id']
                         ).';'
                     );
                 }
 
-                if ($x['credits'] >= 1000) {
+                if ($x['cryptocoins'] >= 1000) {
                     $gcnt++;
                     echo '<tr><th>10.47.'.$x['ip'].' ('.$x['name'].', '.$x['points'].' Punkte)</th><td><input checked="checked" type="checkbox" name="pc'.$x['id'].'" value="1" /></td></tr>';
                 }
@@ -347,7 +347,7 @@ Diese werden schon jetzt vom Konto deines PCs 10.47.'.$pc['ip'].' ('.$pc['name']
                 if ($_POST['server'.$xpc['id']] != 1) {
                     continue;
                 }
-                $creds = $xpc['credits'];
+                $creds = $xpc['cryptocoins'];
                 if (isavailh('da', $xpc) != true || $xpc['owner'] != $usrid || $creds < 1000) {
                     continue;
                 }
@@ -361,7 +361,7 @@ Diese werden schon jetzt vom Konto deines PCs 10.47.'.$pc['ip'].' ('.$pc['name']
                 }
                 $creds -= 1000;
                 db_query(
-                    'UPDATE servers SET credits=\''.mysql_escape_string($creds).'\' WHERE id=\''.mysql_escape_string(
+                    'UPDATE servers SET cryptocoins=\''.mysql_escape_string($creds).'\' WHERE id=\''.mysql_escape_string(
                         $xpc['id']
                     ).'\';'
                 );
@@ -408,20 +408,20 @@ Es werden nur PCs angezeigt, auf denen die DA und gen&uuml;gend Geld vorhanden i
             # Geld updaten:
             if ($x['lmupd'] + 60 <= time()) {
                 $plus = (int)round(get_gdph($x) * ((time() - $x['lmupd']) / 3600), 0);
-                $x['credits'] += $plus;
+                $x['cryptocoins'] += $plus;
                 $x['lmupd'] = time();
                 $max = getmaxbb($x);
-                if ($x['credits'] > $max) {
-                    $x['credits'] = $max;
+                if ($x['cryptocoins'] > $max) {
+                    $x['cryptocoins'] = $max;
                 }
                 db_query(
-                    'UPDATE servers SET lmupd=\''.mysql_escape_string($x['lmupd']).'\', credits=\''.mysql_escape_string(
-                        $x['credits']
+                    'UPDATE servers SET lmupd=\''.mysql_escape_string($x['lmupd']).'\', cryptocoins=\''.mysql_escape_string(
+                        $x['cryptocoins']
                     ).'\' WHERE id='.mysql_escape_string($x['id']).';'
                 );
             }
 
-            if ($x['credits'] >= 1000) {
+            if ($x['cryptocoins'] >= 1000) {
                 $gcnt++;
                 echo '<tr><th>10.47.'.$x['ip'].' ('.$x['name'].')</th><td><input type="checkbox" name="pc'.$x['id'].'" value="1" /></td></tr>';
             }
@@ -466,7 +466,7 @@ Es werden nur PCs angezeigt, auf denen die DA und gen&uuml;gend Geld vorhanden i
                 if ($_POST['server'.$xpc['id']] != 1) {
                     continue;
                 }
-                $creds = $xpc['credits'];
+                $creds = $xpc['cryptocoins'];
                 if (isavailh('da', $xpc) != true || $xpc['owner'] != $usrid || $creds < 1000) {
                     continue;
                 }
@@ -480,7 +480,7 @@ Es werden nur PCs angezeigt, auf denen die DA und gen&uuml;gend Geld vorhanden i
                 }
                 $creds -= 1000;
                 db_query(
-                    'UPDATE servers SET credits=\''.mysql_escape_string($creds).'\' WHERE id=\''.mysql_escape_string(
+                    'UPDATE servers SET cryptocoins=\''.mysql_escape_string($creds).'\' WHERE id=\''.mysql_escape_string(
                         $xpc['id']
                     ).'\';'
                 );

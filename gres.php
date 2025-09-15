@@ -697,7 +697,7 @@ function addpc($country, $usrid, $byid = true)
 
         $ts = time();
         db_query(
-            'INSERT INTO servers(id, name,     ip,    owner,  cpu, ram, lan, mm, bb, ads, dialer, auctions, bankhack, fw, mk, av, ids, ips, rh, sdk, trojan, credits, lmupd, country, points, la, di, dt, lrh) VALUES('
+            'INSERT INTO servers(id, name,     ip,    owner,  cpu, ram, lan, mm, bb, ads, dialer, auctions, bankhack, fw, mk, av, ids, ips, rh, sdk, trojan, cryptocoins, lmupd, country, points, la, di, dt, lrh) VALUES('
             .'0, \'NoName\', \''.mysql_escape_string($ip).'\', \''.mysql_escape_string(
                 $usrid
             ).'\', 0, 0,   1,   1,  1,  1,   0,      0,        0,        0,  0,  0,  0,   0,   0,  0,   0,      1000,    \''.mysql_escape_string(
@@ -965,28 +965,28 @@ function processupgrades(&$pc, $savepc = true)
     # Geld updaten:
     if ($pc['lmupd'] + 60 <= time()) {
         $plus = (int)round(get_gdph($pc) * ((time() - $pc['lmupd']) / 3600), 0);
-        $pc['credits'] += $plus;
+        $pc['cryptocoins'] += $plus;
         $max = getmaxbb($pc);
-        if ($pc['credits'] > $max) {
+        if ($pc['cryptocoins'] > $max) {
             if (isset($usr['syndikat'])) {
                 $c = getsyndikat($usr['syndikat']);
                 if ($c !== false) {
-                    $credits = $c['money'] + ($pc['credits'] - $max);
+                    $cryptocoins = $c['money'] + ($pc['cryptocoins'] - $max);
                     db_query(
-                        'UPDATE syndikate SET money='.mysql_escape_string($credits).' WHERE id=\''.mysql_escape_string(
+                        'UPDATE syndikate SET money='.mysql_escape_string($cryptocoins).' WHERE id=\''.mysql_escape_string(
                             $usr['syndikat']
                         ).'\''
                     );
                 }
             }
-            $pc['credits'] = $max;
+            $pc['cryptocoins'] = $max;
         }
         db_query(
-            'UPDATE servers SET credits=\''.mysql_escape_string($pc['credits']).'\', lmupd=\''.time(
+            'UPDATE servers SET cryptocoins=\''.mysql_escape_string($pc['cryptocoins']).'\', lmupd=\''.time(
             ).'\' WHERE id=\''.mysql_escape_string($pcid).'\''
         );
     }
-    $bucks = number_format($pc['credits'], 0, ',', '.');
+    $bucks = number_format($pc['cryptocoins'], 0, ',', '.');
 }
 
 

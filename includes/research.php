@@ -106,14 +106,14 @@ function research_start($pcid,$track)
         return array('error'=>$dep);
     }
     $calc = research_calculate($row['base_cost'],$row['cost_mult'],$row['base_time_min'],$row['time_mult'],$target);
-    if ($pc['credits'] < $calc['cost']) {
-        return array('error'=>'Nicht genügend Credits');
+    if ($pc['cryptocoins'] < $calc['cost']) {
+        return array('error'=>'Nicht genügend CryptoCoins');
     }
-    db_query('UPDATE servers SET credits=credits-'.mysql_escape_string($calc['cost']).' WHERE id=\''.mysql_escape_string($pcid).'\' AND credits>='.mysql_escape_string($calc['cost']).'');
+    db_query('UPDATE servers SET cryptocoins=cryptocoins-'.mysql_escape_string($calc['cost']).' WHERE id=\''.mysql_escape_string($pcid).'\' AND cryptocoins>='.mysql_escape_string($calc['cost']).'');
     if (mysql_affected_rows() < 1) {
-        return array('error'=>'Nicht genügend Credits');
+        return array('error'=>'Nicht genügend CryptoCoins');
     }
-    $pc['credits'] -= $calc['cost'];
+    $pc['cryptocoins'] -= $calc['cost'];
     $start = time();
     $end = $start + $calc['time'];
     db_query('INSERT INTO research SET pc=\''.mysql_escape_string($pcid).'\', `start`=\''.mysql_escape_string($start).'\', `end`=\''.mysql_escape_string($end).'\', track=\''.$track.'\', target_level=\''.mysql_escape_string($target).'\'');
