@@ -48,7 +48,7 @@ foreach ($messages as $m) {
     echo '<p class="msg">'.htmlspecialchars($m).'</p>';
 }
 
-echo '<section class="card table-card" id="attackTable" style="overflow:visible"><h2>Verfügbare Angriffe</h2><table id="attackTableInner" style="width:100%"><thead><tr><th scope="col" style="text-align:center">Angriff</th><th scope="col" style="text-align:center">Dauer</th><th scope="col" style="text-align:center">Kosten</th><th scope="col" style="text-align:center">Risiko</th><th scope="col" style="text-align:center">Status</th><th scope="col" style="text-align:center">Aktion</th></tr></thead><tbody>';
+echo '<section class="card table-card" id="attackTable" style="overflow:visible"><h2>Verfügbare Angriffe</h2><table id="attackTableInner" style="width:100%"><thead><tr><th scope="col" style="text-align:center">Angriff</th><th scope="col" style="text-align:center">Angriffsdauer</th><th scope="col" style="text-align:center">Kosten</th><th scope="col" style="text-align:center">Verdienst</th><th scope="col" style="text-align:center">Risiko</th><th scope="col" style="text-align:center">Status</th><th scope="col" style="text-align:center">Aktion</th></tr></thead><tbody>';
 foreach ($defs as $d) {
     $code = $d['code'];
     $state = get_attack_state($pc, $code);
@@ -73,7 +73,7 @@ foreach ($defs as $d) {
         $button = '<span class="tooltip" data-tooltip="'.htmlspecialchars($tooltip, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8').'">'.$button.'</span>';
     }
     $descrTooltip = htmlspecialchars($d['descr'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
-    echo '<tr><td class="tooltip" data-tooltip="'.$descrTooltip.'"><strong>'.htmlspecialchars($d['name']).'</strong></td><td>'.format_duration($params['duration_min']*60).'</td><td>'.format_cc($params['cost']).'</td><td>'.$params['risk_pct'].'%</td><td'.($depTooltip ? ' class="tooltip" data-tooltip="'.$depTooltip.'"' : '').'>'.dependency_badge($dep_ok).'</td><td>'.$button.'</td></tr>';
+    echo '<tr><td class="tooltip" data-tooltip="'.$descrTooltip.'"><strong>'.htmlspecialchars($d['name']).'</strong></td><td>'.format_duration($params['duration_min']*60).'</td><td>'.format_cc($params['cost']).'</td><td>'.format_cc($params['payout_expected']).'</td><td>'.$params['risk_pct'].'%</td><td'.($depTooltip ? ' class="tooltip" data-tooltip="'.$depTooltip.'"' : '').'>'.dependency_badge($dep_ok).'</td><td>'.$button.'</td></tr>';
 }
 echo '</tbody></table></section>';
 
