@@ -29,7 +29,7 @@ switch ($action) {
             $r=db_query('SELECT id,buildstat FROM servers WHERE buildstat!='';');
             while($data=mysql_fetch_assoc($r)):
               $a=explode('/', $data['buildstat']);
-              db_query('INSERT INTO upgrades SET pc=\''.mysql_escape_string($data['id']).'\', end=\''.mysql_escape_string($a[0]).'\', item=\''.mysql_escape_string($a[1]).'\';');
+              db_query('INSERT INTO upgrades SET server=\''.mysql_escape_string($data['id']).'\', end=\''.mysql_escape_string($a[0]).'\', item=\''.mysql_escape_string($a[1]).'\';');
             endwhile;
         }*/
 
@@ -222,7 +222,7 @@ switch ($action) {
   <article class="card span-6" id="upgradequeue">
     <h3>Upgrade-Queue</h3>
     <?php
-      $r = db_query('SELECT * FROM `upgrades` WHERE `pc`=\''.mysql_escape_string($pcid).'\' AND `end`>\''.time().'\' ORDER BY `start` ASC;');
+      $r = db_query('SELECT * FROM `upgrades` WHERE `server`=\''.mysql_escape_string($pcid).'\' AND `end`>\''.time().'\' ORDER BY `start` ASC;');
       $full = @mysql_num_rows($r);
       echo '<p><strong>Es sind '.$full.' von '.UPGRADE_QUEUE_LENGTH.' Slots belegt</strong></p>';
       if ($full > 0) {
@@ -708,7 +708,7 @@ createlayout_bottom();
 
         $tmppc = $pc;
         $r1 = db_query(
-            'SELECT * FROM `upgrades` WHERE `pc`=\''.mysql_escape_string($pcid).'\' AND `end`>\''.time(
+            'SELECT * FROM `upgrades` WHERE `server`=\''.mysql_escape_string($pcid).'\' AND `end`>\''.time(
             ).'\' ORDER BY start ASC;'
         );
         $cnt1 = mysql_num_rows($r1);
@@ -722,7 +722,7 @@ createlayout_bottom();
 
 
             $r2 = db_query(
-                'SELECT * FROM `upgrades` WHERE `pc`=\''.mysql_escape_string(
+                'SELECT * FROM `upgrades` WHERE `server`=\''.mysql_escape_string(
                     $pcid
                 ).'\' AND `item`=\''.mysql_escape_string($id).'\' AND `end`>\''.time().'\';'
             );
@@ -739,7 +739,7 @@ createlayout_bottom();
                         ).' WHERE `id`=\''.mysql_escape_string($pcid).'\''
                     );
                     db_query(
-                        'INSERT INTO `upgrades` SET `pc`=\''.mysql_escape_string($pcid).'\', `start`=\''.time(
+                        'INSERT INTO `upgrades` SET `server`=\''.mysql_escape_string($pcid).'\', `start`=\''.time(
                         ).'\', `end`=\''.mysql_escape_string($ftime).'\', `item`=\''.mysql_escape_string($id).'\';'
                     );
 
@@ -794,13 +794,13 @@ createlayout_bottom();*/
 
         $u = (int)$_REQUEST['upgrade'];
         $r = db_query(
-            'SELECT id FROM upgrades WHERE pc=\''.mysql_escape_string($pcid).'\' AND id=\''.mysql_escape_string(
+            'SELECT id FROM upgrades WHERE server=\''.mysql_escape_string($pcid).'\' AND id=\''.mysql_escape_string(
                 $u
             ).'\' LIMIT 1;'
         );
         if (mysql_num_rows($r) == 1) {
             db_query(
-                'DELETE FROM upgrades WHERE pc=\''.mysql_escape_string($pcid).'\' AND id=\''.mysql_escape_string(
+                'DELETE FROM upgrades WHERE server=\''.mysql_escape_string($pcid).'\' AND id=\''.mysql_escape_string(
                     $u
                 ).'\' LIMIT 1;'
             );
@@ -912,7 +912,7 @@ createlayout_bottom();*/
             if ($x['points'] < 1024 && $ext) {
                 processupgrades($x);
                 $r = db_query(
-                    'SELECT end,item FROM `upgrades` WHERE pc=\''.mysql_escape_string(
+                    'SELECT end,item FROM `upgrades` WHERE server=\''.mysql_escape_string(
                         $x['id']
                     ).'\' ORDER BY `start` ASC;'
                 );
