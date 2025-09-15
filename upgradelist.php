@@ -176,7 +176,7 @@ foreach ($items as $item) {
     $runningThis = isset($runningItems[$item]);
     echo '<td>'.$timeStr.'</td><td>'.format_credits($inf['c']).'</td>';
     if ($runningThis) {
-        echo '<td>Upgrade l&auml;uft</td>';
+        echo '<td><span class="badge muted">Upgrade l&auml;uft</span></td>';
     } else {
         $depTooltip = dependency_tooltip_text($item);
         $depTooltip = $depTooltip ? str_replace("\n", '&#10;', htmlspecialchars($depTooltip, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8')) : '';
